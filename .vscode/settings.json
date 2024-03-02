@@ -1,0 +1,19 @@
+{
+    "editor.minimap.enabled": true,
+    "C_Cpp.autocomplete": "Default",
+    "[cpp]": {
+        "editor.quickSuggestions": {
+            "comments": "on",
+            "strings": "on",
+            "other": "on"
+        }
+    },
+    "[c]": {
+        "editor.quickSuggestions": {
+            "comments": "on",
+            "strings": "on",
+            "other": "on"
+        }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}
