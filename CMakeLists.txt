@@ -19,7 +19,7 @@ add_library(common_util STATIC ${COMMON_UTIL_LIB_SRC})
 # message("ALL_HEADER:\n" ${ALL_HEADER_STR})
 
 # build executable for common_util_demo
-add_executable(common_util_demo src/usage_demo/main.cpp)
+add_executable(common_util_demo src/main.cpp)
 target_link_libraries(common_util_demo common_util)
 
 
