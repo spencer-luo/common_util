@@ -1,5 +1,6 @@
 #include <iostream>
 #include "common_util/timeutil.h"
+#include "common_util/sysutil.h"
 
 void PrintTitle(const std::string &title)
 {
@@ -33,9 +34,15 @@ void TestTimeutil()
     std::cout << "ms2us: " << cutl::ms2us(ms) << std::endl;
 }
 
-#include <vector>
+void TestSysutil()
+{
+    PrintTitle("sysutil");
+    std::cout << "C++编译使用的标准库版本：" << cutl::cpp_stl_version() << std::endl;
+}
+
 int main()
 {
-    TestTimeutil();
+    // TestTimeutil();
+    TestSysutil();
     return 0;
 }
