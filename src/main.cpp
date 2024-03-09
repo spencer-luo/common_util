@@ -37,7 +37,7 @@ void TestTimeutil()
 void TestSysutil()
 {
     PrintTitle("sysutil");
-    std::cout << "C++编译使用的标准库版本：" << cutl::cpp_stl_version() << std::endl;
+    std::cout << "C++标准的版本：" << cutl::cpp_stl_version() << std::endl;
 }
 
 int main()

@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.28.3)
 # project name
 project(common_util VERSION 1.0.0 LANGUAGES CXX)
 # C/C++ standard: C99/C++11
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 11)
 
 # build library for common_util
