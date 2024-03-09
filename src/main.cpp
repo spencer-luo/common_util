@@ -1,6 +1,7 @@
 #include <iostream>
 #include "common_util/timeutil.h"
 #include "common_util/sysutil.h"
+#include "common_util/strfmt.h"
 
 void PrintTitle(const std::string &title)
 {
@@ -40,9 +41,19 @@ void TestSysutil()
     std::cout << "C++标准的版本：" << cutl::cpp_stl_version() << std::endl;
 }
 
+void TestStrfmt()
+{
+    PrintTitle("strfmt");
+    // 180100345), "2d:2h:1m:40s:345ms"
+    std::cout << "duration1: " << cutl::fmt_time_duration(180100) << std::endl;
+    std::cout << "duration2: " << cutl::fmt_time_duration_ms(180100345) << std::endl;
+    std::cout << "duration3: " << cutl::fmt_time_duration_us(180100345678) << std::endl;
+}
+
 int main()
 {
     // TestTimeutil();
-    TestSysutil();
+    // TestSysutil();
+    TestStrfmt();
     return 0;
 }

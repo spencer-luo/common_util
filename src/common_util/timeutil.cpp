@@ -39,14 +39,14 @@ namespace cutl
         return static_cast<uint64_t>(run_time_duration);
     }
 
-    constexpr static int kThousand = 1000;
-    constexpr static int kMillion = 1000000;
-    uint64_t ms2s(uint64_t time) { return time / kThousand; }
-    uint64_t us2s(uint64_t time) { return time / kMillion; }
-    uint64_t us2ms(uint64_t time) { return time / kThousand; }
-    uint64_t s2ms(uint64_t time) { return time * kThousand; }
-    uint64_t s2us(uint64_t time) { return time * kMillion; }
-    uint64_t ms2us(uint64_t time) { return time * kThousand; }
+    constexpr static int THOUSAND = 1000;
+    constexpr static int MILLION = 1000000;
+    uint64_t ms2s(uint64_t time) { return time / THOUSAND; }
+    uint64_t us2s(uint64_t time) { return time / MILLION; }
+    uint64_t us2ms(uint64_t time) { return time / THOUSAND; }
+    uint64_t s2ms(uint64_t time) { return time * THOUSAND; }
+    uint64_t s2us(uint64_t time) { return time * MILLION; }
+    uint64_t ms2us(uint64_t time) { return time * THOUSAND; }
 
 } // namespace
 
