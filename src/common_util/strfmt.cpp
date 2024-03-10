@@ -1,3 +1,5 @@
+#include <sstream>
+#include <iomanip>
 #include "strfmt.h"
 
 namespace cutl
@@ -8,7 +10,7 @@ namespace cutl
     constexpr static int THOUSAND = 1000;
     constexpr static int MILLION = 1000000;
 
-    std::string fmt_time_duration(uint64_t seconds)
+    std::string fmt_timeduration(uint64_t seconds)
     {
         std::string text;
         if (seconds > ONE_DAY)
@@ -35,21 +37,51 @@ namespace cutl
         return text;
     }
 
-    std::string fmt_time_duration_ms(uint64_t microseconds)
+    std::string fmt_timeduration_ms(uint64_t microseconds)
     {
-        auto seconds = microseconds / THOUSAND;
+        auto s = microseconds / THOUSAND;
         auto ms = microseconds % THOUSAND;
-        auto text = fmt_time_duration(seconds);
+        auto text = fmt_timeduration(s);
         text += "." + std::to_string(ms) + "ms";
         return text;
     }
 
-    std::string fmt_time_duration_us(uint64_t nanoseconds)
+    std::string fmt_timeduration_us(uint64_t nanoseconds)
     {
-        auto seconds = nanoseconds / MILLION;
+        auto s = nanoseconds / MILLION;
         auto ms = nanoseconds % MILLION;
-        auto text = fmt_time_duration(seconds);
+        auto text = fmt_timeduration(s);
         text += "." + std::to_string(ms) + "us";
+        return text;
+    }
+
+    // 格式化时间戳，second单位：秒
+    std::string fmt_timestamp(uint64_t second)
+    {
+        std::time_t t(second);
+        std::stringstream ss;
+        std::string str;
+        ss << std::put_time(std::localtime(&t), "%Y-%m-%d %H:%M:%S");
+        return ss.str();
+    }
+
+    // 格式化时间戳，microseconds单位：毫秒
+    std::string fmt_timestamp_ms(uint64_t microseconds)
+    {
+        auto s = microseconds / THOUSAND;
+        auto ms = microseconds % THOUSAND;
+        auto text = fmt_timestamp(s);
+        text += "." + std::to_string(ms);
+        return text;
+    }
+
+    // 格式化时间戳，microseconds单位：毫秒
+    std::string fmt_timestamp_us(uint64_t nanoseconds)
+    {
+        auto s = nanoseconds / MILLION;
+        auto ms = nanoseconds % MILLION;
+        auto text = fmt_timestamp(s);
+        text += "." + std::to_string(ms);
         return text;
     }
 

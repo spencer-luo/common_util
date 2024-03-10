@@ -1,7 +1,10 @@
 #include <iostream>
+#include <thread>
 #include "common_util/timeutil.h"
 #include "common_util/sysutil.h"
 #include "common_util/strfmt.h"
+#include "common_util/datetime.h"
+#include "common_util/timecount.h"
 
 void PrintTitle(const std::string &title)
 {
@@ -45,9 +48,24 @@ void TestStrfmt()
 {
     PrintTitle("strfmt");
     // 180100345), "2d:2h:1m:40s:345ms"
-    std::cout << "duration1: " << cutl::fmt_time_duration(180100) << std::endl;
-    std::cout << "duration2: " << cutl::fmt_time_duration_ms(180100345) << std::endl;
-    std::cout << "duration3: " << cutl::fmt_time_duration_us(180100345678) << std::endl;
+    std::cout << "duration1: " << cutl::fmt_timeduration(180100) << std::endl;
+    std::cout << "duration2: " << cutl::fmt_timeduration_ms(180100345) << std::endl;
+    std::cout << "duration3: " << cutl::fmt_timeduration_us(180100345678) << std::endl;
+}
+
+void TestDatetime()
+{
+    PrintTitle("datetime");
+    auto now = cutl::datetime::now();
+}
+
+void TestTimecount()
+{
+    cutl::timecount tct("TestTimecount");
+    PrintTitle("timecount");
+    std::cout << "TestTimecount begin" << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::cout << "TestTimecount end" << std::endl;
 }
 
 int main()
@@ -55,5 +73,10 @@ int main()
     // TestTimeutil();
     // TestSysutil();
     TestStrfmt();
+    // TestDatetime();
+    TestTimecount();
+    // system("pause");
+    // system("pause");
+
     return 0;
 }
