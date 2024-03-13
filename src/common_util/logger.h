@@ -2,6 +2,7 @@
 
 #include <string>
 #include <mutex>
+#include <functional>
 #include "singleton.h"
 
 namespace cutl
@@ -23,10 +24,11 @@ namespace cutl
 
     public:
         void set_log_func(LogFunc func);
-        void debug(const std::string &msg);
-        void info(const std::string &msg);
-        void warn(const std::string &msg);
-        void error(const std::string &msg);
+        void debug(const std::string &fn_name, const std::string &msg);
+        void info(const std::string &fn_name, const std::string &msg);
+        void warn(const std::string &fn_name, const std::string &msg);
+        void error(const std::string &fn_name, const std::string &msg);
+        void log(LogLevel level, const std::string &fn_name, const std::string &msg);
 
     private:
         std::string loglevel_flag(LogLevel level);
@@ -38,6 +40,11 @@ namespace cutl
     };
 
 // define a logger instance for convenience
-#define LOG cutl::logger::get_instance()
+#define CUTL_LOG cutl::logger::get_instance()
+
+#define CUTL_DEBUG(msg) CUTL_LOG.debug(__FUNCTION__, msg)
+#define CUTL_INFO(msg) CUTL_LOG.info(__FUNCTION__, msg)
+#define CUTL_WARN(msg) CUTL_LOG.warn(__FUNCTION__, msg)
+#define CUTL_ERROR(msg) CUTL_LOG.error(__FUNCTION__, msg)
 
 } // namespace

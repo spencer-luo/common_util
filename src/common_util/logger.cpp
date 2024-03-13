@@ -23,35 +23,31 @@ namespace cutl
         log_func_ = func;
     }
 
-    void logger::debug(const std::string &msg)
+    void logger::debug(const std::string &fn_name, const std::string &msg)
     {
-        if (log_func_)
-        {
-            log_func_(LogLevel::DEBUG, msg);
-        }
+        log(LogLevel::DEBUG, fn_name, msg);
     }
 
-    void logger::info(const std::string &msg)
+    void logger::info(const std::string &fn_name, const std::string &msg)
     {
-        if (log_func_)
-        {
-            log_func_(LogLevel::INFO, msg);
-        }
+        log(LogLevel::INFO, fn_name, msg);
     }
 
-    void logger::warn(const std::string &msg)
+    void logger::warn(const std::string &fn_name, const std::string &msg)
     {
-        if (log_func_)
-        {
-            log_func_(LogLevel::WARN, msg);
-        }
+        log(LogLevel::WARN, fn_name, msg);
     }
 
-    void logger::error(const std::string &msg)
+    void logger::error(const std::string &fn_name, const std::string &msg)
+    {
+        log(LogLevel::ERROR, fn_name, msg);
+    }
+
+    void logger::log(LogLevel level, const std::string &fn_name, const std::string &msg)
     {
         if (log_func_)
         {
-            log_func_(LogLevel::ERROR, msg);
+            log_func_(level, fn_name + msg);
         }
     }
 
