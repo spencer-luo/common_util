@@ -47,6 +47,7 @@ void TestSysutil()
 void TestStrfmt()
 {
     PrintTitle("strfmt");
+    std::cout << "fmt_uint: " << cutl::fmt_uint(12, 5) << std::endl;
     // 180100345), "2d:2h:1m:40s:345ms"
     std::cout << "duration1: " << cutl::fmt_timeduration(180100) << std::endl;
     std::cout << "duration2: " << cutl::fmt_timeduration_ms(180100345) << std::endl;
@@ -75,8 +76,6 @@ int main()
     TestStrfmt();
     // TestDatetime();
     TestTimecount();
-    // system("pause");
-    // system("pause");
 
     return 0;
 }

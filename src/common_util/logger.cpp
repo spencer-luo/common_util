@@ -47,7 +47,7 @@ namespace cutl
     {
         if (log_func_)
         {
-            log_func_(level, fn_name + msg);
+            log_func_(level, fn_name + " " + msg);
         }
     }
 

@@ -5,6 +5,7 @@
 
 namespace cutl
 {
+    std::string fmt_uint(uint64_t val, uint8_t width = 0, char fill = '0');
     std::string fmt_timeduration(uint64_t seconds);
     std::string fmt_timeduration_ms(uint64_t microseconds);
     std::string fmt_timeduration_us(uint64_t nanoseconds);

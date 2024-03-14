@@ -10,6 +10,13 @@ namespace cutl
     constexpr static int THOUSAND = 1000;
     constexpr static int MILLION = 1000000;
 
+    std::string fmt_uint(uint64_t val, uint8_t width, char fill)
+    {
+        std::stringstream ss;
+        ss << std::setfill(fill) << std::setw(width) << val;
+        return ss.str();
+    }
+
     std::string fmt_timeduration(uint64_t seconds)
     {
         std::string text;
@@ -42,7 +49,7 @@ namespace cutl
         auto s = microseconds / THOUSAND;
         auto ms = microseconds % THOUSAND;
         auto text = fmt_timeduration(s);
-        text += "." + std::to_string(ms) + "ms";
+        text += "." + fmt_uint(ms, 3) + "ms";
         return text;
     }
 
@@ -51,7 +58,7 @@ namespace cutl
         auto s = nanoseconds / MILLION;
         auto ms = nanoseconds % MILLION;
         auto text = fmt_timeduration(s);
-        text += "." + std::to_string(ms) + "us";
+        text += "." + fmt_uint(ms, 6) + "us";
         return text;
     }
 
@@ -71,7 +78,7 @@ namespace cutl
         auto s = microseconds / THOUSAND;
         auto ms = microseconds % THOUSAND;
         auto text = fmt_timestamp(s);
-        text += "." + std::to_string(ms);
+        text += "." + fmt_uint(ms, 3);
         return text;
     }
 
@@ -81,7 +88,7 @@ namespace cutl
         auto s = nanoseconds / MILLION;
         auto ms = nanoseconds % MILLION;
         auto text = fmt_timestamp(s);
-        text += "." + std::to_string(ms);
+        text += "." + fmt_uint(ms, 6);
         return text;
     }
 
