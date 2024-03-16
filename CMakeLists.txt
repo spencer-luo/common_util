@@ -12,6 +12,12 @@ file(GLOB_RECURSE COMMON_UTIL_LIB_SRC
 )
 add_library(common_util STATIC ${COMMON_UTIL_LIB_SRC})
 
+# message("PROJECT_NAME:" ${PROJECT_NAME})
+message("CMAKE_CURRENT_SOURCE_DIR:" ${CMAKE_CURRENT_SOURCE_DIR})
+
+# add include directories
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/common_util)
+
 # # print all header files
 # file(GLOB_RECURSE ALL_HEADER
 #         src/*.h)

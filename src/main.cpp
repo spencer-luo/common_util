@@ -1,10 +1,13 @@
 #include <iostream>
 #include <thread>
+#include <map>
+#include <mutex>
 #include "common_util/timeutil.h"
 #include "common_util/sysutil.h"
 #include "common_util/strfmt.h"
 #include "common_util/datetime.h"
 #include "common_util/timecount.h"
+#include "common_util/config.h"
 
 void PrintTitle(const std::string &title)
 {
@@ -15,6 +18,44 @@ void PrintTitle(const std::string &title)
     std::string str1(str1Len, '-');
     std::string str2(str2Len, '-');
     std::cout << str1 << title << str2 << std::endl;
+}
+
+std::string loglevel2flag(cutl::LogLevel level)
+{
+    static std::map<cutl::LogLevel, std::string> levelMap = {
+        {cutl::LogLevel::DEBUG, "[D]"},
+        {cutl::LogLevel::INFO, "[I]"},
+        {cutl::LogLevel::WARN, "[W]"},
+        {cutl::LogLevel::ERROR, "[E]"},
+    };
+    auto itr = levelMap.find(level);
+    if (itr != levelMap.end())
+    {
+        return itr->second;
+    }
+    return "[?]";
+}
+
+static std::mutex g_log_mtx_;
+void static library_log_func(cutl::LogLevel level, const std::string &msg)
+{
+    std::lock_guard<std::mutex> lock(g_log_mtx_);
+    auto curTime = cutl::fmt_timestamp_ms(cutl::timestamp_ms());
+    auto threadId = std::this_thread::get_id();
+    if (cutl::LogLevel::ERROR == level)
+    {
+        std::cerr << "[" << curTime << "]" << loglevel2flag(level) << "]" << threadId << "](cutl) " << msg << std::endl;
+    }
+    else
+    {
+        std::cout << "[" << curTime << "]" << loglevel2flag(level) << "]" << threadId << "](cutl) " << msg << std::endl;
+    }
+}
+
+void LibraryInit()
+{
+    PrintTitle("library init");
+    cutl::init(library_log_func);
 }
 
 void TestTimeutil()
@@ -75,6 +116,7 @@ void TestTimecount()
 
 int main()
 {
+    LibraryInit();
     // TestTimeutil();
     // TestSysutil();
     TestStrfmt();
