@@ -3,7 +3,6 @@
 #include <thread>
 #include "logger.h"
 #include "timeutil.h"
-#include "strfmt.h"
 
 namespace cutl
 {
@@ -70,15 +69,14 @@ namespace cutl
     void logger::default_log(LogLevel level, const std::string &msg)
     {
         std::lock_guard<std::mutex> lock(log_mtx_);
-        auto timetext = fmt_timestamp_ms(timestamp_ms());
         auto threadId = std::this_thread::get_id();
         if (LogLevel::ERROR == level)
         {
-            std::cerr << "[" << timetext << "]" << loglevel_flag(level) << "]" << threadId << "] " << msg << std::endl;
+            std::cerr << "[" << timestamp_ms() << "]" << loglevel_flag(level) << "]" << threadId << "] " << msg << std::endl;
         }
         else
         {
-            std::cout << "[" << timetext << "]" << loglevel_flag(level) << "]" << threadId << "] " << msg << std::endl;
+            std::cout << "[" << timestamp_ms() << "]" << loglevel_flag(level) << "]" << threadId << "] " << msg << std::endl;
         }
     }
 } // namespace

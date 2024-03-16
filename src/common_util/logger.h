@@ -40,11 +40,11 @@ namespace cutl
     };
 
 // define a logger instance for convenience
-#define CUTL_LOG cutl::logger::get_instance()
+#define CUTL_LOGGER cutl::logger::get_instance()
 
-#define CUTL_DEBUG(msg) CUTL_LOG.debug(__FUNCTION__, msg)
-#define CUTL_INFO(msg) CUTL_LOG.info(__FUNCTION__, msg)
-#define CUTL_WARN(msg) CUTL_LOG.warn(__FUNCTION__, msg)
-#define CUTL_ERROR(msg) CUTL_LOG.error(__FUNCTION__, msg)
+#define CUTL_DEBUG(msg) CUTL_LOGGER.debug(__FUNCTION__, msg)
+#define CUTL_INFO(msg) CUTL_LOGGER.info(__FUNCTION__, msg)
+#define CUTL_WARN(msg) CUTL_LOGGER.warn(__FUNCTION__, msg)
+#define CUTL_ERROR(msg) CUTL_LOGGER.error(__FUNCTION__, msg)
 
 } // namespace

@@ -52,6 +52,10 @@ void TestStrfmt()
     std::cout << "duration1: " << cutl::fmt_timeduration(180100) << std::endl;
     std::cout << "duration2: " << cutl::fmt_timeduration_ms(180100345) << std::endl;
     std::cout << "duration3: " << cutl::fmt_timeduration_us(180100345678) << std::endl;
+
+    // timestamp
+    auto curTime = cutl::timestamp();
+    std::cout << "current datetime: " << cutl::fmt_timestamp(curTime, true) << std::endl;
 }
 
 void TestDatetime()

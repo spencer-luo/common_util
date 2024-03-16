@@ -16,6 +16,6 @@ namespace cutl
         auto end_time = clocktime_ms();
         auto duration = end_time - start_time_;
         auto text = "[timecount] " + func_name_ + " used " + fmt_timeduration_ms(duration);
-        CUTL_LOG.info("", text);
+        CUTL_LOGGER.info("", text);
     }
 } // namespace

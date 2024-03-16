@@ -1,6 +1,7 @@
 #include <sstream>
 #include <iomanip>
 #include "strfmt.h"
+#include "logger.h"
 
 namespace cutl
 {
@@ -22,24 +23,24 @@ namespace cutl
         std::string text;
         if (seconds > ONE_DAY)
         {
-            int day = seconds / ONE_DAY;
+            uint64_t day = seconds / ONE_DAY;
             text += std::to_string(day) + "d:";
         }
 
         if (seconds > ONE_HOUR)
         {
             uint64_t hour = (seconds % ONE_DAY) / ONE_HOUR;
-            text += std::to_string(hour) + "h:";
+            text += fmt_uint(hour, 2) + "h:";
         }
 
         if (seconds > ONE_MIN)
         {
             uint64_t min = (seconds % ONE_HOUR) / ONE_MIN;
-            text += std::to_string(min) + "m:";
+            text += fmt_uint(min, 2) + "m:";
         }
 
         uint64_t sec = (seconds % ONE_MIN);
-        text += std::to_string(sec) + "s";
+        text += fmt_uint(sec, 2) + "s";
 
         return text;
     }
@@ -63,12 +64,33 @@ namespace cutl
     }
 
     // 格式化时间戳，second单位：秒
-    std::string fmt_timestamp(uint64_t second)
+    std::string fmt_timestamp(uint64_t second, bool local)
     {
         std::time_t t(second);
+        struct tm datetime;
+        struct tm *pDatetime = NULL;
+        if (local)
+        {
+            // localtime 线程不安全
+            // pDatetime = std::localtime(&t);
+            // localtime_r 线程安全
+            pDatetime = localtime_r(&t, &datetime);
+        }
+        else
+        {
+            // gmtime 线程不安全
+            pDatetime = std::gmtime(&t);
+            // gmtime_r 线程安全
+            pDatetime = gmtime_r(&t, &datetime);
+        }
+        if (!pDatetime)
+        {
+            CUTL_ERROR("pDatetime is null");
+            return "";
+        }
+
         std::stringstream ss;
-        std::string str;
-        ss << std::put_time(std::localtime(&t), "%Y-%m-%d %H:%M:%S");
+        ss << std::put_time(pDatetime, "%Y-%m-%d %H:%M:%S");
         return ss.str();
     }
 
