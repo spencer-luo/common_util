@@ -4,19 +4,10 @@
 #include <mutex>
 #include <functional>
 #include "singleton.h"
+#include "logtypes.h"
 
 namespace cutl
 {
-    enum LogLevel
-    {
-        DEBUG,
-        INFO,
-        WARN,
-        ERROR
-    };
-
-    // log function type
-    using LogFunc = std::function<void(LogLevel, const std::string &)>;
 
     class logger
     {

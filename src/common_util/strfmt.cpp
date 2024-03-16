@@ -1,7 +1,7 @@
 #include <sstream>
 #include <iomanip>
 #include "strfmt.h"
-#include "logger.h"
+#include "inner/logger.h"
 
 namespace cutl
 {
