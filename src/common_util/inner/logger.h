@@ -4,7 +4,7 @@
 #include <mutex>
 #include <functional>
 #include "singleton.h"
-#include "logtypes.h"
+#include "logtype.h"
 
 namespace cutl
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "logtypes.h"
+#include "logtype.h"
 
 namespace cutl
 {
