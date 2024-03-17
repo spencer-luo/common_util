@@ -114,18 +114,18 @@ void TestDatetime()
     std::cout << "系统当前时间(UTC时间) 自定义格式1: " << now.format("%c %Z", false, true) << std::endl;
     std::cout << "系统当前时间(UTC时间) 自定义格式2: " << now.format("%Y年%m月%d日 %H点%M分%S秒", false, false) << std::endl;
 
-    // 运算符重载1
-    auto oneMin = 1 * 60 * 1000;
-    auto dt1 = now - oneMin;
-    auto dt2 = now + oneMin;
+    // 运算符重载
+    std::cout << "1天 == " << cutl::datetime::day << "毫秒" << std::endl;
+    auto dt1 = now - cutl::datetime::min;
+    auto dt2 = now + cutl::datetime::min;
     std::cout << "系统当前时间(标准输出): " << now << std::endl;
     std::cout << "1分钟前: " << dt1 << std::endl;
     std::cout << "1分钟后: " << dt2 << std::endl;
     std::cout << "系统当前时间(标准输出): " << now << std::endl;
-    now -= (2 * oneMin);
-    std::cout << "2分钟前: " << now << std::endl;
-    now += (4 * oneMin);
-    std::cout << "2分钟后: " << now << std::endl;
+    now -= (2 * cutl::datetime::hour);
+    std::cout << "2小时前: " << now << std::endl;
+    now += (4 * cutl::datetime::hour);
+    std::cout << "2小时后: " << now << std::endl;
 }
 
 void TestTimecount()

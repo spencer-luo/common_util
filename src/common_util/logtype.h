@@ -4,7 +4,7 @@
 
 namespace cutl
 {
-    enum loglevel
+    enum class loglevel
     {
         debug_level,
         info_level,

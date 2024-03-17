@@ -6,7 +6,7 @@
 
 namespace cutl
 {
-    enum datetime_format
+    enum class datetime_format
     {
         datetime_format_a, // YYYY-MM-DD HH:MM:SS
         datetime_format_b, // YYYY.MM.DD HH:MM:SS
@@ -17,6 +17,12 @@ namespace cutl
     class datetime
     {
     public:
+        static constexpr int second = 1000;
+        static constexpr int min = 60 * second;
+        static constexpr int hour = 60 * min;
+        static constexpr int day = 24 * hour;
+
+    public:
         datetime(uint64_t timestamp_ms);
         datetime(const datetime &other);
         ~datetime();
@@ -26,6 +32,7 @@ namespace cutl
 
     public:
         static datetime now();
+        // todo
         static datetime get(const std::string &time_text);
 
     public:
