@@ -106,11 +106,13 @@ void TestDatetime()
     auto now = cutl::datetime::now();
     std::cout << "系统当前时间戳(毫秒): " << now.timestamp() << std::endl;
     std::cout << "系统当前时间(UTC时间): " << now.format() << std::endl;
-    std::cout << "系统当前时间(北京时间): " << now.localtime() << std::endl;
-    std::cout << "系统当前时间(UTC时间) 格式b: " << now.format(false, true, cutl::datetime_format::datetime_format_b) << std::endl;
-    std::cout << "系统当前时间(UTC时间) 格式b,不显示毫秒: " << now.format(false, false, cutl::datetime_format::datetime_format_b) << std::endl;
-    std::cout << "系统当前时间(UTC时间) 格式c: " << now.format(false, true, cutl::datetime_format::datetime_format_c) << std::endl;
-    std::cout << "系统当前时间(UTC时间) 格式d: " << now.format(false, true, cutl::datetime_format::datetime_format_d) << std::endl;
+    std::cout << "系统当前时间(本地时间): " << now.localtime() << std::endl;
+    std::cout << "系统当前时间(UTC时间) 格式b: " << now.format(cutl::datetime_format::datetime_format_b, false, true) << std::endl;
+    std::cout << "系统当前时间(UTC时间) 格式b,不显示毫秒: " << now.format(cutl::datetime_format::datetime_format_b, false, true) << std::endl;
+    std::cout << "系统当前时间(UTC时间) 格式c: " << now.format(cutl::datetime_format::datetime_format_c, false, true) << std::endl;
+    std::cout << "系统当前时间(UTC时间) 格式d: " << now.format(cutl::datetime_format::datetime_format_d, false, true) << std::endl;
+    std::cout << "系统当前时间(UTC时间) 自定义格式1: " << now.format("%c %Z", false, true) << std::endl;
+    std::cout << "系统当前时间(UTC时间) 自定义格式2: " << now.format("%Y年%m月%d日 %H点%M分%S秒", false, false) << std::endl;
 
     // 运算符重载1
     auto oneMin = 1 * 60 * 1000;

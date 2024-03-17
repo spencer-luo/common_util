@@ -30,11 +30,12 @@ namespace cutl
 
     public:
         uint64_t timestamp() const;
-        std::string format(bool local = false, bool show_milliseconds = true, datetime_format dfmt = datetime_format::datetime_format_a) const;
-        // std::string format(bool local = false, bool show_milliseconds = true, const std::string &reggex_pattern) const;
+        std::string format(datetime_format dfmt = datetime_format::datetime_format_a, bool local = false, bool show_milliseconds = true) const;
+        // fmt, usages like std::put_time
+        std::string format(const std::string &fmt, bool local = false, bool show_milliseconds = true) const;
         std::string localtime() const
         {
-            return format(true);
+            return format(datetime_format::datetime_format_a, true);
         }
 
         datetime &operator=(const datetime &other);
