@@ -63,8 +63,7 @@ namespace cutl
         return text;
     }
 
-    // 格式化时间戳，second单位：秒
-    std::string fmt_timestamp(uint64_t second, bool local)
+    std::string fmt_timestamp(uint64_t second, bool local, const std::string &fmt)
     {
         std::time_t t(second);
         struct tm datetime;
@@ -90,8 +89,15 @@ namespace cutl
         }
 
         std::stringstream ss;
-        ss << std::put_time(pDatetime, "%Y-%m-%d %H:%M:%S");
+        ss << std::put_time(pDatetime, fmt.c_str());
         return ss.str();
+    }
+
+    // 格式化时间戳，second单位：秒
+    std::string fmt_timestamp(uint64_t second, bool local)
+    {
+        std::string fmt("%Y-%m-%d %H:%M:%S");
+        return fmt_timestamp(second, local, fmt);
     }
 
     // 格式化时间戳，microseconds单位：毫秒

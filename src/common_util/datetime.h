@@ -5,18 +5,12 @@
 
 namespace cutl
 {
-    enum date_format
+    enum datetime_format
     {
-        DATE_FORMAT_YYYY_MM_DD_A, // YYYY-MM-DD
-        DATE_FORMAT_YYYY_MM_DD_B, // YYYY.MM.DD
-        DATE_FORMAT_YYYY_MM_DD_C, // YYYY/MM/DD
-        DATE_FORMAT_YYYYMMDD,     // YYYYMMDD
-    };
-
-    enum time_format
-    {
-        TIME_FORMAT_HH_MM_SS_SSS, // HH:MM:SS.SSS
-        TIME_FORMAT_HH_MM_SS,     // HH:MM:SS
+        datetime_format_a, // YYYY-MM-DD HH:MM:SS
+        datetime_format_b, // YYYY.MM.DD HH:MM:SS
+        datetime_format_c, // YYYY/MM/DD HH:MM:SS
+        datetime_format_d, // YYYYMMDD HH:MM:SS
     };
 
     class datetime
@@ -33,9 +27,13 @@ namespace cutl
         static datetime get(const std::string &time_text);
 
     public:
-        std::string format(date_format dfmt = date_format::DATE_FORMAT_YYYY_MM_DD_A,
-                           time_format tfmt = time_format::TIME_FORMAT_HH_MM_SS_SSS) const;
-        std::string format(std::string &reggex_pattern) const;
+        uint64_t timestamp() const;
+        std::string format(bool local = false, bool show_milliseconds = true, datetime_format dfmt = datetime_format::datetime_format_a) const;
+        // std::string format(bool local = false, bool show_milliseconds = true, const std::string &reggex_pattern) const;
+        std::string localtime() const
+        {
+            return format(true);
+        }
 
     private:
         uint64_t timestamp_ms_;
