@@ -14,19 +14,19 @@ namespace cutl
         DECLARE_SINGLETON_REF(logger)
 
     public:
-        void set_log_func(LogFunc func);
+        void set_log_func(LogFuncType func);
         void debug(const std::string &fn_name, const std::string &msg);
         void info(const std::string &fn_name, const std::string &msg);
         void warn(const std::string &fn_name, const std::string &msg);
         void error(const std::string &fn_name, const std::string &msg);
-        void log(LogLevel level, const std::string &fn_name, const std::string &msg);
+        void log(loglevel level, const std::string &fn_name, const std::string &msg);
 
     private:
-        std::string loglevel_flag(LogLevel level);
-        void default_log(LogLevel level, const std::string &msg);
+        std::string loglevel_flag(loglevel level);
+        void default_log(loglevel level, const std::string &msg);
 
     private:
-        LogFunc log_func_;
+        LogFuncType log_func_;
         std::mutex log_mtx_;
     };
 

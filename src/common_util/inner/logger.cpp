@@ -17,32 +17,32 @@ namespace cutl
         log_func_ = nullptr;
     }
 
-    void logger::set_log_func(LogFunc func)
+    void logger::set_log_func(LogFuncType func)
     {
         log_func_ = func;
     }
 
     void logger::debug(const std::string &fn_name, const std::string &msg)
     {
-        log(LogLevel::DEBUG, fn_name, msg);
+        log(loglevel::debug_level, fn_name, msg);
     }
 
     void logger::info(const std::string &fn_name, const std::string &msg)
     {
-        log(LogLevel::INFO, fn_name, msg);
+        log(loglevel::info_level, fn_name, msg);
     }
 
     void logger::warn(const std::string &fn_name, const std::string &msg)
     {
-        log(LogLevel::WARN, fn_name, msg);
+        log(loglevel::warn_level, fn_name, msg);
     }
 
     void logger::error(const std::string &fn_name, const std::string &msg)
     {
-        log(LogLevel::ERROR, fn_name, msg);
+        log(loglevel::error_level, fn_name, msg);
     }
 
-    void logger::log(LogLevel level, const std::string &fn_name, const std::string &msg)
+    void logger::log(loglevel level, const std::string &fn_name, const std::string &msg)
     {
         if (log_func_)
         {
@@ -50,13 +50,13 @@ namespace cutl
         }
     }
 
-    std::string logger::loglevel_flag(LogLevel level)
+    std::string logger::loglevel_flag(loglevel level)
     {
-        static std::map<LogLevel, std::string> levelMap = {
-            {LogLevel::DEBUG, "[D]"},
-            {LogLevel::INFO, "[I]"},
-            {LogLevel::WARN, "[W]"},
-            {LogLevel::ERROR, "[E]"},
+        static std::map<loglevel, std::string> levelMap = {
+            {loglevel::debug_level, "[D]"},
+            {loglevel::info_level, "[I]"},
+            {loglevel::warn_level, "[W]"},
+            {loglevel::error_level, "[E]"},
         };
         auto itr = levelMap.find(level);
         if (itr != levelMap.end())
@@ -66,11 +66,11 @@ namespace cutl
         return "[?]";
     }
 
-    void logger::default_log(LogLevel level, const std::string &msg)
+    void logger::default_log(loglevel level, const std::string &msg)
     {
         std::lock_guard<std::mutex> lock(log_mtx_);
         auto threadId = std::this_thread::get_id();
-        if (LogLevel::ERROR == level)
+        if (loglevel::error_level == level)
         {
             std::cerr << "[" << timestamp_ms() << "]" << loglevel_flag(level) << "]" << threadId << "] " << msg << std::endl;
         }

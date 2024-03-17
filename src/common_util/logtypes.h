@@ -4,15 +4,15 @@
 
 namespace cutl
 {
-    enum LogLevel
+    enum loglevel
     {
-        DEBUG,
-        INFO,
-        WARN,
-        ERROR
+        debug_level,
+        info_level,
+        warn_level,
+        error_level
     };
 
     // log function type
-    using LogFunc = std::function<void(LogLevel, const std::string &)>;
+    using LogFuncType = std::function<void(loglevel, const std::string &)>;
 
 } // namespace cutl

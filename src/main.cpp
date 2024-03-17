@@ -20,13 +20,13 @@ void PrintTitle(const std::string &title)
     std::cout << str1 << title << str2 << std::endl;
 }
 
-std::string loglevel2flag(cutl::LogLevel level)
+std::string loglevel2flag(cutl::loglevel level)
 {
-    static std::map<cutl::LogLevel, std::string> levelMap = {
-        {cutl::LogLevel::DEBUG, "[D]"},
-        {cutl::LogLevel::INFO, "[I]"},
-        {cutl::LogLevel::WARN, "[W]"},
-        {cutl::LogLevel::ERROR, "[E]"},
+    static std::map<cutl::loglevel, std::string> levelMap = {
+        {cutl::loglevel::debug_level, "[D]"},
+        {cutl::loglevel::info_level, "[I]"},
+        {cutl::loglevel::warn_level, "[W]"},
+        {cutl::loglevel::error_level, "[E]"},
     };
     auto itr = levelMap.find(level);
     if (itr != levelMap.end())
@@ -37,12 +37,12 @@ std::string loglevel2flag(cutl::LogLevel level)
 }
 
 static std::mutex g_log_mtx_;
-void static library_log_func(cutl::LogLevel level, const std::string &msg)
+void static library_log_func(cutl::loglevel level, const std::string &msg)
 {
     std::lock_guard<std::mutex> lock(g_log_mtx_);
     auto curTime = cutl::fmt_timestamp_ms(cutl::timestamp_ms());
     auto threadId = std::this_thread::get_id();
-    if (cutl::LogLevel::ERROR == level)
+    if (cutl::loglevel::error_level == level)
     {
         std::cerr << "[" << curTime << "]" << loglevel2flag(level) << "]" << threadId << "](cutl) " << msg << std::endl;
     }
@@ -54,8 +54,8 @@ void static library_log_func(cutl::LogLevel level, const std::string &msg)
 
 void LibraryInit()
 {
-    PrintTitle("library init");
-    cutl::init(library_log_func);
+    PrintTitle("library library_init");
+    cutl::library_init(library_log_func);
 }
 
 void TestTimeutil()
@@ -103,6 +103,7 @@ void TestDatetime()
 {
     PrintTitle("datetime");
     auto now = cutl::datetime::now();
+    std::cout << "now: " << now.format() << std::endl;
 }
 
 void TestTimecount()
@@ -119,8 +120,8 @@ int main()
     LibraryInit();
     // TestTimeutil();
     // TestSysutil();
-    TestStrfmt();
-    // TestDatetime();
+    // TestStrfmt();
+    TestDatetime();
     TestTimecount();
 
     return 0;

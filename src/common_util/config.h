@@ -6,6 +6,6 @@ namespace cutl
 {
 
     std::string library_version();
-    void init(LogFunc log_func);
+    void library_init(LogFuncType log_func);
 
 } // namespace cutl
