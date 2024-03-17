@@ -111,6 +111,19 @@ void TestDatetime()
     std::cout << "系统当前时间(UTC时间) 格式b,不显示毫秒: " << now.format(false, false, cutl::datetime_format::datetime_format_b) << std::endl;
     std::cout << "系统当前时间(UTC时间) 格式c: " << now.format(false, true, cutl::datetime_format::datetime_format_c) << std::endl;
     std::cout << "系统当前时间(UTC时间) 格式d: " << now.format(false, true, cutl::datetime_format::datetime_format_d) << std::endl;
+
+    // 运算符重载1
+    auto oneMin = 1 * 60 * 1000;
+    auto dt1 = now - oneMin;
+    auto dt2 = now + oneMin;
+    std::cout << "系统当前时间(标准输出): " << now << std::endl;
+    std::cout << "1分钟前: " << dt1 << std::endl;
+    std::cout << "1分钟后: " << dt2 << std::endl;
+    std::cout << "系统当前时间(标准输出): " << now << std::endl;
+    now -= (2 * oneMin);
+    std::cout << "2分钟前: " << now << std::endl;
+    now += (4 * oneMin);
+    std::cout << "2分钟后: " << now << std::endl;
 }
 
 void TestTimecount()
