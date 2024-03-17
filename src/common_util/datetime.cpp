@@ -4,6 +4,11 @@
 
 namespace cutl
 {
+    datetime::datetime(const datetime &other)
+    {
+        timestamp_ms_ = other.timestamp_ms_;
+    }
+
     datetime::datetime()
     {
         timestamp_ms_ = timestamp_ms();
@@ -76,5 +81,54 @@ namespace cutl
     // {
     //     return "";
     // }
+
+    datetime &datetime::operator=(const datetime &other)
+    {
+        if (this == &other)
+        {
+            return *this;
+        }
+
+        timestamp_ms_ = other.timestamp_ms_;
+        return *this;
+    }
+
+    datetime datetime::operator+(uint64_t ms)
+    {
+        datetime dt(*this);
+        dt.timestamp_ms_ += ms;
+        return dt;
+    }
+
+    datetime datetime::operator-(uint64_t ms)
+    {
+        datetime dt(*this);
+        dt.timestamp_ms_ -= ms;
+        return dt;
+    }
+
+    datetime &datetime::operator+=(uint64_t ms)
+    {
+        timestamp_ms_ += ms;
+        return *this;
+    }
+
+    datetime &datetime::operator-=(uint64_t ms)
+    {
+        timestamp_ms_ -= ms;
+        return *this;
+    }
+
+    int64_t datetime::operator-(const datetime &other) const
+    {
+        int64_t diff = timestamp_ms_ - other.timestamp_ms_;
+        return diff;
+    }
+
+    std::ostream &operator<<(std::ostream &os, const datetime &dt)
+    {
+        os << dt.format();
+        return os;
+    }
 
 } // namespace

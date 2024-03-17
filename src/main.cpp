@@ -40,6 +40,7 @@ static std::mutex g_log_mtx_;
 void static library_log_func(cutl::loglevel level, const std::string &msg)
 {
     std::lock_guard<std::mutex> lock(g_log_mtx_);
+    // todo
     auto curTime = cutl::fmt_timestamp_ms(cutl::timestamp_ms());
     auto threadId = std::this_thread::get_id();
     if (cutl::loglevel::error_level == level)
@@ -103,7 +104,13 @@ void TestDatetime()
 {
     PrintTitle("datetime");
     auto now = cutl::datetime::now();
-    std::cout << "now: " << now.format() << std::endl;
+    std::cout << "系统当前时间戳(毫秒): " << now.timestamp() << std::endl;
+    std::cout << "系统当前时间(UTC时间): " << now.format() << std::endl;
+    std::cout << "系统当前时间(北京时间): " << now.localtime() << std::endl;
+    std::cout << "系统当前时间(UTC时间) 格式b: " << now.format(false, true, cutl::datetime_format::datetime_format_b) << std::endl;
+    std::cout << "系统当前时间(UTC时间) 格式b,不显示毫秒: " << now.format(false, false, cutl::datetime_format::datetime_format_b) << std::endl;
+    std::cout << "系统当前时间(UTC时间) 格式c: " << now.format(false, true, cutl::datetime_format::datetime_format_c) << std::endl;
+    std::cout << "系统当前时间(UTC时间) 格式d: " << now.format(false, true, cutl::datetime_format::datetime_format_d) << std::endl;
 }
 
 void TestTimecount()

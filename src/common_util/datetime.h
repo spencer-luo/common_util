@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <string>
+#include <iostream>
 
 namespace cutl
 {
@@ -17,6 +18,7 @@ namespace cutl
     {
     public:
         datetime(uint64_t timestamp_ms);
+        datetime(const datetime &other);
         ~datetime();
 
     private:
@@ -35,8 +37,17 @@ namespace cutl
             return format(true);
         }
 
+        datetime &operator=(const datetime &other);
+        datetime operator+(uint64_t ms);
+        datetime operator-(uint64_t ms);
+        datetime &operator+=(uint64_t ms);
+        datetime &operator-=(uint64_t ms);
+        int64_t operator-(const datetime &other) const;
+
     private:
         uint64_t timestamp_ms_;
     };
+
+    std::ostream &operator<<(std::ostream &os, const datetime &dt);
 
 } // namespace
