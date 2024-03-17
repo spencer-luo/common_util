@@ -41,7 +41,7 @@ void static library_log_func(cutl::loglevel level, const std::string &msg)
 {
     std::lock_guard<std::mutex> lock(g_log_mtx_);
     // todo
-    auto curTime = cutl::fmt_timestamp_ms(cutl::timestamp_ms());
+    auto curTime = cutl::fmt_timestamp(cutl::timestamp(), cutl::time_unit::millisecond, true);
     auto threadId = std::this_thread::get_id();
     if (cutl::loglevel::error_level == level)
     {
@@ -62,13 +62,13 @@ void LibraryInit()
 void TestTimeutil()
 {
     PrintTitle("timeutil");
-    // auto timeStampMs = cutl::timestamp_ms();
-    std::cout << "当前时间戳（秒） ：" << cutl::timestamp() << std::endl;
-    std::cout << "当前时间戳（毫秒）：" << cutl::timestamp_ms() << std::endl;
-    std::cout << "当前时间戳（微秒）：" << cutl::timestamp_us() << std::endl;
-    auto s = cutl::clocktime();
-    auto ms = cutl::clocktime_ms();
-    auto us = cutl::clocktime_us();
+    // auto timeStampMs = cutl::timestamp(cutl::time_unit::millisecond);
+    std::cout << "当前时间戳（秒） ：" << cutl::timestamp(cutl::time_unit::second) << std::endl;
+    std::cout << "当前时间戳（毫秒）：" << cutl::timestamp(cutl::time_unit::millisecond) << std::endl;
+    std::cout << "当前时间戳（微秒）：" << cutl::timestamp(cutl::time_unit::microsecond) << std::endl;
+    auto s = cutl::clocktime(cutl::time_unit::second);
+    auto ms = cutl::clocktime(cutl::time_unit::millisecond);
+    auto us = cutl::clocktime(cutl::time_unit::microsecond);
     std::cout << "系统启动到当前的时间（秒） ：" << s << std::endl;
     std::cout << "系统启动到当前的时间（毫秒）：" << ms << std::endl;
     std::cout << "系统启动到当前的时间（微秒）：" << us << std::endl;
@@ -97,7 +97,7 @@ void TestStrfmt()
 
     // timestamp
     auto curTime = cutl::timestamp();
-    std::cout << "current datetime: " << cutl::fmt_timestamp(curTime, true) << std::endl;
+    std::cout << "current datetime: " << cutl::fmt_timestamp(curTime, cutl::time_unit::millisecond, true) << std::endl;
 }
 
 void TestDatetime()
@@ -133,16 +133,16 @@ void TestTimecount()
     cutl::timecount tct("TestTimecount");
     PrintTitle("timecount");
     std::cout << "TestTimecount begin" << std::endl;
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     std::cout << "TestTimecount end" << std::endl;
 }
 
 int main()
 {
     LibraryInit();
-    // TestTimeutil();
+    TestTimeutil();
     // TestSysutil();
-    // TestStrfmt();
+    TestStrfmt();
     TestDatetime();
     TestTimecount();
 

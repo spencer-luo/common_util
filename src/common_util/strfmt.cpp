@@ -94,30 +94,37 @@ namespace cutl
     }
 
     // 格式化时间戳，second单位：秒
-    std::string fmt_timestamp(uint64_t second, bool local)
+    std::string fmt_timestamp(uint64_t t, time_unit unit, bool local)
     {
+        uint64_t s = 0;
+        std::string extension;
+        switch (unit)
+        {
+        case time_unit::second:
+            s = t;
+            break;
+        case time_unit::millisecond:
+        {
+            s = t / THOUSAND;
+            auto ms = t % THOUSAND;
+            extension += "." + fmt_uint(ms, 3);
+        }
+        break;
+        case time_unit::microsecond:
+        {
+            s = t / MILLION;
+            auto us = t % MILLION;
+            extension += "." + fmt_uint(us, 6);
+        }
+        break;
+        default:
+            break;
+        }
+
         std::string fmt("%Y-%m-%d %H:%M:%S");
-        return fmt_timestamp(second, local, fmt);
-    }
-
-    // 格式化时间戳，microseconds单位：毫秒
-    std::string fmt_timestamp_ms(uint64_t microseconds)
-    {
-        auto s = microseconds / THOUSAND;
-        auto ms = microseconds % THOUSAND;
-        auto text = fmt_timestamp(s);
-        text += "." + fmt_uint(ms, 3);
-        return text;
-    }
-
-    // 格式化时间戳，microseconds单位：毫秒
-    std::string fmt_timestamp_us(uint64_t nanoseconds)
-    {
-        auto s = nanoseconds / MILLION;
-        auto ms = nanoseconds % MILLION;
-        auto text = fmt_timestamp(s);
-        text += "." + fmt_uint(ms, 6);
-        return text;
+        auto time_str = fmt_timestamp(s, local, fmt);
+        time_str += extension;
+        return time_str;
     }
 
 } // namespace

@@ -3,40 +3,53 @@
 
 namespace cutl
 {
-    uint64_t timestamp()
+    uint64_t timestamp(time_unit unit)
     {
-        return us2s(timestamp_us());
-    }
-
-    uint64_t timestamp_ms()
-    {
-        return us2ms(timestamp_us());
-    }
-
-    // for C++11 and later
-    uint64_t timestamp_us()
-    {
+        // for C++11 and later
         auto now = std::chrono::system_clock::now();
         auto timestamp = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
-        return static_cast<uint64_t>(timestamp);
+        auto us = static_cast<uint64_t>(timestamp);
+        uint64_t t = 0;
+        switch (unit)
+        {
+        case time_unit::second:
+            t = us2s(us);
+            break;
+        case time_unit::millisecond:
+            t = us2ms(us);
+            break;
+        case time_unit::microsecond:
+            t = us;
+            break;
+        default:
+            break;
+        }
+        return t;
     }
 
-    uint64_t clocktime()
+    uint64_t clocktime(time_unit unit)
     {
-        return us2s(clocktime_us());
-    }
-
-    uint64_t clocktime_ms()
-    {
-        return us2ms(clocktime_us());
-    }
-
-    // for C++11 and later
-    uint64_t clocktime_us()
-    {
+        // for C++11 and later
         auto run_time = std::chrono::steady_clock::now();
         auto run_time_duration = std::chrono::duration_cast<std::chrono::microseconds>(run_time.time_since_epoch()).count();
-        return static_cast<uint64_t>(run_time_duration);
+        auto us = static_cast<uint64_t>(run_time_duration);
+
+        uint64_t t = 0;
+        switch (unit)
+        {
+        case time_unit::second:
+            t = us2s(us);
+            break;
+        case time_unit::millisecond:
+            t = us2ms(us);
+            break;
+        case time_unit::microsecond:
+            t = us;
+            break;
+        default:
+            break;
+        }
+        return t;
     }
 
     constexpr static int THOUSAND = 1000;

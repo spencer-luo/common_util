@@ -72,11 +72,11 @@ namespace cutl
         auto threadId = std::this_thread::get_id();
         if (loglevel::error_level == level)
         {
-            std::cerr << "[" << timestamp_ms() << "]" << loglevel_flag(level) << "]" << threadId << "] " << msg << std::endl;
+            std::cerr << "[" << timestamp() << "]" << loglevel_flag(level) << "]" << threadId << "] " << msg << std::endl;
         }
         else
         {
-            std::cout << "[" << timestamp_ms() << "]" << loglevel_flag(level) << "]" << threadId << "] " << msg << std::endl;
+            std::cout << "[" << timestamp() << "]" << loglevel_flag(level) << "]" << threadId << "] " << msg << std::endl;
         }
     }
 } // namespace

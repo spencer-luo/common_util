@@ -11,10 +11,10 @@ namespace cutl
 
     datetime::datetime()
     {
-        timestamp_ms_ = timestamp_ms();
+        timestamp_ms_ = cutl::timestamp(cutl::time_unit::millisecond);
     }
 
-    datetime::datetime(uint64_t timestamp_ms) : timestamp_ms_(timestamp_ms)
+    datetime::datetime(uint64_t ms) : timestamp_ms_(ms)
     {
     }
 

@@ -23,7 +23,7 @@ namespace cutl
         static constexpr int day = 24 * hour;
 
     public:
-        datetime(uint64_t timestamp_ms);
+        datetime(uint64_t ms);
         datetime(const datetime &other);
         ~datetime();
 
