@@ -53,6 +53,10 @@ namespace cutl
         int64_t operator-(const datetime &other) const;
 
     private:
+        static bool verify_time(const struct tm &time);
+        static void print_time(const struct tm &time);
+
+    private:
         uint64_t timestamp_ms_;
     };
 

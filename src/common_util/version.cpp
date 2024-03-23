@@ -10,7 +10,7 @@ namespace cutl
         try
         {
             std::regex versionRule(R"(^\d{1,2}([.]\d{1,2}){0,2}[.]\d{1,3}$)");
-            return regex_search(text, versionRule);
+            return regex_match(text, versionRule);
         }
         catch (const std::exception &e)
         {

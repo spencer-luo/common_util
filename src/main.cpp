@@ -15,6 +15,17 @@ void PrintTitle(const std::string &title)
     constexpr int maxLen = 100;
     auto str1Len = (maxLen - len) / 2;
     auto str2Len = maxLen - len - str1Len;
+    std::string str1(str1Len, '=');
+    std::string str2(str2Len, '=');
+    std::cout << str1 << title << str2 << std::endl;
+}
+
+void PrintSubTitle(const std::string &title)
+{
+    auto len = title.length();
+    constexpr int maxLen = 100;
+    auto str1Len = (maxLen - len) / 2;
+    auto str2Len = maxLen - len - str1Len;
     std::string str1(str1Len, '-');
     std::string str2(str2Len, '-');
     std::cout << str1 << title << str2 << std::endl;
@@ -100,9 +111,9 @@ void TestStrfmt()
     std::cout << "current datetime: " << cutl::fmt_timestamp(curTime, cutl::time_unit::millisecond, true) << std::endl;
 }
 
-void TestDatetime()
+void TestDatetimeBasicUsage()
 {
-    PrintTitle("datetime");
+    PrintSubTitle("datetime basic usage");
     auto now = cutl::datetime::now();
     std::cout << "系统当前时间戳(毫秒): " << now.timestamp() << std::endl;
     std::cout << "系统当前时间(UTC时间): " << now.format() << std::endl;
@@ -113,8 +124,13 @@ void TestDatetime()
     std::cout << "系统当前时间(UTC时间) 格式d: " << now.format(cutl::datetime_format::datetime_format_d, false, true) << std::endl;
     std::cout << "系统当前时间(UTC时间) 自定义格式1: " << now.format("%c %Z", false, true) << std::endl;
     std::cout << "系统当前时间(UTC时间) 自定义格式2: " << now.format("%Y年%m月%d日 %H点%M分%S秒", false, false) << std::endl;
+}
 
+void TestDatetimeOperator()
+{
     // 运算符重载
+    PrintSubTitle("datetime operator overwrite");
+    auto now = cutl::datetime::now();
     std::cout << "1天 == " << cutl::datetime::day << "毫秒" << std::endl;
     auto dt1 = now - cutl::datetime::min;
     auto dt2 = now + cutl::datetime::min;
@@ -128,6 +144,22 @@ void TestDatetime()
     std::cout << "2小时后: " << now << std::endl;
 }
 
+void TestDatetimeParseString()
+{
+    // 字符串解析成时间
+    PrintSubTitle("datetime parse string");
+    auto dt1 = cutl::datetime::get("2024-03-22 14:18:44");
+    std::cout << "dt1: " << dt1 << std::endl;
+}
+
+void TestDatetime()
+{
+    PrintTitle("datetime");
+    TestDatetimeBasicUsage();
+    TestDatetimeOperator();
+    TestDatetimeParseString();
+}
+
 void TestTimecount()
 {
     cutl::timecount tct("TestTimecount");
@@ -139,12 +171,12 @@ void TestTimecount()
 
 int main()
 {
-    LibraryInit();
-    TestTimeutil();
-    // TestSysutil();
-    TestStrfmt();
+    // LibraryInit();
+    // TestTimeutil();
+    // // TestSysutil();
+    // TestStrfmt();
     TestDatetime();
-    TestTimecount();
+    // TestTimecount();
 
     return 0;
 }
