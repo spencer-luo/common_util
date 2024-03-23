@@ -2,7 +2,6 @@
 
 #include <string>
 #include <mutex>
-#include <functional>
 #include "singleton.h"
 #include "logtype.h"
 
