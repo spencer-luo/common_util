@@ -3,22 +3,22 @@
 
 namespace cutl
 {
-    uint64_t timestamp(time_unit unit)
+    uint64_t timestamp(timeunit unit)
     {
         // for C++11 and later
         auto now = std::chrono::system_clock::now();
-        auto timestamp = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
-        auto us = static_cast<uint64_t>(timestamp);
+        auto timestamp_ms = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
+        auto us = static_cast<uint64_t>(timestamp_ms);
         uint64_t t = 0;
         switch (unit)
         {
-        case time_unit::second:
+        case timeunit::s:
             t = us2s(us);
             break;
-        case time_unit::millisecond:
+        case timeunit::ms:
             t = us2ms(us);
             break;
-        case time_unit::microsecond:
+        case timeunit::us:
             t = us;
             break;
         default:
@@ -27,7 +27,7 @@ namespace cutl
         return t;
     }
 
-    uint64_t clocktime(time_unit unit)
+    uint64_t clocktime(timeunit unit)
     {
         // for C++11 and later
         auto run_time = std::chrono::steady_clock::now();
@@ -37,13 +37,13 @@ namespace cutl
         uint64_t t = 0;
         switch (unit)
         {
-        case time_unit::second:
+        case timeunit::s:
             t = us2s(us);
             break;
-        case time_unit::millisecond:
+        case timeunit::ms:
             t = us2ms(us);
             break;
-        case time_unit::microsecond:
+        case timeunit::us:
             t = us;
             break;
         default:

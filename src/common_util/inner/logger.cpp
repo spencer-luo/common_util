@@ -70,13 +70,14 @@ namespace cutl
     {
         std::lock_guard<std::mutex> lock(log_mtx_);
         auto threadId = std::this_thread::get_id();
+        auto timestamp_ms = timestamp(timeunit::ms);
         if (loglevel::error_level == level)
         {
-            std::cerr << "[" << timestamp() << "]" << loglevel_flag(level) << "]" << threadId << "] " << msg << std::endl;
+            std::cerr << "[" << timestamp_ms << "]" << loglevel_flag(level) << "]" << threadId << "] " << msg << std::endl;
         }
         else
         {
-            std::cout << "[" << timestamp() << "]" << loglevel_flag(level) << "]" << threadId << "] " << msg << std::endl;
+            std::cout << "[" << timestamp_ms << "]" << loglevel_flag(level) << "]" << threadId << "] " << msg << std::endl;
         }
     }
 } // namespace

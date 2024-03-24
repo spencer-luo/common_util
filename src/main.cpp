@@ -52,7 +52,7 @@ void static library_log_func(cutl::loglevel level, const std::string &msg)
 {
     std::lock_guard<std::mutex> lock(g_log_mtx_);
     // todo
-    auto curTime = cutl::fmt_timestamp(cutl::timestamp(), cutl::time_unit::millisecond, true);
+    auto curTime = cutl::fmt_timestamp_ms(cutl::timestamp(cutl::timeunit::ms));
     auto threadId = std::this_thread::get_id();
     if (cutl::loglevel::error_level == level)
     {
@@ -73,13 +73,13 @@ void LibraryInit()
 void TestTimeutil()
 {
     PrintTitle("timeutil");
-    // auto timeStampMs = cutl::timestamp(cutl::time_unit::millisecond);
-    std::cout << "当前时间戳（秒） ：" << cutl::timestamp(cutl::time_unit::second) << std::endl;
-    std::cout << "当前时间戳（毫秒）：" << cutl::timestamp(cutl::time_unit::millisecond) << std::endl;
-    std::cout << "当前时间戳（微秒）：" << cutl::timestamp(cutl::time_unit::microsecond) << std::endl;
-    auto s = cutl::clocktime(cutl::time_unit::second);
-    auto ms = cutl::clocktime(cutl::time_unit::millisecond);
-    auto us = cutl::clocktime(cutl::time_unit::microsecond);
+    // auto timeStampMs = cutl::timestamp(cutl::time_unit::ms);
+    std::cout << "当前时间戳（秒） ：" << cutl::timestamp(cutl::timeunit::s) << std::endl;
+    std::cout << "当前时间戳（毫秒）：" << cutl::timestamp(cutl::timeunit::ms) << std::endl;
+    std::cout << "当前时间戳（微秒）：" << cutl::timestamp(cutl::timeunit::us) << std::endl;
+    auto s = cutl::clocktime(cutl::timeunit::s);
+    auto ms = cutl::clocktime(cutl::timeunit::ms);
+    auto us = cutl::clocktime(cutl::timeunit::us);
     std::cout << "系统启动到当前的时间（秒） ：" << s << std::endl;
     std::cout << "系统启动到当前的时间（毫秒）：" << ms << std::endl;
     std::cout << "系统启动到当前的时间（微秒）：" << us << std::endl;
@@ -102,13 +102,13 @@ void TestStrfmt()
     PrintTitle("strfmt");
     std::cout << "fmt_uint: " << cutl::fmt_uint(12, 5) << std::endl;
     // 180100345), "2d:2h:1m:40s:345ms"
-    std::cout << "duration1: " << cutl::fmt_timeduration(180100) << std::endl;
+    std::cout << "duration1: " << cutl::fmt_timeduration_s(180100) << std::endl;
     std::cout << "duration2: " << cutl::fmt_timeduration_ms(180100345) << std::endl;
     std::cout << "duration3: " << cutl::fmt_timeduration_us(180100345678) << std::endl;
 
     // timestamp
-    auto curTime = cutl::timestamp();
-    std::cout << "current datetime: " << cutl::fmt_timestamp(curTime, cutl::time_unit::millisecond, true) << std::endl;
+    auto curTime = cutl::timestamp(cutl::timeunit::ms);
+    std::cout << "current datetime: " << cutl::fmt_timestamp_ms(curTime) << std::endl;
 }
 
 void TestDatetimeBasicUsage()
@@ -116,10 +116,10 @@ void TestDatetimeBasicUsage()
     PrintSubTitle("datetime basic usage");
     auto now = cutl::datetime::now();
     std::cout << "系统当前时间戳(毫秒): " << now.timestamp() << std::endl;
-    std::cout << "系统当前时间(UTC时间): " << now.format() << std::endl;
-    std::cout << "系统当前时间(本地时间): " << now.localtime() << std::endl;
+    std::cout << "系统当前时间(UTC时间): " << now.utctime() << std::endl;
+    std::cout << "系统当前时间(本地时间): " << now.format() << std::endl;
     std::cout << "系统当前时间(UTC时间) 格式b: " << now.format(cutl::datetime_format::datetime_format_b, false, true) << std::endl;
-    std::cout << "系统当前时间(UTC时间) 格式b,不显示毫秒: " << now.format(cutl::datetime_format::datetime_format_b, false, true) << std::endl;
+    std::cout << "系统当前时间(UTC时间) 格式b,不显示毫秒: " << now.format(cutl::datetime_format::datetime_format_b, false, false) << std::endl;
     std::cout << "系统当前时间(UTC时间) 格式c: " << now.format(cutl::datetime_format::datetime_format_c, false, true) << std::endl;
     std::cout << "系统当前时间(UTC时间) 格式d: " << now.format(cutl::datetime_format::datetime_format_d, false, true) << std::endl;
     std::cout << "系统当前时间(UTC时间) 自定义格式1: " << now.format("%c %Z", false, true) << std::endl;
@@ -174,12 +174,12 @@ void TestTimecount()
 
 int main()
 {
-    // LibraryInit();
-    // TestTimeutil();
-    // // TestSysutil();
-    // TestStrfmt();
+    LibraryInit();
+    TestTimeutil();
+    TestSysutil();
+    TestStrfmt();
     TestDatetime();
-    // TestTimecount();
+    TestTimecount();
 
     return 0;
 }

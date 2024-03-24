@@ -12,7 +12,6 @@ namespace cutl
 
     datetime::datetime()
     {
-        // timestamp_ms_ = cutl::timestamp(cutl::time_unit::millisecond);
         timestamp_ms_ = 0;
     }
 
@@ -26,7 +25,7 @@ namespace cutl
 
     datetime datetime::now()
     {
-        return datetime(cutl::timestamp(cutl::time_unit::millisecond));
+        return datetime(cutl::timestamp(timeunit::ms));
     }
 
     datetime datetime::get(const std::string &time_text)
@@ -200,12 +199,6 @@ namespace cutl
         return diff;
     }
 
-    std::ostream &operator<<(std::ostream &os, const datetime &dt)
-    {
-        os << dt.format();
-        return os;
-    }
-
     std::string datetime::supported_time_formats(const time_regex_vec_type &fmtlist)
     {
         std::string time_fmts;
@@ -268,6 +261,12 @@ namespace cutl
         }
 
         return true;
+    }
+
+    std::ostream &operator<<(std::ostream &os, const datetime &dt)
+    {
+        os << dt.format();
+        return os;
     }
 
 } // namespace

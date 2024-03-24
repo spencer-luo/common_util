@@ -18,7 +18,7 @@ namespace cutl
         return ss.str();
     }
 
-    std::string fmt_timeduration(uint64_t seconds)
+    std::string fmt_timeduration_s(uint64_t seconds)
     {
         std::string text;
         if (seconds > ONE_DAY)
@@ -49,7 +49,7 @@ namespace cutl
     {
         auto s = microseconds / THOUSAND;
         auto ms = microseconds % THOUSAND;
-        auto text = fmt_timeduration(s);
+        auto text = fmt_timeduration_s(s);
         text += "." + fmt_uint(ms, 3) + "ms";
         return text;
     }
@@ -58,7 +58,7 @@ namespace cutl
     {
         auto s = nanoseconds / MILLION;
         auto ms = nanoseconds % MILLION;
-        auto text = fmt_timeduration(s);
+        auto text = fmt_timeduration_s(s);
         text += "." + fmt_uint(ms, 6) + "us";
         return text;
     }
@@ -94,23 +94,23 @@ namespace cutl
     }
 
     // 格式化时间戳，second单位：秒
-    std::string fmt_timestamp(uint64_t t, time_unit unit, bool local)
+    std::string fmt_timestamp_by_unit(uint64_t t, timeunit unit, bool local)
     {
         uint64_t s = 0;
         std::string extension;
         switch (unit)
         {
-        case time_unit::second:
+        case timeunit::s:
             s = t;
             break;
-        case time_unit::millisecond:
+        case timeunit::ms:
         {
             s = t / THOUSAND;
             auto ms = t % THOUSAND;
             extension += "." + fmt_uint(ms, 3);
         }
         break;
-        case time_unit::microsecond:
+        case timeunit::us:
         {
             s = t / MILLION;
             auto us = t % MILLION;
@@ -125,6 +125,21 @@ namespace cutl
         auto time_str = fmt_timestamp(s, local, fmt);
         time_str += extension;
         return time_str;
+    }
+
+    std::string fmt_timestamp_s(uint64_t t, bool local)
+    {
+        return fmt_timestamp_by_unit(t, timeunit::s, local);
+    }
+
+    std::string fmt_timestamp_ms(uint64_t t, bool local)
+    {
+        return fmt_timestamp_by_unit(t, timeunit::ms, local);
+    }
+
+    std::string fmt_timestamp_us(uint64_t t, bool local)
+    {
+        return fmt_timestamp_by_unit(t, timeunit::us, local);
     }
 
 } // namespace

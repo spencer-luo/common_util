@@ -5,17 +5,17 @@
 namespace cutl
 {
 
-    enum class time_unit
+    enum class timeunit
     {
-        second,
-        millisecond,
-        microsecond,
+        s,
+        ms,
+        us,
     };
 
     // 获取当前时间戳:秒
-    uint64_t timestamp(time_unit unit = time_unit::millisecond);
+    uint64_t timestamp(timeunit unit);
     // 获取系统启动到当前的时间，单位：秒
-    uint64_t clocktime(time_unit unit = time_unit::millisecond);
+    uint64_t clocktime(timeunit unit);
 
     // 时间单位转换： 毫秒-->秒
     uint64_t ms2s(uint64_t time);

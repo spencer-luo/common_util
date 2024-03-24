@@ -35,17 +35,17 @@ namespace cutl
 
     public:
         static datetime now();
-        // todo
+        // 根据(本地时间)时间字符串构造datetime对象
         static datetime get(const std::string &time_text);
 
     public:
         uint64_t timestamp() const;
-        std::string format(datetime_format dfmt = datetime_format::datetime_format_a, bool local = false, bool show_milliseconds = true) const;
+        std::string format(datetime_format dfmt = datetime_format::datetime_format_a, bool local = true, bool show_milliseconds = true) const;
         // fmt, usages like std::put_time
-        std::string format(const std::string &fmt, bool local = false, bool show_milliseconds = true) const;
-        std::string localtime() const
+        std::string format(const std::string &fmt, bool local = true, bool show_milliseconds = true) const;
+        std::string utctime() const
         {
-            return format(datetime_format::datetime_format_a, true);
+            return format(datetime_format::datetime_format_a, false);
         }
 
         datetime &operator=(const datetime &other);
