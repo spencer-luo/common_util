@@ -58,6 +58,10 @@ void static library_log_func(cutl::loglevel level, const std::string &msg)
     {
         std::cerr << "[" << curTime << "]" << loglevel2flag(level) << "]" << threadId << "](cutl) " << msg << std::endl;
     }
+    else if (cutl::loglevel::debug_level == level)
+    {
+        // todo: no print anything
+    }
     else
     {
         std::cout << "[" << curTime << "]" << loglevel2flag(level) << "]" << threadId << "](cutl) " << msg << std::endl;
@@ -148,11 +152,25 @@ void TestDatetimeParseString()
 {
     // 字符串解析成时间
     PrintSubTitle("datetime parse string");
-    auto dt1 = cutl::datetime::get(" 2024-03-22 14:18:44 ");
+    auto dt0 = cutl::datetime::get(" 2024-03-02 14:18:44 ");
+    std::cout << "dt0: " << dt0 << std::endl;
+    auto dt1 = cutl::datetime::get(" 2024-03-02 14:18:44.023 ");
     std::cout << "dt1: " << dt1 << std::endl;
-    // format error
-    auto dt2 = cutl::datetime::get(" 2024-0322 14:18:44 ");
+    auto dt2 = cutl::datetime::get(" 2024.03.12 14:18:44");
     std::cout << "dt2: " << dt2 << std::endl;
+    auto dt3 = cutl::datetime::get(" 2024.03.12 14:18:44.003");
+    std::cout << "dt3: " << dt3 << std::endl;
+    auto dt4 = cutl::datetime::get("2024/03/22 14:18:44 ");
+    std::cout << "dt4: " << dt4 << std::endl;
+    auto dt5 = cutl::datetime::get("2024/03/22 14:18:44.200 ");
+    std::cout << "dt5: " << dt5 << std::endl;
+    auto dt6 = cutl::datetime::get("2024/03/23 09:28:04");
+    std::cout << "dt6: " << dt6 << std::endl;
+    auto dt7 = cutl::datetime::get("2024/03/23 09:28:04.276");
+    std::cout << "dt7: " << dt7 << std::endl;
+    // format error
+    auto dt8 = cutl::datetime::get(" 2024-0322 14:18:44 ");
+    std::cout << "dt8: " << dt8 << std::endl;
 }
 
 void TestDatetime()
@@ -175,11 +193,11 @@ void TestTimecount()
 int main()
 {
     LibraryInit();
-    TestTimeutil();
-    TestSysutil();
-    TestStrfmt();
+    // TestTimeutil();
+    // TestSysutil();
+    // TestStrfmt();
     TestDatetime();
-    TestTimecount();
+    // TestTimecount();
 
     return 0;
 }

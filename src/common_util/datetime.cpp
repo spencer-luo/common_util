@@ -33,14 +33,15 @@ namespace cutl
         std::smatch matchRes;
         bool result = false;
         static time_regex_vec_type fmt_list = {
-            std::make_pair("YYYY-MM-DD HH:MM:SS", std::regex(R"((\d{4})-(\d{2})-(\d{2})[ ](\d{2}):(\d{2}):(\d{2}))")),
+            // 0/1, 2/3, 4/5, 6/7的顺序不能反，因为不含毫秒数的时间会被优先匹配到
             std::make_pair("YYYY-MM-DD HH:MM:SS.sss", std::regex(R"((\d{4})-(\d{2})-(\d{2})[ ](\d{2}):(\d{2}):(\d{2}).(\d{3}))")),
-            std::make_pair("YYYY.MM.DD HH:MM:SS", std::regex(R"((\d{4}).(\d{2}).(\d{2})[ ](\d{2}):(\d{2}):(\d{2}))")),
+            std::make_pair("YYYY-MM-DD HH:MM:SS", std::regex(R"((\d{4})-(\d{2})-(\d{2})[ ](\d{2}):(\d{2}):(\d{2}))")),
             std::make_pair("YYYY.MM.DD HH:MM:SS.sss", std::regex(R"((\d{4}).(\d{2}).(\d{2})[ ](\d{2}):(\d{2}):(\d{2}).(\d{3}))")),
-            std::make_pair("YYYY/MM/DD HH:MM:SS", std::regex(R"((\d{4})/(\d{2})/(\d{2})[ ](\d{2}):(\d{2}):(\d{2}))")),
+            std::make_pair("YYYY.MM.DD HH:MM:SS", std::regex(R"((\d{4}).(\d{2}).(\d{2})[ ](\d{2}):(\d{2}):(\d{2}))")),
             std::make_pair("YYYY/MM/DD HH:MM:SS.sss", std::regex(R"((\d{4})/(\d{2})/(\d{2})[ ](\d{2}):(\d{2}):(\d{2}).(\d{3}))")),
-            std::make_pair("YYYYMMDD HH:MM:SS", std::regex(R"((\d{4})(\d{2})(\d{2})[ ](\d{2}):(\d{2}):(\d{2}))")),
+            std::make_pair("YYYY/MM/DD HH:MM:SS", std::regex(R"((\d{4})/(\d{2})/(\d{2})[ ](\d{2}):(\d{2}):(\d{2}))")),
             std::make_pair("YYYYMMDD HH:MM:SS.sss", std::regex(R"((\d{4})(\d{2})(\d{2})[ ](\d{2}):(\d{2}):(\d{2}).(\d{3}))")),
+            std::make_pair("YYYYMMDD HH:MM:SS", std::regex(R"((\d{4})(\d{2})(\d{2})[ ](\d{2}):(\d{2}):(\d{2}))")),
         };
         for (size_t i = 0; i < fmt_list.size(); i++)
         {
