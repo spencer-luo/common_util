@@ -3,6 +3,9 @@
 #include <stdint.h>
 #include <string>
 #include <iostream>
+#include <regex>
+#include <vector>
+#include <utility>
 
 namespace cutl
 {
@@ -53,8 +56,10 @@ namespace cutl
         int64_t operator-(const datetime &other) const;
 
     private:
+        using time_regex_type = std::pair<std::string, std::regex>;
+        using time_regex_vec_type = std::vector<time_regex_type>;
+        static std::string supported_time_formats(const time_regex_vec_type &fmtlist);
         static bool verify_time(const struct tm &time);
-        static void print_time(const struct tm &time);
 
     private:
         uint64_t timestamp_ms_;

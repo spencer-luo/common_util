@@ -148,8 +148,11 @@ void TestDatetimeParseString()
 {
     // 字符串解析成时间
     PrintSubTitle("datetime parse string");
-    auto dt1 = cutl::datetime::get("2024-03-22 14:18:44");
+    auto dt1 = cutl::datetime::get(" 2024-03-22 14:18:44 ");
     std::cout << "dt1: " << dt1 << std::endl;
+    // format error
+    auto dt2 = cutl::datetime::get(" 2024-0322 14:18:44 ");
+    std::cout << "dt2: " << dt2 << std::endl;
 }
 
 void TestDatetime()

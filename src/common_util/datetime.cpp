@@ -1,4 +1,3 @@
-#include <regex>
 #include "datetime.h"
 #include "timeutil.h"
 #include "strfmt.h"
@@ -32,42 +31,38 @@ namespace cutl
 
     datetime datetime::get(const std::string &time_text)
     {
-        // todo
-        // time_text
-        std::regex fmt(R"(^\d{1,2}([.]\d{1,2}){0,2}[.]\d{1,3}$)");
-        std::regex versionRule(R"(^\d{1,2}([.]\d{1,2}){0,2}[.]\d{1,3}$)");
-        // regex_match(text, versionRule);
-
-        std::regex fmta(R"(^(\d{4})-(\d{2})-(\d{2})[ ](\d{2}):(\d{2}):(\d{2})$)"); // YYYY-MM-DD HH:MM:SS
-        std::regex fmta_ms("");                                                    // YYYY-MM-DD HH:MM:SS
-        std::regex fmtb("");                                                       // YYYY.MM.DD HH:MM:SS
-        std::regex fmtb_ms("");                                                    // YYYY.MM.DD HH:MM:SS
-        std::regex fmtc("");                                                       // YYYY/MM/DD HH:MM:SS
-        std::regex fmtc_ms("");                                                    // YYYY/MM/DD HH:MM:SS
-        std::regex fmtd("");                                                       // YYYYMMDD HH:MM:SS
-        std::regex fmtd_ms("");                                                    // YYYYMMDD HH:MM:SS
-
         std::smatch matchRes;
         bool result = false;
-        static std::vector<std::regex> fmt_list = {fmta, fmta_ms, fmtb, fmtb_ms, fmtc, fmtc_ms, fmtd, fmtd_ms};
+        static time_regex_vec_type fmt_list = {
+            std::make_pair("YYYY-MM-DD HH:MM:SS", std::regex(R"((\d{4})-(\d{2})-(\d{2})[ ](\d{2}):(\d{2}):(\d{2}))")),
+            std::make_pair("YYYY-MM-DD HH:MM:SS.sss", std::regex(R"((\d{4})-(\d{2})-(\d{2})[ ](\d{2}):(\d{2}):(\d{2}).(\d{3}))")),
+            std::make_pair("YYYY.MM.DD HH:MM:SS", std::regex(R"((\d{4}).(\d{2}).(\d{2})[ ](\d{2}):(\d{2}):(\d{2}))")),
+            std::make_pair("YYYY.MM.DD HH:MM:SS.sss", std::regex(R"((\d{4}).(\d{2}).(\d{2})[ ](\d{2}):(\d{2}):(\d{2}).(\d{3}))")),
+            std::make_pair("YYYY/MM/DD HH:MM:SS", std::regex(R"((\d{4})/(\d{2})/(\d{2})[ ](\d{2}):(\d{2}):(\d{2}))")),
+            std::make_pair("YYYY/MM/DD HH:MM:SS.sss", std::regex(R"((\d{4})/(\d{2})/(\d{2})[ ](\d{2}):(\d{2}):(\d{2}).(\d{3}))")),
+            std::make_pair("YYYYMMDD HH:MM:SS", std::regex(R"((\d{4})(\d{2})(\d{2})[ ](\d{2}):(\d{2}):(\d{2}))")),
+            std::make_pair("YYYYMMDD HH:MM:SS.sss", std::regex(R"((\d{4})(\d{2})(\d{2})[ ](\d{2}):(\d{2}):(\d{2}).(\d{3}))")),
+        };
         for (size_t i = 0; i < fmt_list.size(); i++)
         {
-            result = std::regex_search(time_text, matchRes, fmt_list[i]);
+            auto &fmt_text = fmt_list[i].first;
+            auto &fmt_pattern = fmt_list[i].second;
+            result = std::regex_search(time_text, matchRes, fmt_pattern);
             if (result)
             {
-                CUTL_DEBUG("matched regex:" + std::to_string(i));
+                CUTL_DEBUG("matched regex: " + fmt_text);
                 break;
             }
         }
 
-        if (!result)
+        if (!result || matchRes.size() < 7)
         {
-            CUTL_ERROR("datetime::get() not match fmta");
+            auto time_fmts = supported_time_formats(fmt_list);
+            CUTL_ERROR("Only the following time formats are supported:\n" + time_fmts);
             return datetime();
         }
 
-        // todo
-        std::cout << matchRes.size() << std::endl;
+        CUTL_DEBUG("matchRes size:" + std::to_string(matchRes.size()) + ", res:" + matchRes[0].str());
         // 解析毫秒值
         int ms = 0;
         if (matchRes.size() == 8)
@@ -80,8 +75,6 @@ namespace cutl
         {
             for (size_t i = 1; i < 7; i++)
             {
-                // todo
-                // std::cout << matchRes[i] << std::endl;
                 time.tm_year = std::stoi(matchRes[1]);
                 time.tm_mon = std::stoi(matchRes[2]);
                 time.tm_mday = std::stoi(matchRes[3]);
@@ -92,20 +85,21 @@ namespace cutl
                 time.tm_isdst = 0;
             }
         }
-        // todo
-        std::cout << "time1:" << std::endl;
-        print_time(time);
         if (!verify_time(time))
         {
             return datetime();
         }
 
+        // 转换为时间戳
         time.tm_year -= 1900;
         time.tm_mon -= 1;
-        auto s = static_cast<uint64_t>(mktime(&time));
-        // todo
-        std::cout << "time2:" << std::endl;
-        print_time(time);
+        auto ret = mktime(&time);
+        if (ret == -1)
+        {
+            CUTL_ERROR("mktime() failed");
+            return datetime();
+        }
+        auto s = static_cast<uint64_t>(ret);
         return datetime(s2ms(s) + ms);
     }
 
@@ -212,6 +206,16 @@ namespace cutl
         return os;
     }
 
+    std::string datetime::supported_time_formats(const time_regex_vec_type &fmtlist)
+    {
+        std::string time_fmts;
+        for (size_t i = 0; i < fmtlist.size(); i++)
+        {
+            time_fmts += fmtlist[i].first + "\n";
+        }
+        return time_fmts;
+    }
+
     bool datetime::verify_time(const struct tm &time)
     {
         // 校验年
@@ -264,24 +268,6 @@ namespace cutl
         }
 
         return true;
-        // bool leap_year = time.tm_year % 4 == 0 && (time.tm_year % 100 != 0 || time.tm_year % 400 == 0);
-        // if (time.tm_mday < 1 || time.tm_mday > 31)
-        // return false;
-    }
-
-    void datetime::print_time(const struct tm &time)
-    {
-        std::cout << "year: " << time.tm_year << std::endl;
-        std::cout << "month: " << time.tm_mon << std::endl;
-        std::cout << "day: " << time.tm_mday << std::endl;
-        std::cout << "hour: " << time.tm_hour << std::endl;
-        std::cout << "minute: " << time.tm_min << std::endl;
-        std::cout << "second: " << time.tm_sec << std::endl;
-        std::cout << "isdst: " << time.tm_isdst << std::endl;
-        std::cout << "wday: " << time.tm_wday << std::endl;
-        std::cout << "yday: " << time.tm_yday << std::endl;
-        std::cout << "gmtoff: " << time.tm_gmtoff << std::endl;
-        // std::cout << "zone: " << std::(time.tm_zone) << std::endl;
     }
 
 } // namespace
