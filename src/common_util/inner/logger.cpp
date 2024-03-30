@@ -80,4 +80,20 @@ namespace cutl
             std::cout << "[" << timestamp_ms << "]" << loglevel_flag(level) << "]" << threadId << "] " << msg << std::endl;
         }
     }
+
+    std::string loginfo(const std::string &filename, int line, const std::string &funcname)
+    {
+        auto index = filename.rfind("/");
+        if (index == std::string::npos)
+        {
+            index = filename.rfind("\\");
+        }
+        if (index == std::string::npos)
+        {
+            index = 0;
+        }
+        auto fName = filename.substr(index + 1);
+        return std::string("[") + fName + ":" + std::to_string(line) + ":" + funcname + "]";
+    }
+
 } // namespace
