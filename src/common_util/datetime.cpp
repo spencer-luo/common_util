@@ -236,16 +236,16 @@ namespace cutl
             CUTL_ERROR("the day should be between 1 and 30 for " + std::to_string(time.tm_mon) + " month");
             return false;
         }
-        auto is_leap_year = [](int year)
-        { return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0); };
         if (time.tm_mon == 2)
         {
-            if (is_leap_year(time.tm_year) && (time.tm_mday < 0 || time.tm_mday > 29))
+            auto is_leap_year = [](int year)
+            { return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0); };
+            if (is_leap_year(time.tm_year) && (time.tm_mday < 1 || time.tm_mday > 29))
             {
                 CUTL_ERROR("the day should be between 1 and 29 for " + std::to_string(time.tm_year) + "-" + fmt_uint(time.tm_mon, 2));
                 return false;
             }
-            else
+            if (!is_leap_year(time.tm_year) && (time.tm_mday < 1 || time.tm_mday > 28))
             {
                 CUTL_ERROR("the day should be between 1 and 28 for " + std::to_string(time.tm_year) + "-" + fmt_uint(time.tm_mon, 2));
                 return false;

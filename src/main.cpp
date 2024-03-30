@@ -146,6 +146,13 @@ void TestDatetimeOperator()
     std::cout << "2小时前: " << now << std::endl;
     now += (4 * cutl::datetime::hour);
     std::cout << "2小时后: " << now << std::endl;
+
+    auto dt3 = cutl::datetime::get(" 2024-03-01 10:00:00");
+    auto dt4 = cutl::datetime::get(" 2024-03-30 14:18:44");
+    auto duration1 = dt4 - dt3;
+    std::cout << dt3 << " 与 " << dt4 << " 相差" << duration1 << "毫秒, 时长：" << cutl::fmt_timeduration_ms(duration1) << std::endl;
+    auto duration2 = dt3 - dt4;
+    std::cout << dt4 << " 与 " << dt3 << " 相差" << duration2 << "毫秒" << std::endl;
 }
 
 void TestDatetimeParseString()
