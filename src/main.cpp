@@ -171,6 +171,15 @@ void TestDatetimeParseString()
     // format error
     auto dt8 = cutl::datetime::get(" 2024-0322 14:18:44 ");
     std::cout << "dt8: " << dt8 << std::endl;
+    // mounth error
+    auto dt9 = cutl::datetime::get(" 2024-13-02 14:18:44 ");
+    std::cout << "dt9: " << dt9 << std::endl;
+    // leap year error
+    auto dt10 = cutl::datetime::get(" 2023-02-29 14:18:44 ");
+    std::cout << "dt10: " << dt10 << std::endl;
+    // day error
+    auto dt11 = cutl::datetime::get(" 2024-03-42 14:18:44 ");
+    std::cout << "dt11: " << dt11 << std::endl;
 }
 
 void TestDatetime()
