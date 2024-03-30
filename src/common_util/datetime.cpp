@@ -28,7 +28,7 @@ namespace cutl
         return datetime(cutl::timestamp(timeunit::ms));
     }
 
-    datetime datetime::get(const std::string &time_text)
+    datetime datetime::get(const std::string &time_text, int isdst)
     {
         std::smatch matchRes;
         bool result = false;
@@ -81,8 +81,7 @@ namespace cutl
                 time.tm_hour = std::stoi(matchRes[4]);
                 time.tm_min = std::stoi(matchRes[5]);
                 time.tm_sec = std::stoi(matchRes[6]);
-                // TODO: 不考虑夏令时
-                time.tm_isdst = 0;
+                time.tm_isdst = isdst;
             }
         }
         if (!verify_time(time))

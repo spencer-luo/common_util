@@ -36,7 +36,8 @@ namespace cutl
     public:
         static datetime now();
         // 根据(本地时间)时间字符串构造datetime对象
-        static datetime get(const std::string &time_text);
+        // isdst: 夏令时设置，-1: 系统根据时区自动判断夏令时，0: 非夏令时，1: 夏令时
+        static datetime get(const std::string &time_text, int isdst = -1);
 
     public:
         uint64_t timestamp() const;
