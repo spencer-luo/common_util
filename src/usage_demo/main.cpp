@@ -9,11 +9,11 @@
 int main()
 {
     LibraryInit();
-    // TestSysutil();
-    // TestStrfmt();
+    TestSysutil();
+    TestStrfmt();
     // TestTimeutil();
     // TestTimecount();
-    TestDatetime();
+    // TestDatetime();
 
     return 0;
 }

@@ -142,4 +142,35 @@ namespace cutl
         return fmt_timestamp_by_unit(t, timeunit::us, local);
     }
 
+    static const char HEX_CHARS_UPPER[] = "0123456789ABCDEF";
+    static const char HEX_CHARS_LOWER[] = "0123456789abcdef";
+
+    std::string to_hex(const uint8_t *data, size_t len, bool upper, char split)
+    {
+        const char *hex_chars = upper ? HEX_CHARS_UPPER : HEX_CHARS_LOWER;
+
+        std::string output;
+        output.reserve(3 * len);
+        for (size_t i = 0; i < len; i++)
+        {
+            const char temp = data[i];
+            output.push_back(hex_chars[temp / 16]);
+            output.push_back(hex_chars[temp % 16]);
+            output.push_back(split);
+        }
+
+        return output;
+    }
+
+    std::string to_hex(uint8_t value, bool upper, const std::string &prefix)
+    {
+        const char *hex_chars = upper ? HEX_CHARS_UPPER : HEX_CHARS_LOWER;
+        std::string text = prefix;
+        int c1 = value / 16;
+        int c2 = value % 16;
+        text.push_back(hex_chars[c1]);
+        text.push_back(hex_chars[c2]);
+        return text;
+    }
+
 } // namespace
