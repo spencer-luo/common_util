@@ -9,6 +9,7 @@
 namespace cutl
 {
     std::string fmt_uint(uint64_t val, uint8_t width = 0, char fill = '0');
+    std::string fmt_double(double val, int precision = 2);
 
     std::string fmt_timeduration_s(uint64_t seconds);
     std::string fmt_timeduration_ms(uint64_t microseconds);

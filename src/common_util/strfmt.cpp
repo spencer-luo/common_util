@@ -19,6 +19,13 @@ namespace cutl
         return ss.str();
     }
 
+    std::string fmt_double(double val, int precision)
+    {
+        std::stringstream ss;
+        ss << std::setiosflags(std::ios::fixed) << std::setprecision(precision) << val;
+        return ss.str();
+    }
+
     std::string fmt_timeduration_s(uint64_t seconds)
     {
         std::string text;
