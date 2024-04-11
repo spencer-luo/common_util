@@ -19,17 +19,8 @@ namespace cutl
 
     std::string to_hex(const uint8_t *data, size_t len, bool upper = true, char split = ' ');
     std::string to_hex(uint8_t value, bool upper = true, const std::string &prefix = "");
-
-    // 整数转换成16进制
-    // T 要转换的数据类型，可以是int、long int、short等
-    template <typename T>
-    std::string to_hex(T value, bool upper = true, const std::string &prefix = "")
-    {
-        std::stringstream ss;
-        // 以十六制(大写)形式输出，长度不足时补０
-        ss << prefix << std::setfill('0') << std::setw(sizeof(T) * 2) << std::setiosflags(std::ios::uppercase) << std::hex;
-        ss << value;
-        return ss.str();
-    }
+    std::string to_hex(uint16_t value, bool upper = true, const std::string &prefix = "");
+    std::string to_hex(uint32_t value, bool upper = true, const std::string &prefix = "");
+    std::string to_hex(uint64_t value, bool upper = true, const std::string &prefix = "");
 
 } // namespace

@@ -172,5 +172,36 @@ namespace cutl
         text.push_back(hex_chars[c2]);
         return text;
     }
+    std::string to_hex(uint16_t value, bool upper, const std::string &prefix)
+    {
+        std::string text = prefix;
+        text += to_hex((uint8_t)((value >> 8) & 0xFF), upper);
+        text += to_hex((uint8_t)(value & 0xFF));
+        return text;
+    }
+
+    std::string to_hex(uint32_t value, bool upper, const std::string &prefix)
+    {
+        std::string text = prefix;
+        text += to_hex((uint8_t)((value >> 24) & 0xFF), upper);
+        text += to_hex((uint8_t)((value >> 16) & 0xFF), upper);
+        text += to_hex((uint8_t)((value >> 8) & 0xFF), upper);
+        text += to_hex((uint8_t)(value & 0xFF));
+        return text;
+    }
+
+    std::string to_hex(uint64_t value, bool upper, const std::string &prefix)
+    {
+        std::string text = prefix;
+        text += to_hex((uint8_t)((value >> 56) & 0xFF), upper);
+        text += to_hex((uint8_t)((value >> 48) & 0xFF), upper);
+        text += to_hex((uint8_t)((value >> 40) & 0xFF), upper);
+        text += to_hex((uint8_t)((value >> 32) & 0xFF), upper);
+        text += to_hex((uint8_t)((value >> 24) & 0xFF), upper);
+        text += to_hex((uint8_t)((value >> 16) & 0xFF), upper);
+        text += to_hex((uint8_t)((value >> 8) & 0xFF), upper);
+        text += to_hex((uint8_t)(value & 0xFF));
+        return text;
+    }
 
 } // namespace

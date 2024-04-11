@@ -27,5 +27,5 @@ void TestStrfmt()
     uint64_t d = 0xabcdef0123456789;
     std::cout << "uint64:" << cutl::to_hex(d) << std::endl;
     uint8_t bytes[] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10};
-    std::cout << "bytes:" << cutl::to_hex(static_cast<const uint8_t *>(bytes), 16) << std::endl;
+    std::cout << "bytes:" << cutl::to_hex(bytes, 16) << std::endl;
 }
