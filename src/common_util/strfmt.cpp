@@ -1,5 +1,6 @@
 #include <sstream>
 #include <iomanip>
+#include <bitset>
 #include "strfmt.h"
 #include "inner/logger.h"
 
@@ -176,7 +177,7 @@ namespace cutl
     {
         std::string text = prefix;
         text += to_hex((uint8_t)((value >> 8) & 0xFF), upper);
-        text += to_hex((uint8_t)(value & 0xFF));
+        text += to_hex((uint8_t)(value & 0xFF), upper);
         return text;
     }
 
@@ -186,7 +187,7 @@ namespace cutl
         text += to_hex((uint8_t)((value >> 24) & 0xFF), upper);
         text += to_hex((uint8_t)((value >> 16) & 0xFF), upper);
         text += to_hex((uint8_t)((value >> 8) & 0xFF), upper);
-        text += to_hex((uint8_t)(value & 0xFF));
+        text += to_hex((uint8_t)(value & 0xFF), upper);
         return text;
     }
 
@@ -200,7 +201,50 @@ namespace cutl
         text += to_hex((uint8_t)((value >> 24) & 0xFF), upper);
         text += to_hex((uint8_t)((value >> 16) & 0xFF), upper);
         text += to_hex((uint8_t)((value >> 8) & 0xFF), upper);
-        text += to_hex((uint8_t)(value & 0xFF));
+        text += to_hex((uint8_t)(value & 0xFF), upper);
+        return text;
+    }
+
+    std::string to_bin(uint8_t value, char split)
+    {
+        std::string text;
+        std::bitset<4> v1((value >> 4) & 0xF);
+        std::bitset<4> v2(value & 0xF);
+        text += v1.to_string();
+        text += split;
+        text += v2.to_string();
+        return text;
+    }
+
+    std::string to_bin(uint16_t value, char split)
+    {
+        std::string text;
+        text += to_bin((uint8_t)((value >> 8) & 0xFF)) + split;
+        text += to_bin((uint8_t)(value & 0xFF));
+        return text;
+    }
+
+    std::string to_bin(uint32_t value, char split)
+    {
+        std::string text;
+        text += to_bin((uint8_t)((value >> 24) & 0xFF)) + split;
+        text += to_bin((uint8_t)((value >> 16) & 0xFF)) + split;
+        text += to_bin((uint8_t)((value >> 8) & 0xFF)) + split;
+        text += to_bin((uint8_t)(value & 0xFF));
+        return text;
+    }
+
+    std::string to_bin(uint64_t value, char split)
+    {
+        std::string text;
+        text += to_bin((uint8_t)((value >> 56) & 0xFF)) + split;
+        text += to_bin((uint8_t)((value >> 48) & 0xFF)) + split;
+        text += to_bin((uint8_t)((value >> 40) & 0xFF)) + split;
+        text += to_bin((uint8_t)((value >> 32) & 0xFF)) + split;
+        text += to_bin((uint8_t)((value >> 24) & 0xFF)) + split;
+        text += to_bin((uint8_t)((value >> 16) & 0xFF)) + split;
+        text += to_bin((uint8_t)((value >> 8) & 0xFF)) + split;
+        text += to_bin((uint8_t)(value & 0xFF));
         return text;
     }
 
