@@ -26,6 +26,34 @@ namespace cutl
         return ss.str();
     }
 
+    std::string fmt_filesize(uint64_t size)
+    {
+        static const double KBSize = 1024;
+        static const double MBSize = 1024 * 1024;
+        static const double GBSize = 1024 * 1024 * 1024;
+        if (size > GBSize)
+        {
+            double hSize = (double)size / GBSize;
+            return fmt_double(hSize) + "GB";
+        }
+        else if (size > MBSize)
+        {
+            double hSize = (double)size / MBSize;
+            return fmt_double(hSize) + "MB";
+        }
+        else if (size > KBSize)
+        {
+            double hSize = (double)size / KBSize;
+            return fmt_double(hSize) + "KB";
+        }
+        else
+        {
+            return fmt_double(size) + "Byte";
+        }
+
+        return "";
+    }
+
     std::string fmt_timeduration_s(uint64_t seconds)
     {
         std::string text;

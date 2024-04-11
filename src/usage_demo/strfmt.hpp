@@ -8,6 +8,7 @@ void TestFormatUintAndDouble()
 {
     std::cout << "fmt_uint: " << cutl::fmt_uint(12, 5) << std::endl;
     std::cout << "fmt_double: " << cutl::fmt_double(3.141592653, 4) << std::endl;
+    std::cout << "fmt_filesize: " << cutl::fmt_filesize(33600) << std::endl;
 }
 
 void TestFormatTime()
