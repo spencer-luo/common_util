@@ -10,7 +10,7 @@ namespace cutl
 
     class logger
     {
-        DECLARE_SINGLETON_REF(logger)
+        CUTL_SINGLETON_REF(logger)
 
     public:
         void set_log_func(LogFuncType func);

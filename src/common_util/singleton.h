@@ -2,13 +2,13 @@
 
 #include <mutex>
 
-#undef DISABLE_COPY_AND_ASSIGN
-#define DISABLE_COPY_AND_ASSIGN(classname) \
+#undef CUTL_COPY_AND_ASSIGN
+#define CUTL_COPY_AND_ASSIGN(classname)    \
     classname(const classname &) = delete; \
     classname &operator=(const classname &) = delete;
 
-#undef DECLARE_SINGLETON_PTR
-#define DECLARE_SINGLETON_PTR(classname)                                         \
+#undef CUTL_SINGLETON_PTR
+#define CUTL_SINGLETON_PTR(classname)                                            \
 public:                                                                          \
     static classname *get_instance(bool create_if_needed = true)                 \
     {                                                                            \
@@ -24,10 +24,10 @@ public:                                                                         
                                                                                  \
 private:                                                                         \
     classname();                                                                 \
-    DISABLE_COPY_AND_ASSIGN(classname)
+    CUTL_COPY_AND_ASSIGN(classname)
 
-#undef DECLARE_SINGLETON_PTR_DEFAULT_CTOR
-#define DECLARE_SINGLETON_PTR_DEFAULT_CTOR(classname)                            \
+#undef CUTL_SINGLETON_PTR_DEFAULT_CTOR
+#define CUTL_SINGLETON_PTR_DEFAULT_CTOR(classname)                               \
 public:                                                                          \
     static classname *get_instance(bool create_if_needed = true)                 \
     {                                                                            \
@@ -43,10 +43,10 @@ public:                                                                         
                                                                                  \
 private:                                                                         \
     classname() = default;                                                       \
-    DISABLE_COPY_AND_ASSIGN(classname)
+    CUTL_COPY_AND_ASSIGN(classname)
 
-#undef DECLARE_SINGLETON_REF
-#define DECLARE_SINGLETON_REF(classname)                         \
+#undef CUTL_SINGLETON_REF
+#define CUTL_SINGLETON_REF(classname)                            \
 public:                                                          \
     static classname &get_instance(bool create_if_needed = true) \
     {                                                            \
@@ -57,10 +57,10 @@ public:                                                          \
                                                                  \
 private:                                                         \
     classname();                                                 \
-    DISABLE_COPY_AND_ASSIGN(classname)
+    CUTL_COPY_AND_ASSIGN(classname)
 
-#undef DECLARE_SINGLETON_REF_DEFAULT_CTOR
-#define DECLARE_SINGLETON_REF_DEFAULT_CTOR(classname)            \
+#undef CUTL_SINGLETON_REF_DEFAULT_CTOR
+#define CUTL_SINGLETON_REF_DEFAULT_CTOR(classname)               \
 public:                                                          \
     static classname &get_instance(bool create_if_needed = true) \
     {                                                            \
@@ -71,4 +71,4 @@ public:                                                          \
                                                                  \
 private:                                                         \
     classname() = default;                                       \
-    DISABLE_COPY_AND_ASSIGN(classname)
+    CUTL_COPY_AND_ASSIGN(classname)
