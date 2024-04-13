@@ -6,6 +6,7 @@
 #include "timecount.hpp"
 #include "datetime.hpp"
 #include "verutil.hpp"
+#include "strutil.hpp"
 
 int main()
 {
@@ -15,7 +16,8 @@ int main()
     // TestTimeutil();
     // TestTimecount();
     // TestDatetime();
-    TestVerUtil();
+    // TestVerUtil();
+    TestStrUtil();
 
     return 0;
 }

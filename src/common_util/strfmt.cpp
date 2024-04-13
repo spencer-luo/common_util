@@ -186,7 +186,7 @@ namespace cutl
     static const char HEX_CHARS_UPPER[] = "0123456789ABCDEF";
     static const char HEX_CHARS_LOWER[] = "0123456789abcdef";
 
-    std::string to_hex(const uint8_t *data, size_t len, bool upper, char split)
+    std::string to_hex(const uint8_t *data, size_t len, bool upper, char separator)
     {
         const char *hex_chars = upper ? HEX_CHARS_UPPER : HEX_CHARS_LOWER;
 
@@ -197,7 +197,7 @@ namespace cutl
             const char temp = data[i];
             output.push_back(hex_chars[temp / 16]);
             output.push_back(hex_chars[temp % 16]);
-            output.push_back(split);
+            output.push_back(separator);
         }
 
         return output;
@@ -245,45 +245,45 @@ namespace cutl
         return text;
     }
 
-    std::string to_bin(uint8_t value, char split)
+    std::string to_bin(uint8_t value, char separator)
     {
         std::string text;
         std::bitset<4> v1((value >> 4) & 0xF);
         std::bitset<4> v2(value & 0xF);
         text += v1.to_string();
-        text += split;
+        text += separator;
         text += v2.to_string();
         return text;
     }
 
-    std::string to_bin(uint16_t value, char split)
+    std::string to_bin(uint16_t value, char separator)
     {
         std::string text;
-        text += to_bin((uint8_t)((value >> 8) & 0xFF)) + split;
+        text += to_bin((uint8_t)((value >> 8) & 0xFF)) + separator;
         text += to_bin((uint8_t)(value & 0xFF));
         return text;
     }
 
-    std::string to_bin(uint32_t value, char split)
+    std::string to_bin(uint32_t value, char separator)
     {
         std::string text;
-        text += to_bin((uint8_t)((value >> 24) & 0xFF)) + split;
-        text += to_bin((uint8_t)((value >> 16) & 0xFF)) + split;
-        text += to_bin((uint8_t)((value >> 8) & 0xFF)) + split;
+        text += to_bin((uint8_t)((value >> 24) & 0xFF)) + separator;
+        text += to_bin((uint8_t)((value >> 16) & 0xFF)) + separator;
+        text += to_bin((uint8_t)((value >> 8) & 0xFF)) + separator;
         text += to_bin((uint8_t)(value & 0xFF));
         return text;
     }
 
-    std::string to_bin(uint64_t value, char split)
+    std::string to_bin(uint64_t value, char separator)
     {
         std::string text;
-        text += to_bin((uint8_t)((value >> 56) & 0xFF)) + split;
-        text += to_bin((uint8_t)((value >> 48) & 0xFF)) + split;
-        text += to_bin((uint8_t)((value >> 40) & 0xFF)) + split;
-        text += to_bin((uint8_t)((value >> 32) & 0xFF)) + split;
-        text += to_bin((uint8_t)((value >> 24) & 0xFF)) + split;
-        text += to_bin((uint8_t)((value >> 16) & 0xFF)) + split;
-        text += to_bin((uint8_t)((value >> 8) & 0xFF)) + split;
+        text += to_bin((uint8_t)((value >> 56) & 0xFF)) + separator;
+        text += to_bin((uint8_t)((value >> 48) & 0xFF)) + separator;
+        text += to_bin((uint8_t)((value >> 40) & 0xFF)) + separator;
+        text += to_bin((uint8_t)((value >> 32) & 0xFF)) + separator;
+        text += to_bin((uint8_t)((value >> 24) & 0xFF)) + separator;
+        text += to_bin((uint8_t)((value >> 16) & 0xFF)) + separator;
+        text += to_bin((uint8_t)((value >> 8) & 0xFF)) + separator;
         text += to_bin((uint8_t)(value & 0xFF));
         return text;
     }
