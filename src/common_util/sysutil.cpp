@@ -1,6 +1,9 @@
 
-#include "sysutil.h"
 #include <map>
+#include <strutil.h>
+#include <cstdlib>
+#include "sysutil.h"
+#include "inner/logger.h"
 
 namespace cutl
 {
@@ -77,6 +80,85 @@ namespace cutl
             data[i] = data[size - i - 1];
             data[size - i - 1] = temp;
         }
+    }
+
+    // TODO: windows下未验证，可能会有问题
+    bool system(const std::string &cmd)
+    {
+        if (cmd.empty())
+        {
+            CUTL_ERROR("cmd is empty!");
+            return false;
+        }
+
+        pid_t status;
+        status = std::system(cmd.c_str());
+
+        if (-1 == status)
+        {
+            CUTL_ERROR("system error!");
+            return false;
+        }
+
+        if (!WIFEXITED(status))
+        {
+            CUTL_ERROR("exit status:" + std::to_string(WEXITSTATUS(status)));
+            return false;
+        }
+
+        if (0 != WEXITSTATUS(status))
+        {
+            CUTL_ERROR("run shell script fail, script exit code:" + std::to_string(WEXITSTATUS(status)));
+            return false;
+        }
+
+        return true;
+    }
+
+    bool callcmd(const std::string &cmd, std::string &result)
+    {
+        // 读取命令执行结果的最大Buffer长度
+        constexpr int MAX_CMD_BUF_LEN = 1024;
+        FILE *fp = popen(cmd.c_str(), "r");
+        if (fp == NULL)
+        {
+            CUTL_ERROR("popen error for cmd:" + cmd);
+            return false;
+        }
+
+        // 　读取命令执行结果
+        char buffer[MAX_CMD_BUF_LEN] = {0};
+        char *res = fgets(buffer, sizeof(buffer), fp);
+        if (res == NULL)
+        {
+            CUTL_ERROR("read result error for cmd:" + cmd);
+            if (pclose(fp) != 0)
+            {
+                CUTL_ERROR("pclose error for cmd:" + cmd);
+            }
+            return false;
+        }
+
+        if (pclose(fp) != 0)
+        {
+            CUTL_ERROR("pclose error for cmd:" + cmd);
+        }
+
+        result = strip(std::string(buffer));
+
+        return true;
+    }
+
+    std::string getenv(const std::string &name, const std::string &default_value)
+    {
+        const char *text = std::getenv(name.c_str());
+        if (text == nullptr)
+        {
+            CUTL_ERROR("variable [" + name + "] not set, fallback to " + default_value);
+            return default_value;
+        }
+
+        return std::string(text);
     }
 
 } // namespace

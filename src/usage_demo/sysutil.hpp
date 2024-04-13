@@ -1,14 +1,21 @@
 #pragma once
 
 #include <iostream>
-#include "common_util/sysutil.h"
 #include "common.hpp"
+#include "common_util/sysutil.h"
 
-void TestSysutil()
+void TestBaseFunc()
 {
-    PrintTitle("sysutil");
+    PrintSubTitle("TestBaseFunc");
+
     std::cout << "C++标准的版本：" << cutl::cpp_stl_version() << std::endl;
     std::cout << "程序位数：" << cutl::program_bit() << "位程序" << std::endl;
+}
+
+void TestEndian()
+{
+    PrintSubTitle("TestEndian");
+
     if (cutl::endian_type() == cutl::endian::little)
     {
         std::cout << "系统大小端：小端" << std::endl;
@@ -27,4 +34,30 @@ void TestSysutil()
     uint8_t bytes[] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10};
     cutl::byteswap(bytes, 16);
     std::cout << "byteswap for bytes:" << cutl::to_hex(bytes, 16) << std::endl;
+}
+
+void TestSystemCall()
+{
+    PrintSubTitle("TestSystemCall");
+
+    bool ret = cutl::system("echo hello");
+    std::cout << "system call return value: " << ret << std::endl;
+
+    auto cmd = "cmake --version";
+    std::string result_text;
+    ret = cutl::callcmd(cmd, result_text);
+    std::cout << "callcmd return value: " << ret << std::endl;
+    std::cout << "callcmd result text: " << result_text << std::endl;
+
+    auto result = cutl::getenv("PATH", "not found");
+    std::cout << "getenv result: " << result << std::endl;
+}
+
+void TestSysutil()
+{
+    PrintTitle("sysutil");
+
+    TestBaseFunc();
+    TestEndian();
+    TestSystemCall();
 }
