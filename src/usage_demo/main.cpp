@@ -7,17 +7,19 @@
 #include "datetime.hpp"
 #include "verutil.hpp"
 #include "strutil.hpp"
+#include "filepath.hpp"
 
 int main()
 {
     LibraryInit();
     TestSysutil();
-    TestStrfmt();
+    // TestStrfmt();
     // TestTimeutil();
     // TestTimecount();
     // TestDatetime();
     // TestVerUtil();
-    TestStrUtil();
+    // TestStrUtil();
+    TestFilePath();
 
     return 0;
 }

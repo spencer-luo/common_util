@@ -12,6 +12,17 @@ namespace cutl
         big,
     };
 
+    enum class platform
+    {
+        windows,
+        macos,
+        linux,
+        unix,
+        unknown,
+    };
+
+    platform platform_type();
+    std::string platform_name();
     std::string cpp_stl_version();
     uint16_t program_bit();
 

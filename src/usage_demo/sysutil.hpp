@@ -8,6 +8,7 @@ void TestBaseFunc()
 {
     PrintSubTitle("TestBaseFunc");
 
+    std::cout << "操作系统的平台：" << cutl::platform_name() << std::endl;
     std::cout << "C++标准的版本：" << cutl::cpp_stl_version() << std::endl;
     std::cout << "程序位数：" << cutl::program_bit() << "位程序" << std::endl;
 }

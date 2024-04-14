@@ -8,6 +8,44 @@
 namespace cutl
 {
 
+    // TODO: 未在各个平台下验证
+    // https://www.cnblogs.com/Forgenvueory/p/12757271.html
+    // https : // blog.csdn.net/n5/article/details/70143942
+    platform platform_type()
+    {
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+        return platform::windows;
+#elif defined(__APPLE__) || defined(__MACH__)
+        return platform::macos;
+#elif defined(__linux__)
+        return platform::linux;
+#elif defined(__unix__)
+        return platform::unix;
+#else
+        return platform::unknown;
+#endif
+    }
+
+    std::string platform_name()
+    {
+        auto type = platform_type();
+        static std::map<platform, std::string> platform_map = {
+            {platform::windows, "windows"},
+            {platform::macos, "macos"},
+            {platform::linux, "linux"},
+            {platform::unix, "unix"},
+            {platform::unknown, "unknown"},
+        };
+
+        auto iter = platform_map.find(type);
+        if (iter != platform_map.end())
+        {
+            return iter->second;
+        }
+
+        return "unknown";
+    }
+
     std::string cpp_stl_version()
     {
         static std::map<long, std::string> version_map = {
@@ -35,6 +73,7 @@ namespace cutl
         return byte * 8;
     }
 
+    // https://blog.csdn.net/Frederick_Fung/article/details/115333125?utm_source=miniapp_weixin
     endian endian_type()
     {
         int a = 1;
