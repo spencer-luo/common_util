@@ -142,6 +142,12 @@ namespace cutl
         return filepath_.substr(index + 1);
     }
 
+    std::string filepath::realpath() const
+    {
+        // TODO
+        return "";
+    }
+
     std::string filepath::extension() const
     {
         auto pos = filepath_.find_last_of('.');

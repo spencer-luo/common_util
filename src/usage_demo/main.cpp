@@ -8,18 +8,20 @@
 #include "verutil.hpp"
 #include "strutil.hpp"
 #include "filepath.hpp"
+#include "fileutil.hpp"
 
-int main()
+int main(int argc, char *argv[])
 {
     LibraryInit();
-    TestSysutil();
+    // TestSysutil();
     // TestStrfmt();
     // TestTimeutil();
     // TestTimecount();
     // TestDatetime();
     // TestVerUtil();
     // TestStrUtil();
-    TestFilePath();
+    // TestFilePath();
+    TestFileUtil();
 
     return 0;
 }

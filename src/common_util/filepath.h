@@ -5,6 +5,18 @@
 
 namespace cutl
 {
+
+    enum file_type
+    {
+        unknown = 0x00,
+        directory = 0x02,
+        file = 0x04,
+        link = 0x08,
+        // symlink,      // todo
+        mount = 0x10, // mount device
+        all = 0xFF,   // all types
+    };
+
     class filepath
     {
     public:
@@ -24,11 +36,20 @@ namespace cutl
         bool writable() const;
         bool executable() const;
 
+        // // TODO: implement these functions
+        // bool isfile() const;
+        // bool isdir() const;
+        // bool islink() const;
+        // bool issymlink() const;
+        // bool ismount() const;
+
         // parent dir path
         std::string dirname() const;
         // filename or directory name
         std::string basename() const;
-        // extension without dot
+        // real path for links and shortcuts
+        std::string realpath() const;
+        // extension with dot
         std::string extension() const;
 
     private:
