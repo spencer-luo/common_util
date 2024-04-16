@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "fileutil.h"
 #include "inner/logger.h"
 #include "inner/filesystem.h"
@@ -5,6 +6,11 @@
 
 namespace cutl
 {
+
+    std::string getcwd()
+    {
+        return current_program_dir();
+    }
 
     bool createfile(const filepath &path)
     {
@@ -111,9 +117,33 @@ namespace cutl
         }
     }
 
-    std::string getcwd()
+    bool removefile(const filepath &path)
     {
-        return current_program_dir();
+        int ret = remove(path.str().c_str());
+        if (ret != 0)
+        {
+            CUTL_ERROR("remove " + path.str() + " error, ret:" + std::to_string(ret));
+            return false;
+        }
+        return true;
+    }
+
+    bool removedir(const filepath &path, bool recursive)
+    {
+        if (!path.exists())
+        {
+            CUTL_ERROR("Directory does not exist: " + path.str());
+            return false;
+        }
+
+        if (recursive)
+        {
+            return remove_dir_recursive(path.str());
+        }
+        else
+        {
+            return remove_dir(path.str());
+        }
     }
 
 } // namespace cutl

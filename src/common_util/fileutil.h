@@ -6,11 +6,14 @@
 
 namespace cutl
 {
+    std::string getcwd();
+
     bool createfile(const filepath &path);
-    // recursive: create parent directories if not exist, link 'mkdir -p'
+    // recursive: create parent directories if not exist, like the 'mkdir -p' command
     bool createdir(const filepath &path, bool recursive = false);
-    // bool removefile(const filepath &path);
-    // bool removedir(const filepath &path);
+    bool removefile(const filepath &path);
+    // recursive: remove the whole directory recursively, like the 'rm -rf' command
+    bool removedir(const filepath &path, bool recursive = false);
     // bool removefileordir(const filepath &path);
     // bool removefile_by_extenstion(const filepath &path, const filepath &ext);
 
@@ -28,5 +31,4 @@ namespace cutl
     // bool copydir(const filepath &src, const filepath &dst);
     // bool copyfileordir(const filepath &src, const filepath &dst);
 
-    std::string getcwd();
 } // namespace cutl
