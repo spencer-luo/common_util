@@ -7,6 +7,26 @@
 namespace cutl
 {
 
+    file_guard::file_guard(FILE *file)
+        : file_(file)
+    {
+    }
+
+    file_guard::~file_guard()
+    {
+        if (file_)
+        {
+            fclose(file_);
+            file_ = nullptr;
+        }
+        // ROBOLOG_DCHECK(file_ == nullptr);
+    }
+
+    FILE *file_guard::getfd() const
+    {
+        return file_;
+    }
+
     std::string getcwd()
     {
         return current_program_dir();
@@ -45,7 +65,7 @@ namespace cutl
         // int32_t fd = fileno(fp);
         // if (0 > fd)
         // {
-        //     ROBOLOG_ERROR(UpgradeController) << "get file fd is error. file:" << fileName;
+        //     ROBOLOG_ERROR(UpgradeController) << "get file fd is error. file:" << path.str();
         //     fclose(fp);
         //     return false;
         // }
@@ -144,6 +164,58 @@ namespace cutl
         {
             return remove_dir(path.str());
         }
+    }
+
+    std::string readtext(const filepath &path)
+    {
+        // max read size 4k
+        static constexpr size_t MAX_READ_SIZE = 4 * 1024;
+        file_guard fg(fopen(path.str().c_str(), "rb"));
+        if (fg.getfd() == nullptr)
+        {
+            CUTL_ERROR("open file failed for " + path.str());
+            return "";
+        }
+
+        // get file size
+        fseek(fg.getfd(), 0, SEEK_END);
+        size_t data_len = static_cast<size_t>(ftell(fg.getfd()));
+        rewind(fg.getfd());
+
+        // get read size
+        if (data_len > MAX_READ_SIZE)
+        {
+            data_len = MAX_READ_SIZE;
+            CUTL_WARN("file size is large than 4k, only read the first 4k data for file:" + path.str());
+        }
+
+        char *buffer = new char[data_len + 1];
+        if (buffer == nullptr)
+        {
+            CUTL_ERROR("buffer alloc failed, data_len:" + std::to_string(data_len));
+            return "";
+        }
+        size_t read_len = static_cast<size_t>(fread(buffer, 1, data_len, fg.getfd()));
+        if (read_len < data_len)
+        {
+            CUTL_ERROR("read file failed, only read " + std::to_string(read_len) + " bytes for " + path.str());
+        }
+        delete[] buffer;
+        return std::string(buffer);
+    }
+
+    bool writetext(const filepath &path, const std::string &content)
+    {
+        // std::lock_guard
+        file_guard fg(fopen(path.str().c_str(), "w"));
+        if (fg.getfd() == nullptr)
+        {
+            CUTL_ERROR("open file failed, " + path.str());
+            return false;
+        }
+
+        size_t written_size = fwrite(content.c_str(), 1, content.length(), fg.getfd());
+        return written_size == content.length();
     }
 
 } // namespace cutl

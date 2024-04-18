@@ -1,11 +1,23 @@
 #pragma once
 
 #include <string>
+#include <cstdio>
 #include "strutil.h"
 #include "filepath.h"
 
 namespace cutl
 {
+    class file_guard
+    {
+    public:
+        explicit file_guard(FILE *file);
+        ~file_guard();
+        FILE *getfd() const;
+
+    private:
+        FILE *file_;
+    };
+
     std::string getcwd();
 
     bool createfile(const filepath &path);
@@ -14,11 +26,10 @@ namespace cutl
     bool removefile(const filepath &path);
     // recursive: remove the whole directory recursively, like the 'rm -rf' command
     bool removedir(const filepath &path, bool recursive = false);
-    // bool removefileordir(const filepath &path);
     // bool removefile_by_extenstion(const filepath &path, const filepath &ext);
 
-    // std::string readfile(const filepath &path);
-    // bool writefile(const filepath &path, const filepath &content);
+    std::string readtext(const filepath &path);
+    bool writetext(const filepath &path, const std::string &content);
 
     // uint64_t filesize(const filepath &filepath);
     // uint64_t dirsize(const filepath &dirpath);
