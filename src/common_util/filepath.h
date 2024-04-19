@@ -8,14 +8,25 @@ namespace cutl
 
     enum file_type
     {
-        unknown = 0x00,
-        directory = 0x02,
-        file = 0x04,
-        link = 0x08,
-        // symlink,      // todo
-        mount = 0x10, // mount device
-        all = 0xFF,   // all types
+        unknown = 0x00,       // undefined
+        directory = 0x01,     // directory
+        file = 0x02,          // regular file
+        symlink = 0x04,       // symbolic link
+        char_special = 0x08,  // character device, only for unix
+        block_special = 0x10, // block device, only for unix
+        fifo = 0x20,          // named pipe, only for unix
+        socket = 0x40,        // socket file, only for unix
+        all = 0xFF,           // all type mask, includes all types
     };
+
+    class file_entity
+    {
+    public:
+        file_type type = {file_type::unknown};
+        std::string filepath;
+    };
+
+    using filevec = std::vector<file_entity>;
 
     class filepath
     {

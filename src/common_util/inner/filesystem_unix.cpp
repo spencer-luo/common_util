@@ -180,6 +180,91 @@ namespace cutl
         return totalSize;
     }
 
+    file_type get_file_type(int mode)
+    {
+        file_type type = file_type::unknown;
+        if (S_ISBLK(mode))
+        {
+            type = file_type::block_special;
+        }
+        else if (S_ISCHR(mode))
+        {
+            type = file_type::char_special;
+        }
+        else if (S_ISDIR(mode))
+        {
+            type = file_type::directory;
+        }
+        else if (S_ISFIFO(mode))
+        {
+            type = file_type::fifo;
+        }
+        else if (S_ISREG(mode))
+        {
+            type = file_type::fifo;
+        }
+        else if (S_ISLNK(mode))
+        {
+            type = file_type::symlink;
+        }
+        else if (S_ISSOCK(mode))
+        {
+            type = file_type::socket;
+        }
+        return type;
+    }
+
+    filevec list_sub_files(const std::string &dirpath, file_type type, bool recursive)
+    {
+        filevec file_list;
+
+        DIR *dir = opendir(dirpath.c_str()); // 打开这个目录
+        if (dir == NULL)
+        {
+            CUTL_ERROR("opendir error. dirpath:" + dirpath + ", error:" + strerror(errno));
+            return file_list;
+        }
+        struct dirent *file_info = NULL;
+        // 逐个读取目录中的文件到file_info
+        while ((file_info = readdir(dir)) != NULL)
+        {
+            // 系统有个系统文件，名为“..”和“.”,对它不做处理
+            std::string filename(file_info->d_name);
+            if (is_special_dir(filename))
+            {
+                continue;
+            }
+            struct stat file_stat; // 文件的信息
+            std::string filepath = dirpath + "/" + filename;
+            int ret = stat(filepath.c_str(), &file_stat);
+            if (0 != ret)
+            {
+                CUTL_ERROR("stat error. filepath:" + filepath + ", error:" + strerror(errno));
+                return file_list;
+            }
+            auto filetype = get_file_type(file_stat.st_mode);
+            if (filetype & type)
+            {
+                file_entity entity;
+                entity.type = filetype;
+                entity.filepath = filepath;
+                file_list.emplace_back(entity);
+            }
+
+            if (S_ISDIR(file_stat.st_mode) && recursive)
+            {
+                auto sub_files = list_sub_files(filepath, type, recursive);
+                if (!sub_files.empty())
+                {
+                    file_list.insert(file_list.end(), sub_files.begin(), sub_files.end());
+                }
+            }
+        }
+        closedir(dir);
+
+        return file_list;
+    }
+
 } // namespace cutl
 
 #endif // defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)

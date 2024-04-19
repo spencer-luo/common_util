@@ -2,6 +2,7 @@
 
 #include <string>
 #include <cstdio>
+#include "filepath.h"
 
 namespace cutl
 {
@@ -18,5 +19,7 @@ namespace cutl
     bool file_sync(FILE *handle);
     // get directory size in bytes
     uint64_t get_dirsize(const std::string &dirpath);
+
+    filevec list_sub_files(const std::string &dirpath, file_type type = file_type::all, bool recursive = false);
 
 } // namespace cutl
