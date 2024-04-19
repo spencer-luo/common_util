@@ -51,11 +51,26 @@ void TestRemoveFileAndDir()
     cutl::removedir(basedir.join("dir2"), true);
 }
 
+void TestReadAndWriteText()
+{
+    PrintSubTitle("read/write text");
+
+    auto basedir = cutl::path(kBaseDir);
+    // ./file4.txt
+    std::cout << "write data:" << std::endl;
+    auto file4 = basedir.join("file4.txt");
+    cutl::writetext(file4, "this is test data.");
+    std::cout << "read data:" << std::endl;
+    auto text = cutl::readtext(file4);
+    std::cout << text << std::endl;
+}
+
 void TestFileUtil()
 {
     PrintTitle("fileutil");
 
     TestGetCwd();
     // TestCreateFileAndDir();
-    TestRemoveFileAndDir();
+    // TestRemoveFileAndDir();
+    TestReadAndWriteText();
 }

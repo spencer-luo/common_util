@@ -103,6 +103,23 @@ namespace cutl
         return true;
     }
 
+    bool file_sync(FILE *handle)
+    {
+        int32_t fd = fileno(handle);
+        if (fd < 0)
+        {
+            CUTL_ERROR(std::string("get file fd is error: ") + strerror(errno));
+            return false;
+        }
+        int ret = fsync(fd);
+        if (ret != 0)
+        {
+            CUTL_ERROR(std::string("fsync error: ") + strerror(errno));
+            return false;
+        }
+        return true;
+    }
+
 } // namespace cutl
 
 #endif // defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)

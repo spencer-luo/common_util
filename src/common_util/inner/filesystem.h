@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <cstdio>
 
 namespace cutl
 {
@@ -14,4 +15,5 @@ namespace cutl
     // remove directory recursively
     bool remove_dir_recursive(const std::string &dir_path);
 
+    bool file_sync(FILE *handle);
 } // namespace cutl

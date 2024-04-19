@@ -16,7 +16,11 @@ namespace cutl
     {
         if (file_)
         {
-            fclose(file_);
+            int ret = fclose(file_);
+            if (ret != 0)
+            {
+                CUTL_ERROR("fail to close file, ret" + std::to_string(ret));
+            }
             file_ = nullptr;
         }
         // ROBOLOG_DCHECK(file_ == nullptr);
@@ -37,44 +41,33 @@ namespace cutl
         auto dirPath = path.dirname();
         if (dirPath.empty())
         {
-            CUTL_ERROR("Invalid path: " + path.str());
+            CUTL_ERROR("invalid path: " + path.str());
             return false;
         }
         if (!cutl::path(dirPath).exists())
         {
-            CUTL_ERROR("Directory does not exist: " + dirPath);
+            CUTL_ERROR("directory does not exist: " + dirPath);
             return false;
         }
 
-        FILE *fp = fopen(path.str().c_str(), "w+");
-        if (nullptr == fp)
+        file_guard fg(fopen(path.str().c_str(), "w"));
+        if (fg.getfd() == nullptr)
         {
             CUTL_ERROR("fail to open file:" + path.str());
             return false;
         }
 
-        int ret = fflush(fp);
+        int ret = fflush(fg.getfd());
         if (0 != ret)
         {
             CUTL_ERROR("fail to flush file:" + path.str());
-            fclose(fp);
             return false;
         }
 
-        // TODO: add fsync
-        // int32_t fd = fileno(fp);
-        // if (0 > fd)
-        // {
-        //     ROBOLOG_ERROR(UpgradeController) << "get file fd is error. file:" << path.str();
-        //     fclose(fp);
-        //     return false;
-        // }
-        // (void)fsync(fd);
-
-        ret = fclose(fp);
-        if (0 != ret)
+        if (!file_sync(fg.getfd()))
         {
-            CUTL_ERROR("fail to close file:" + path.str());
+            CUTL_ERROR("file_sync failed for " + path.str());
+            return false;
         }
 
         return true;
@@ -89,7 +82,7 @@ namespace cutl
             int ret = snprintf(buffer, buf_size, "%s", path.str().c_str());
             if (ret < 0 || ret >= buf_size)
             {
-                CUTL_ERROR("Invalid path: " + path.str());
+                CUTL_ERROR("invalid path: " + path.str());
                 return false;
             }
             int len = strlen(buffer);
@@ -124,12 +117,12 @@ namespace cutl
             auto dirPath = path.dirname();
             if (dirPath.empty())
             {
-                CUTL_ERROR("Invalid path: " + path.str());
+                CUTL_ERROR("invalid path: " + path.str());
                 return false;
             }
             if (!cutl::path(dirPath).exists())
             {
-                CUTL_ERROR("Directory does not exist: " + dirPath);
+                CUTL_ERROR("directory does not exist: " + dirPath);
                 return false;
             }
 
@@ -152,7 +145,7 @@ namespace cutl
     {
         if (!path.exists())
         {
-            CUTL_ERROR("Directory does not exist: " + path.str());
+            CUTL_ERROR("directory does not exist: " + path.str());
             return false;
         }
 
@@ -170,7 +163,7 @@ namespace cutl
     {
         // max read size 4k
         static constexpr size_t MAX_READ_SIZE = 4 * 1024;
-        file_guard fg(fopen(path.str().c_str(), "rb"));
+        file_guard fg(fopen(path.str().c_str(), "r"));
         if (fg.getfd() == nullptr)
         {
             CUTL_ERROR("open file failed for " + path.str());
@@ -200,8 +193,11 @@ namespace cutl
         {
             CUTL_ERROR("read file failed, only read " + std::to_string(read_len) + " bytes for " + path.str());
         }
+
+        auto text = std::string(buffer);
         delete[] buffer;
-        return std::string(buffer);
+
+        return text;
     }
 
     bool writetext(const filepath &path, const std::string &content)
@@ -215,7 +211,26 @@ namespace cutl
         }
 
         size_t written_size = fwrite(content.c_str(), 1, content.length(), fg.getfd());
-        return written_size == content.length();
+        if (written_size != content.length())
+        {
+            CUTL_ERROR("written size is not equal to content size for " + path.str());
+            return false;
+        }
+
+        int ret = fflush(fg.getfd());
+        if (0 != ret)
+        {
+            CUTL_ERROR("fail to flush file:" + path.str());
+            return false;
+        }
+
+        if (!file_sync(fg.getfd()))
+        {
+            CUTL_ERROR("file_sync failed for " + path.str());
+            return false;
+        }
+
+        return true;
     }
 
 } // namespace cutl
