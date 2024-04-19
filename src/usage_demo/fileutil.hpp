@@ -63,6 +63,12 @@ void TestReadAndWriteText()
     std::cout << "read data:" << std::endl;
     auto text = cutl::readtext(file4);
     std::cout << text << std::endl;
+
+    // // read big file
+    // auto bigfile = cutl::path("/Users/spencer/workspace/common_util/src/usage_demo/file_content.txt");
+    // auto bigtext = cutl::readtext(bigfile);
+    // std::cout << "read big file: " << std::endl;
+    // std::cout << bigtext << std::endl;
 }
 
 void TestFileUtil()
