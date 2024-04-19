@@ -71,6 +71,18 @@ void TestReadAndWriteText()
     // std::cout << bigtext << std::endl;
 }
 
+void TestFilesizeAndDirsize()
+{
+    PrintSubTitle("filesize/dirsize");
+
+    auto bigfile = cutl::path("/Users/spencer/Downloads/MicrosoftEdge-120.0.2210.133.pkg");
+    auto filesize = cutl::filesize(bigfile);
+    std::cout << "filesize: " << filesize << ", human readable: " << cutl::fmt_filesize(filesize) << std::endl;
+    auto dirpath = cutl::path("/Users/spencer/Downloads/");
+    auto dirsize = cutl::dirsize(dirpath);
+    std::cout << "dirsize: " << dirsize << ", human readable: " << cutl::fmt_filesize(dirsize) << std::endl;
+}
+
 void TestFileUtil()
 {
     PrintTitle("fileutil");
@@ -78,5 +90,6 @@ void TestFileUtil()
     TestGetCwd();
     // TestCreateFileAndDir();
     // TestRemoveFileAndDir();
-    TestReadAndWriteText();
+    // TestReadAndWriteText();
+    TestFilesizeAndDirsize();
 }

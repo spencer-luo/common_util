@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <sys/stat.h>
 #include "fileutil.h"
 #include "inner/logger.h"
 #include "inner/filesystem.h"
@@ -231,6 +232,24 @@ namespace cutl
         }
 
         return true;
+    }
+
+    uint64_t filesize(const filepath &filepath)
+    {
+        if (!filepath.exists())
+        {
+            CUTL_ERROR("filepath does not exist: " + filepath.str());
+            return 0;
+        }
+
+        struct stat statbuf;
+        stat(filepath.str().c_str(), &statbuf);
+        return static_cast<uint64_t>(statbuf.st_size);
+    }
+
+    uint64_t dirsize(const filepath &dirpath)
+    {
+        return get_dirsize(dirpath.str());
     }
 
 } // namespace cutl

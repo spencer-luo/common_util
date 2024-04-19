@@ -31,8 +31,8 @@ namespace cutl
     std::string readtext(const filepath &path);
     bool writetext(const filepath &path, const std::string &content);
 
-    // uint64_t filesize(const filepath &filepath);
-    // uint64_t dirsize(const filepath &dirpath);
+    uint64_t filesize(const filepath &filepath);
+    uint64_t dirsize(const filepath &dirpath);
 
     // strvec list_files(const filepath &dirpath, file_type type = file_type::ALL, bool recursive = false);
     // strvec find_files_by_name(const filepath &dirpath, const filepath &name, bool recursive = false);

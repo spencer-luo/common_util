@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <stack>
 #include "filesystem.h"
 #include "inner/logger.h"
 
@@ -58,13 +59,13 @@ namespace cutl
         while ((file_info = readdir(dir)) != NULL)
         {
             // 系统有个系统文件，名为“..”和“.”,对它不做处理
-            std::string fileName(file_info->d_name);
-            if (is_special_dir(fileName))
+            std::string filename(file_info->d_name);
+            if (is_special_dir(filename))
             {
                 continue;
             }
             struct stat file_stat; // 文件的信息
-            std::string filepath = dir_path + +"/" + fileName;
+            std::string filepath = dir_path + "/" + filename;
             int ret = stat(filepath.c_str(), &file_stat);
             if (0 != ret)
             {
@@ -118,6 +119,65 @@ namespace cutl
             return false;
         }
         return true;
+    }
+
+    uint64_t get_dirsize(const std::string &dirpath)
+    {
+        uint64_t totalSize = 0;
+
+        std::stack<std::string> dirs;
+        DIR *dir = opendir(dirpath.c_str());
+        if (dir == nullptr)
+        {
+            CUTL_ERROR("open " + dirpath + " error");
+            return 0;
+        }
+
+        dirs.push(dirpath);
+
+        while (!dirs.empty())
+        {
+            std::string currentDir = dirs.top();
+            dirs.pop();
+            DIR *subDir = opendir(currentDir.c_str());
+            if (subDir == nullptr)
+            {
+                CUTL_ERROR("open " + currentDir + " error");
+                continue;
+            }
+            struct dirent *file_info = nullptr;
+            while ((file_info = readdir(subDir)) != nullptr)
+            {
+                std::string filename(file_info->d_name);
+                if (file_info->d_type == DT_DIR)
+                {
+                    if (is_special_dir(filename))
+                    {
+                        // do nothing
+                        continue;
+                    }
+                    else
+                    {
+                        // 子文件夹
+                        std::string subDirPath = currentDir + "/" + filename;
+                        dirs.push(subDirPath);
+                    }
+                }
+                else
+                {
+                    // 普通文件
+                    std::string filepath = currentDir + "/" + filename;
+                    // TODO: 肯需要替换成函数
+                    struct stat statbuf;
+                    stat(filepath.c_str(), &statbuf);
+                    totalSize += statbuf.st_size;
+                }
+            }
+            closedir(subDir);
+        }
+        closedir(dir);
+
+        return totalSize;
     }
 
 } // namespace cutl
