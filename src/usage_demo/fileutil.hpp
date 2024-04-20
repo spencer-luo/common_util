@@ -149,6 +149,17 @@ void TestFindfile()
     PrintFileList(fileList);
 }
 
+void TestCopyFileAndDir()
+{
+    PrintSubTitle("copy file/dir");
+
+    auto basedir = cutl::path(kBaseDir);
+    // auto
+    auto srcpath = cutl::path("/Users/spencer/workspace/common_util/file_content.txt");
+    cutl::copyfile(srcpath, basedir.join("file5.data"));
+    cutl::copyfile(srcpath, basedir.join("file6.data"), true);
+}
+
 void TestFileUtil()
 {
     PrintTitle("fileutil");
@@ -159,5 +170,6 @@ void TestFileUtil()
     // TestReadAndWriteText();
     // TestFilesizeAndDirsize();
     // TestListfile();
-    TestFindfile();
+    // TestFindfile();
+    TestCopyFileAndDir();
 }

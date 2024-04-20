@@ -22,4 +22,6 @@ namespace cutl
 
     filevec list_sub_files(const std::string &dirpath, filetype type = filetype::all, bool recursive = false);
 
+    bool copy_attributes(const std::string &srcpath, const std::string &dstpath);
+
 } // namespace cutl

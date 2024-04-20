@@ -244,7 +244,13 @@ namespace cutl
         }
 
         struct stat statbuf;
-        stat(filepath.str().c_str(), &statbuf);
+        int ret = lstat(filepath.str().c_str(), &statbuf);
+        if (ret != 0)
+        {
+            CUTL_ERROR("lstat " + filepath.str() + " error, ret:" + std::to_string(ret));
+            return 0;
+        }
+
         return static_cast<uint64_t>(statbuf.st_size);
     }
 
@@ -294,6 +300,53 @@ namespace cutl
             }
         }
         return result;
+    }
+
+    bool copyfile(const filepath &srcpath, const filepath &dstpath, bool attributes)
+    {
+        // copy file content
+        {
+            file_guard frd(fopen(srcpath.str().c_str(), "rb"));
+            if (frd.getfd() == nullptr)
+            {
+                CUTL_ERROR("open file failed, " + srcpath.str());
+                return false;
+            }
+            file_guard fwt(fopen(dstpath.str().c_str(), "wb"));
+            if (fwt.getfd() == nullptr)
+            {
+                CUTL_ERROR("open file failed, " + dstpath.str());
+                return false;
+            }
+
+            static constexpr size_t buf_size = 8 * 1024;
+            uint8_t buffer[buf_size] = {0};
+            size_t read_len = 0;
+            size_t write_len = 0;
+            while ((read_len = fread(buffer, 1, buf_size, frd.getfd())) > 0)
+            {
+                write_len = fwrite(buffer, 1, read_len, fwt.getfd());
+                if (write_len != read_len)
+                {
+                    CUTL_ERROR("write file failed, only write " + std::to_string(write_len) + ", read_len:" + std::to_string(read_len));
+                    return false;
+                }
+            }
+        }
+
+        // copy file attributes
+        if (attributes)
+        {
+            return copy_attributes(srcpath.str(), dstpath.str());
+        }
+
+        return true;
+    }
+
+    // https://www.cnblogs.com/harrypotterjackson/p/12113382.html
+    bool copydir(const filepath &srcdir, const filepath &dstdir)
+    {
+        return false;
     }
 
 } // namespace cutl

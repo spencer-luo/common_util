@@ -5,6 +5,8 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <stack>
+#include <utime.h>
+#include <sys/time.h>
 #include "filesystem.h"
 #include "inner/logger.h"
 
@@ -66,7 +68,7 @@ namespace cutl
             }
             struct stat file_stat; // 文件的信息
             std::string filepath = dir_path + "/" + filename;
-            int ret = stat(filepath.c_str(), &file_stat);
+            int ret = lstat(filepath.c_str(), &file_stat);
             if (0 != ret)
             {
                 CUTL_ERROR("stat error. filepath:" + filepath + ", error:" + strerror(errno));
@@ -167,9 +169,9 @@ namespace cutl
                 {
                     // 普通文件
                     std::string filepath = currentDir + "/" + filename;
-                    // TODO: 肯需要替换成函数
+                    // TODO: 可能需要替换成函数
                     struct stat statbuf;
-                    stat(filepath.c_str(), &statbuf);
+                    lstat(filepath.c_str(), &statbuf);
                     totalSize += statbuf.st_size;
                 }
             }
@@ -199,13 +201,14 @@ namespace cutl
         {
             type = filetype::pipefifo;
         }
-        else if (S_ISREG(mode))
-        {
-            type = filetype::file;
-        }
+
         else if (S_ISLNK(mode))
         {
             type = filetype::symlink;
+        }
+        else if (S_ISREG(mode))
+        {
+            type = filetype::file;
         }
         else if (S_ISSOCK(mode))
         {
@@ -236,7 +239,7 @@ namespace cutl
             }
             struct stat file_stat; // 文件的信息
             std::string filepath = dirpath + "/" + filename;
-            int ret = stat(filepath.c_str(), &file_stat);
+            int ret = lstat(filepath.c_str(), &file_stat);
             if (0 != ret)
             {
                 CUTL_ERROR("stat error. filepath:" + filepath + ", error:" + strerror(errno));
@@ -263,6 +266,63 @@ namespace cutl
         closedir(dir);
 
         return file_list;
+    }
+
+    bool copy_attributes(const std::string &srcpath, const std::string &dstpath)
+    {
+        struct stat attr_of_src;
+        int ret = lstat(srcpath.c_str(), &attr_of_src);
+        if (ret != 0)
+        {
+            CUTL_ERROR("lstat error. srcpath:" + srcpath + ", error:" + strerror(errno));
+            return false;
+        }
+
+        // 修改文件属性
+        ret = chmod(dstpath.c_str(), attr_of_src.st_mode);
+        if (ret != 0)
+        {
+            CUTL_ERROR("chmod error. dstpath:" + dstpath + ", error:" + strerror(errno));
+            return false;
+        }
+        // 修改文件用户组
+        ret = chown(dstpath.c_str(), attr_of_src.st_uid, attr_of_src.st_gid);
+        if (ret != 0)
+        {
+            CUTL_ERROR("chown error. dstpath:" + dstpath + ", error:" + strerror(errno));
+            return false;
+        }
+
+        // 修改文件访问、修改时间
+        if (S_ISLNK(attr_of_src.st_mode))
+        {
+            // TODO: 编译还有问题，需要确定编译宏
+            // struct timeval time_buf[2];
+            // time_buf[0].tv_sec = attr_of_src.st_atim.tv_sec;
+            // time_buf[0].tv_usec = attr_of_src.st_atim.tv_nsec / 1000;
+            // time_buf[1].tv_sec = attr_of_src.st_mtim.tv_sec;
+            // time_buf[1].tv_usec = attr_of_src.st_mtim.tv_nsec / 1000;
+            // ret = lutimes(dstpath.c_str(), time_buf);
+            // if (ret != 0)
+            // {
+            //     CUTL_ERROR("lutimes error. dstpath:" + dstpath + ", error:" + strerror(errno));
+            //     return false;
+            // }
+        }
+        else
+        {
+            struct utimbuf tbuf;
+            tbuf.actime = attr_of_src.st_atime;
+            tbuf.modtime = attr_of_src.st_mtime;
+            ret = utime(dstpath.c_str(), &tbuf);
+            if (ret != 0)
+            {
+                CUTL_ERROR("utime error. dstpath:" + dstpath + ", error:" + strerror(errno));
+                return false;
+            }
+        }
+
+        return true;
     }
 
 } // namespace cutl

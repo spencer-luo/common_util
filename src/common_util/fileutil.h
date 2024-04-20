@@ -38,8 +38,8 @@ namespace cutl
     filevec find_files(const filepath &dirpath, const std::string &name, bool recursive = false);
     filevec find_files_by_extension(const filepath &dirpath, const std::string &extension, bool recursive = false);
 
-    // bool copyfile(const filepath &src, const filepath &dst);
-    // bool copydir(const filepath &src, const filepath &dst);
+    bool copyfile(const filepath &srcpath, const filepath &dstpath, bool attributes = false);
+    bool copydir(const filepath &srcdir, const filepath &dstdir);
     // bool copyfileordir(const filepath &src, const filepath &dst);
 
 } // namespace cutl
