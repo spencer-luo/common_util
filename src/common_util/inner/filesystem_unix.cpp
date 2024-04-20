@@ -12,6 +12,8 @@
 
 namespace cutl
 {
+    static constexpr char unix_separator = '/';
+
     // https://blog.csdn.net/giveaname/article/details/88973102
     std::string current_program_dir()
     {
@@ -24,6 +26,26 @@ namespace cutl
             return "";
         }
         return std::string(presult);
+    }
+
+    bool file_exists(const std::string &filepath)
+    {
+        return (access(filepath.c_str(), 0) == 0);
+    }
+
+    bool file_readable(const std::string &filepath)
+    {
+        return (access(filepath.c_str(), R_OK) == 0);
+    }
+
+    bool file_writable(const std::string &filepath)
+    {
+        return (access(filepath.c_str(), W_OK) == 0);
+    }
+
+    bool file_executable(const std::string &filepath)
+    {
+        return (access(filepath.c_str(), X_OK) == 0);
     }
 
     // https://blog.csdn.net/venom_snake/article/details/88066475
@@ -67,7 +89,7 @@ namespace cutl
                 continue;
             }
             struct stat file_stat; // 文件的信息
-            std::string filepath = dir_path + "/" + filename;
+            std::string filepath = dir_path + unix_separator + filename;
             int ret = lstat(filepath.c_str(), &file_stat);
             if (0 != ret)
             {
@@ -161,17 +183,22 @@ namespace cutl
                     else
                     {
                         // 子文件夹
-                        std::string subDirPath = currentDir + "/" + filename;
+                        std::string subDirPath = currentDir + unix_separator + filename;
                         dirs.push(subDirPath);
                     }
                 }
                 else
                 {
                     // 普通文件
-                    std::string filepath = currentDir + "/" + filename;
+                    std::string filepath = currentDir + unix_separator + filename;
                     // TODO: 可能需要替换成函数
                     struct stat statbuf;
-                    lstat(filepath.c_str(), &statbuf);
+                    int ret = lstat(filepath.c_str(), &statbuf);
+                    if (ret != 0)
+                    {
+                        CUTL_ERROR("lstat error. filepath:" + filepath + ", error:" + strerror(errno));
+                        continue;
+                    }
                     totalSize += statbuf.st_size;
                 }
             }
@@ -217,6 +244,18 @@ namespace cutl
         return type;
     }
 
+    filetype get_file_type(const std::string &filepath)
+    {
+        struct stat file_stat;
+        int ret = lstat(filepath.c_str(), &file_stat);
+        if (0 != ret)
+        {
+            CUTL_ERROR("stat error. filepath:" + filepath + ", error:" + strerror(errno));
+            return filetype::unknown;
+        }
+
+        return get_file_type(file_stat.st_mode);
+    }
     filevec list_sub_files(const std::string &dirpath, filetype type, bool recursive)
     {
         filevec file_list;
@@ -238,7 +277,7 @@ namespace cutl
                 continue;
             }
             struct stat file_stat; // 文件的信息
-            std::string filepath = dirpath + "/" + filename;
+            std::string filepath = dirpath + unix_separator + filename;
             int ret = lstat(filepath.c_str(), &file_stat);
             if (0 != ret)
             {

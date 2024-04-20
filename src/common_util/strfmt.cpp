@@ -119,7 +119,7 @@ namespace cutl
         else
         {
             // gmtime 线程不安全
-            pDatetime = std::gmtime(&t);
+            // pDatetime = std::gmtime(&t);
             // gmtime_r 线程安全
             pDatetime = gmtime_r(&t, &datetime);
         }
