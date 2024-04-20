@@ -46,6 +46,10 @@ void TestDirnameBasename()
     std::cout << "path3: " << path3 << std::endl;
     std::cout << "dirname: " << path3.dirname() << std::endl;
     std::cout << "basename: " << path3.basename() << std::endl;
+
+    auto symlink_path = cutl::path("/Users/spencer/workspace/common_util/fileutil_test/symlink");
+    std::cout << "symlink_path: " << symlink_path << std::endl;
+    std::cout << "realpath: " << symlink_path.realpath() << std::endl;
 }
 
 void TestExtenstion()

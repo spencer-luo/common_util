@@ -17,9 +17,8 @@ namespace cutl
     // https://blog.csdn.net/giveaname/article/details/88973102
     std::string current_program_dir()
     {
-        constexpr int size = 1024;
-        char buffer[size] = {0};
-        char *presult = getcwd(buffer, size);
+        char buffer[MAX_PATH_LEN] = {0};
+        char *presult = getcwd(buffer, MAX_PATH_LEN);
         if (nullptr == presult)
         {
             CUTL_ERROR("presult is nullptr");
@@ -46,6 +45,29 @@ namespace cutl
     bool file_executable(const std::string &filepath)
     {
         return (access(filepath.c_str(), X_OK) == 0);
+    }
+
+    std::string file_readlink(const std::string &filepath)
+    {
+        char buffer[MAX_PATH_LEN] = {0};
+        ssize_t len = ::readlink(filepath.c_str(), buffer, MAX_PATH_LEN);
+        if (len < 0)
+        {
+            CUTL_ERROR("readlink error. filepath:" + filepath + ", error:" + strerror(errno));
+            return "";
+        }
+        return std::string(buffer, len);
+    }
+
+    bool file_createlink(const std::string &referenece, const std::string &filepath)
+    {
+        int ret = ::symlink(referenece.c_str(), filepath.c_str());
+        if (ret != 0)
+        {
+            CUTL_ERROR("symlink error. filepath:" + filepath + ", referenece:" + referenece + ", error:" + strerror(errno));
+            return false;
+        }
+        return true;
     }
 
     // https://blog.csdn.net/venom_snake/article/details/88066475

@@ -148,7 +148,12 @@ namespace cutl
 
     std::string filepath::realpath() const
     {
-        // TODO
+        if (issymlink())
+        {
+            return file_readlink(filepath_);
+        }
+
+        CUTL_ERROR("not a symlink, cannot get realpath");
         return "";
     }
 
@@ -266,7 +271,7 @@ namespace cutl
     {
         if (recursive)
         {
-            constexpr int buf_size = 1024;
+            constexpr int buf_size = MAX_PATH_LEN;
             char buffer[buf_size] = {0};
             int ret = snprintf(buffer, buf_size, "%s", path.str().c_str());
             if (ret < 0 || ret >= buf_size)

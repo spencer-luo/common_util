@@ -3,6 +3,8 @@
 namespace cutl
 {
 
+    constexpr int MAX_PATH_LEN = 1024;
+
     enum filetype
     {
         unknown = 0x00,       // undefined

@@ -15,6 +15,9 @@ namespace cutl
     bool file_writable(const std::string &filepath);
     bool file_executable(const std::string &filepath);
 
+    std::string file_readlink(const std::string &filepath);
+    bool file_createlink(const std::string &referenece, const std::string &filepath);
+
     bool create_dir(const std::string &dir_path);
     // remove empty directory
     bool remove_dir(const std::string &dir_path);

@@ -35,7 +35,7 @@ namespace cutl
         std::string dirname() const;
         // filename or directory name
         std::string basename() const;
-        // real path for links and shortcuts
+        // real path for the reference of symbolic link or shortcuts
         std::string realpath() const;
         // extension with dot
         std::string extension() const;
