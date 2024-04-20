@@ -1,6 +1,7 @@
 # Build and Release Folders
 build/
 dest/
+fileutil_test/
 
 # Other files and folders
 .settings/
