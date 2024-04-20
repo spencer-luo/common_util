@@ -4,6 +4,7 @@
 #include "common_util/fileutil.h"
 
 static const std::string kBaseDir = "/Users/spencer/workspace/common_util/fileutil_test";
+static const std::string kTargetDir = "/Users/spencer/workspace/common_util/fileutil_test_copy";
 
 void TestGetCwd()
 {
@@ -23,8 +24,6 @@ void TestCreateFileAndDir()
     cutl::createdir(basedir.join("dir1"));
     // ./file3.txt
     cutl::createfile(basedir.join("file3.txt"));
-    // ./file4.txt
-    cutl::createfile(basedir.join("test4.data"));
     // ./dir2/dir1
     auto dir21 = basedir.join("dir2/dir1");
     cutl::createdir(dir21, true);
@@ -61,10 +60,11 @@ void TestReadAndWriteText()
     PrintSubTitle("read/write text");
 
     auto basedir = cutl::path(kBaseDir);
-    // ./file4.txt
-    std::cout << "write data:" << std::endl;
-    auto file4 = basedir.join("file4.txt");
-    cutl::writetext(file4, "this is test data.");
+    // ./file4.data
+    std::string content = "this is test data for writetext.";
+    std::cout << "write data:" << content << std::endl;
+    auto file4 = basedir.join("file4.data");
+    cutl::writetext(file4, content);
     std::cout << "read data:" << std::endl;
     auto text = cutl::readtext(file4);
     std::cout << text << std::endl;
@@ -74,6 +74,16 @@ void TestReadAndWriteText()
     // auto bigtext = cutl::readtext(bigfile);
     // std::cout << "read big file: " << std::endl;
     // std::cout << bigtext << std::endl;
+}
+
+void TestCreateSymlink()
+{
+    PrintSubTitle("create symlink");
+
+    auto basedir = cutl::path(kBaseDir);
+    auto link4 = basedir.join("link4");
+    cutl::createlink(basedir.join("file4.data"), link4);
+    std::cout << "link4: " << link4 << ", realpath: " << link4.realpath() << std::endl;
 }
 
 void TestFilesizeAndDirsize()
@@ -154,10 +164,11 @@ void TestCopyFileAndDir()
     PrintSubTitle("copy file/dir");
 
     auto basedir = cutl::path(kBaseDir);
-    // auto
-    auto srcpath = cutl::path("/Users/spencer/workspace/common_util/file_content.txt");
-    cutl::copyfile(srcpath, basedir.join("file5.data"));
-    cutl::copyfile(srcpath, basedir.join("file6.data"), true);
+    cutl::copyfile(basedir.join("file4.data"), basedir.join("file4_bak.data"), true);
+    cutl::copyfile(basedir.join("link4"), basedir.join("link4_bak"), true);
+
+    auto targetdir = cutl::path(kTargetDir);
+    cutl::copydir(basedir, targetdir);
 }
 
 void TestFileUtil()
@@ -166,10 +177,11 @@ void TestFileUtil()
 
     TestGetCwd();
     // TestCreateFileAndDir();
-    // TestRemoveFileAndDir();
     // TestReadAndWriteText();
+    // TestCreateSymlink();
     // TestFilesizeAndDirsize();
     // TestListfile();
     // TestFindfile();
     TestCopyFileAndDir();
+    // TestRemoveFileAndDir();
 }

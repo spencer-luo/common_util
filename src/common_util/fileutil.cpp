@@ -267,6 +267,11 @@ namespace cutl
         return true;
     }
 
+    bool createlink(const filepath &referenece, const filepath &filepath)
+    {
+        return file_createlink(referenece.str(), filepath.str());
+    }
+
     bool createdir(const filepath &path, bool recursive)
     {
         if (recursive)
@@ -497,6 +502,7 @@ namespace cutl
     bool copyfile(const filepath &srcpath, const filepath &dstpath, bool attributes)
     {
         // copy file content
+        if (srcpath.isfile())
         {
             file_guard frd(fopen(srcpath.str().c_str(), "rb"));
             if (frd.getfd() == nullptr)
@@ -525,9 +531,28 @@ namespace cutl
                 }
             }
         }
+        else if (srcpath.issymlink())
+        {
+            auto link_path = file_readlink(srcpath.str());
+            if (link_path.empty())
+            {
+                CUTL_ERROR("readlink failed for " + srcpath.str());
+                return false;
+            }
+            if (!file_createlink(link_path, dstpath.str()))
+            {
+                CUTL_ERROR("createlink failed for " + dstpath.str());
+                return false;
+            }
+        }
+        else
+        {
+            CUTL_ERROR("not a file or symlink, cannot copy: [" + filetype_flag(srcpath.type()) + "]" + srcpath.str());
+            return false;
+        }
 
         // copy file attributes
-        if (attributes)
+        if (attributes && srcpath.isfile())
         {
             return copy_attributes(srcpath.str(), dstpath.str());
         }
@@ -538,7 +563,53 @@ namespace cutl
     // https://www.cnblogs.com/harrypotterjackson/p/12113382.html
     bool copydir(const filepath &srcdir, const filepath &dstdir)
     {
-        return false;
+        if (!srcdir.isdir())
+        {
+            CUTL_ERROR("srcdir is not a directory: " + srcdir.str());
+            return false;
+        }
+
+        if (!dstdir.exists() && !createdir(dstdir, true))
+        {
+            CUTL_ERROR("createdir failed for " + dstdir.str());
+            return false;
+        }
+
+        auto filelist = list_files(srcdir, filetype::all, true);
+        for (size_t i = 0; i < filelist.size(); i++)
+        {
+            auto file = filelist[i];
+            auto src_file = file.filepath;
+            auto reletive_path = src_file.substr(srcdir.str().length() + 1);
+            auto dstpath = dstdir.join(reletive_path);
+            auto srcpath = cutl::path(src_file);
+            if (file.type == filetype::file || file.type == filetype::symlink)
+            {
+                if (!copyfile(srcpath, dstpath, true))
+                {
+                    return false;
+                }
+            }
+            else if (file.type == filetype::directory)
+            {
+                if (!createdir(dstpath, true))
+                {
+                    return false;
+                }
+
+                if (!copy_attributes(src_file, dstpath.str()))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                CUTL_WARN("the file cannot be copy: [" + filetype_flag(srcpath.type()) + "]" + srcpath.str());
+                continue;
+            }
+        }
+
+        return true;
     }
 
 } // namespace cutl

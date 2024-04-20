@@ -63,6 +63,7 @@ namespace cutl
     std::string getcwd();
 
     bool createfile(const filepath &path);
+    bool createlink(const filepath &referenece, const filepath &filepath);
     // recursive: create parent directories if not exist, like the 'mkdir -p' command
     bool createdir(const filepath &path, bool recursive = false);
     bool removefile(const filepath &path);
@@ -80,8 +81,9 @@ namespace cutl
     filevec find_files(const filepath &dirpath, const std::string &name, bool recursive = false);
     filevec find_files_by_extension(const filepath &dirpath, const std::string &extension, bool recursive = false);
 
+    // copy file or symlink
     bool copyfile(const filepath &srcpath, const filepath &dstpath, bool attributes = false);
+    // copy directory recursively
     bool copydir(const filepath &srcdir, const filepath &dstdir);
-    // bool copyfileordir(const filepath &src, const filepath &dst);
 
 } // namespace cutl
