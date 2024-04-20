@@ -24,14 +24,14 @@ void TestCreateFileAndDir()
     // ./file3.txt
     cutl::createfile(basedir.join("file3.txt"));
     // ./file4.txt
-    cutl::createfile(basedir.join("file4.data"));
+    cutl::createfile(basedir.join("test4.data"));
     // ./dir2/dir1
     auto dir21 = basedir.join("dir2/dir1");
     cutl::createdir(dir21, true);
     // ./dir2/dir1/file211.txt
     cutl::createfile(dir21.join("file211.txt"));
     // ./dir2/dir1/file212.txt
-    cutl::createfile(dir21.join("file212.txt"));
+    cutl::createfile(dir21.join("test12.txt"));
     // ./dir2/dir1/file213.txt
     cutl::createfile(dir21.join("file213.data"));
     // ./dir2/file22.data
@@ -126,14 +126,38 @@ void TestListfile()
     PrintFileList(fileList);
 }
 
+void TestFindfile()
+{
+    PrintSubTitle("findfile");
+
+    auto basedir = cutl::path(kBaseDir);
+
+    std::cout << "Find all files with 'file' in current directory:" << std::endl;
+    cutl::filevec fileList = cutl::find_files(basedir, "file");
+    PrintFileList(fileList);
+
+    std::cout << "Find all files with 'file' by recursive:" << std::endl;
+    fileList = cutl::find_files(basedir, "file", true);
+    PrintFileList(fileList);
+
+    std::cout << "Find all files with '.data' extension in current directory:" << std::endl;
+    fileList = cutl::find_files_by_extension(basedir, ".data");
+    PrintFileList(fileList);
+
+    std::cout << "Find all files with '.data' extension by recursive::" << std::endl;
+    fileList = cutl::find_files_by_extension(basedir, ".data", true);
+    PrintFileList(fileList);
+}
+
 void TestFileUtil()
 {
     PrintTitle("fileutil");
 
     TestGetCwd();
-    TestCreateFileAndDir();
+    // TestCreateFileAndDir();
     // TestRemoveFileAndDir();
     // TestReadAndWriteText();
     // TestFilesizeAndDirsize();
-    TestListfile();
+    // TestListfile();
+    TestFindfile();
 }

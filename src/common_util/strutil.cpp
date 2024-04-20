@@ -4,16 +4,18 @@
 
 namespace cutl
 {
-    std::string &to_upper(std::string &str)
+    std::string to_upper(const std::string &str)
     {
-        std::transform(str.begin(), str.end(), str.begin(), std::toupper);
-        return str;
+        std::string result = str;
+        std::transform(result.begin(), result.end(), result.begin(), std::toupper);
+        return result;
     }
 
-    std::string &to_lower(std::string &str)
+    std::string to_lower(const std::string &str)
     {
-        std::transform(str.begin(), str.end(), str.begin(), std::tolower);
-        return str;
+        std::string result = str;
+        std::transform(result.begin(), result.end(), result.begin(), std::tolower);
+        return result;
     }
 
     std::string lstrip(const std::string str)
@@ -97,8 +99,7 @@ namespace cutl
         std::string temp = str.substr(0, startlen);
         if (ignoreCase)
         {
-            std::string startStr = start;
-            return to_lower(temp) == to_lower(startStr);
+            return to_lower(temp) == to_lower(start);
         }
         else
         {
@@ -118,8 +119,7 @@ namespace cutl
         std::string temp = str.substr(srclen - endlen, endlen);
         if (ignoreCase)
         {
-            std::string endStr = end;
-            return to_lower(temp) == to_lower(endStr);
+            return to_lower(temp) == to_lower(end);
         }
         else
         {

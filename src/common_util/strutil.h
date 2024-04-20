@@ -7,8 +7,8 @@ namespace cutl
 {
     using strvec = std::vector<std::string>;
 
-    std::string &to_upper(std::string &str);
-    std::string &to_lower(std::string &str);
+    std::string to_upper(const std::string &str);
+    std::string to_lower(const std::string &str);
 
     std::string lstrip(const std::string str);
     std::string rstrip(const std::string str);

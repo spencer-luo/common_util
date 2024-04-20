@@ -4,6 +4,7 @@
 #include "inner/logger.h"
 #include "inner/filesystem.h"
 #include "filepath.h"
+#include "strutil.h"
 
 namespace cutl
 {
@@ -255,6 +256,44 @@ namespace cutl
     filevec list_files(const filepath &dirpath, filetype type, bool recursive)
     {
         return list_sub_files(dirpath.str(), type, recursive);
+    }
+
+    filevec find_files(const filepath &dirpath, const std::string &name, bool recursive)
+    {
+        filevec filelist = list_files(dirpath, filetype::all, recursive);
+        filevec result;
+        for (auto &file : filelist)
+        {
+            if (file.type == filetype::directory)
+            {
+                continue;
+            }
+            auto filename = cutl::path(file.filepath).basename();
+            if (filename.find(name) != std::string::npos)
+            {
+                result.emplace_back(file);
+            }
+        }
+        return result;
+    }
+
+    filevec find_files_by_extension(const filepath &dirpath, const std::string &extension, bool recursive)
+    {
+        filevec filelist = list_files(dirpath, filetype::all, recursive);
+        filevec result;
+        for (auto &file : filelist)
+        {
+            if (file.type == filetype::directory)
+            {
+                continue;
+            }
+            auto extname = cutl::path(file.filepath).extension();
+            if (cutl::to_lower(extname) == cutl::to_lower(extension))
+            {
+                result.emplace_back(file);
+            }
+        }
+        return result;
     }
 
 } // namespace cutl
