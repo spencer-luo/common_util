@@ -1,6 +1,7 @@
 #include "filepath.h"
-
 #include <iostream>
+
+#include <map>
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 #include <io.h>
@@ -13,6 +14,27 @@
 namespace cutl
 {
 
+    std::string filetype_flag(filetype type)
+    {
+        static std::map<filetype, std::string> flag_map = {
+            {filetype::unknown, "u"},
+            {filetype::directory, "d"},
+            {filetype::file, "-"},
+            {filetype::symlink, "l"},
+            {filetype::char_special, "c"},
+            {filetype::block_special, "b"},
+            {filetype::pipefifo, "p"},
+            {filetype::socket, "s"},
+            {filetype::all, "a"},
+        };
+
+        auto itr = flag_map.find(type);
+        if (itr != flag_map.end())
+        {
+            return itr->second;
+        }
+        return "";
+    }
     static constexpr char win_separator = '\\';
     static constexpr char unix_separator = '/';
 

@@ -93,9 +93,12 @@ void PrintFileList(const cutl::filevec &fileList)
     for (size_t i = 0; i < fileList.size(); i++)
     {
         auto item = fileList[i];
+        auto flag = cutl::filetype_flag(item.type);
+        std::cout << "[" << flag << "]:";
         std::cout << item.filepath << std::endl;
     }
 }
+
 void TestListfile()
 {
     PrintSubTitle("listfile");

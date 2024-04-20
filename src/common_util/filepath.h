@@ -19,6 +19,8 @@ namespace cutl
         all = 0xFF,           // all type mask, includes all types
     };
 
+    std::string filetype_flag(filetype type);
+
     class file_entity
     {
     public:
