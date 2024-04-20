@@ -252,7 +252,7 @@ namespace cutl
         return get_dirsize(dirpath.str());
     }
 
-    filevec list_files(const filepath &dirpath, file_type type, bool recursive)
+    filevec list_files(const filepath &dirpath, filetype type, bool recursive)
     {
         return list_sub_files(dirpath.str(), type, recursive);
     }

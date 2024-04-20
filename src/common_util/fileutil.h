@@ -34,7 +34,7 @@ namespace cutl
     uint64_t filesize(const filepath &filepath);
     uint64_t dirsize(const filepath &dirpath);
 
-    filevec list_files(const filepath &dirpath, file_type type = file_type::all, bool recursive = false);
+    filevec list_files(const filepath &dirpath, filetype type = filetype::all, bool recursive = false);
     // strvec find_files_by_name(const filepath &dirpath, const filepath &name, bool recursive = false);
     // strvec find_files_by_extenstion(const filepath &dirpath, const filepath &extenstion, bool recursive = false);
 

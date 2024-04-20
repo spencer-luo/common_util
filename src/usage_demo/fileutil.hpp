@@ -24,7 +24,7 @@ void TestCreateFileAndDir()
     // ./file3.txt
     cutl::createfile(basedir.join("file3.txt"));
     // ./file4.txt
-    cutl::createfile(basedir.join("file4.txt"));
+    cutl::createfile(basedir.join("file4.data"));
     // ./dir2/dir1
     auto dir21 = basedir.join("dir2/dir1");
     cutl::createdir(dir21, true);
@@ -32,9 +32,14 @@ void TestCreateFileAndDir()
     cutl::createfile(dir21.join("file211.txt"));
     // ./dir2/dir1/file212.txt
     cutl::createfile(dir21.join("file212.txt"));
+    // ./dir2/dir1/file213.txt
+    cutl::createfile(dir21.join("file213.data"));
     // ./dir2/file22.data
-    auto file22 = basedir.join("dir2/file22.data");
+    auto file22 = basedir.join("dir2/file22.txt");
     cutl::createfile(file22);
+    // ./dir2/file23.txt
+    auto file23 = basedir.join("dir2/file23.data");
+    cutl::createfile(file23);
 }
 
 void TestRemoveFileAndDir()
@@ -83,13 +88,49 @@ void TestFilesizeAndDirsize()
     std::cout << "dirsize: " << dirsize << ", human readable: " << cutl::fmt_filesize(dirsize) << std::endl;
 }
 
+void PrintFileList(const cutl::filevec &fileList)
+{
+    for (size_t i = 0; i < fileList.size(); i++)
+    {
+        auto item = fileList[i];
+        std::cout << item.filepath << std::endl;
+    }
+}
+void TestListfile()
+{
+    PrintSubTitle("listfile");
+
+    auto basedir = cutl::path(kBaseDir);
+
+    std::cout << "List all files/dirs in current directory:" << std::endl;
+    cutl::filevec fileList = cutl::list_files(basedir);
+    PrintFileList(fileList);
+
+    std::cout << "List all files in current directory:" << std::endl;
+    fileList = cutl::list_files(basedir, cutl::filetype::file);
+    PrintFileList(fileList);
+
+    std::cout << "List all files/dirs in current directory by recursive:" << std::endl;
+    fileList = cutl::list_files(basedir, cutl::filetype::all, true);
+    PrintFileList(fileList);
+
+    std::cout << "List all files in current directory by recursive:" << std::endl;
+    fileList = cutl::list_files(basedir, cutl::filetype::file, true);
+    PrintFileList(fileList);
+
+    std::cout << "List all dirs in current directory by recursive:" << std::endl;
+    fileList = cutl::list_files(basedir, cutl::filetype::directory, true);
+    PrintFileList(fileList);
+}
+
 void TestFileUtil()
 {
     PrintTitle("fileutil");
 
     TestGetCwd();
-    // TestCreateFileAndDir();
+    TestCreateFileAndDir();
     // TestRemoveFileAndDir();
     // TestReadAndWriteText();
-    TestFilesizeAndDirsize();
+    // TestFilesizeAndDirsize();
+    TestListfile();
 }

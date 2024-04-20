@@ -6,7 +6,7 @@
 namespace cutl
 {
 
-    enum file_type
+    enum filetype
     {
         unknown = 0x00,       // undefined
         directory = 0x01,     // directory
@@ -14,7 +14,7 @@ namespace cutl
         symlink = 0x04,       // symbolic link
         char_special = 0x08,  // character device, only for unix
         block_special = 0x10, // block device, only for unix
-        fifo = 0x20,          // named pipe, only for unix
+        pipefifo = 0x20,      // named pipe, only for unix
         socket = 0x40,        // socket file, only for unix
         all = 0xFF,           // all type mask, includes all types
     };
@@ -22,7 +22,7 @@ namespace cutl
     class file_entity
     {
     public:
-        file_type type = {file_type::unknown};
+        filetype type = {filetype::unknown};
         std::string filepath;
     };
 

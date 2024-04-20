@@ -20,6 +20,6 @@ namespace cutl
     // get directory size in bytes
     uint64_t get_dirsize(const std::string &dirpath);
 
-    filevec list_sub_files(const std::string &dirpath, file_type type = file_type::all, bool recursive = false);
+    filevec list_sub_files(const std::string &dirpath, filetype type = filetype::all, bool recursive = false);
 
 } // namespace cutl

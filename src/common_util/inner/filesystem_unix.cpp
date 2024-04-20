@@ -180,41 +180,41 @@ namespace cutl
         return totalSize;
     }
 
-    file_type get_file_type(int mode)
+    filetype get_file_type(int mode)
     {
-        file_type type = file_type::unknown;
+        filetype type = filetype::unknown;
         if (S_ISBLK(mode))
         {
-            type = file_type::block_special;
+            type = filetype::block_special;
         }
         else if (S_ISCHR(mode))
         {
-            type = file_type::char_special;
+            type = filetype::char_special;
         }
         else if (S_ISDIR(mode))
         {
-            type = file_type::directory;
+            type = filetype::directory;
         }
         else if (S_ISFIFO(mode))
         {
-            type = file_type::fifo;
+            type = filetype::pipefifo;
         }
         else if (S_ISREG(mode))
         {
-            type = file_type::fifo;
+            type = filetype::file;
         }
         else if (S_ISLNK(mode))
         {
-            type = file_type::symlink;
+            type = filetype::symlink;
         }
         else if (S_ISSOCK(mode))
         {
-            type = file_type::socket;
+            type = filetype::socket;
         }
         return type;
     }
 
-    filevec list_sub_files(const std::string &dirpath, file_type type, bool recursive)
+    filevec list_sub_files(const std::string &dirpath, filetype type, bool recursive)
     {
         filevec file_list;
 
@@ -242,11 +242,11 @@ namespace cutl
                 CUTL_ERROR("stat error. filepath:" + filepath + ", error:" + strerror(errno));
                 return file_list;
             }
-            auto filetype = get_file_type(file_stat.st_mode);
-            if (filetype & type)
+            auto ftype = get_file_type(file_stat.st_mode);
+            if (ftype & type)
             {
                 file_entity entity;
-                entity.type = filetype;
+                entity.type = ftype;
                 entity.filepath = filepath;
                 file_list.emplace_back(entity);
             }
