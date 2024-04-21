@@ -1,5 +1,8 @@
 message(STATUS "--------- begin cmake ---------")
 
+# cmake教程：https://www.zhihu.com/column/c_1369781372333240320
+
+
 # cmake version
 cmake_minimum_required(VERSION 3.28.3)
 # project name
