@@ -5,6 +5,7 @@
 namespace cutl
 {
 
+    std::string library_name();
     std::string library_version();
     void library_init(LogFuncType log_func);
 

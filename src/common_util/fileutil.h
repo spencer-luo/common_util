@@ -69,7 +69,6 @@ namespace cutl
     bool removefile(const filepath &path);
     // recursive: remove the whole directory recursively, like the 'rm -rf' command
     bool removedir(const filepath &path, bool recursive = false);
-    // bool removefile_by_extenstion(const filepath &path, const filepath &ext);
 
     std::string readtext(const filepath &path);
     bool writetext(const filepath &path, const std::string &content);
