@@ -19,6 +19,7 @@
     "editor.formatOnSaveMode": "modificationsIfAvailable",
     "editor.formatOnSave": true,
     "editor.detectIndentation": false,
+    // new content
     "files.associations": {
         "string": "cpp",
         "ostream": "cpp",
