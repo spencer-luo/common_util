@@ -1,30 +1,63 @@
+/**
+ * @file filetype.h
+ * @brief Define the structs about fileutil, such as filetype and file_entity.
+ * @author spencer.luo
+ * @date 2024-04-23
+ */
+
 #pragma once
 
 namespace cutl
 {
 
+    /**
+     * @brief Constants value: max path length.
+     *
+     */
     constexpr int MAX_PATH_LEN = 1024;
 
+    /**
+     * @brief The type of file.
+     *
+     */
     enum filetype
     {
-        unknown = 0x00,       // undefined
-        directory = 0x01,     // directory
-        file = 0x02,          // regular file
-        symlink = 0x04,       // symbolic link
-        char_special = 0x08,  // character device, only for unix
-        block_special = 0x10, // block device, only for unix
-        pipefifo = 0x20,      // named pipe, only for unix
-        socket = 0x40,        // socket file, only for unix
-        all = 0xFF,           // all type mask, includes all types
+        /** undefined */
+        unknown = 0x00,
+        /** directory */
+        directory = 0x01,
+        /** regular file */
+        file = 0x02,
+        /** symbolic link */
+        symlink = 0x04,
+        /** character device, only for unix */
+        char_special = 0x08,
+        /** block device, only for unix */
+        block_special = 0x10,
+        /** named pipe, only for unix */
+        pipefifo = 0x20,
+        /** socket file, only for unix */
+        socket = 0x40,
+        /** type mask, includes all types */
+        all = 0xFF,
     };
 
-    class file_entity
+    /**
+     * @brief file entity struct. include file type and file path.
+     *
+     */
+    struct file_entity
     {
-    public:
+        /** file type */
         filetype type = {filetype::unknown};
+        /** file path */
         std::string filepath;
     };
 
+    /**
+     * @brief The vector of file_entity.
+     *
+     */
     using filevec = std::vector<file_entity>;
 
 } // namespace cutl

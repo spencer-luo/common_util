@@ -1,7 +1,7 @@
 /**
  * @file datetime.h
- * @author spencer
  * @brief A simple, feature-rich modern C++ date-time class
+ * @author spencer.luo
  * @date 2024-04-22
  */
 
@@ -207,10 +207,10 @@ namespace cutl
     };
 
     /**
-     * @brief Define the output operator for datetime object
+     * @brief Define the output stream operator for datetime object
      *
      * @param os the std::ostream object
-     * @param dt the datetime object to output
+     * @param dt the datetime object to be output
      * @return std::ostream& the reference of the std::ostream object after outputting the datetime object
      */
     std::ostream &operator<<(std::ostream &os, const datetime &dt);
