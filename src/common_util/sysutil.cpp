@@ -31,11 +31,11 @@ namespace cutl
     {
         auto type = platform_type();
         static std::map<platform, std::string> platform_map = {
-            {platform::windows, "windows"},
-            {platform::macos, "macos"},
-            {platform::linux, "linux"},
-            {platform::unix, "unix"},
-            {platform::unknown, "unknown"},
+            {platform::windows, "Windows"},
+            {platform::macos, "macOS"},
+            {platform::linux, "Linux"},
+            {platform::unix, "Unix"},
+            {platform::unknown, "Unknown"},
         };
 
         auto iter = platform_map.find(type);

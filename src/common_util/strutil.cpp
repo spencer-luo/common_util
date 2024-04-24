@@ -18,7 +18,7 @@ namespace cutl
         return result;
     }
 
-    std::string lstrip(const std::string str)
+    std::string lstrip(const std::string &str)
     {
         if (str.empty())
         {
@@ -38,7 +38,7 @@ namespace cutl
         return str.substr(index, str.length() - index);
     }
 
-    std::string rstrip(const std::string str)
+    std::string rstrip(const std::string &str)
     {
         if (str.empty())
         {
@@ -57,7 +57,7 @@ namespace cutl
         return str.substr(0, index + 1);
     }
 
-    std::string strip(const std::string str)
+    std::string strip(const std::string &str)
     {
         if (str.empty())
         {
