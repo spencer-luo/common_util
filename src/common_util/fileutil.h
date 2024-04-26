@@ -272,7 +272,7 @@ namespace cutl
 
     /**
      * @brief Read the text content of a file.
-     *
+     * TODO: max size limit?
      * @param path the filepath of the file to be read
      * @return text content of the file
      */

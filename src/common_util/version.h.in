@@ -1,9 +1,20 @@
+/**
+ * @file version.h
+ * @brief Define library version and library name.
+ * @author spencer.luo
+ * @date 2024-04-26
+ */
+
 #pragma once
 
-#define CUTL_PROJECT_NAME "@PROJECT_NAME@"
+/**
+ * @brief Library name.
+ *
+ */
+#define CUTL_NAME "@PROJECT_NAME@"
 
-#define CUTL_VERSION_MAJOR @PROJECT_VERSION_MAJOR@
-#define CUTL_VERSION_MINOR @PROJECT_VERSION_MINOR@
-#define CUTL_VERSION_PATCH @PROJECT_VERSION_PATCH@
-
+/**
+ * @brief Library version.
+ *
+ */
 #define CUTL_VERSION "@PROJECT_VERSION@"

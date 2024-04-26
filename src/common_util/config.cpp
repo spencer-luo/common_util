@@ -7,7 +7,7 @@ namespace cutl
 
     std::string library_name()
     {
-        return CUTL_PROJECT_NAME;
+        return CUTL_NAME;
     }
 
     std::string library_version()

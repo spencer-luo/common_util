@@ -369,6 +369,7 @@ namespace cutl
             return "";
         }
 
+        // TODO: use filesize to optimize read size
         // get file size
         fseek(fg.getfd(), 0, SEEK_END);
         size_t data_len = static_cast<size_t>(ftell(fg.getfd()));
