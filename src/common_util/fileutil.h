@@ -272,11 +272,15 @@ namespace cutl
 
     /**
      * @brief Read the text content of a file.
-     * TODO: max size limit?
+     *
      * @param path the filepath of the file to be read
+     * @param max_read_size the maximum size to be read, default is 4096 bytes.
+     *
+     * If the file size is larger than max_read_size, only the first max_read_size bytes will be read. otherwise, the whole file will be read.
+     *
      * @return text content of the file
      */
-    std::string readtext(const filepath &path);
+    std::string readtext(const filepath &path, uint64_t max_read_size = 4096);
 
     /**
      * @brief Write the text content to a file.

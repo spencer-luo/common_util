@@ -358,10 +358,8 @@ namespace cutl
         }
     }
 
-    std::string readtext(const filepath &path)
+    std::string readtext(const filepath &path, uint64_t max_read_size)
     {
-        // max read size 4k
-        static constexpr size_t MAX_READ_SIZE = 4 * 1024;
         file_guard fg(fopen(path.str().c_str(), "r"));
         if (fg.getfd() == nullptr)
         {
@@ -369,17 +367,18 @@ namespace cutl
             return "";
         }
 
-        // TODO: use filesize to optimize read size
-        // get file size
-        fseek(fg.getfd(), 0, SEEK_END);
-        size_t data_len = static_cast<size_t>(ftell(fg.getfd()));
-        rewind(fg.getfd());
+        // 从文件系统的文档信息里读取文件大小，性能更高
+        auto data_len = filesize(path);
+        // 公国文件操作的方式和获取文件大小
+        // fseek(fg.getfd(), 0, SEEK_END);
+        // size_t data_len = static_cast<size_t>(ftell(fg.getfd()));
+        // rewind(fg.getfd());
 
         // get read size
-        if (data_len > MAX_READ_SIZE)
+        if (data_len > max_read_size)
         {
-            data_len = MAX_READ_SIZE;
-            CUTL_WARN("file size is large than 4k, only read the first 4k data for file:" + path.str());
+            data_len = max_read_size;
+            CUTL_WARN("file size is large than " + std::to_string(max_read_size) + ", file:" + path.str());
         }
 
         char *buffer = new char[data_len + 1];
