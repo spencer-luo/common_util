@@ -1,5 +1,6 @@
 
 #include <map>
+#include <iostream>
 #include <strutil.h>
 #include <cstdlib>
 #include "sysutil.h"
@@ -14,7 +15,12 @@ namespace cutl
     // https://blog.csdn.net/qq_40340448/article/details/122117270
     platform platform_type()
     {
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#if defined(_WIN32) || defined(__WIN32__)
+#ifdef _WIN64
+        std::cout << "64-bit Windows" << std::endl;
+#else
+        std::cout << "32-bit Windows" << std::endl;
+#endif
         return platform::windows;
 #elif defined(__APPLE__) || defined(__MACH__)
         return platform::macos;
