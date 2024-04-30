@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include "sysutil.h"
 #include "inner/logger.h"
+#include "inner/system_util.h"
 
 namespace cutl
 {
@@ -128,47 +129,19 @@ namespace cutl
         }
     }
 
-    // TODO: windows下未验证，可能会有问题
     bool system(const std::string &cmd)
     {
-        if (cmd.empty())
-        {
-            CUTL_ERROR("cmd is empty!");
-            return false;
-        }
-
-        pid_t status;
-        status = std::system(cmd.c_str());
-
-        if (-1 == status)
-        {
-            CUTL_ERROR("system error!");
-            return false;
-        }
-
-        if (!WIFEXITED(status))
-        {
-            CUTL_ERROR("exit status:" + std::to_string(WEXITSTATUS(status)));
-            return false;
-        }
-
-        if (0 != WEXITSTATUS(status))
-        {
-            CUTL_ERROR("run shell script fail, script exit code:" + std::to_string(WEXITSTATUS(status)));
-            return false;
-        }
-
-        return true;
+        return call_system(cmd);
     }
 
     bool callcmd(const std::string &cmd, std::string &result)
     {
         // 读取命令执行结果的最大Buffer长度
         constexpr int MAX_CMD_BUF_LEN = 1024;
-        FILE *fp = popen(cmd.c_str(), "r");
+        FILE *fp = pipline_open(cmd);
         if (fp == NULL)
         {
-            CUTL_ERROR("popen error for cmd:" + cmd);
+            CUTL_ERROR("pipline_open error for cmd:" + cmd);
             return false;
         }
 
@@ -178,16 +151,16 @@ namespace cutl
         if (res == NULL)
         {
             CUTL_ERROR("read result error for cmd:" + cmd);
-            if (pclose(fp) != 0)
+            if (pipline_close(fp) != 0)
             {
-                CUTL_ERROR("pclose error for cmd:" + cmd);
+                CUTL_ERROR("pipline_close error for cmd:" + cmd);
             }
             return false;
         }
 
-        if (pclose(fp) != 0)
+        if (pipline_close(fp) != 0)
         {
-            CUTL_ERROR("pclose error for cmd:" + cmd);
+            CUTL_ERROR("pipline_close error for cmd:" + cmd);
         }
 
         result = strip(std::string(buffer));

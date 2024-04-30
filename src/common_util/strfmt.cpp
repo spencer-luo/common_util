@@ -3,6 +3,7 @@
 #include <bitset>
 #include "strfmt.h"
 #include "inner/logger.h"
+#include "inner/time_util.h"
 
 namespace cutl
 {
@@ -104,33 +105,22 @@ namespace cutl
         return text;
     }
 
+    // https://blog.csdn.net/u010087712/article/details/50731222
     std::string fmt_timestamp(uint64_t second, bool local, const std::string &fmt)
     {
         std::time_t t(second);
         struct tm datetime;
-        struct tm *pDatetime = NULL;
         if (local)
         {
-            // localtime 线程不安全
-            // pDatetime = std::localtime(&t);
-            // localtime_r 线程安全
-            pDatetime = localtime_r(&t, &datetime);
+            datetime = localtime_security(t);
         }
         else
         {
-            // gmtime 线程不安全
-            // pDatetime = std::gmtime(&t);
-            // gmtime_r 线程安全
-            pDatetime = gmtime_r(&t, &datetime);
-        }
-        if (!pDatetime)
-        {
-            CUTL_ERROR("pDatetime is null");
-            return "";
+            datetime = gmtime_security(t);
         }
 
         std::stringstream ss;
-        ss << std::put_time(pDatetime, fmt.c_str());
+        ss << std::put_time(&datetime, fmt.c_str());
         return ss.str();
     }
 

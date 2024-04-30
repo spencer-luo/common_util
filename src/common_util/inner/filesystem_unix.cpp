@@ -1,5 +1,6 @@
-// TODO:
-#ifndef WIN32
+#if defined(_WIN32) || defined(__WIN32__)
+// do nothing
+#else
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -388,4 +389,4 @@ namespace cutl
 
 } // namespace cutl
 
-#endif // defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#endif // defined(_WIN32) || defined(__WIN32__)

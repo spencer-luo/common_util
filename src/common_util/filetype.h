@@ -5,6 +5,9 @@
  * @date 2024-04-23
  */
 
+#include <vector>
+#include <string>
+
 #pragma once
 
 namespace cutl

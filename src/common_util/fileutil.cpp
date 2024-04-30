@@ -65,8 +65,8 @@ namespace cutl
 
     char filepath::separator()
     {
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-        return win_char;
+#if defined(_WIN32) || defined(__WIN32__)
+        return win_separator;
 #else
         return unix_separator;
 #endif
@@ -441,10 +441,10 @@ namespace cutl
         }
 
         struct stat statbuf;
-        int ret = lstat(filepath.str().c_str(), &statbuf);
+        int ret = stat(filepath.str().c_str(), &statbuf);
         if (ret != 0)
         {
-            CUTL_ERROR("lstat " + filepath.str() + " error, ret:" + std::to_string(ret));
+            CUTL_ERROR("stat " + filepath.str() + " error, ret:" + std::to_string(ret));
             return 0;
         }
 
