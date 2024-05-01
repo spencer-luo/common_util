@@ -4,6 +4,7 @@
 
 #include <cstdlib>
 #include "time_util.h"
+#include "inner/logger.h"
 
 namespace cutl
 {

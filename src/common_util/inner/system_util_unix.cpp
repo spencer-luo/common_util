@@ -3,6 +3,7 @@
 #else
 
 #include "system_util.h"
+#include "inner/logger.h"
 
 namespace cutl
 {
