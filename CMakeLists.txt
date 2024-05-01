@@ -11,8 +11,21 @@ project(common_util VERSION 1.0.0 LANGUAGES CXX)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 11)
 
-message("CMAKE_CURRENT_SOURCE_DIR:" ${CMAKE_CURRENT_SOURCE_DIR})
-message("CMAKE_SOURCE_DIR:" ${CMAKE_SOURCE_DIR})
+# 获取构建目标的CPU架构
+message("CMAKE_SYSTEM_NAME:" ${CMAKE_SYSTEM_NAME})
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    if(CMAKE_CL_64)
+        set(target_arch x64)
+    else()
+        set(target_arch x86)
+    endif()
+else()
+    set(target_arch ${CMAKE_SYSTEM_PROCESSOR})
+endif()
+message("target_arch:" ${target_arch})
+
+# message("CMAKE_CURRENT_SOURCE_DIR:" ${CMAKE_CURRENT_SOURCE_DIR})
+# message("CMAKE_SOURCE_DIR:" ${CMAKE_SOURCE_DIR})
 
 # add sub moudle for common_util
 add_subdirectory(src/common_util)

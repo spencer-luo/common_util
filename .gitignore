@@ -1,6 +1,6 @@
 # Build and Release Folders
 build/
-dest/
+publish/
 # test directories
 fileutil_test/
 fileutil_test_copy/

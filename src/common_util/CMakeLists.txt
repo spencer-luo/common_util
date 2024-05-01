@@ -42,20 +42,43 @@ add_library(${PROJECT_NAME} STATIC ${COMMON_UTIL_SRC})
 
 # 拷贝编译结果文件
 # copy compiled files
-set(OUTPUT_DIR ${CMAKE_SOURCE_DIR}/dest/${PROJECT_NAME})
+set(publish_dir ${CMAKE_SOURCE_DIR}/publish)
+set(output_dir ${publish_dir}/${PROJECT_NAME})
 message("CMAKE_COMMAND:" ${CMAKE_COMMAND})
-message("OUTPUT_DIR:" ${OUTPUT_DIR})
-# 在编译完(POST_BUILD) 构建目标(TARGET) common_util后，执行的命令
-add_custom_command(TARGET ${PROJECT_NAME}
-    POST_BUILD
-    # 创建文件夹: dest/common_util/lib
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${OUTPUT_DIR}/lib/
-    # 拷贝编译结果文件: libcommon_util.a
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/lib${PROJECT_NAME}.a ${OUTPUT_DIR}/lib/
-    # 创建文件夹: dest/common_util/include
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${OUTPUT_DIR}/include/
-    # 拷贝头文件: src/common_util/*.h
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/*.h ${OUTPUT_DIR}/include/
-)
+message("output_dir:" ${output_dir})
+
+# 获取构建目标的CPU架构
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    if (CMAKE_BUILD_TYPE STREQUAL "Release")
+        set(library_dir ${CMAKE_CURRENT_BINARY_DIR}/Release)
+    else()
+        set(library_dir ${CMAKE_CURRENT_BINARY_DIR}/Debug)
+    endif()
+else()
+    set(library_dir ${CMAKE_CURRENT_BINARY_DIR})
+endif()
+message("library_dir:" ${library_dir})
+
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    message("start to copy target files")
+
+    # 在编译完(POST_BUILD) 构建目标(TARGET) common_util后，执行的命令
+    add_custom_command(TARGET ${PROJECT_NAME}
+        POST_BUILD
+        # 创建文件夹: dest/common_util/lib
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir}/${CMAKE_SYSTEM_NAME}/${target_arch}
+        # 拷贝编译结果文件: libcommon_util.a
+        COMMAND ${CMAKE_COMMAND} -E copy ${library_dir}/*${PROJECT_NAME}.* ${output_dir}/${CMAKE_SYSTEM_NAME}/${target_arch}
+        # 创建文件夹: dest/common_util/include
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir}/include/
+        # 拷贝头文件: src/common_util/*.h
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/*.h ${output_dir}/include/
+    )
+endif()
+# publish/common_util/
+# publish/common_util/include/
+# publish/common_util/windows/x32/common_util.lib
+# publish/common_util/windows/x64/common_util.lib
+# publish/common_util/Darwin/x86_64/common_util.lib
 
 message(STATUS "--------- end cmake common_util ---------")

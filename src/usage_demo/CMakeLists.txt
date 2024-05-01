@@ -26,14 +26,27 @@ add_executable(${PROJECT_NAME} main.cpp)
 # 添加链接库
 target_link_libraries(${PROJECT_NAME} common_util)
 
-set(OUTPUT_DIR ${CMAKE_SOURCE_DIR}/dest/)
 # 拷贝编译结果文件
-add_custom_command(TARGET ${PROJECT_NAME}
-    POST_BUILD
-    # 创建文件夹: dest/
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${OUTPUT_DIR}
-    # 拷贝编译结果文件: libcommon_util_demo
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} ${OUTPUT_DIR}
-)
+# copy compiled files
+set(publish_dir ${CMAKE_SOURCE_DIR}/publish)
+set(output_dir ${publish_dir}/${PROJECT_NAME})
+message("CMAKE_COMMAND:" ${CMAKE_COMMAND})
+message("output_dir:" ${output_dir})
+
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    message("start to copy target files")
+    add_custom_command(TARGET ${PROJECT_NAME}
+        POST_BUILD
+        # 创建文件夹: dest/
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir}/${CMAKE_SYSTEM_NAME}/${target_arch}/
+        # 拷贝编译结果文件: libcommon_util_demo
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} ${output_dir}/${CMAKE_SYSTEM_NAME}/${target_arch}
+    )
+endif()
+
+# publish/common_demo/
+# publish/common_demo/windows/x32/common_demo.exe
+# publish/common_demo/windows/x64/common_demo.exe
+# publish/common_demo/Darwin/x86_64/common_demo
 
 message(STATUS "--------- end cmake usage_demo ---------")
