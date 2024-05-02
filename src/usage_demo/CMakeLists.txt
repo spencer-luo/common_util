@@ -33,14 +33,34 @@ set(output_dir ${publish_dir}/${PROJECT_NAME})
 message("CMAKE_COMMAND:" ${CMAKE_COMMAND})
 message("output_dir:" ${output_dir})
 
+# 获取构建目标的CPU架构
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    if (CMAKE_BUILD_TYPE STREQUAL "Release")
+        set(library_dir ${CMAKE_CURRENT_BINARY_DIR}/Release)
+    else()
+        set(library_dir ${CMAKE_CURRENT_BINARY_DIR}/Debug)
+    endif()
+else()
+    set(library_dir ${CMAKE_CURRENT_BINARY_DIR})
+endif()
+message("library_dir:" ${library_dir})
+
+# 可执行文件的名称
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set(executable_name ${PROJECT_NAME}.exe)
+else()
+    set(executable_name ${PROJECT_NAME})
+endif()
+message("executable_name:" ${executable_name})
+
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
     message("start to copy target files")
     add_custom_command(TARGET ${PROJECT_NAME}
         POST_BUILD
         # 创建文件夹: dest/
         COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir}/${CMAKE_SYSTEM_NAME}/${target_arch}/
-        # 拷贝编译结果文件: libcommon_util_demo
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} ${output_dir}/${CMAKE_SYSTEM_NAME}/${target_arch}
+        # 拷贝编译结果文件: common_util_demo
+        COMMAND ${CMAKE_COMMAND} -E copy ${library_dir}/${executable_name} ${output_dir}/${CMAKE_SYSTEM_NAME}/${target_arch}
     )
 endif()
 

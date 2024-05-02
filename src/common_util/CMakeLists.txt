@@ -32,6 +32,11 @@ file(GLOB_RECURSE COMMON_UTIL_SRC
 )
 message(DEBUG "COMMON_UTIL_SRC": ${COMMON_UTIL_SRC})
 
+file(GLOB COMMON_UTIL_HEADER
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+)
+message("COMMON_UTIL_HEADER": ${COMMON_UTIL_HEADER})
+
 # 添加头文件的包含目录
 # include directories
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
@@ -39,6 +44,12 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 # 斌阿姨静态库
 # build library
 add_library(${PROJECT_NAME} STATIC ${COMMON_UTIL_SRC})
+
+# 如果是windows，设置 管理员权限 和 UAC绕过UI保护
+if (CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/level='requireAdministrator' " )
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/level='requireAdministrator' /uiAccess='true'" )
+endif()
 
 # 拷贝编译结果文件
 # copy compiled files
@@ -59,6 +70,14 @@ else()
 endif()
 message("library_dir:" ${library_dir})
 
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set(library_name ${PROJECT_NAME}.lib)
+else()
+    set(library_name lib${PROJECT_NAME}.a)
+endif()
+message("library_name:" ${library_name})
+
+message("CMAKE_BUILD_TYPE:" ${CMAKE_BUILD_TYPE})
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
     message("start to copy target files")
 
@@ -66,14 +85,17 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
     add_custom_command(TARGET ${PROJECT_NAME}
         POST_BUILD
         # 创建文件夹: dest/common_util/lib
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir}/${CMAKE_SYSTEM_NAME}/${target_arch}
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir}/lib/${CMAKE_SYSTEM_NAME}/${target_arch}
         # 拷贝编译结果文件: libcommon_util.a
-        COMMAND ${CMAKE_COMMAND} -E copy ${library_dir}/*${PROJECT_NAME}.* ${output_dir}/${CMAKE_SYSTEM_NAME}/${target_arch}
+        COMMAND ${CMAKE_COMMAND} -E copy ${library_dir}/${library_name} ${output_dir}/lib/${CMAKE_SYSTEM_NAME}/${target_arch}
         # 创建文件夹: dest/common_util/include
         COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir}/include/
         # 拷贝头文件: src/common_util/*.h
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/*.h ${output_dir}/include/
+        # COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/*.h ${output_dir}/include/
+        COMMAND ${CMAKE_COMMAND} -E copy ${COMMON_UTIL_HEADER} ${output_dir}/include/
     )
+elseif()
+    message("current build is debug")
 endif()
 # publish/common_util/
 # publish/common_util/include/
