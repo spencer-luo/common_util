@@ -31,8 +31,12 @@ message("target_arch:" ${target_arch})
 add_subdirectory(src/common_util)
 add_subdirectory(src/usage_demo)
 
+# 打包安装
 # pack and install
 # set pack content
+set(CPACK_OUTPUT_FILE_PREFIX ${CMAKE_SOURCE_DIR}/publish/pkg)
+message("CPACK_OUTPUT_FILE_PREFIX:" ${CPACK_OUTPUT_FILE_PREFIX})
+
 install(TARGETS common_util common_util_demo
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib

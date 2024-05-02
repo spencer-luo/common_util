@@ -2,7 +2,7 @@
 echo $1
 if [ $1 == "build" ]; then
     echo "Building..."
-    cmake -B ./build -DCPACK_OUTPUT_FILE_PREFIX=`pwd`/dest/pkg
+    cmake -B ./build
     cd build
     make
     echo "Build Done."
