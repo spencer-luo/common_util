@@ -15,13 +15,24 @@ if %param_count% lss 1 (
     exit
 )
 
+@REM 读取可执行程序的路径
+if exist ./build/executable_filepath.data (
+    set /p executable_filepath=<./build/executable_filepath.data    
+)
+@REM 执行common_util.exe
 if %~1==run (
-    echo run
+    if defined executable_filepath (
+        @REM echo executable_filepath: %executable_filepath%
+        %executable_filepath%
+    )
     exit
 )
 
 if %~1==clean (
-    echo clean
+    @REM 参数说明：--%，停止解析符号，告诉PowerShell停止解析其余参数，并按原样传递它们
+    @REM 参考文档：https://www.cnblogs.com/fireblackman/p/17323631.html
+    cmd --% /c RMDIR /Q/S build
+    echo finish clean
     exit
 )
 

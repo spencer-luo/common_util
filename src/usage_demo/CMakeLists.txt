@@ -64,6 +64,13 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
     )
 endif()
 
+# 记录可执行文件的路径到./build/executable_filepath.data
+message("write executable_filepath.data: " ${library_dir}/${executable_name})
+file(WRITE
+    ${CMAKE_BINARY_DIR}/executable_filepath.data
+    ${library_dir}/${executable_name}
+)
+
 # publish/common_demo/
 # publish/common_demo/windows/x32/common_demo.exe
 # publish/common_demo/windows/x64/common_demo.exe
