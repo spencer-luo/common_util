@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include "common_util/timecount.h"
+#include "timecount.h"
 #include "common.hpp"
 
 void TestTimecount()

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common.hpp"
-#include "common_util/verutil.h"
+#include "verutil.h"
 
 void TestVerUtil()
 {

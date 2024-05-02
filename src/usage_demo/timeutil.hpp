@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <string>
-#include "common_util/timeutil.h"
+#include "timeutil.h"
 #include "common.hpp"
 
 void TestTimeutil()

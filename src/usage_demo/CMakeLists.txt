@@ -16,8 +16,7 @@ set(CMAKE_CXX_STANDARD 11)
 # 添加头文件的包含目录
 # include directories
 message("CMAKE_SOURCE_DIR:" ${CMAKE_SOURCE_DIR})
-# todo
-include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/src/common_util)
 
 # 构建可执行文件
 # build library

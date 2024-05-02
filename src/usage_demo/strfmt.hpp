@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include "common.hpp"
-#include "common_util/strfmt.h"
+#include "strfmt.h"
 
 void TestFormatUintAndDouble()
 {

@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include "common.hpp"
-#include "common_util/sysutil.h"
+#include "sysutil.h"
 
 void TestBaseFunc()
 {
