@@ -6,48 +6,55 @@
 
 void TestDatetimeBasicUsage()
 {
-    PrintSubTitle("datetime basic usage");
+    PrintSubTitle("TestDatetimeBasicUsage");
+
     auto now = cutl::datetime::now();
-    std::cout << "系统当前时间戳(毫秒): " << now.timestamp() << std::endl;
-    std::cout << "系统当前时间(UTC时间): " << now.utctime() << std::endl;
-    std::cout << "系统当前时间(本地时间): " << now.format() << std::endl;
-    std::cout << "系统当前时间(UTC时间) 格式b: " << now.format(cutl::datetime_format::datetime_format_b, false, true) << std::endl;
-    std::cout << "系统当前时间(UTC时间) 格式b,不显示毫秒: " << now.format(cutl::datetime_format::datetime_format_b, false, false) << std::endl;
-    std::cout << "系统当前时间(UTC时间) 格式c: " << now.format(cutl::datetime_format::datetime_format_c, false, true) << std::endl;
-    std::cout << "系统当前时间(UTC时间) 格式d: " << now.format(cutl::datetime_format::datetime_format_d, false, true) << std::endl;
-    std::cout << "系统当前时间(UTC时间) 自定义格式1: " << now.format("%c %Z", false, true) << std::endl;
-    std::cout << "系统当前时间(UTC时间) 自定义格式2: " << now.format("%Y年%m月%d日 %H点%M分%S秒", false, false) << std::endl;
+    std::cout << "current timestamp(ms): " << now.timestamp() << std::endl;
+    std::cout << "current time(UTC time): " << now.utctime() << std::endl;
+    std::cout << "current time(local time): " << now.format() << std::endl;
+    std::cout << "current time(UTC time) format b: " << now.format(cutl::datetime_format::datetime_format_b, false, true) << std::endl;
+    std::cout << "current time(UTC time) format b, don't show milliseconds: " << now.format(cutl::datetime_format::datetime_format_b, false, false) << std::endl;
+    std::cout << "current time(UTC time) format c: " << now.format(cutl::datetime_format::datetime_format_c, false, true) << std::endl;
+    std::cout << "current time(UTC time) format d: " << now.format(cutl::datetime_format::datetime_format_d, false, true) << std::endl;
+    std::cout << "current time(UTC time) custom format 1: " << now.format("%c %Z", false, true) << std::endl;
+    std::cout << "current time(UTC time) custom format 2: " << now.format("%m/%d/%Y/ %H:%M:%S", false, false) << std::endl;
 }
 
 void TestDatetimeOperator()
 {
     // 运算符重载
-    PrintSubTitle("datetime operator overwrite");
-    auto now = cutl::datetime::now();
-    std::cout << "1天 == " << cutl::datetime::day << "毫秒" << std::endl;
-    auto dt1 = now - cutl::datetime::min;
-    auto dt2 = now + cutl::datetime::min;
-    std::cout << "系统当前时间(标准输出): " << now << std::endl;
-    std::cout << "1分钟前: " << dt1 << std::endl;
-    std::cout << "1分钟后: " << dt2 << std::endl;
-    std::cout << "系统当前时间(标准输出): " << now << std::endl;
-    now -= (2 * cutl::datetime::hour);
-    std::cout << "2小时前: " << now << std::endl;
-    now += (4 * cutl::datetime::hour);
-    std::cout << "2小时后: " << now << std::endl;
+    PrintSubTitle("TestDatetimeOperator");
 
-    auto dt3 = cutl::datetime::get(" 2024-03-01 10:00:00");
-    auto dt4 = cutl::datetime::get(" 2024-03-30 14:18:44");
+    std::cout << "one day == " << cutl::datetime::day << "ms" << std::endl;
+    std::cout << "one hour == " << cutl::datetime::hour << "ms" << std::endl;
+    std::cout << "one minute == " << cutl::datetime::min << "ms" << std::endl;
+
+    auto now = cutl::datetime::now();
+    std::cout << "current time: " << now << std::endl;
+    auto dt1 = now - cutl::datetime::min;
+    std::cout << "before one minute: " << dt1 << std::endl;
+    // std::cout << "current time 1: " << now << std::endl;
+    auto dt2 = now + cutl::datetime::min;
+    std::cout << "after one minute: " << dt2 << std::endl;
+    // std::cout << "current time 2: " << now << std::endl;
+
+    now -= (2 * cutl::datetime::hour);
+    std::cout << "before two hours: " << now << std::endl;
+    now += (4 * cutl::datetime::hour);
+    std::cout << "after two hours: " << now << std::endl;
+
+    auto dt3 = cutl::datetime::get("2024-03-01 10:00:00");
+    auto dt4 = cutl::datetime::get("2024-03-30 14:18:44");
     auto duration1 = dt4 - dt3;
-    std::cout << dt3 << " 与 " << dt4 << " 相差" << duration1 << "毫秒, 时长：" << cutl::fmt_timeduration_ms(duration1) << std::endl;
+    std::cout << "the difference between " << dt3 << " and " << dt4 << " is: " << duration1 << "ms, formatted: " << cutl::fmt_timeduration_ms(duration1) << std::endl;
     auto duration2 = dt3 - dt4;
-    std::cout << dt4 << " 与 " << dt3 << " 相差" << duration2 << "毫秒" << std::endl;
+    std::cout << "the difference between " << dt4 << " and " << dt3 << " is: " << duration2 << "ms" << std::endl;
 }
 
 void TestDatetimeParseString()
 {
     // 字符串解析成时间
-    PrintSubTitle("datetime parse string");
+    PrintSubTitle("TestDatetimeParseString");
     auto dt0 = cutl::datetime::get(" 2024-03-02 14:18:44 ");
     std::cout << "dt0: " << dt0 << std::endl;
     auto dt1 = cutl::datetime::get(" 2024-03-02 14:18:44.023 ");
@@ -76,6 +83,11 @@ void TestDatetimeParseString()
     // day error
     auto dt11 = cutl::datetime::get(" 2024-03-42 14:18:44 ");
     std::cout << "dt11: " << dt11 << std::endl;
+
+    // year > 2038
+    auto dt12 = cutl::datetime::get(" 2044-03-02 14:18:44 ");
+    std::cout << "dt12: " << dt12 << std::endl;
+    std::cout << "dt12 timestamp: " << dt12.timestamp() << std::endl;
 }
 
 void TestDatetime()

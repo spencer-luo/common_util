@@ -5,7 +5,7 @@
 
 void TestUpperLower()
 {
-    PrintSubTitle("to upper/lower");
+    PrintSubTitle("TestUpperLower");
 
     std::string str1 = "Hello, world!";
     std::string str2 = "GOODBYE, WORLD!";
@@ -15,19 +15,19 @@ void TestUpperLower()
 
 void TestStrip()
 {
-    PrintSubTitle("strip");
+    PrintSubTitle("TestStrip");
 
     std::string text = "  \tThis is a test string. \n ";
     // std::string text = "  \t中国 \n ";
-    std::cout << "text:" << text << std::endl;
-    std::cout << "trim left text:" << cutl::lstrip(text) << std::endl;
-    std::cout << "trim right text:" << cutl::rstrip(text) << std::endl;
-    std::cout << "trim text:" << cutl::strip(text) << std::endl;
+    std::cout << "text: " << text << std::endl;
+    std::cout << "trim left text: " << cutl::lstrip(text) << std::endl;
+    std::cout << "trim right text: " << cutl::rstrip(text) << std::endl;
+    std::cout << "trim text: " << cutl::strip(text) << std::endl;
 }
 
 void TestStartswithEndswith()
 {
-    PrintSubTitle("starts_with/ends_with");
+    PrintSubTitle("TestStartswithEndswith");
 
     std::string str1 = "Hello, world!";
     std::string str2 = "GOODBYE, WORLD!";
@@ -39,18 +39,21 @@ void TestStartswithEndswith()
 
 void TestJoinSplit()
 {
-    PrintSubTitle("join/split");
+    PrintSubTitle("TestJoinSplit");
 
+    // split
     std::string fruits = "apple, banana, orange, pear";
+    std::cout << "fruits: " << fruits << std::endl;
     auto fruits_vec = cutl::split(fruits, ",");
-    std::cout << "list fruits:" << std::endl;
+    std::cout << "list fruits item:" << std::endl;
     for (size_t i = 0; i < fruits_vec.size(); i++)
     {
         auto item = fruits_vec[i];
         auto fruit = cutl::strip(item);
-        std::cout << item << ", strip:" << fruit << std::endl;
+        std::cout << item << ", after strip:" << fruit << std::endl;
         fruits_vec[i] = fruit;
     }
+    // join
     std::cout << "join fruits with comma: " << cutl::join(fruits_vec, "; ") << std::endl;
 }
 

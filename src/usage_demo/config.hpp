@@ -35,10 +35,10 @@ void static library_log_func(cutl::loglevel level, const std::string &msg)
     {
         std::cerr << "[" << curTime << "]" << loglevel2flag(level) << "]" << threadId << "](cutl) " << msg << std::endl;
     }
-    // else if (cutl::loglevel::debug_level == level)
-    // {
-    //     //  print debug log
-    // }
+    else if (cutl::loglevel::debug_level == level)
+    {
+        //  print debug log
+    }
     else
     {
         std::cout << "[" << curTime << "]" << loglevel2flag(level) << "]" << threadId << "](cutl) " << msg << std::endl;
@@ -47,6 +47,6 @@ void static library_log_func(cutl::loglevel level, const std::string &msg)
 
 void LibraryInit()
 {
-    PrintTitle("library library_init");
+    PrintTitle("library_init");
     cutl::library_init(library_log_func);
 }

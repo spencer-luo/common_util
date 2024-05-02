@@ -17,11 +17,11 @@ namespace cutl
     platform platform_type()
     {
 #if defined(_WIN32) || defined(__WIN32__)
-#ifdef _WIN64
-        std::cout << "64-bit Windows" << std::endl;
-#else
-        std::cout << "32-bit Windows" << std::endl;
-#endif
+        // #ifdef _WIN64
+        //         std::cout << "64-bit Windows" << std::endl;
+        // #else
+        //         std::cout << "32-bit Windows" << std::endl;
+        // #endif
         return platform::windows;
 #elif defined(__APPLE__) || defined(__MACH__)
         return platform::macos;
