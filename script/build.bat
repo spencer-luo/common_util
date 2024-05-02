@@ -95,7 +95,8 @@ if %~1==build (
     @REM configure
     cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=%buildType% -S ./ -B ./build -G %generator% -A %platform%
     @REM build
-    @REM TODO: -j 6 是什么意思？
+    @REM -j 6: 采用6个CPU核来进行并行编译，加快构建速度。
+    @REM TODO: 你可以根据自己电脑的CPU核数来调整设置这个参数
     cmake --build ./build --config %buildType% --target ALL_BUILD -j 6 --
 )
 
