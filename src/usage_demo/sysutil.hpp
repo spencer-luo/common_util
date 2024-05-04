@@ -8,7 +8,8 @@ void TestBaseFunc()
 {
     PrintSubTitle("TestBaseFunc");
 
-    std::cout << "OS platform: " << cutl::platform_name() << std::endl;
+    auto type = cutl::platform_type();
+    std::cout << "OS platform: " << cutl::platform_name(type) << std::endl;
     std::cout << "C++ STL version: " << cutl::cpp_stl_version() << std::endl;
     std::cout << "program bit: x" << cutl::program_bit() << std::endl;
 }
@@ -53,6 +54,11 @@ void TestSystemCall()
     auto result = cutl::getenv("PATH", "not found");
     std::cout << "getenv for PATH, result:" << std::endl
               << result << std::endl;
+
+    // for Windows testing
+    std::cout << "USERPROFILE: " << cutl::getenv("USERPROFILE", "not found") << std::endl;
+    std::cout << "HOMEDRIVE: " << cutl::getenv("HOMEDRIVE", "not found") << std::endl;
+    std::cout << "HOMEPATH: " << cutl::getenv("HOMEPATH", "not found") << std::endl;
 }
 
 void TestSysutil()

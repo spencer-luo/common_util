@@ -7,6 +7,7 @@
 #include <dirent.h>
 #include <stack>
 #include <utime.h>
+#include <stdlib.h>
 #include <sys/time.h>
 #include "filesystem.h"
 #include "inner/logger.h"
@@ -15,6 +16,11 @@ namespace cutl
 {
     static constexpr char unix_separator = '/';
 
+    bool is_special_dir(const std::string &filePath)
+    {
+        return filePath == "." || filePath == "..";
+    }
+
     // https://blog.csdn.net/giveaname/article/details/88973102
     std::string current_program_dir()
     {
@@ -22,10 +28,25 @@ namespace cutl
         char *presult = getcwd(buffer, MAX_PATH_LEN);
         if (nullptr == presult)
         {
-            CUTL_ERROR("presult is nullptr");
+            CUTL_ERROR("getcwd failure, presult is nullptr");
             return "";
         }
         return std::string(presult);
+    }
+
+    // 相对路径转绝对路径
+    // https://www.man7.org/linux/man-pages/man3/realpath.3.html
+    std::string absolute_path(const std::string &releative_path)
+    {
+        char absPath[PATH_MAX] = {0};
+        auto pAbsolutePath = realpath(path.c_str(), absPath);
+        if (pAbsolutePath == nullptr)
+        {
+            CUTL_ERROR("realpath failure, pAbsolutePath is nullptr");
+            return "";
+        }
+
+        return std::string(pAbsolutePath);
     }
 
     bool file_exists(const std::string &filepath)
@@ -92,7 +113,6 @@ namespace cutl
         return true;
     }
 
-    bool is_special_dir(const std::string &filePath) { return filePath == "." || filePath == ".."; }
     bool remove_dir_recursive(const std::string &dir_path)
     {
         DIR *dir = opendir(dir_path.c_str()); // 打开这个目录
@@ -117,6 +137,7 @@ namespace cutl
             if (0 != ret)
             {
                 CUTL_ERROR("stat error. filepath:" + filepath + ", error:" + strerror(errno));
+                closedir(dir);
                 return false;
             }
             if (S_ISDIR(file_stat.st_mode))
@@ -133,6 +154,7 @@ namespace cutl
                 if (ret != 0)
                 {
                     CUTL_ERROR("remove " + filepath + " error, ret:" + std::to_string(ret));
+                    closedir(dir);
                     return false;
                 }
             }
@@ -143,7 +165,6 @@ namespace cutl
         int ret = rmdir(dir_path.c_str());
         if (ret != 0)
         {
-            // CUTL_ERROR("remove " + dir_path + " error");
             CUTL_ERROR("rmdir error. dir_path:" + dir_path + ", error:" + strerror(errno));
             return false;
         }
@@ -151,81 +172,70 @@ namespace cutl
         return true;
     }
 
-    bool file_sync(FILE *handle)
+    uint64_t get_filesize(const std::string &filepath, bool link_target)
     {
-        int32_t fd = fileno(handle);
-        if (fd < 0)
+        struct stat statbuf;
+        int ret = 0;
+        if (link_target)
         {
-            CUTL_ERROR(std::string("get file fd is error: ") + strerror(errno));
-            return false;
+            ret = lstat(filepath.c_str(), &statbuf);
         }
-        int ret = fsync(fd);
+        else
+        {
+            ret = stat(filepath.c_str(), &statbuf);
+        }
+
         if (ret != 0)
         {
-            CUTL_ERROR(std::string("fsync error: ") + strerror(errno));
-            return false;
+            CUTL_ERROR("stat " + filepath + " error, ret:" + std::to_string(ret));
+            return 0;
         }
-        return true;
+
+        return static_cast<uint64_t>(statbuf.st_size);
     }
 
     uint64_t get_dirsize(const std::string &dirpath)
     {
         uint64_t totalSize = 0;
+        // filevec file_list;
 
-        std::stack<std::string> dirs;
-        DIR *dir = opendir(dirpath.c_str());
-        if (dir == nullptr)
+        DIR *dir = opendir(dirpath.c_str()); // 打开这个目录
+        if (dir == NULL)
         {
-            CUTL_ERROR("open " + dirpath + " error");
-            return 0;
+            CUTL_ERROR("opendir error. dirpath:" + dirpath + ", error:" + strerror(errno));
+            return totalSize;
         }
-
-        dirs.push(dirpath);
-
-        while (!dirs.empty())
+        struct dirent *file_info = NULL;
+        // 逐个读取目录中的文件到file_info
+        while ((file_info = readdir(dir)) != NULL)
         {
-            std::string currentDir = dirs.top();
-            dirs.pop();
-            DIR *subDir = opendir(currentDir.c_str());
-            if (subDir == nullptr)
+            // 系统有个系统文件，名为“..”和“.”,对它不做处理
+            std::string filename(file_info->d_name);
+            if (is_special_dir(filename))
             {
-                CUTL_ERROR("open " + currentDir + " error");
                 continue;
             }
-            struct dirent *file_info = nullptr;
-            while ((file_info = readdir(subDir)) != nullptr)
+            struct stat file_stat; // 文件的信息
+            std::string filepath = dirpath + unix_separator + filename;
+            int ret = lstat(filepath.c_str(), &file_stat);
+            if (0 != ret)
             {
-                std::string filename(file_info->d_name);
-                if (file_info->d_type == DT_DIR)
-                {
-                    if (is_special_dir(filename))
-                    {
-                        // do nothing
-                        continue;
-                    }
-                    else
-                    {
-                        // 子文件夹
-                        std::string subDirPath = currentDir + unix_separator + filename;
-                        dirs.push(subDirPath);
-                    }
-                }
-                else
-                {
-                    // 普通文件
-                    std::string filepath = currentDir + unix_separator + filename;
-                    // TODO: 可能需要替换成函数
-                    struct stat statbuf;
-                    int ret = lstat(filepath.c_str(), &statbuf);
-                    if (ret != 0)
-                    {
-                        CUTL_ERROR("lstat error. filepath:" + filepath + ", error:" + strerror(errno));
-                        continue;
-                    }
-                    totalSize += statbuf.st_size;
-                }
+                CUTL_ERROR("stat error. filepath:" + filepath + ", error:" + strerror(errno));
+                closedir(dir);
+                return totalSize;
             }
-            closedir(subDir);
+            auto ftype = get_file_type(file_stat.st_mode);
+
+            if (S_ISDIR(file_stat.st_mode))
+            {
+                auto subdir_size = get_dirsize(filepath);
+                totalSize += subdir_size;
+            }
+            else
+            {
+                auto subfile_size = get_filesize(filepath, false);
+                totalSize += subfile_size;
+            }
         }
         closedir(dir);
 
@@ -305,6 +315,7 @@ namespace cutl
             if (0 != ret)
             {
                 CUTL_ERROR("stat error. filepath:" + filepath + ", error:" + strerror(errno));
+                closedir(dir);
                 return file_list;
             }
             auto ftype = get_file_type(file_stat.st_mode);
@@ -384,6 +395,23 @@ namespace cutl
             }
         }
 
+        return true;
+    }
+
+    bool file_sync(FILE *handle)
+    {
+        int32_t fd = fileno(handle);
+        if (fd < 0)
+        {
+            CUTL_ERROR(std::string("get file fd is error: ") + strerror(errno));
+            return false;
+        }
+        int ret = fsync(fd);
+        if (ret != 0)
+        {
+            CUTL_ERROR(std::string("fsync error: ") + strerror(errno));
+            return false;
+        }
         return true;
     }
 

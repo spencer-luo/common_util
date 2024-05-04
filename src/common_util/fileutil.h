@@ -143,11 +143,19 @@ namespace cutl
          */
         std::string basename() const;
         /**
-         * @brief Get the real path referenced by symbolic link or shortcuts.
+         * @brief Get the real path referenced by symbolic link
+         *
+         * @note This function only works on Unix-like systems, not support on Windows.
          *
          * @return real path referenced by symbolic link or shortcuts
          */
         std::string realpath() const;
+        /**
+         * @brief Get the absolute path of the filepath.
+         *
+         * @return std::string the absolute path of the filepath.
+         */
+        std::string abspath() const;
         /**
          * @brief Get the extension of the filepath.
          *
@@ -295,9 +303,15 @@ namespace cutl
      * @brief Get the size of a file.
      *
      * @param filepath the filepath of the file to be checked
+     *
+     * @param link_target whether to get the size of the file pointed by symbolic link, default is false.
+     * If link_target is true, the function will get the size of the file pointed by symbolic link, not the symbolic link itself.
+     *
+     * @note link_target parameter only works on Unix-like systems, not support on Windows.
+     *
      * @return file size in bytes
      */
-    uint64_t filesize(const filepath &filepath);
+    uint64_t filesize(const filepath &filepath, bool link_target = false);
 
     /**
      * @brief Get the size of a directory, include all files and subdirectories.

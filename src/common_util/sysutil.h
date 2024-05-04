@@ -53,9 +53,11 @@ namespace cutl
     /**
      * @brief Get the platform name for the current system.
      *
+     * @param type the platform type.
+     *
      * @return std::string the platform name.
      */
-    std::string platform_name();
+    std::string platform_name(platform type);
 
     /**
      * @brief Get the C++ standard library version.

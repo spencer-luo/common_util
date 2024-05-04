@@ -5,7 +5,7 @@
 
 void TestConstructor()
 {
-    PrintSubTitle("constructor");
+    PrintSubTitle("TestConstructor");
 
     cutl::filepath path1("/Users/spencer/workspace/common_util/src/usage_demo/filepath.hpp");
     cutl::filepath path2("/Users/spencer/workspace/common_util/src/usage_demo//");
@@ -21,7 +21,7 @@ void TestConstructor()
 
 void TestJoin()
 {
-    PrintSubTitle("join");
+    PrintSubTitle("TestJoin");
 
     auto path1 = cutl::path("/Users/spencer/workspace/common_util/src/usage_demo");
     auto path2 = path1.join("filepath.hpp");
@@ -32,7 +32,7 @@ void TestJoin()
 
 void TestDirnameBasename()
 {
-    PrintSubTitle("dirname/basename");
+    PrintSubTitle("TestDirnameBasename");
 
     auto path1 = cutl::path("/Users/spencer/workspace/common_util/src/usage_demo/filepath.hpp");
     std::cout << "path1: " << path1 << std::endl;
@@ -46,15 +46,49 @@ void TestDirnameBasename()
     std::cout << "path3: " << path3 << std::endl;
     std::cout << "dirname: " << path3.dirname() << std::endl;
     std::cout << "basename: " << path3.basename() << std::endl;
+}
 
-    auto symlink_path = cutl::path("/Users/spencer/workspace/common_util/fileutil_test/symlink");
+void TestRealpathAndAbspath()
+{
+    PrintSubTitle("TestRealpathAndAbspath");
+
+    auto symlink_path = cutl::path("./fileutil_test/link4");
     std::cout << "symlink_path: " << symlink_path << std::endl;
     std::cout << "realpath: " << symlink_path.realpath() << std::endl;
+    std::cout << "abspath: " << symlink_path.abspath() << std::endl;
+
+    auto path1 = cutl::path("../common_util/fileutil_test/file4.data");
+    std::cout << "abspath: " << path1.abspath() << std::endl
+              << ", exists: " << path1.exists() << std::endl;
+
+    auto path2 = cutl::path("~/workspace/common_util/fileutil_test/file4.data");
+    std::cout << "abspath: " << path2.abspath() << std::endl
+              << ", exists: " << path2.exists() << std::endl;
+}
+
+void TestFileType()
+{
+    PrintSubTitle("TestFileType");
+
+    auto path1 = cutl::path("./fileutil_test/dir1");
+    std::cout << "path1: " << path1 << ", type: " << path1.type() << ", " << filetype_flag(path1.type()) << std::endl;
+    auto path2 = cutl::path("./fileutil_test/file3.txt");
+    std::cout << "path2: " << path2 << ", type: " << path2.type() << ", " << filetype_flag(path2.type()) << std::endl;
+    auto path3 = cutl::path("./fileutil_test/file4.data");
+    std::cout << "path3: " << path3 << ", type: " << path3.type() << ", " << filetype_flag(path3.type()) << std::endl;
+    auto path4 = cutl::path(R"(C:\Users\Public\Desktop\CMake-gui.lnk)");
+    std::cout << "path4: " << path4 << ", type: " << path4.type() << ", " << filetype_flag(path4.type()) << std::endl;
+    auto path5 = cutl::path(R"(C:\Users\vboxuser\Desktop\VisualStudio2015)");
+    std::cout << "path5: " << path5 << ", type: " << path5.type() << ", " << filetype_flag(path5.type()) << std::endl;
+    auto path6 = cutl::path(R"(C:\Users\Public\Desktop\VisualStudio2015.lnk)");
+    std::cout << "path6: " << path6 << ", type: " << path6.type() << ", " << filetype_flag(path6.type()) << std::endl;
+    auto path7 = cutl::path(R"(C:\Users\vboxuser\Desktop\VisualStudio2015.lnk)");
+    std::cout << "path7: " << path7 << ", type: " << path6.type() << ", " << filetype_flag(path7.type()) << std::endl;
 }
 
 void TestExtenstion()
 {
-    PrintSubTitle("extension");
+    PrintSubTitle("TestExtenstion");
 
     auto path1 = cutl::path("/Users/spencer/workspace/common_util/src/usage_demo/filepath.hpp");
     std::cout << "path1: " << path1 << ", extension: " << path1.extension() << std::endl;
@@ -64,25 +98,26 @@ void TestExtenstion()
 
 void TestExist()
 {
-    PrintSubTitle("extension");
+    PrintSubTitle("TestExist");
 
-    auto path1 = cutl::path("/Users/spencer/workspace/common_util/src/usage_demo/filepath.hpp");
+    auto path1 = cutl::path("./src/usage_demo/filepath.hpp");
     std::cout << "path1: " << path1 << ", exists: " << path1.exists() << std::endl;
-    auto path2 = cutl::path("/Users/spencer/workspace/common_util/src/usage_demo/filepath");
+    auto path2 = cutl::path("./src/usage_demo/filepath");
     std::cout << "path2: " << path2 << ", exists: " << path2.exists() << std::endl;
-    auto path3 = cutl::path("/Users/spencer/workspace/common_util/src/usage_demo");
+    auto path3 = cutl::path("./src/usage_demo");
     std::cout << "path3: " << path3 << ", exists: " << path3.exists() << std::endl;
 }
 
 void TestPermission()
 {
-    PrintSubTitle("permission");
+    PrintSubTitle("TestPermission");
 
-    auto path = cutl::path("/Users/spencer/workspace/common_util/src/usage_demo/filepath.hpp");
+    auto path = cutl::path("./fileutil_test/file4.data22");
+    std::cout << "path: " << path << ", exists: " << path.exists() << std::endl;
     std::cout << "path: " << path << ", readable: " << path.readable() << std::endl;
     std::cout << "path: " << path << ", writable: " << path.writable() << std::endl;
     std::cout << "path: " << path << ", executable: " << path.executable() << std::endl;
-    auto path2 = cutl::path("/Users/spencer/workspace/common_util/script/build.sh");
+    auto path2 = cutl::path("./script/build.sh");
     std::cout << "path2: " << path2 << ", executable: " << path2.executable() << std::endl;
 }
 
@@ -93,6 +128,8 @@ void TestFilePath()
     TestConstructor();
     TestJoin();
     TestDirnameBasename();
+    TestRealpathAndAbspath();
+    TestFileType();
     TestExtenstion();
     TestExist();
     TestPermission();

@@ -10,7 +10,6 @@
 namespace cutl
 {
 
-    // TODO: 未在各个平台下验证
     // https://www.cnblogs.com/Forgenvueory/p/12757271.html
     // https://blog.csdn.net/n5/article/details/70143942
     // https://blog.csdn.net/qq_40340448/article/details/122117270
@@ -34,9 +33,8 @@ namespace cutl
 #endif
     }
 
-    std::string platform_name()
+    std::string platform_name(platform type)
     {
-        auto type = platform_type();
         static std::map<platform, std::string> platform_map = {
             {platform::windows, "Windows"},
             {platform::macos, "macOS"},
