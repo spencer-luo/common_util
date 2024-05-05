@@ -25,7 +25,7 @@ namespace cutl
         char *presult = _getcwd(buffer, MAX_PATH_LEN);
         if (nullptr == presult)
         {
-            CUTL_ERROR("getcwd failure, presult is nullptr");
+            CUTL_ERROR("_getcwd failure, presult is nullptr");
             return "";
         }
         return std::string(presult);

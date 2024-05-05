@@ -6,6 +6,7 @@
 #include "sysutil.h"
 #include "inner/logger.h"
 #include "inner/system_util.h"
+#include "inner/filesystem.h"
 
 namespace cutl
 {
@@ -30,6 +31,22 @@ namespace cutl
         return platform::unix;
 #else
         return platform::unknown;
+#endif
+    }
+
+    std::string architecture()
+    {
+#if defined(_WIN32) || defined(__WIN32__)
+        return cutl::getenv("PROCESSOR_ARCHITECTURE", "");
+#else
+        static std::string arch;
+        if (arch.empty())
+        {
+            std::string cmd = "uname -m";
+            callcmd(cmd, arch);
+            CUTL_DEBUG("cmd: " + cmd + ", result: " + arch);
+            return arch;
+        }
 #endif
     }
 
@@ -176,6 +193,17 @@ namespace cutl
         }
 
         return std::string(text);
+    }
+
+    std::string getcwd()
+    {
+        return current_program_dir();
+    }
+
+    std::string homedir()
+    {
+        // todo
+        return "";
     }
 
 } // namespace

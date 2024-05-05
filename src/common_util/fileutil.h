@@ -55,13 +55,6 @@ namespace cutl
     std::string filetype_flag(filetype type);
 
     /**
-     * @brief Get the working directory of the current excuting process.
-     *
-     * @return file path of the working directory
-     */
-    std::string getcwd();
-
-    /**
      * @brief Create a new file.
      *
      * @param path the filepath of the new file to be created

@@ -10,6 +10,7 @@ void TestBaseFunc()
 
     auto type = cutl::platform_type();
     std::cout << "OS platform: " << cutl::platform_name(type) << std::endl;
+    std::cout << "OS architecture: " << cutl::architecture() << std::endl;
     std::cout << "C++ STL version: " << cutl::cpp_stl_version() << std::endl;
     std::cout << "program bit: x" << cutl::program_bit() << std::endl;
 }
@@ -59,6 +60,15 @@ void TestSystemCall()
     std::cout << "USERPROFILE: " << cutl::getenv("USERPROFILE", "not found") << std::endl;
     std::cout << "HOMEDRIVE: " << cutl::getenv("HOMEDRIVE", "not found") << std::endl;
     std::cout << "HOMEPATH: " << cutl::getenv("HOMEPATH", "not found") << std::endl;
+    std::cout << "PROCESSOR_ARCHITECTURE: " << cutl::getenv("PROCESSOR_ARCHITECTURE", "not found") << std::endl;
+}
+
+void TestGetcwdAndHomedir()
+{
+    PrintSubTitle("TestGetcwdAndHomedir");
+
+    std::cout << "working directory: " << cutl::getcwd() << std::endl;
+    std::cout << "Home directory: " << cutl::homedir() << std::endl;
 }
 
 void TestSysutil()
@@ -68,4 +78,5 @@ void TestSysutil()
     TestBaseFunc();
     TestEndian();
     TestSystemCall();
+    TestGetcwdAndHomedir();
 }

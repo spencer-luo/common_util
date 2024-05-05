@@ -57,11 +57,6 @@ namespace cutl
         return file_;
     }
 
-    std::string getcwd()
-    {
-        return current_program_dir();
-    }
-
     bool createfile(const filepath &path)
     {
         auto dirPath = path.dirname();

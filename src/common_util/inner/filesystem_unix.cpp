@@ -38,11 +38,12 @@ namespace cutl
     // https://www.man7.org/linux/man-pages/man3/realpath.3.html
     std::string absolute_path(const std::string &releative_path)
     {
+        // TODO: Unix 下测试还有问题，需要进一步测试
         char absPath[PATH_MAX] = {0};
         auto pAbsolutePath = realpath(releative_path.c_str(), absPath);
         if (pAbsolutePath == nullptr)
         {
-            CUTL_ERROR("realpath failure, pAbsolutePath is nullptr");
+            CUTL_ERROR("realpath failure for " + releative_path + ", pAbsolutePath is nullptr, absPath:" + absPath);
             return "";
         }
 

@@ -51,6 +51,13 @@ namespace cutl
     platform platform_type();
 
     /**
+     * @brief Get the architecture of the cpu processor(or operating system).
+     *
+     * @return std::string the architecture.
+     */
+    std::string architecture();
+
+    /**
      * @brief Get the platform name for the current system.
      *
      * @param type the platform type.
@@ -131,5 +138,19 @@ namespace cutl
      * @return std::string the value of the environment variable.
      */
     std::string getenv(const std::string &name, const std::string &default_value);
+
+    /**
+     * @brief Get the working directory of the current excuting process.
+     *
+     * @return file path of the working directory
+     */
+    std::string getcwd();
+
+    /**
+     * @brief Get the home dir for the current user.
+     *
+     * @return std::string the home directory.
+     */
+    std::string homedir();
 
 } // namespace
