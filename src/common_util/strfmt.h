@@ -38,10 +38,10 @@ namespace cutl
      *
      * @param size the size to be formatted.
      * @param simplify whether to use a simplify unit.
-     * @param precision the precision of the formatted string, default is 2.
+     * @param precision the precision of the formatted string, default is 1.
      * @return std::string the formatted string.
      */
-    std::string fmt_filesize(uint64_t size, bool simplify = true, int precision = 2);
+    std::string fmt_filesize(uint64_t size, bool simplify = true, int precision = 1);
 
     /**
      * @brief Format a time duration to a human-readable string.

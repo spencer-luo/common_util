@@ -11,7 +11,8 @@ void PrintTitle(const std::string &title)
     auto str2Len = maxLen - len - str1Len;
     std::string str1(str1Len, '=');
     std::string str2(str2Len, '=');
-    std::cout << str1 << title << str2 << std::endl;
+    std::cout << std::endl
+              << str1 << title << str2 << std::endl;
 }
 
 void PrintSubTitle(const std::string &title)

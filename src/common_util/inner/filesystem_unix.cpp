@@ -178,11 +178,11 @@ namespace cutl
         int ret = 0;
         if (link_target)
         {
-            ret = lstat(filepath.c_str(), &statbuf);
+            ret = stat(filepath.c_str(), &statbuf);
         }
         else
         {
-            ret = stat(filepath.c_str(), &statbuf);
+            ret = lstat(filepath.c_str(), &statbuf);
         }
 
         if (ret != 0)

@@ -260,8 +260,9 @@ namespace cutl
             {
                 type = filetype::directory; // directory
             }
-            else if (attributes & FILE_ATTRIBUTE_NORMAL)
+            else if (attributes & FILE_ATTRIBUTE_NORMAL || attributes & FILE_ATTRIBUTE_READONLY)
             {
+                // 普通文件|只读文件
                 type = filetype::file; // regular file
             }
             else if ((attributes & FILE_ATTRIBUTE_ARCHIVE) && extension == ".lnk")
@@ -286,6 +287,8 @@ namespace cutl
         return extension;
     }
 
+    // https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfileattributesa
+    // https://learn.microsoft.com/en-us/windows/win32/fileio/file-attribute-constants
     filetype get_file_type(const std::string &filepath)
     {
         auto attributes = GetFileAttributesA(filepath.c_str());
@@ -350,19 +353,6 @@ namespace cutl
     // https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-setfiletime
     bool copy_attributes(const std::string &srcpath, const std::string &dstpath)
     {
-        // 修改文件属性
-        DWORD attributes = GetFileAttributesA(srcpath.c_str());
-        if (attributes == INVALID_FILE_ATTRIBUTES)
-        {
-            CUTL_ERROR("Failed to get file attributes for " + srcpath + ", error code: " + std::to_string(GetLastError()));
-            return false;
-        }
-        if (!SetFileAttributesA(dstpath.c_str(), attributes))
-        {
-            CUTL_ERROR("Failed to set file attributes for " + dstpath + ", error code: " + std::to_string(GetLastError()));
-            return false;
-        }
-
         // 获取 修改访问、修改时间
         FILETIME t_create, t_access, t_write;
         HANDLE h_src = CreateFileA(
@@ -388,12 +378,12 @@ namespace cutl
         CloseHandle(h_src);
 
         // 设置 修改访问、修改时间
-        HANDLE h_dst = ::CreateFile(
+        HANDLE h_dst = ::CreateFileA(
             dstpath.c_str(),
-            GENERIC_WRITE | GENERIC_READ,
+            GENERIC_WRITE,
             0,
             NULL,
-            CREATE_ALWAYS,
+            OPEN_EXISTING,
             FILE_ATTRIBUTE_NORMAL,
             NULL);
         if (h_dst == INVALID_HANDLE_VALUE)
@@ -410,6 +400,19 @@ namespace cutl
         }
         CloseHandle(h_dst);
 
+        // 修改文件属性
+        // 注意：文件访问权限的属性设置要放在文件时间的修改后面，因为只读权限的文件不允许修改时间
+        DWORD attributes = GetFileAttributesA(srcpath.c_str());
+        if (attributes == INVALID_FILE_ATTRIBUTES)
+        {
+            CUTL_ERROR("Failed to get file attributes for " + srcpath + ", error code: " + std::to_string(GetLastError()));
+            return false;
+        }
+        if (!SetFileAttributesA(dstpath.c_str(), attributes))
+        {
+            CUTL_ERROR("Failed to set file attributes for " + dstpath + ", error code: " + std::to_string(GetLastError()));
+            return false;
+        }
         return true;
     }
 

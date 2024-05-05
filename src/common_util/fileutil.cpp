@@ -157,6 +157,11 @@ namespace cutl
         return "";
     }
 
+    std::string filepath::abspath() const
+    {
+        return absolute_path(filepath_);
+    }
+
     std::string filepath::extension() const
     {
         auto pos = filepath_.find_last_of('.');
@@ -210,6 +215,7 @@ namespace cutl
     {
         if (file_)
         {
+            // CUTL_DEBUG("close file");
             int ret = fclose(file_);
             if (ret != 0)
             {
@@ -368,11 +374,12 @@ namespace cutl
         }
 
         // 从文件系统的文档信息里读取文件大小，性能更高
-        auto data_len = filesize(path);
+        auto data_len = filesize(path, true);
         // 公国文件操作的方式和获取文件大小
         // fseek(fg.getfd(), 0, SEEK_END);
         // size_t data_len = static_cast<size_t>(ftell(fg.getfd()));
         // rewind(fg.getfd());
+        CUTL_DEBUG("file size: " + std::to_string(data_len) + ", file: " + path.str());
 
         // get read size
         if (data_len > max_read_size)
@@ -393,19 +400,21 @@ namespace cutl
             CUTL_ERROR("read file failed, only read " + std::to_string(read_len) + " bytes for " + path.str());
         }
 
+        buffer[read_len] = '\0';
         auto text = std::string(buffer);
         delete[] buffer;
 
         return text;
     }
 
+    // https://en.cppreference.com/w/cpp/header/cstdio
     bool writetext(const filepath &path, const std::string &content)
     {
         // std::lock_guard
         file_guard fg(fopen(path.str().c_str(), "w"));
         if (fg.getfd() == nullptr)
         {
-            CUTL_ERROR("open file failed, " + path.str());
+            CUTL_ERROR("open file failed for " + path.str() + ", error: " + strerror(errno));
             return false;
         }
 
@@ -432,7 +441,7 @@ namespace cutl
         return true;
     }
 
-    uint64_t filesize(const filepath &filepath)
+    uint64_t filesize(const filepath &filepath, bool link_target)
     {
         if (!filepath.exists())
         {
@@ -440,15 +449,7 @@ namespace cutl
             return 0;
         }
 
-        struct stat statbuf;
-        int ret = stat(filepath.str().c_str(), &statbuf);
-        if (ret != 0)
-        {
-            CUTL_ERROR("stat " + filepath.str() + " error, ret:" + std::to_string(ret));
-            return 0;
-        }
-
-        return static_cast<uint64_t>(statbuf.st_size);
+        return get_filesize(filepath.str(), link_target);
     }
 
     uint64_t dirsize(const filepath &dirpath)
@@ -501,6 +502,12 @@ namespace cutl
 
     bool copyfile(const filepath &srcpath, const filepath &dstpath, bool attributes)
     {
+        // CUTL_INFO("file type: " + std::to_string(srcpath.type()) + ", " + filetype_flag(srcpath.type()) + ", " + srcpath.str() + ", dstpath:" + dstpath.str());
+
+        if (dstpath.exists())
+        {
+            removefile(dstpath);
+        }
         // copy file content
         if (srcpath.isfile())
         {
@@ -529,6 +536,18 @@ namespace cutl
                     CUTL_ERROR("write file failed, only write " + std::to_string(write_len) + ", read_len:" + std::to_string(read_len));
                     return false;
                 }
+            }
+            // flush file to disk
+            int ret = fflush(fwt.getfd());
+            if (0 != ret)
+            {
+                CUTL_ERROR("fail to flush file:" + dstpath.str());
+                return false;
+            }
+            if (!file_sync(fwt.getfd()))
+            {
+                CUTL_ERROR("file_sync failed for " + dstpath.str());
+                return false;
             }
         }
         else if (srcpath.issymlink())

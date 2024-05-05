@@ -3,8 +3,8 @@
 #include "common.hpp"
 #include "fileutil.h"
 
-static const std::string kBaseDir = "/Users/spencer/workspace/common_util/fileutil_test";
-static const std::string kTargetDir = "/Users/spencer/workspace/common_util/fileutil_test_copy";
+static const std::string kBaseDir = "./fileutil_test";
+static const std::string kTargetDir = "./fileutil_test_copy";
 
 void TestGetCwd()
 {
@@ -18,26 +18,33 @@ void TestCreateFileAndDir()
 {
     PrintSubTitle("create file/dir");
 
+    // basedir
     auto basedir = cutl::path(kBaseDir);
     cutl::createdir(basedir);
+    // level 1
+    // ./test0.txt
+    cutl::createfile(basedir.join("test0.txt"));
     // ./dir1
     cutl::createdir(basedir.join("dir1"));
     // ./file3.txt
     cutl::createfile(basedir.join("file3.txt"));
+    // level 2
     // ./dir2/dir1
     auto dir21 = basedir.join("dir2/dir1");
-    cutl::createdir(dir21, true);
-    // ./dir2/dir1/file211.txt
-    cutl::createfile(dir21.join("file211.txt"));
-    // ./dir2/dir1/file212.txt
-    cutl::createfile(dir21.join("test12.txt"));
-    // ./dir2/dir1/file213.txt
-    cutl::createfile(dir21.join("file213.data"));
     // ./dir2/file22.data
     auto file22 = basedir.join("dir2/file22.txt");
     cutl::createfile(file22);
     // ./dir2/file23.txt
     auto file23 = basedir.join("dir2/file23.data");
+    // level 3
+    cutl::createdir(dir21, true);
+    // ./dir2/dir1/file211.txt
+    cutl::createfile(dir21.join("file211.txt"));
+    // ./dir2/dir1/file212.txt
+    cutl::createfile(dir21.join("test212.txt"));
+    // ./dir2/dir1/file213.txt
+    cutl::createfile(dir21.join("file213.data"));
+
     cutl::createfile(file23);
 }
 
@@ -82,18 +89,35 @@ void TestCreateSymlink()
 
     auto basedir = cutl::path(kBaseDir);
     auto link4 = basedir.join("link4");
-    cutl::createlink(basedir.join("file4.data"), link4);
-    std::cout << "link4: " << link4 << ", realpath: " << link4.realpath() << std::endl;
+    auto is_success = cutl::createlink(basedir.join("file4.data"), link4);
+    if (is_success)
+    {
+        std::cout << "link4: " << link4 << ", realpath: " << link4.realpath() << std::endl;
+        std::cout << "read data from linkpath: " << cutl::readtext(link4) << std::endl;
+        std::cout << "read data from realpath: " << cutl::readtext(link4.realpath()) << std::endl;
+    }
 }
 
 void TestFilesizeAndDirsize()
 {
-    PrintSubTitle("filesize/dirsize");
+    PrintSubTitle("TestFilesizeAndDirsize");
 
-    auto bigfile = cutl::path("/Users/spencer/Downloads/MicrosoftEdge-120.0.2210.133.pkg");
-    auto filesize = cutl::filesize(bigfile);
-    std::cout << "filesize: " << filesize << ", human readable: " << cutl::fmt_filesize(filesize) << std::endl;
-    auto dirpath = cutl::path("/Users/spencer/Downloads/");
+    auto smallfile = cutl::path("./fileutil_test/file4.data");
+    auto smallfile_size = cutl::filesize(smallfile);
+    std::cout << "smallfile size: " << smallfile_size << ", human readable: " << cutl::fmt_filesize(smallfile_size) << std::endl;
+
+    // // for Unix only
+    // auto bigfile = cutl::path("/Users/spencer/Downloads/MicrosoftEdge-120.0.2210.133.pkg");
+    // auto filesize = cutl::filesize(bigfile);
+    // std::cout << "filesize: " << filesize << ", human readable: " << cutl::fmt_filesize(filesize) << std::endl;
+
+    // for Windows only
+    auto shortcut = cutl::path(R"(C:\Users\Public\Desktop\CMake-gui.lnk)");
+    auto shortcut_size = cutl::filesize(shortcut);
+    std::cout << "shortcut size: " << shortcut_size << ", human readable: " << cutl::fmt_filesize(shortcut_size) << std::endl;
+
+    auto dirpath = cutl::path(R"(C:\Users\vboxuser\Downloads\)");
+    // auto dirpath = cutl::path("~/Downloads");
     auto dirsize = cutl::dirsize(dirpath);
     std::cout << "dirsize: " << dirsize << ", human readable: " << cutl::fmt_filesize(dirsize) << std::endl;
 }
@@ -111,9 +135,10 @@ void PrintFileList(const cutl::filevec &fileList)
 
 void TestListfile()
 {
-    PrintSubTitle("listfile");
+    PrintSubTitle("TestListfile");
 
     auto basedir = cutl::path(kBaseDir);
+    // auto basedir = cutl::path(R"(C:\Users\vboxuser\Desktop)");
 
     std::cout << "List all files/dirs in current directory:" << std::endl;
     cutl::filevec fileList = cutl::list_files(basedir);
@@ -123,15 +148,15 @@ void TestListfile()
     fileList = cutl::list_files(basedir, cutl::filetype::file);
     PrintFileList(fileList);
 
-    std::cout << "List all files/dirs in current directory by recursive:" << std::endl;
+    std::cout << "List all files/dirs in directory by recursive:" << std::endl;
     fileList = cutl::list_files(basedir, cutl::filetype::all, true);
     PrintFileList(fileList);
 
-    std::cout << "List all files in current directory by recursive:" << std::endl;
+    std::cout << "List all files in directory by recursive:" << std::endl;
     fileList = cutl::list_files(basedir, cutl::filetype::file, true);
     PrintFileList(fileList);
 
-    std::cout << "List all dirs in current directory by recursive:" << std::endl;
+    std::cout << "List all dirs in directory by recursive:" << std::endl;
     fileList = cutl::list_files(basedir, cutl::filetype::directory, true);
     PrintFileList(fileList);
 }
@@ -165,7 +190,12 @@ void TestCopyFileAndDir()
 
     auto basedir = cutl::path(kBaseDir);
     cutl::copyfile(basedir.join("file4.data"), basedir.join("file4_bak.data"), true);
-    cutl::copyfile(basedir.join("link4"), basedir.join("link4_bak"), true);
+    auto linkpath = basedir.join("link4");
+    if (linkpath.exists())
+    {
+        // windows下不会有此软链接文件，所以不用测试
+        cutl::copyfile(linkpath, basedir.join("link4_bak"), true);
+    }
 
     auto targetdir = cutl::path(kTargetDir);
     cutl::copydir(basedir, targetdir);
@@ -175,8 +205,8 @@ void TestFileUtil()
 {
     PrintTitle("fileutil");
 
-    TestGetCwd();
-    // TestCreateFileAndDir();
+    // TestGetCwd();
+    TestCreateFileAndDir();
     // TestReadAndWriteText();
     // TestCreateSymlink();
     // TestFilesizeAndDirsize();
