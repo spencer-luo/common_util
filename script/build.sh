@@ -13,8 +13,11 @@ elif [ $1 == "pack" ]; then
     echo "pack package Done."
 elif [ $1 == "run" ]; then
     echo "Running..."
-    cd dest
-    ./common_util_demo
+    # cd dest
+    # ./common_util_demo
+    executable_filepath=$(cat ./build/executable_filepath.data)
+    echo ${executable_filepath}
+    ${executable_filepath}
 elif [ $1 == "clean" ]; then
     rm -rf ./build
     echo "./build Cleaned."
