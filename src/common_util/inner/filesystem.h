@@ -37,7 +37,8 @@ namespace cutl
     filetype get_file_type(const std::string &filepath);
     filevec list_sub_files(const std::string &dirpath, filetype type = filetype::all, bool recursive = false);
 
-    bool copy_attributes(const std::string &srcpath, const std::string &dstpath);
+    // 拷贝文件/文件夹的属性，isdir参数只在windows下生效,Unix-like系统下不起作用
+    bool copy_attributes(const std::string &srcpath, const std::string &dstpath, bool isdir = false);
 
     // fsync to disk, only for unix system
     bool file_sync(FILE *handle);

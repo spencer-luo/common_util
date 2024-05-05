@@ -224,8 +224,6 @@ namespace cutl
     std::string filetype_flag(filetype type);
 
     /**
-     * TODO: should be return filepath instead of std::string
-     *
      * @brief Get the working directory of the current excuting process.
      *
      * @return file path of the working directory
@@ -362,7 +360,6 @@ namespace cutl
      * @param attributes whether to copy the file attributes, default is false.
      * If true, means copy the file attributes, like the 'cp -p' command.
      * @return true if the file or symbolic link is copied successfully, false otherwise.
-     * TODO: should be overwritten if the destination file or directory already exists.
      * @note If the destination file or directory already exists, it will be overwritten.
      * @return false
      */
@@ -375,7 +372,6 @@ namespace cutl
      * @param srcdir the filepath of the source directory to be copied
      * @param dstdir the filepath of the destination directory to be copied to
      * @return true if the directory is copied successfully, false otherwise.
-     * TODO: should be overwritten if the destination directory already exists.
      * @note If the destination directory already exists, it will be overwritten.
      */
     bool copydir(const filepath &srcdir, const filepath &dstdir);

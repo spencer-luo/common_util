@@ -616,7 +616,7 @@ namespace cutl
                     return false;
                 }
 
-                if (!copy_attributes(src_file, dstpath.str()))
+                if (!copy_attributes(src_file, dstpath.str(), true))
                 {
                     return false;
                 }

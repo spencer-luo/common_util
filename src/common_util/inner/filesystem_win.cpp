@@ -351,18 +351,35 @@ namespace cutl
     // https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-setfileattributesw
     // https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfiletime
     // https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-setfiletime
-    bool copy_attributes(const std::string &srcpath, const std::string &dstpath)
+    bool copy_attributes(const std::string &srcpath, const std::string &dstpath, bool isdir)
     {
         // 获取 修改访问、修改时间
         FILETIME t_create, t_access, t_write;
-        HANDLE h_src = CreateFileA(
-            srcpath.c_str(),
-            GENERIC_READ,
-            0,
-            NULL,
-            OPEN_EXISTING,
-            FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
-            NULL);
+        HANDLE h_src = NULL;
+        if (isdir)
+        {
+            // 文件夹
+            h_src = CreateFile(
+                srcpath.c_str(),
+                GENERIC_READ,
+                FILE_SHARE_READ | FILE_SHARE_DELETE,
+                NULL,
+                OPEN_EXISTING,
+                FILE_FLAG_BACKUP_SEMANTICS,
+                NULL);
+        }
+        else
+        {
+            h_src = CreateFileA(
+                srcpath.c_str(),
+                GENERIC_READ,
+                0,
+                NULL,
+                OPEN_EXISTING,
+                FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
+                NULL);
+        }
+
         if (h_src == INVALID_HANDLE_VALUE)
         {
             CUTL_ERROR("Failed to open file " + srcpath + ", error code: " + std::to_string(GetLastError()));
@@ -378,14 +395,32 @@ namespace cutl
         CloseHandle(h_src);
 
         // 设置 修改访问、修改时间
-        HANDLE h_dst = ::CreateFileA(
-            dstpath.c_str(),
-            GENERIC_WRITE,
-            0,
-            NULL,
-            OPEN_EXISTING,
-            FILE_ATTRIBUTE_NORMAL,
-            NULL);
+        HANDLE h_dst = NULL;
+        if (isdir)
+        {
+            h_dst = CreateFile(
+                dstpath.c_str(),
+                GENERIC_READ | GENERIC_WRITE,
+                FILE_SHARE_READ | FILE_SHARE_DELETE,
+                NULL,
+                OPEN_EXISTING,
+                FILE_FLAG_BACKUP_SEMANTICS,
+                NULL);
+        }
+        else
+        {
+            h_dst = ::CreateFileA(
+                dstpath.c_str(),
+                // GENERIC_WRITE,
+                // GENERIC_READ | GENERIC_WRITE,
+                GENERIC_ALL,
+                0,
+                NULL,
+                OPEN_EXISTING,
+                FILE_ATTRIBUTE_NORMAL,
+                NULL);
+        }
+
         if (h_dst == INVALID_HANDLE_VALUE)
         {
             CUTL_ERROR("Failed to open file " + dstpath + ", error code: " + std::to_string(GetLastError()));

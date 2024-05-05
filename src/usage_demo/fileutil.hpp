@@ -8,7 +8,7 @@ static const std::string kTargetDir = "./fileutil_test_copy";
 
 void TestGetCwd()
 {
-    PrintSubTitle("getcwd");
+    PrintSubTitle("TestGetCwd");
 
     std::string cwd = cutl::getcwd();
     std::cout << "cwd: " << cwd << std::endl;
@@ -16,7 +16,7 @@ void TestGetCwd()
 
 void TestCreateFileAndDir()
 {
-    PrintSubTitle("create file/dir");
+    PrintSubTitle("TestCreateFileAndDir");
 
     // basedir
     auto basedir = cutl::path(kBaseDir);
@@ -31,13 +31,13 @@ void TestCreateFileAndDir()
     // level 2
     // ./dir2/dir1
     auto dir21 = basedir.join("dir2/dir1");
+    cutl::createdir(dir21, true);
     // ./dir2/file22.data
     auto file22 = basedir.join("dir2/file22.txt");
     cutl::createfile(file22);
     // ./dir2/file23.txt
     auto file23 = basedir.join("dir2/file23.data");
     // level 3
-    cutl::createdir(dir21, true);
     // ./dir2/dir1/file211.txt
     cutl::createfile(dir21.join("file211.txt"));
     // ./dir2/dir1/file212.txt
@@ -50,7 +50,7 @@ void TestCreateFileAndDir()
 
 void TestRemoveFileAndDir()
 {
-    PrintSubTitle("remove file/dir");
+    PrintSubTitle("TestRemoveFileAndDir");
 
     auto basedir = cutl::path(kBaseDir);
 
@@ -60,11 +60,17 @@ void TestRemoveFileAndDir()
     cutl::removefile(basedir.join("file3.txt"));
     // ./dir2
     cutl::removedir(basedir.join("dir2"), true);
+    // ./
+    cutl::removedir(basedir, true);
+    std::cout << basedir << " removed" << std::endl;
+    // fileutil_test_copy
+    cutl::removedir(cutl::path(kTargetDir), true);
+    std::cout << kTargetDir << " removed" << std::endl;
 }
 
 void TestReadAndWriteText()
 {
-    PrintSubTitle("read/write text");
+    PrintSubTitle("TestReadAndWriteText");
 
     auto basedir = cutl::path(kBaseDir);
     // ./file4.data
@@ -76,16 +82,16 @@ void TestReadAndWriteText()
     auto text = cutl::readtext(file4);
     std::cout << text << std::endl;
 
-    // // read big file
-    // auto bigfile = cutl::path("/Users/spencer/workspace/common_util/src/usage_demo/file_content.txt");
-    // auto bigtext = cutl::readtext(bigfile);
-    // std::cout << "read big file: " << std::endl;
-    // std::cout << bigtext << std::endl;
+    // read big file
+    auto bigfile = cutl::path("./src/common_util/inner/filesystem_win.cpp");
+    auto bigtext = cutl::readtext(bigfile);
+    std::cout << "read big file: " << std::endl;
+    std::cout << bigtext << std::endl;
 }
 
 void TestCreateSymlink()
 {
-    PrintSubTitle("create symlink");
+    PrintSubTitle("TestCreateSymlink");
 
     auto basedir = cutl::path(kBaseDir);
     auto link4 = basedir.join("link4");
@@ -104,7 +110,7 @@ void TestFilesizeAndDirsize()
 
     auto smallfile = cutl::path("./fileutil_test/file4.data");
     auto smallfile_size = cutl::filesize(smallfile);
-    std::cout << "smallfile size: " << smallfile_size << ", human readable: " << cutl::fmt_filesize(smallfile_size) << std::endl;
+    std::cout << smallfile << " smallfile size: " << smallfile_size << ", human readable: " << cutl::fmt_filesize(smallfile_size) << std::endl;
 
     // // for Unix only
     // auto bigfile = cutl::path("/Users/spencer/Downloads/MicrosoftEdge-120.0.2210.133.pkg");
@@ -114,12 +120,11 @@ void TestFilesizeAndDirsize()
     // for Windows only
     auto shortcut = cutl::path(R"(C:\Users\Public\Desktop\CMake-gui.lnk)");
     auto shortcut_size = cutl::filesize(shortcut);
-    std::cout << "shortcut size: " << shortcut_size << ", human readable: " << cutl::fmt_filesize(shortcut_size) << std::endl;
+    std::cout << shortcut << " shortcut size: " << shortcut_size << ", human readable: " << cutl::fmt_filesize(shortcut_size) << std::endl;
 
-    auto dirpath = cutl::path(R"(C:\Users\vboxuser\Downloads\)");
-    // auto dirpath = cutl::path("~/Downloads");
+    auto dirpath = cutl::path("./");
     auto dirsize = cutl::dirsize(dirpath);
-    std::cout << "dirsize: " << dirsize << ", human readable: " << cutl::fmt_filesize(dirsize) << std::endl;
+    std::cout << dirpath << " dirsize: " << dirsize << ", human readable: " << cutl::fmt_filesize(dirsize) << std::endl;
 }
 
 void PrintFileList(const cutl::filevec &fileList)
@@ -163,7 +168,7 @@ void TestListfile()
 
 void TestFindfile()
 {
-    PrintSubTitle("findfile");
+    PrintSubTitle("TestFindfile");
 
     auto basedir = cutl::path(kBaseDir);
 
@@ -186,7 +191,7 @@ void TestFindfile()
 
 void TestCopyFileAndDir()
 {
-    PrintSubTitle("copy file/dir");
+    PrintSubTitle("TestCopyFileAndDir");
 
     auto basedir = cutl::path(kBaseDir);
     cutl::copyfile(basedir.join("file4.data"), basedir.join("file4_bak.data"), true);
@@ -207,11 +212,11 @@ void TestFileUtil()
 
     // TestGetCwd();
     TestCreateFileAndDir();
-    // TestReadAndWriteText();
-    // TestCreateSymlink();
-    // TestFilesizeAndDirsize();
-    // TestListfile();
-    // TestFindfile();
+    TestReadAndWriteText();
+    TestCreateSymlink();
+    TestFilesizeAndDirsize();
+    TestListfile();
+    TestFindfile();
     TestCopyFileAndDir();
-    // TestRemoveFileAndDir();
+    TestRemoveFileAndDir();
 }

@@ -341,7 +341,7 @@ namespace cutl
         return file_list;
     }
 
-    bool copy_attributes(const std::string &srcpath, const std::string &dstpath)
+    bool copy_attributes(const std::string &srcpath, const std::string &dstpath, bool isdir)
     {
         struct stat attr_of_src;
         int ret = lstat(srcpath.c_str(), &attr_of_src);
