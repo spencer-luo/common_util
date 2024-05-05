@@ -1,4 +1,4 @@
-// #if defined(_WIN32) || defined(__WIN32__)
+#if defined(_WIN32) || defined(__WIN32__)
 
 #include <io.h>
 #include <direct.h>
@@ -458,4 +458,4 @@ namespace cutl
 
 } // namespace cutl
 
-// #endif // defined(_WIN32) || defined(__WIN32__)
+#endif // defined(_WIN32) || defined(__WIN32__)

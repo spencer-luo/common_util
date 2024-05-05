@@ -39,7 +39,7 @@ namespace cutl
     std::string absolute_path(const std::string &releative_path)
     {
         char absPath[PATH_MAX] = {0};
-        auto pAbsolutePath = realpath(path.c_str(), absPath);
+        auto pAbsolutePath = realpath(releative_path.c_str(), absPath);
         if (pAbsolutePath == nullptr)
         {
             CUTL_ERROR("realpath failure, pAbsolutePath is nullptr");
@@ -194,6 +194,41 @@ namespace cutl
         return static_cast<uint64_t>(statbuf.st_size);
     }
 
+    filetype get_file_type(int mode)
+    {
+        filetype type = filetype::unknown;
+        if (S_ISBLK(mode))
+        {
+            type = filetype::block_special;
+        }
+        else if (S_ISCHR(mode))
+        {
+            type = filetype::char_special;
+        }
+        else if (S_ISDIR(mode))
+        {
+            type = filetype::directory;
+        }
+        else if (S_ISFIFO(mode))
+        {
+            type = filetype::pipefifo;
+        }
+
+        else if (S_ISLNK(mode))
+        {
+            type = filetype::symlink;
+        }
+        else if (S_ISREG(mode))
+        {
+            type = filetype::file;
+        }
+        else if (S_ISSOCK(mode))
+        {
+            type = filetype::socket;
+        }
+        return type;
+    }
+
     uint64_t get_dirsize(const std::string &dirpath)
     {
         uint64_t totalSize = 0;
@@ -240,41 +275,6 @@ namespace cutl
         closedir(dir);
 
         return totalSize;
-    }
-
-    filetype get_file_type(int mode)
-    {
-        filetype type = filetype::unknown;
-        if (S_ISBLK(mode))
-        {
-            type = filetype::block_special;
-        }
-        else if (S_ISCHR(mode))
-        {
-            type = filetype::char_special;
-        }
-        else if (S_ISDIR(mode))
-        {
-            type = filetype::directory;
-        }
-        else if (S_ISFIFO(mode))
-        {
-            type = filetype::pipefifo;
-        }
-
-        else if (S_ISLNK(mode))
-        {
-            type = filetype::symlink;
-        }
-        else if (S_ISREG(mode))
-        {
-            type = filetype::file;
-        }
-        else if (S_ISSOCK(mode))
-        {
-            type = filetype::socket;
-        }
-        return type;
     }
 
     filetype get_file_type(const std::string &filepath)
