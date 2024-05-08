@@ -58,23 +58,23 @@ void TestRealpathAndAbspath()
     std::cout << "abspath: " << symlink_path.abspath() << std::endl;
 
     auto path1 = cutl::path("../common_util/fileutil_test/file4.data");
-    std::cout << "abspath: " << path1.abspath()
+    std::cout << "path1 abspath: " << path1.abspath()
               << ", exists: " << path1.exists() << std::endl;
 
     auto path2 = cutl::path("./fileutil_test/file4.data");
-    std::cout << "abspath: " << path2.abspath()
+    std::cout << "path2 abspath: " << path2.abspath()
               << ", exists: " << path2.exists() << std::endl;
 
     auto path3 = cutl::path("./fileutil_test/../../common_util/fileutil_test/file4.data");
-    std::cout << "abspath: " << path3.abspath()
+    std::cout << "path3 abspath: " << path3.abspath()
               << ", exists: " << path3.exists() << std::endl;
 
     auto path4 = cutl::path("./fileutil_test/../../common_util/fileutil_test/file_xx.data");
-    std::cout << "abspath: " << path4.abspath()
+    std::cout << "path4 abspath: " << path4.abspath()
               << ", exists: " << path4.exists() << std::endl;
 
     auto path5 = cutl::path("~/workspace/common_util/fileutil_test/file4.data");
-    std::cout << "abspath: " << path5.abspath()
+    std::cout << "path5 abspath: " << path5.abspath()
               << ", exists: " << path5.exists() << std::endl;
 }
 
