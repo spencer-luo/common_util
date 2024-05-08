@@ -1,4 +1,5 @@
-# !/bin/bash
+#! /bin/bash
+
 echo $1
 if [ $1 == "build" ]; then
     echo "Building..."

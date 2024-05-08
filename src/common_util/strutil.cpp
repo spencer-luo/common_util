@@ -7,14 +7,18 @@ namespace cutl
     std::string to_upper(const std::string &str)
     {
         std::string result = str;
-        std::transform(result.begin(), result.end(), result.begin(), std::toupper);
+        // <cctype>里面声明了一个C版本的函数toupper/tolower,<local>里也声明了一个toupper/tolower的函数模板
+        // 所以std命名空间下std::toupper有名称冲突，Linux下会编译失败，这里使用全局作用域的::toupper（即使用C语言的版本）
+        std::transform(result.begin(), result.end(), result.begin(), ::toupper);
         return result;
     }
 
     std::string to_lower(const std::string &str)
     {
         std::string result = str;
-        std::transform(result.begin(), result.end(), result.begin(), std::tolower);
+        // <cctype>里面声明了一个C版本的函数toupper/tolower,<local>里也声明了一个toupper/tolower的函数模板
+        // 所以std命名空间下std::tolower有名称冲突，Linux下会编译失败，这里使用全局作用域的::tolower（即使用C语言的版本）
+        std::transform(result.begin(), result.end(), result.begin(), ::tolower);
         return result;
     }
 

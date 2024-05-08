@@ -95,7 +95,7 @@ void TestCreateSymlink()
 
     auto basedir = cutl::path(kBaseDir);
     auto link4 = basedir.join("link4");
-    auto is_success = cutl::createlink(basedir.join("file4.data"), link4);
+    auto is_success = cutl::createlink(basedir.join("file4.data").abspath(), link4);
     if (is_success)
     {
         std::cout << "link4: " << link4 << ", realpath: " << link4.realpath() << std::endl;
@@ -218,5 +218,5 @@ void TestFileUtil()
     TestListfile();
     TestFindfile();
     TestCopyFileAndDir();
-    TestRemoveFileAndDir();
+    // TestRemoveFileAndDir();
 }

@@ -22,6 +22,7 @@ namespace cutl
 
     std::string file_readlink(const std::string &filepath);
     bool file_createlink(const std::string &referenece, const std::string &filepath);
+    bool file_removelink(const std::string &filepath);
 
     bool create_dir(const std::string &dir_path);
     // remove empty directory

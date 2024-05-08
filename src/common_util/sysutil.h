@@ -26,29 +26,29 @@ namespace cutl
     };
 
     /**
-     * @brief Platform type.
+     * @brief Operating system platform type.
      *
      */
-    enum class platform
+    enum class os_platform
     {
         /** Windows */
-        windows,
+        os_windows,
         /** macOS */
-        macos,
+        os_macos,
         /** Linux */
-        linux,
+        os_linux,
         /** Unix */
-        unix,
+        os_unix,
         /** Unknown */
-        unknown,
+        os_unknown,
     };
 
     /**
-     * @brief Get the platform type for the current system.
+     * @brief Get the platform type for the current operating system.
      *
-     * @return platform The platform type.
+     * @return platform The operating system platform type.
      */
-    platform platform_type();
+    os_platform platform_type();
 
     /**
      * @brief Get the architecture of the cpu processor(or operating system).
@@ -58,13 +58,13 @@ namespace cutl
     std::string architecture();
 
     /**
-     * @brief Get the platform name for the current system.
+     * @brief Get the platform name for the current operating system.
      *
-     * @param type the platform type.
+     * @param type the operating system platform type.
      *
      * @return std::string the platform name.
      */
-    std::string platform_name(platform type);
+    std::string platform_name(os_platform type);
 
     /**
      * @brief Get the C++ standard library version.

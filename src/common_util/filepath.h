@@ -52,7 +52,7 @@ namespace cutl
 
     public:
         /**
-         * @brief Get the path separator of the current platform.
+         * @brief Get the path separator of the current os platform.
          *
          * @return the path separator
          */

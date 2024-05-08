@@ -58,9 +58,9 @@ void TestSystemCall()
 
     // for Windows testing
     std::cout << "USERPROFILE: " << cutl::getenv("USERPROFILE", "not found") << std::endl;
-    std::cout << "HOMEDRIVE: " << cutl::getenv("HOMEDRIVE", "not found") << std::endl;
-    std::cout << "HOMEPATH: " << cutl::getenv("HOMEPATH", "not found") << std::endl;
     std::cout << "PROCESSOR_ARCHITECTURE: " << cutl::getenv("PROCESSOR_ARCHITECTURE", "not found") << std::endl;
+    // FOR UNIX/LINUX/MAC testing
+    std::cout << "HOME: " << cutl::getenv("HOME", "not found") << std::endl;
 }
 
 void TestGetcwdAndHomedir()

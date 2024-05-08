@@ -13,14 +13,14 @@
 int main(int argc, char *argv[])
 {
     LibraryInit();
-    // TestSysutil();
-    // TestStrfmt();
-    // TestTimeutil();
-    // TestTimecount();
-    // TestDatetime();
-    // TestVerUtil();
-    // TestStrUtil();
-    // TestFilePath();
+    TestSysutil();
+    TestStrfmt();
+    TestTimeutil();
+    TestTimecount();
+    TestDatetime();
+    TestVerUtil();
+    TestStrUtil();
+    TestFilePath();
     TestFileUtil();
 
     return 0;

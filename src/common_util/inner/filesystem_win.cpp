@@ -35,35 +35,14 @@ namespace cutl
     // https://learn.microsoft.com/zh-cn/cpp/c-runtime-library/reference/fullpath-wfullpath?view=msvc-170
     std::string absolute_path(const std::string &releative_path)
     {
-        if (starts_with(releative_path, "~"))
+        char absPath[MAX_PATH_LEN] = {0};
+        auto pAbsolutePath = _fullpath(absPath, releative_path.c_str(), MAX_PATH_LEN);
+        if (pAbsolutePath == nullptr)
         {
-            // _fullpath 无法处理~开头的路径
-            std::string home_dir;
-            const char *text = std::getenv("USERPROFILE");
-            if (text != nullptr)
-            {
-                home_dir = std::string(text);
-                return home_dir + releative_path.substr(1);
-            }
-            else
-            {
-                CUTL_ERROR("getenv USERPROFILE failure, text is nullptr");
-                return releative_path;
-            }
+            CUTL_WARN("_fullpath failure, pAbsolutePath is nullptr");
+            return std::string(absPath);
         }
-        else
-        {
-            char absPath[MAX_PATH_LEN] = {0};
-            auto pAbsolutePath = _fullpath(absPath, releative_path.c_str(), MAX_PATH_LEN);
-            if (pAbsolutePath == nullptr)
-            {
-                CUTL_ERROR("_fullpath failure, pAbsolutePath is nullptr");
-                return "";
-            }
-            return std::string(pAbsolutePath);
-        }
-
-        return releative_path;
+        return std::string(absPath);
     }
 
     // https://learn.microsoft.com/zh-cn/cpp/c-runtime-library/reference/access-waccess?view=msvc-170
@@ -100,6 +79,12 @@ namespace cutl
     bool file_createlink(const std::string &referenece, const std::string &filepath)
     {
         CUTL_ERROR("file_createlink() is not supported on Windows");
+        return false;
+    }
+
+    bool file_removelink(const std::string &filepath)
+    {
+        CUTL_ERROR("file_removelink() is not supported on Windows");
         return false;
     }
 

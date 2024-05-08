@@ -14,7 +14,7 @@ namespace cutl
     // https://www.cnblogs.com/Forgenvueory/p/12757271.html
     // https://blog.csdn.net/n5/article/details/70143942
     // https://blog.csdn.net/qq_40340448/article/details/122117270
-    platform platform_type()
+    os_platform platform_type()
     {
 #if defined(_WIN32) || defined(__WIN32__)
         // #ifdef _WIN64
@@ -22,15 +22,15 @@ namespace cutl
         // #else
         //         std::cout << "32-bit Windows" << std::endl;
         // #endif
-        return platform::windows;
+        return os_platform::os_windows;
 #elif defined(__APPLE__) || defined(__MACH__)
-        return platform::macos;
+        return os_platform::os_macos;
 #elif defined(__linux__)
-        return platform::linux;
+        return os_platform::os_linux;
 #elif defined(__unix__)
-        return platform::unix;
+        return os_platform::os_unix;
 #else
-        return platform::unknown;
+        return os_platform::os_unknown;
 #endif
     }
 
@@ -45,19 +45,19 @@ namespace cutl
             std::string cmd = "uname -m";
             callcmd(cmd, arch);
             CUTL_DEBUG("cmd: " + cmd + ", result: " + arch);
-            return arch;
         }
+        return arch;
 #endif
     }
 
-    std::string platform_name(platform type)
+    std::string platform_name(os_platform type)
     {
-        static std::map<platform, std::string> platform_map = {
-            {platform::windows, "Windows"},
-            {platform::macos, "macOS"},
-            {platform::linux, "Linux"},
-            {platform::unix, "Unix"},
-            {platform::unknown, "Unknown"},
+        static std::map<os_platform, std::string> platform_map = {
+            {os_platform::os_windows, "Windows"},
+            {os_platform::os_macos, "macOS"},
+            {os_platform::os_linux, "Linux"},
+            {os_platform::os_unix, "Unix"},
+            {os_platform::os_unknown, "Unknown"},
         };
 
         auto iter = platform_map.find(type);
@@ -202,8 +202,11 @@ namespace cutl
 
     std::string homedir()
     {
-        // todo
-        return "";
+#if defined(_WIN32) || defined(__WIN32__)
+        return cutl::getenv("USERPROFILE", "");
+#else
+        return cutl::getenv("HOME", "");
+#endif
     }
 
 } // namespace

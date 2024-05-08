@@ -1,6 +1,8 @@
 #include "filepath.h"
 #include "inner/logger.h"
 #include "inner/filesystem.h"
+#include "strutil.h"
+#include "sysutil.h"
 
 namespace cutl
 {
@@ -154,7 +156,13 @@ namespace cutl
 
     std::string filepath::abspath() const
     {
-        return absolute_path(filepath_);
+        auto filepath = filepath_;
+        if (starts_with(filepath_, "~"))
+        {
+            // 把 ~ 替换成用户目录
+            filepath = homedir() + filepath_.substr(1);
+        }
+        return absolute_path(filepath);
     }
 
     std::string filepath::extension() const

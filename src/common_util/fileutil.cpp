@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <map>
 #include <iostream>
+#include <cstring>
 #include <sys/stat.h>
 #include "fileutil.h"
 #include "inner/logger.h"
@@ -325,13 +326,14 @@ namespace cutl
     {
         // CUTL_INFO("file type: " + std::to_string(srcpath.type()) + ", " + filetype_flag(srcpath.type()) + ", " + srcpath.str() + ", dstpath:" + dstpath.str());
 
-        if (dstpath.exists())
-        {
-            removefile(dstpath);
-        }
         // copy file content
         if (srcpath.isfile())
         {
+            if (dstpath.exists())
+            {
+                // remove if exists
+                removefile(dstpath);
+            }
             file_guard frd(fopen(srcpath.str().c_str(), "rb"));
             if (frd.getfd() == nullptr)
             {
@@ -373,6 +375,11 @@ namespace cutl
         }
         else if (srcpath.issymlink())
         {
+            if (dstpath.exists())
+            {
+                // remove if exists
+                file_removelink(dstpath.str());
+            }
             auto link_path = file_readlink(srcpath.str());
             if (link_path.empty())
             {
