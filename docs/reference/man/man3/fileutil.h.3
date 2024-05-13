@@ -1,0 +1,418 @@
+.TH "src/common_util/fileutil.h" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/common_util/fileutil.h \- The functions and classes about filesystem, such as file and directory operations\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <string>\fP
+.br
+\fR#include <cstdio>\fP
+.br
+\fR#include 'filetype\&.h'\fP
+.br
+\fR#include 'filepath\&.h'\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "class \fBcutl::file_guard\fP"
+.br
+.RI "The file guard class to manage the FILE pointer automatically\&. \fBfile_guard\fP object can close the FILE pointer automatically when his scope is exit\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "std::string \fBcutl::filetype_flag\fP (\fBfiletype\fP type)"
+.br
+.RI "Get the file type flag string\&. "
+.ti -1c
+.RI "bool \fBcutl::createfile\fP (const \fBfilepath\fP &\fBpath\fP)"
+.br
+.RI "Create a new file\&. "
+.ti -1c
+.RI "bool \fBcutl::createlink\fP (const \fBfilepath\fP &referenece, const \fBfilepath\fP &\fBfilepath\fP)"
+.br
+.RI "Create a symbolic link or shortcut\&. "
+.ti -1c
+.RI "bool \fBcutl::createdir\fP (const \fBfilepath\fP &\fBpath\fP, bool recursive=false)"
+.br
+.RI "Create a new directory\&. "
+.ti -1c
+.RI "bool \fBcutl::removefile\fP (const \fBfilepath\fP &\fBpath\fP)"
+.br
+.RI "Remove a regular file or symbolic link(shortcut on windows)\&. "
+.ti -1c
+.RI "bool \fBcutl::removedir\fP (const \fBfilepath\fP &\fBpath\fP, bool recursive=false)"
+.br
+.RI "Remove a directory\&. "
+.ti -1c
+.RI "std::string \fBcutl::readtext\fP (const \fBfilepath\fP &\fBpath\fP, uint64_t max_read_size=4096)"
+.br
+.RI "Read the text content of a file\&. "
+.ti -1c
+.RI "bool \fBcutl::writetext\fP (const \fBfilepath\fP &\fBpath\fP, const std::string &content)"
+.br
+.RI "Write the text content to a file\&. "
+.ti -1c
+.RI "uint64_t \fBcutl::filesize\fP (const \fBfilepath\fP &\fBfilepath\fP, bool link_target=false)"
+.br
+.RI "Get the size of a file\&. "
+.ti -1c
+.RI "uint64_t \fBcutl::dirsize\fP (const \fBfilepath\fP &dirpath)"
+.br
+.RI "Get the size of a directory, include all files and subdirectories\&. "
+.ti -1c
+.RI "\fBfilevec\fP \fBcutl::list_files\fP (const \fBfilepath\fP &dirpath, \fBfiletype\fP type=\fBfiletype::all\fP, bool recursive=false)"
+.br
+.RI "List all files in a directory\&. "
+.ti -1c
+.RI "\fBfilevec\fP \fBcutl::find_files\fP (const \fBfilepath\fP &dirpath, const std::string &name, bool recursive=false)"
+.br
+.RI "Find all files in a directory by name\&. "
+.ti -1c
+.RI "\fBfilevec\fP \fBcutl::find_files_by_extension\fP (const \fBfilepath\fP &dirpath, const std::string &extension, bool recursive=false)"
+.br
+.RI "Find all files in a directory by extension\&. "
+.ti -1c
+.RI "bool \fBcutl::copyfile\fP (const \fBfilepath\fP &srcpath, const \fBfilepath\fP &dstpath, bool attributes=false)"
+.br
+.RI "Copy a file or symbolic link(shortcut on windows)\&. "
+.ti -1c
+.RI "bool \fBcutl::copydir\fP (const \fBfilepath\fP &srcdir, const \fBfilepath\fP &dstdir)"
+.br
+.RI "Copy a directory recursively\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+The functions and classes about filesystem, such as file and directory operations\&. 
+
+
+.PP
+\fBCopyright\fP
+.RS 4
+Copyright (c) 2024, Spencer\&.Luo\&. All Rights Reserved\&.
+.RE
+.PP
+Licensed under the Apache License, Version 2\&.0 (the 'License'); you may not use this file except in compliance with the License\&. You may obtain a copy of the License at 
+.PP
+.nf
+  http://www\&.apache\&.org/licenses/LICENSE-2\&.0
+
+.fi
+.PP
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied\&. See the License for the specific language governing permissions and limitations\&.
+.PP
+\fBAuthor\fP
+.RS 4
+spencer\&.luo 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+2024-05-13 
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "bool cutl::copydir (const \fBfilepath\fP & srcdir, const \fBfilepath\fP & dstdir)"
+
+.PP
+Copy a directory recursively\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsrcdir\fP the filepath of the source directory to be copied 
+.br
+\fIdstdir\fP the filepath of the destination directory to be copied to 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the directory is copied successfully, false otherwise\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+If the destination directory already exists, it will be overwritten\&. 
+.RE
+.PP
+
+.SS "bool cutl::copyfile (const \fBfilepath\fP & srcpath, const \fBfilepath\fP & dstpath, bool attributes = \fRfalse\fP)"
+
+.PP
+Copy a file or symbolic link(shortcut on windows)\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsrcpath\fP the filepath of the source file or symbolic link to be copied 
+.br
+\fIdstpath\fP the filepath of the destination file or symbolic link to be copied to 
+.br
+\fIattributes\fP whether to copy the file attributes, default is false\&. If true, means copy the file attributes, like the 'cp -p' command\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the file or symbolic link is copied successfully, false otherwise\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+If the destination file or directory already exists, it will be overwritten\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+false 
+.RE
+.PP
+
+.SS "bool cutl::createdir (const \fBfilepath\fP & path, bool recursive = \fRfalse\fP)"
+
+.PP
+Create a new directory\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpath\fP the filepath of the new directory to be created 
+.br
+\fIrecursive\fP whether to create parent directories, default is false\&. If true, means create parent directories if not exist, like the 'mkdir -p' command\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the directory is created successfully, false otherwise\&. 
+.RE
+.PP
+
+.SS "bool cutl::createfile (const \fBfilepath\fP & path)"
+
+.PP
+Create a new file\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpath\fP the filepath of the new file to be created 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the file is created successfully, false otherwise\&. 
+.RE
+.PP
+
+.SS "bool cutl::createlink (const \fBfilepath\fP & referenece, const \fBfilepath\fP & filepath)"
+
+.PP
+Create a symbolic link or shortcut\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIreferenece\fP the real path referenced by the symbolic link or shortcut 
+.br
+\fIfilepath\fP the filepath of the symbolic link or shortcut to be created 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the symbolic link or shortcut is created successfully, false otherwise\&. 
+.RE
+.PP
+
+.SS "uint64_t cutl::dirsize (const \fBfilepath\fP & dirpath)"
+
+.PP
+Get the size of a directory, include all files and subdirectories\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIdirpath\fP the filepath of the directory to be checked 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+the total size of the directory in bytes 
+.RE
+.PP
+
+.SS "uint64_t cutl::filesize (const \fBfilepath\fP & filepath, bool link_target = \fRfalse\fP)"
+
+.PP
+Get the size of a file\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfilepath\fP the filepath of the file to be checked
+.br
+\fIlink_target\fP whether to get the size of the file pointed by symbolic link, default is false\&. If link_target is true, the function will get the size of the file pointed by symbolic link, not the symbolic link itself\&.
+.RE
+.PP
+\fBNote\fP
+.RS 4
+link_target parameter only works on Unix-like systems, not support on Windows\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+file size in bytes 
+.RE
+.PP
+
+.SS "std::string cutl::filetype_flag (\fBfiletype\fP type)"
+
+.PP
+Get the file type flag string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItype\fP file type 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+the flag string of the file type 
+.RE
+.PP
+
+.SS "filevec cutl::find_files (const \fBfilepath\fP & dirpath, const std::string & name, bool recursive = \fRfalse\fP)"
+
+.PP
+Find all files in a directory by name\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIdirpath\fP the filepath of the directory to be searched 
+.br
+\fIname\fP the name of the file to be found, substring match is supported\&. 
+.br
+\fIrecursive\fP whether to search the whole directory recursively, default is false\&. If true, means search the whole directory recursively, like the 'find' command\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+filevec the vector of file_entity, filepaths in the directory\&. 
+.RE
+.PP
+
+.SS "filevec cutl::find_files_by_extension (const \fBfilepath\fP & dirpath, const std::string & extension, bool recursive = \fRfalse\fP)"
+
+.PP
+Find all files in a directory by extension\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIdirpath\fP the filepath of the directory to be searched 
+.br
+\fIextension\fP the extension of the file to be found, with dot, like '\&.txt'\&. 
+.br
+\fIrecursive\fP whether to search the whole directory recursively, default is false\&. If true, means search the whole directory recursively, like the 'find' command\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+filevec the vector of file_entity, filepaths in the directory\&. 
+.RE
+.PP
+
+.SS "filevec cutl::list_files (const \fBfilepath\fP & dirpath, \fBfiletype\fP type = \fR\fBfiletype::all\fP\fP, bool recursive = \fRfalse\fP)"
+
+.PP
+List all files in a directory\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIdirpath\fP the filepath of the directory to be listed 
+.br
+\fItype\fP file type to be listed, default is all types\&. 
+.br
+\fIrecursive\fP whether to list the whole directory recursively, default is false\&. If true, means list the whole directory recursively, like the 'ls -R' command\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+filevec the vector of file_entity, filepaths in the directory\&. 
+.RE
+.PP
+
+.SS "std::string cutl::readtext (const \fBfilepath\fP & path, uint64_t max_read_size = \fR4096\fP)"
+
+.PP
+Read the text content of a file\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpath\fP the filepath of the file to be read 
+.br
+\fImax_read_size\fP the maximum size to be read, default is 4096 bytes\&.
+.RE
+.PP
+If the file size is larger than max_read_size, only the first max_read_size bytes will be read\&. otherwise, the whole file will be read\&.
+.PP
+\fBReturns\fP
+.RS 4
+text content of the file 
+.RE
+.PP
+
+.SS "bool cutl::removedir (const \fBfilepath\fP & path, bool recursive = \fRfalse\fP)"
+
+.PP
+Remove a directory\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpath\fP the filepath of the directory to be removed 
+.br
+\fIrecursive\fP whether to remove the whole directory recursively, default is false\&. If true, means remove the whole directory recursively, like the 'rm -rf' command\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the directory is removed successfully, false otherwise\&. 
+.RE
+.PP
+
+.SS "bool cutl::removefile (const \fBfilepath\fP & path)"
+
+.PP
+Remove a regular file or symbolic link(shortcut on windows)\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpath\fP the filepath of the file or symbolic link to be removed 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the file or symbolic link is removed successfully, false otherwise\&. 
+.RE
+.PP
+
+.SS "bool cutl::writetext (const \fBfilepath\fP & path, const std::string & content)"
+
+.PP
+Write the text content to a file\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpath\fP the filepath of the file to be written 
+.br
+\fIcontent\fP text content to be written to the file 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the content is written successfully, false otherwise\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.

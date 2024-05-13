@@ -1,0 +1,105 @@
+.TH "src/common_util/logtype.h" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/common_util/logtype.h \- Defines the log level and log function type\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <string>\fP
+.br
+\fR#include <functional>\fP
+.br
+
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "using \fBcutl::LogFuncType\fP = std::function<void(\fBloglevel\fP, const std::string &)>"
+.br
+.RI "The type of log function\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum class \fBcutl::loglevel\fP { \fBdebug_level\fP, \fBinfo_level\fP, \fBwarn_level\fP, \fBerror_level\fP }"
+.br
+.RI "The type of log level\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Defines the log level and log function type\&. 
+
+
+.PP
+\fBCopyright\fP
+.RS 4
+Copyright (c) 2024, Spencer\&.Luo\&. All Rights Reserved\&.
+.RE
+.PP
+Licensed under the Apache License, Version 2\&.0 (the 'License'); you may not use this file except in compliance with the License\&. You may obtain a copy of the License at 
+.PP
+.nf
+  http://www\&.apache\&.org/licenses/LICENSE-2\&.0
+
+.fi
+.PP
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied\&. See the License for the specific language governing permissions and limitations\&.
+.PP
+\fBAuthor\fP
+.RS 4
+spencer\&.luo 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+2024-05-13 
+.RE
+.PP
+
+.SH "Typedef Documentation"
+.PP 
+.SS "using \fBcutl::LogFuncType\fP = std::function<void(loglevel, const std::string &)>"
+
+.PP
+The type of log function\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIlevel\fP the type of log level 
+.br
+\fImsg\fP the message to log 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+void 
+.RE
+.PP
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum class \fBcutl::loglevel\fP\fR [strong]\fP"
+
+.PP
+The type of log level\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIdebug_level \fP\fP
+debug level 
+.TP
+\fB\fIinfo_level \fP\fP
+info level 
+.TP
+\fB\fIwarn_level \fP\fP
+warn level 
+.TP
+\fB\fIerror_level \fP\fP
+error level 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.

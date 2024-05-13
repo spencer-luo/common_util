@@ -1,0 +1,369 @@
+.TH "src/common_util/sysutil.h" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/common_util/sysutil.h \- Common system utilities\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <cstdint>\fP
+.br
+\fR#include <string>\fP
+.br
+
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum class \fBcutl::endian\fP { \fBlittle\fP, \fBbig\fP }"
+.br
+.RI "Endianness type\&. "
+.ti -1c
+.RI "enum class \fBcutl::os_platform\fP { \fBos_windows\fP, \fBos_macos\fP, \fBos_linux\fP, \fBos_unix\fP, \fBos_unknown\fP }"
+.br
+.RI "Operating system platform type\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBos_platform\fP \fBcutl::platform_type\fP ()"
+.br
+.RI "Get the platform type for the current operating system\&. "
+.ti -1c
+.RI "std::string \fBcutl::architecture\fP ()"
+.br
+.RI "Get the architecture of the cpu processor(or operating system)\&. "
+.ti -1c
+.RI "std::string \fBcutl::platform_name\fP (\fBos_platform\fP type)"
+.br
+.RI "Get the platform name for the current operating system\&. "
+.ti -1c
+.RI "std::string \fBcutl::cpp_stl_version\fP ()"
+.br
+.RI "Get the C++ standard library version\&. "
+.ti -1c
+.RI "uint16_t \fBcutl::program_bit\fP ()"
+.br
+.RI "Get the program bit\&. "
+.ti -1c
+.RI "\fBendian\fP \fBcutl::endian_type\fP ()"
+.br
+.RI "Get the program endianness\&. "
+.ti -1c
+.RI "uint16_t \fBcutl::byteswap\fP (uint16_t value)"
+.br
+.RI "Byteswap a 16-bit value\&. "
+.ti -1c
+.RI "uint32_t \fBcutl::byteswap\fP (uint32_t value)"
+.br
+.RI "Byteswap a 32-bit value\&. "
+.ti -1c
+.RI "uint64_t \fBcutl::byteswap\fP (uint64_t value)"
+.br
+.RI "Byteswap a 64-bit value\&. "
+.ti -1c
+.RI "void \fBcutl::byteswap\fP (uint8_t *data, uint32_t size)"
+.br
+.RI "Byteswap an array of bytes\&. "
+.ti -1c
+.RI "bool \fBcutl::system\fP (const std::string &cmd)"
+.br
+.RI "Execute a system command\&. "
+.ti -1c
+.RI "bool \fBcutl::callcmd\fP (const std::string &cmd, std::string &result)"
+.br
+.RI "Execute a system command and get the output\&. "
+.ti -1c
+.RI "std::string \fBcutl::getenv\fP (const std::string &name, const std::string &default_value)"
+.br
+.RI "Get an environment variable\&. "
+.ti -1c
+.RI "std::string \fBcutl::getcwd\fP ()"
+.br
+.RI "Get the working directory of the current excuting process\&. "
+.ti -1c
+.RI "std::string \fBcutl::homedir\fP ()"
+.br
+.RI "Get the home dir for the current user\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Common system utilities\&. 
+
+
+.PP
+\fBCopyright\fP
+.RS 4
+Copyright (c) 2024, Spencer\&.Luo\&. All Rights Reserved\&.
+.RE
+.PP
+Licensed under the Apache License, Version 2\&.0 (the 'License'); you may not use this file except in compliance with the License\&. You may obtain a copy of the License at 
+.PP
+.nf
+  http://www\&.apache\&.org/licenses/LICENSE-2\&.0
+
+.fi
+.PP
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied\&. See the License for the specific language governing permissions and limitations\&.
+.PP
+\fBAuthor\fP
+.RS 4
+spencer\&.luo 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+2024-05-13 
+.RE
+.PP
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum class \fBcutl::endian\fP\fR [strong]\fP"
+
+.PP
+Endianness type\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIlittle \fP\fP
+little endian 
+.TP
+\fB\fIbig \fP\fP
+big endian 
+.SS "enum class \fBcutl::os_platform\fP\fR [strong]\fP"
+
+.PP
+Operating system platform type\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIos_windows \fP\fP
+Windows 
+.TP
+\fB\fIos_macos \fP\fP
+macOS 
+.TP
+\fB\fIos_linux \fP\fP
+Linux 
+.TP
+\fB\fIos_unix \fP\fP
+Unix 
+.TP
+\fB\fIos_unknown \fP\fP
+Unknown 
+.SH "Function Documentation"
+.PP 
+.SS "std::string cutl::architecture ()"
+
+.PP
+Get the architecture of the cpu processor(or operating system)\&. 
+.PP
+\fBReturns\fP
+.RS 4
+std::string the architecture\&. 
+.RE
+.PP
+
+.SS "uint16_t cutl::byteswap (uint16_t value)"
+
+.PP
+Byteswap a 16-bit value\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP the value to byteswap\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+uint16_t the byteswapped value\&. 
+.RE
+.PP
+
+.SS "uint32_t cutl::byteswap (uint32_t value)"
+
+.PP
+Byteswap a 32-bit value\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP the value to byteswap\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+uint32_t the byteswapped value\&. 
+.RE
+.PP
+
+.SS "uint64_t cutl::byteswap (uint64_t value)"
+
+.PP
+Byteswap a 64-bit value\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP the value to byteswap\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+uint64_t the byteswapped value\&. 
+.RE
+.PP
+
+.SS "void cutl::byteswap (uint8_t * data, uint32_t size)"
+
+.PP
+Byteswap an array of bytes\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIdata\fP the array of bytes to byteswap\&. 
+.br
+\fIsize\fP the size of the array\&. 
+.RE
+.PP
+
+.SS "bool cutl::callcmd (const std::string & cmd, std::string & result)"
+
+.PP
+Execute a system command and get the output\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcmd\fP the command to be executed\&. 
+.br
+\fIresult\fP the output of the command\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the command is executed successfully, false otherwise\&. 
+.RE
+.PP
+
+.SS "std::string cutl::cpp_stl_version ()"
+
+.PP
+Get the C++ standard library version\&. 
+.PP
+\fBReturns\fP
+.RS 4
+std::string the C++ standard library version\&. 
+.RE
+.PP
+
+.SS "endian cutl::endian_type ()"
+
+.PP
+Get the program endianness\&. 
+.PP
+\fBReturns\fP
+.RS 4
+endian the program endianness\&. 
+.RE
+.PP
+
+.SS "std::string cutl::getcwd ()"
+
+.PP
+Get the working directory of the current excuting process\&. 
+.PP
+\fBReturns\fP
+.RS 4
+file path of the working directory 
+.RE
+.PP
+
+.SS "std::string cutl::getenv (const std::string & name, const std::string & default_value)"
+
+.PP
+Get an environment variable\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP the name of the environment variable\&. 
+.br
+\fIdefault_value\fP the default value if the variable is not found\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the value of the environment variable\&. 
+.RE
+.PP
+
+.SS "std::string cutl::homedir ()"
+
+.PP
+Get the home dir for the current user\&. 
+.PP
+\fBReturns\fP
+.RS 4
+std::string the home directory\&. 
+.RE
+.PP
+
+.SS "std::string cutl::platform_name (\fBos_platform\fP type)"
+
+.PP
+Get the platform name for the current operating system\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItype\fP the operating system platform type\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the platform name\&. 
+.RE
+.PP
+
+.SS "os_platform cutl::platform_type ()"
+
+.PP
+Get the platform type for the current operating system\&. 
+.PP
+\fBReturns\fP
+.RS 4
+platform The operating system platform type\&. 
+.RE
+.PP
+
+.SS "uint16_t cutl::program_bit ()"
+
+.PP
+Get the program bit\&. 
+.PP
+\fBReturns\fP
+.RS 4
+uint16_t the program bit\&. 
+.RE
+.PP
+
+.SS "bool cutl::system (const std::string & cmd)"
+
+.PP
+Execute a system command\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcmd\fP the command to be executed\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the command is executed successfully, false otherwise\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.

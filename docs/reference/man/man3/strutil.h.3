@@ -1,0 +1,274 @@
+.TH "src/common_util/strutil.h" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/common_util/strutil.h \- Common string utilities\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <string>\fP
+.br
+\fR#include <vector>\fP
+.br
+
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "using \fBcutl::strvec\fP = std::vector<std::string>"
+.br
+.RI "The type of vector strings used in this library\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "std::string \fBcutl::to_upper\fP (const std::string &str)"
+.br
+.RI "Convert a string to upper case\&. "
+.ti -1c
+.RI "std::string \fBcutl::to_lower\fP (const std::string &str)"
+.br
+.RI "Convert a string to lower case\&. "
+.ti -1c
+.RI "std::string \fBcutl::lstrip\fP (const std::string &str)"
+.br
+.RI "Remove leading whitespaces from a string\&. "
+.ti -1c
+.RI "std::string \fBcutl::rstrip\fP (const std::string &str)"
+.br
+.RI "Remove trailing whitespaces from a string\&. "
+.ti -1c
+.RI "std::string \fBcutl::strip\fP (const std::string &str)"
+.br
+.RI "Remove leading and trailing whitespaces from a string\&. "
+.ti -1c
+.RI "bool \fBcutl::starts_with\fP (const std::string &str, const std::string &start, bool ignoreCase=false)"
+.br
+.RI "Check if a string starts with a given substring\&. "
+.ti -1c
+.RI "bool \fBcutl::ends_with\fP (const std::string &str, const std::string &end, bool ignoreCase=false)"
+.br
+.RI "Check if a string ends with a given substring\&. "
+.ti -1c
+.RI "\fBstrvec\fP \fBcutl::split\fP (const std::string &str, const std::string &separator)"
+.br
+.RI "Split a string into a vector of substrings using a given separator\&. "
+.ti -1c
+.RI "std::string \fBcutl::join\fP (const \fBstrvec\fP &strlist, const std::string &separator='')"
+.br
+.RI "Join a vector of strings into a single string using a given separator\&. "
+.ti -1c
+.RI "std::string \fBcutl::desensitizing\fP (const std::string &str)"
+.br
+.RI "Desensitizing a string by replacing some characters with '*'\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Common string utilities\&. 
+
+
+.PP
+\fBCopyright\fP
+.RS 4
+Copyright (c) 2024, Spencer\&.Luo\&. All Rights Reserved\&.
+.RE
+.PP
+Licensed under the Apache License, Version 2\&.0 (the 'License'); you may not use this file except in compliance with the License\&. You may obtain a copy of the License at 
+.PP
+.nf
+  http://www\&.apache\&.org/licenses/LICENSE-2\&.0
+
+.fi
+.PP
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied\&. See the License for the specific language governing permissions and limitations\&.
+.PP
+\fBAuthor\fP
+.RS 4
+spencer\&.luo 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+2024-05-13 
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "std::string cutl::desensitizing (const std::string & str)"
+
+.PP
+Desensitizing a string by replacing some characters with '*'\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIstr\fP the string to be desensitized\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the desensitized string\&. 
+.RE
+.PP
+
+.SS "bool cutl::ends_with (const std::string & str, const std::string & end, bool ignoreCase = \fRfalse\fP)"
+
+.PP
+Check if a string ends with a given substring\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIstr\fP the string to be checked\&. 
+.br
+\fIend\fP the substring to be checked\&. 
+.br
+\fIignoreCase\fP whether to ignore case when comparing, default is false\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the string ends with the substring, false otherwise\&. 
+.RE
+.PP
+
+.SS "std::string cutl::join (const \fBstrvec\fP & strlist, const std::string & separator = \fR''\fP)"
+
+.PP
+Join a vector of strings into a single string using a given separator\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIstrlist\fP the vector of strings to be joined\&. 
+.br
+\fIseparator\fP the separator to join the strings\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the joined string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::lstrip (const std::string & str)"
+
+.PP
+Remove leading whitespaces from a string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIstr\fP the string to be stripped\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the stripped string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::rstrip (const std::string & str)"
+
+.PP
+Remove trailing whitespaces from a string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIstr\fP the string to be stripped\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the stripped string\&. 
+.RE
+.PP
+
+.SS "strvec cutl::split (const std::string & str, const std::string & separator)"
+
+.PP
+Split a string into a vector of substrings using a given separator\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIstr\fP the string to be split\&. 
+.br
+\fIseparator\fP the separator to split the string\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+strvec the vector of substrings\&. 
+.RE
+.PP
+
+.SS "bool cutl::starts_with (const std::string & str, const std::string & start, bool ignoreCase = \fRfalse\fP)"
+
+.PP
+Check if a string starts with a given substring\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIstr\fP the string to be checked\&. 
+.br
+\fIstart\fP the substring to be checked\&. 
+.br
+\fIignoreCase\fP whether to ignore case when comparing, default is false\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the string starts with the substring, false otherwise\&. 
+.RE
+.PP
+
+.SS "std::string cutl::strip (const std::string & str)"
+
+.PP
+Remove leading and trailing whitespaces from a string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIstr\fP the string to be stripped\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the stripped string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::to_lower (const std::string & str)"
+
+.PP
+Convert a string to lower case\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIstr\fP the string to be converted\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the converted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::to_upper (const std::string & str)"
+
+.PP
+Convert a string to upper case\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIstr\fP the string to be converted\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the converted string\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.

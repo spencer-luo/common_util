@@ -1,0 +1,334 @@
+.TH "cutl::filepath" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cutl::filepath \- The class for file path operations\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <filepath\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBfilepath\fP (const std::string &\fBpath\fP)"
+.br
+.RI "Construct a new filepath object\&. "
+.ti -1c
+.RI "\fBfilepath\fP (const \fBfilepath\fP &other)"
+.br
+.RI "Construct a new filepath object by copy\&. "
+.ti -1c
+.RI "\fBfilepath\fP & \fBoperator=\fP (const \fBfilepath\fP &other)"
+.br
+.RI "Assign operator, assign a new filepath object by copy\&. "
+.ti -1c
+.RI "\fB~filepath\fP ()=default"
+.br
+.RI "Destroy the filepath object\&. "
+.ti -1c
+.RI "std::string \fBstr\fP () const"
+.br
+.RI "Get the string of the filepath\&. "
+.ti -1c
+.RI "\fBfilepath\fP \fBjoin\fP (const std::string &filename) const"
+.br
+.RI "Join the current filepath with a new filename\&. "
+.ti -1c
+.RI "bool \fBexists\fP () const"
+.br
+.RI "Check if the filepath is exists\&. "
+.ti -1c
+.RI "bool \fBreadable\fP () const"
+.br
+.RI "Check if the filepath is readable\&. "
+.ti -1c
+.RI "bool \fBwritable\fP () const"
+.br
+.RI "Check if the filepath is writable\&. "
+.ti -1c
+.RI "bool \fBexecutable\fP () const"
+.br
+.RI "Check if the filepath is executable\&. "
+.ti -1c
+.RI "\fBfiletype\fP \fBtype\fP () const"
+.br
+.RI "Get the file type of the filepath\&. "
+.ti -1c
+.RI "bool \fBisfile\fP () const"
+.br
+.RI "Check if the filepath is a regular file\&. "
+.ti -1c
+.RI "bool \fBisdir\fP () const"
+.br
+.RI "Check if the filepath is a directory\&. "
+.ti -1c
+.RI "bool \fBissymlink\fP () const"
+.br
+.RI "Check if the filepath is a symbolic link\&. "
+.ti -1c
+.RI "std::string \fBdirname\fP () const"
+.br
+.RI "Get the parent directory of the filepath\&. "
+.ti -1c
+.RI "std::string \fBbasename\fP () const"
+.br
+.RI "Get the filename or directory name of the filepath\&. "
+.ti -1c
+.RI "std::string \fBrealpath\fP () const"
+.br
+.RI "Get the real path referenced by symbolic link\&. "
+.ti -1c
+.RI "std::string \fBabspath\fP () const"
+.br
+.RI "Get the absolute path of the filepath\&. "
+.ti -1c
+.RI "std::string \fBextension\fP () const"
+.br
+.RI "Get the extension of the filepath\&. "
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static char \fBseparator\fP ()"
+.br
+.RI "Get the path separator of the current os platform\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+The class for file path operations\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "cutl::filepath::filepath (const std::string & path)"
+
+.PP
+Construct a new filepath object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpath\fP file path string 
+.RE
+.PP
+
+.SS "cutl::filepath::filepath (const \fBfilepath\fP & other)"
+
+.PP
+Construct a new filepath object by copy\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP other filepath object 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "std::string cutl::filepath::abspath () const"
+
+.PP
+Get the absolute path of the filepath\&. 
+.PP
+\fBReturns\fP
+.RS 4
+std::string the absolute path of the filepath\&. 
+.RE
+.PP
+
+.SS "std::string cutl::filepath::basename () const"
+
+.PP
+Get the filename or directory name of the filepath\&. 
+.PP
+\fBReturns\fP
+.RS 4
+filename or directory name 
+.RE
+.PP
+
+.SS "std::string cutl::filepath::dirname () const"
+
+.PP
+Get the parent directory of the filepath\&. 
+.PP
+\fBReturns\fP
+.RS 4
+parent directory path 
+.RE
+.PP
+
+.SS "bool cutl::filepath::executable () const"
+
+.PP
+Check if the filepath is executable\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true means executable, false means not executable\&. 
+.RE
+.PP
+
+.SS "bool cutl::filepath::exists () const"
+
+.PP
+Check if the filepath is exists\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true means the filepath is exists, otherwise not exists\&. 
+.RE
+.PP
+
+.SS "std::string cutl::filepath::extension () const"
+
+.PP
+Get the extension of the filepath\&. 
+.PP
+\fBReturns\fP
+.RS 4
+extension with dot 
+.RE
+.PP
+
+.SS "bool cutl::filepath::isdir () const"
+
+.PP
+Check if the filepath is a directory\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true means directory, false means not directory\&. 
+.RE
+.PP
+
+.SS "bool cutl::filepath::isfile () const"
+
+.PP
+Check if the filepath is a regular file\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true mena regular file, false means not regular file\&. 
+.RE
+.PP
+
+.SS "bool cutl::filepath::issymlink () const"
+
+.PP
+Check if the filepath is a symbolic link\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true means symbolic link, false means not symbolic link\&. 
+.RE
+.PP
+
+.SS "\fBfilepath\fP cutl::filepath::join (const std::string & filename) const"
+
+.PP
+Join the current filepath with a new filename\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfilename\fP the filename to be joined 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+the new filepath object 
+.RE
+.PP
+
+.SS "\fBfilepath\fP & cutl::filepath::operator= (const \fBfilepath\fP & other)"
+
+.PP
+Assign operator, assign a new filepath object by copy\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP other filepath object 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+filepath& the reference of the current filepath object 
+.RE
+.PP
+
+.SS "bool cutl::filepath::readable () const"
+
+.PP
+Check if the filepath is readable\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true means readable, false means not readable\&. 
+.RE
+.PP
+
+.SS "std::string cutl::filepath::realpath () const"
+
+.PP
+Get the real path referenced by symbolic link\&. 
+.PP
+\fBNote\fP
+.RS 4
+This function only works on Unix-like systems, not support on Windows\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+real path referenced by symbolic link or shortcuts 
+.RE
+.PP
+
+.SS "static char cutl::filepath::separator ()\fR [static]\fP"
+
+.PP
+Get the path separator of the current os platform\&. 
+.PP
+\fBReturns\fP
+.RS 4
+the path separator 
+.RE
+.PP
+
+.SS "std::string cutl::filepath::str () const"
+
+.PP
+Get the string of the filepath\&. 
+.PP
+\fBReturns\fP
+.RS 4
+the filepath 
+.RE
+.PP
+
+.SS "\fBfiletype\fP cutl::filepath::type () const"
+
+.PP
+Get the file type of the filepath\&. 
+.PP
+\fBReturns\fP
+.RS 4
+file type 
+.RE
+.PP
+
+.SS "bool cutl::filepath::writable () const"
+
+.PP
+Check if the filepath is writable\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true menas writable, false means not writable\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.

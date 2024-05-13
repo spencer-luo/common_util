@@ -1,0 +1,337 @@
+.TH "cutl::datetime" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cutl::datetime \- A simple, feature-rich modern C++ date-time class\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <datetime\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBdatetime\fP (uint64_t \fBms\fP)"
+.br
+.RI "Construct a new datetime object\&. "
+.ti -1c
+.RI "\fBdatetime\fP (const \fBdatetime\fP &other)"
+.br
+.RI "Construct a new datetime object\&. "
+.ti -1c
+.RI "\fB~datetime\fP ()"
+.br
+.RI "Destroy the datetime object\&. "
+.ti -1c
+.RI "uint64_t \fBtimestamp\fP () const"
+.br
+.RI "Get the timestamp in milliseconds\&. "
+.ti -1c
+.RI "std::string \fBformat\fP (\fBdatetime_format\fP dfmt=\fBdatetime_format::datetime_format_a\fP, bool local=true, bool show_milliseconds=true) const"
+.br
+.RI "format the datetime object to a string "
+.ti -1c
+.RI "std::string \fBformat\fP (const std::string &fmt, bool local=true, bool show_milliseconds=true) const"
+.br
+.RI "Format the datetime object to a string with a custom format string\&. "
+.ti -1c
+.RI "std::string \fButctime\fP () const"
+.br
+.RI "Get the string of UTC time described by datetime object\&. "
+.ti -1c
+.RI "\fBdatetime\fP & \fBoperator=\fP (const \fBdatetime\fP &other)"
+.br
+.RI "Define the assignment operator\&. "
+.ti -1c
+.RI "\fBdatetime\fP \fBoperator+\fP (uint64_t \fBms\fP)"
+.br
+.RI "Define the addition operator\&. "
+.ti -1c
+.RI "\fBdatetime\fP \fBoperator\-\fP (uint64_t \fBms\fP)"
+.br
+.RI "Define the subtraction operator\&. "
+.ti -1c
+.RI "\fBdatetime\fP & \fBoperator+=\fP (uint64_t \fBms\fP)"
+.br
+.RI "Define the addition and assignment operator\&. "
+.ti -1c
+.RI "\fBdatetime\fP & \fBoperator\-=\fP (uint64_t \fBms\fP)"
+.br
+.RI "Define the subtraction and assignment operator\&. "
+.ti -1c
+.RI "int64_t \fBoperator\-\fP (const \fBdatetime\fP &other) const"
+.br
+.RI "Define the subtraction operator between two datetime objects\&. "
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static \fBdatetime\fP \fBnow\fP ()"
+.br
+.RI "Get a datetime object for the current system time\&. "
+.ti -1c
+.RI "static \fBdatetime\fP \fBget\fP (const std::string &time_text, int isdst=\-1)"
+.br
+.RI "Constructs a datetime object from a local time string\&. "
+.in -1c
+.SS "Static Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "static constexpr int \fBsecond\fP = 1000"
+.br
+.RI "Constants value: second, expressed in milliseconds\&. "
+.ti -1c
+.RI "static constexpr int \fBmin\fP = 60 * \fBsecond\fP"
+.br
+.RI "Constants value: min, expressed in milliseconds\&. "
+.ti -1c
+.RI "static constexpr int \fBhour\fP = 60 * \fBmin\fP"
+.br
+.RI "Constants value: hour, expressed in milliseconds\&. "
+.ti -1c
+.RI "static constexpr int \fBday\fP = 24 * \fBhour\fP"
+.br
+.RI "Constants value: day, expressed in milliseconds\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A simple, feature-rich modern C++ date-time class\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "cutl::datetime::datetime (uint64_t ms)"
+
+.PP
+Construct a new datetime object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIms\fP a timestamp in milliseconds for initialize the datetime object 
+.RE
+.PP
+
+.SS "cutl::datetime::datetime (const \fBdatetime\fP & other)"
+
+.PP
+Construct a new datetime object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP other datetime object to copy 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "std::string cutl::datetime::format (const std::string & fmt, bool local = \fRtrue\fP, bool show_milliseconds = \fRtrue\fP) const"
+
+.PP
+Format the datetime object to a string with a custom format string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfmt\fP datetime format string, default is '%Y-%m-%d %H:%M:%S\&.%f'\&. usages like std::put_time, reference to https://en.cppreference.com/w/cpp/io/manip/put_time 
+.br
+\fIlocal\fP whether to use local time, default is true\&. if true means output in local time, otherwise, output in UTC time\&. 
+.br
+\fIshow_milliseconds\fP whether to show milliseconds, default is true\&. if true means show milliseconds, otherwise, not show milliseconds\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+formatted datetime string described by std::string 
+.RE
+.PP
+
+.SS "std::string cutl::datetime::format (\fBdatetime_format\fP dfmt = \fR\fBdatetime_format::datetime_format_a\fP\fP, bool local = \fRtrue\fP, bool show_milliseconds = \fRtrue\fP) const"
+
+.PP
+format the datetime object to a string 
+.PP
+\fBParameters\fP
+.RS 4
+\fIdfmt\fP datetime format, a value of datetime_format enum, default is datetime_format_a 
+.br
+\fIlocal\fP whether to use local time, default is true\&. if true means output in local time, otherwise, output in UTC time\&. 
+.br
+\fIshow_milliseconds\fP whether to show milliseconds, default is true\&. if true means show milliseconds, otherwise, not show milliseconds\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+formatted datetime string described by std::string 
+.RE
+.PP
+
+.SS "static \fBdatetime\fP cutl::datetime::get (const std::string & time_text, int isdst = \fR\-1\fP)\fR [static]\fP"
+
+.PP
+Constructs a datetime object from a local time string\&. Only the following time formats are supported:
+.IP "\(bu" 2
+YYYY-MM-DD HH:MM:SS\&.sss
+.IP "\(bu" 2
+YYYY-MM-DD HH:MM:SS
+.IP "\(bu" 2
+YYYY\&.MM\&.DD HH:MM:SS\&.sss
+.IP "\(bu" 2
+YYYY\&.MM\&.DD HH:MM:SS
+.IP "\(bu" 2
+YYYY/MM/DD HH:MM:SS\&.sss
+.IP "\(bu" 2
+YYYY/MM/DD HH:MM:SS
+.IP "\(bu" 2
+YYYYMMDD HH:MM:SS\&.sss
+.IP "\(bu" 2
+YYYYMMDD HH:MM:SS 
+.PP
+\fBParameters\fP
+.RS 4
+\fItime_text\fP local time string, use the below formats to construct a datetime object\&. 
+.br
+\fIisdst\fP the setting of daylight saving time, -1 means system automatically determine, 0 means not in daylight saving time, 1 means in daylight saving time 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+datetime object constructed from the local time string 
+.RE
+.PP
+
+.PP
+
+.SS "static \fBdatetime\fP cutl::datetime::now ()\fR [static]\fP"
+
+.PP
+Get a datetime object for the current system time\&. 
+.PP
+\fBReturns\fP
+.RS 4
+datetime object for the current system time 
+.RE
+.PP
+
+.SS "\fBdatetime\fP cutl::datetime::operator+ (uint64_t ms)"
+
+.PP
+Define the addition operator\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIms\fP milliseconds to add 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+datetime object after adding milliseconds 
+.RE
+.PP
+
+.SS "\fBdatetime\fP & cutl::datetime::operator+= (uint64_t ms)"
+
+.PP
+Define the addition and assignment operator\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIms\fP milliseconds to add 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+datetime& the reference of the current datetime object after adding milliseconds 
+.RE
+.PP
+
+.SS "int64_t cutl::datetime::operator\- (const \fBdatetime\fP & other) const"
+
+.PP
+Define the subtraction operator between two datetime objects\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP datetime object to subtract 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+the duration in milliseconds between current and other datetime objects 
+.RE
+.PP
+
+.SS "\fBdatetime\fP cutl::datetime::operator\- (uint64_t ms)"
+
+.PP
+Define the subtraction operator\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIms\fP milliseconds to subtract 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+datetime object after subtracting milliseconds 
+.RE
+.PP
+
+.SS "\fBdatetime\fP & cutl::datetime::operator\-= (uint64_t ms)"
+
+.PP
+Define the subtraction and assignment operator\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIms\fP milliseconds to subtract 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+datetime& the reference of the current datetime object after subtracting milliseconds 
+.RE
+.PP
+
+.SS "\fBdatetime\fP & cutl::datetime::operator= (const \fBdatetime\fP & other)"
+
+.PP
+Define the assignment operator\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP other datetime object to copy 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+datetime& the reference of the current datetime object 
+.RE
+.PP
+
+.SS "uint64_t cutl::datetime::timestamp () const"
+
+.PP
+Get the timestamp in milliseconds\&. 
+.PP
+\fBReturns\fP
+.RS 4
+the timestamp in milliseconds 
+.RE
+.PP
+
+.SS "std::string cutl::datetime::utctime () const\fR [inline]\fP"
+
+.PP
+Get the string of UTC time described by datetime object\&. 
+.PP
+\fBReturns\fP
+.RS 4
+the string of UTC time in format 'YYYY-MM-DD HH:MM:SS\&.sss' 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.

@@ -1,0 +1,121 @@
+.TH "src/common_util/datetime.h" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/common_util/datetime.h \- A simple, feature-rich modern C++ date-time class\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <cstdint>\fP
+.br
+\fR#include <string>\fP
+.br
+\fR#include <iostream>\fP
+.br
+\fR#include <regex>\fP
+.br
+\fR#include <vector>\fP
+.br
+\fR#include <utility>\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "class \fBcutl::datetime\fP"
+.br
+.RI "A simple, feature-rich modern C++ date-time class\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum class \fBcutl::datetime_format\fP { \fBdatetime_format_a\fP, \fBdatetime_format_b\fP, \fBdatetime_format_c\fP, \fBdatetime_format_d\fP }"
+.br
+.RI "the string datetime format for parsing and formatting "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "std::ostream & \fBcutl::operator<<\fP (std::ostream &os, const \fBdatetime\fP &dt)"
+.br
+.RI "Define the output stream operator for datetime object\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A simple, feature-rich modern C++ date-time class\&. 
+
+
+.PP
+\fBCopyright\fP
+.RS 4
+Copyright (c) 2024, Spencer\&.Luo\&. All Rights Reserved\&.
+.RE
+.PP
+Licensed under the Apache License, Version 2\&.0 (the 'License'); you may not use this file except in compliance with the License\&. You may obtain a copy of the License at 
+.PP
+.nf
+  http://www\&.apache\&.org/licenses/LICENSE-2\&.0
+
+.fi
+.PP
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied\&. See the License for the specific language governing permissions and limitations\&.
+.PP
+\fBAuthor\fP
+.RS 4
+spencer\&.luo 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+2024-05-13 
+.RE
+.PP
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum class \fBcutl::datetime_format\fP\fR [strong]\fP"
+
+.PP
+the string datetime format for parsing and formatting 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIdatetime_format_a \fP\fP
+YYYY-MM-DD HH:MM:SS\&.sss 
+.TP
+\fB\fIdatetime_format_b \fP\fP
+YYYY\&.MM\&.DD HH:MM:SS 
+.TP
+\fB\fIdatetime_format_c \fP\fP
+YYYY/MM/DD HH:MM:SS 
+.TP
+\fB\fIdatetime_format_d \fP\fP
+YYYYMMDD HH:MM:SS 
+.SH "Function Documentation"
+.PP 
+.SS "std::ostream & cutl::operator<< (std::ostream & os, const \fBdatetime\fP & dt)"
+
+.PP
+Define the output stream operator for datetime object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIos\fP the std::ostream object 
+.br
+\fIdt\fP the datetime object to be output 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::ostream& the reference of the std::ostream object after outputting the datetime object 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.
