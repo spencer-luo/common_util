@@ -39,12 +39,12 @@ This library has been tested and verified on the following platforms:
 
 | Operating System Platform and Version | C++ Compiler and Version | Testing Status | Remarks |
 | ------------------------------------- | ------------------------ | -------------- | ------- |
-| Windows 10                            | Visual Studio 2015       | Verified       |         |
-| Ubuntu 20.04.4                        | GNU GCC 9.4.0            | Verified       |         |
-| macOS xxx                             | xxx                      | Verified       |         |
-| Android                               |                          | To be verified |         |
-| iOS                                   |                          | To be verified |         |
-| HarmonyOS                             |                          | To be verified |         |
+| Windows 10                            | Visual Studio 2015       | <span color="green">tested</span>       |         |
+| Ubuntu 20.04.4                        | GNU GCC 9.4.0            | tested       |         |
+| macOS xxx                             | Clang version 15.0.0| tested       |         |
+| Android                               |                          | To be tested |         |
+| iOS                                   |                          | To be tested |         |
+| HarmonyOS                             |                          | To be tested |         |
 
 ## Related Documents
 
@@ -91,7 +91,7 @@ std::cout << "current time(local time): " << now.format() << std::endl;
 | ------------------ | ------------------ | -------- | ---- |
 | Windows 10         | Visual Studio 2015 | 已验证   |      |
 | Ubuntu 20.04.4     | GNU GCC 9.4.0      | 已验证   |      |
-| macOS xxx          | xxx                | 已验证   |      |
+| macOS xxx          | Clang version 15.0.0| 已验证   |      |
 | Android            |                    | 待验证   |      |
 | iOS                |                    | 待验证   |      |
 | HarmonyOS          |                    | 待验证   |      |
