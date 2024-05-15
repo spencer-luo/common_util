@@ -39,9 +39,9 @@ This library has been tested and verified on the following platforms:
 
 | Operating System Platform and Version | C++ Compiler and Version | Testing Status | Remarks |
 | ------------------------------------- | ------------------------ | -------------- | ------- |
-| Windows 10                            | Visual Studio 2015       | <span color="green">tested</span>       |         |
+| Windows 10                            | Visual Studio 2015       | tested       |         |
 | Ubuntu 20.04.4                        | GNU GCC 9.4.0            | tested       |         |
-| macOS xxx                             | Clang version 15.0.0| tested       |         |
+| macOS xxx                             | Clang version 15.0.0     | tested       |         |
 | Android                               |                          | To be tested |         |
 | iOS                                   |                          | To be tested |         |
 | HarmonyOS                             |                          | To be tested |         |
