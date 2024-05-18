@@ -1,0 +1,490 @@
+.TH "src/common_util/strfmt.h" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/common_util/strfmt.h \- String format functions\&. this file defines a series of string-formatted functions\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <string>\fP
+.br
+\fR#include <cstdint>\fP
+.br
+\fR#include <sstream>\fP
+.br
+\fR#include <iomanip>\fP
+.br
+\fR#include 'timeutil\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "std::string \fBcutl::fmt_uint\fP (uint64_t val, uint8_t width=0, char fill='0')"
+.br
+.RI "Format uint64 value to a string with a given width and fill character\&. "
+.ti -1c
+.RI "std::string \fBcutl::fmt_double\fP (double val, int precision=2)"
+.br
+.RI "Format double value to a string with a given precision\&. "
+.ti -1c
+.RI "std::string \fBcutl::fmt_filesize\fP (uint64_t size, bool simplify=true, int precision=1)"
+.br
+.RI "Format a file size to a human-readable string with a given precision\&. "
+.ti -1c
+.RI "std::string \fBcutl::fmt_timeduration_s\fP (uint64_t seconds)"
+.br
+.RI "Format a time duration to a human-readable string\&. "
+.ti -1c
+.RI "std::string \fBcutl::fmt_timeduration_ms\fP (uint64_t microseconds)"
+.br
+.RI "Format a time duration to a human-readable string\&. "
+.ti -1c
+.RI "std::string \fBcutl::fmt_timeduration_us\fP (uint64_t nanoseconds)"
+.br
+.RI "Format a time duration to a human-readable string\&. "
+.ti -1c
+.RI "std::string \fBcutl::fmt_timestamp\fP (uint64_t second, bool local, const std::string &fmt)"
+.br
+.RI "Format a timestamp to a human-readable string with a given format\&. "
+.ti -1c
+.RI "std::string \fBcutl::fmt_timestamp_s\fP (uint64_t second, bool local=true)"
+.br
+.RI "Format a timestamp to a human-readable string\&. "
+.ti -1c
+.RI "std::string \fBcutl::fmt_timestamp_ms\fP (uint64_t \fBms\fP, bool local=true)"
+.br
+.RI "Format a timestamp to a human-readable string\&. "
+.ti -1c
+.RI "std::string \fBcutl::fmt_timestamp_us\fP (uint64_t \fBus\fP, bool local=true)"
+.br
+.RI "Format a timestamp to a human-readable string\&. "
+.ti -1c
+.RI "std::string \fBcutl::to_hex\fP (const uint8_t *data, size_t len, bool upper=true, char separator=' ')"
+.br
+.RI "Format data to a hex string\&. "
+.ti -1c
+.RI "std::string \fBcutl::to_hex\fP (uint8_t value, bool upper=true, const std::string &prefix='')"
+.br
+.RI "Format a uint8_t value to a hex string\&. "
+.ti -1c
+.RI "std::string \fBcutl::to_hex\fP (uint16_t value, bool upper=true, const std::string &prefix='')"
+.br
+.RI "Format a uint16_t value to a hex string\&. "
+.ti -1c
+.RI "std::string \fBcutl::to_hex\fP (uint32_t value, bool upper=true, const std::string &prefix='')"
+.br
+.RI "Format a uint32_t value to a hex string\&. "
+.ti -1c
+.RI "std::string \fBcutl::to_hex\fP (uint64_t value, bool upper=true, const std::string &prefix='')"
+.br
+.RI "Format a uint64_t value to a hex string\&. "
+.ti -1c
+.RI "std::string \fBcutl::to_bin\fP (uint8_t value, char separator=',')"
+.br
+.RI "Format uint8_t value to a binary string\&. "
+.ti -1c
+.RI "std::string \fBcutl::to_bin\fP (uint16_t value, char separator=' ')"
+.br
+.RI "Format uint16_t value to a binary string\&. "
+.ti -1c
+.RI "std::string \fBcutl::to_bin\fP (uint32_t value, char separator=' ')"
+.br
+.RI "Format uint32_t value to a binary string\&. "
+.ti -1c
+.RI "std::string \fBcutl::to_bin\fP (uint64_t value, char separator=' ')"
+.br
+.RI "Format uint64_t value to a binary string\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+String format functions\&. this file defines a series of string-formatted functions\&. 
+
+
+.PP
+\fBCopyright\fP
+.RS 4
+Copyright (c) 2024, Spencer\&.Luo\&. All Rights Reserved\&.
+.RE
+.PP
+Licensed under the Apache License, Version 2\&.0 (the 'License'); you may not use this file except in compliance with the License\&. You may obtain a copy of the License at 
+.PP
+.nf
+  http://www\&.apache\&.org/licenses/LICENSE-2\&.0
+
+.fi
+.PP
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied\&. See the License for the specific language governing permissions and limitations\&.
+.PP
+\fBAuthor\fP
+.RS 4
+spencer\&.luo 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+2024-05-13 
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "std::string cutl::fmt_double (double val, int precision = \fR2\fP)"
+
+.PP
+Format double value to a string with a given precision\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIval\fP the value to be formatted\&. 
+.br
+\fIprecision\fP the precision of the formatted string, default is 2\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::fmt_filesize (uint64_t size, bool simplify = \fRtrue\fP, int precision = \fR1\fP)"
+
+.PP
+Format a file size to a human-readable string with a given precision\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsize\fP the size to be formatted\&. 
+.br
+\fIsimplify\fP whether to use a simplify unit\&. 
+.br
+\fIprecision\fP the precision of the formatted string, default is 1\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::fmt_timeduration_ms (uint64_t microseconds)"
+
+.PP
+Format a time duration to a human-readable string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImicroseconds\fP the duration in microseconds\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::fmt_timeduration_s (uint64_t seconds)"
+
+.PP
+Format a time duration to a human-readable string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIseconds\fP the duration in seconds\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::fmt_timeduration_us (uint64_t nanoseconds)"
+
+.PP
+Format a time duration to a human-readable string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInanoseconds\fP the duration in nanoseconds\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::fmt_timestamp (uint64_t second, bool local, const std::string & fmt)"
+
+.PP
+Format a timestamp to a human-readable string with a given format\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsecond\fP the timestamp in seconds\&. 
+.br
+\fIlocal\fP whether to use local time or UTC time, default is local time\&. If local is true, the function will format the timestamp to local time, otherwise, it will format the timestamp to UTC time\&. 
+.br
+\fIfmt\fP the format of the formatted string\&. useage like std::put_time, see https://en.cppreference.com/w/cpp/io/manip/put_time 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::fmt_timestamp_ms (uint64_t ms, bool local = \fRtrue\fP)"
+
+.PP
+Format a timestamp to a human-readable string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIms\fP the timestamp in milliseconds\&. 
+.br
+\fIlocal\fP whether to use local time or UTC time, default is local time\&. If local is true, the function will format the timestamp to local time, otherwise, it will format the timestamp to UTC time\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::fmt_timestamp_s (uint64_t second, bool local = \fRtrue\fP)"
+
+.PP
+Format a timestamp to a human-readable string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsecond\fP the timestamp in seconds\&. 
+.br
+\fIlocal\fP whether to use local time or UTC time, default is local time\&. If local is true, the function will format the timestamp to local time, otherwise, it will format the timestamp to UTC time\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::fmt_timestamp_us (uint64_t us, bool local = \fRtrue\fP)"
+
+.PP
+Format a timestamp to a human-readable string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIus\fP the timestamp in microseconds\&. 
+.br
+\fIlocal\fP whether to use local time or UTC time, default is local time\&. If local is true, the function will format the timestamp to local time, otherwise, it will format the timestamp to UTC time\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::fmt_uint (uint64_t val, uint8_t width = \fR0\fP, char fill = \fR'0'\fP)"
+
+.PP
+Format uint64 value to a string with a given width and fill character\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIval\fP the value to be formatted\&. 
+.br
+\fIwidth\fP the width of the formatted string\&. 
+.br
+\fIfill\fP the fill character of the formatted string, default is '0'\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::to_bin (uint16_t value, char separator = \fR' '\fP)"
+
+.PP
+Format uint16_t value to a binary string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP the value to be formatted\&. 
+.br
+\fIseparator\fP the separator between each pair of binary characters, default is space\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::to_bin (uint32_t value, char separator = \fR' '\fP)"
+
+.PP
+Format uint32_t value to a binary string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP the value to be formatted\&. 
+.br
+\fIseparator\fP the separator between each pair of binary characters, default is space\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::to_bin (uint64_t value, char separator = \fR' '\fP)"
+
+.PP
+Format uint64_t value to a binary string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP the value to be formatted\&. 
+.br
+\fIseparator\fP the separator between each pair of binary characters, default is space\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::to_bin (uint8_t value, char separator = \fR','\fP)"
+
+.PP
+Format uint8_t value to a binary string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP the value to be formatted\&. 
+.br
+\fIseparator\fP the separator between each pair of binary characters, default is comma\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::to_hex (const uint8_t * data, size_t len, bool upper = \fRtrue\fP, char separator = \fR' '\fP)"
+
+.PP
+Format data to a hex string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIdata\fP the data to be formatted\&. 
+.br
+\fIlen\fP the length of the data\&. 
+.br
+\fIupper\fP whether to use upper case or lower case for hex characters, default is upper case\&. 
+.br
+\fIseparator\fP the separator between each pair of hex characters, default is space\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::to_hex (uint16_t value, bool upper = \fRtrue\fP, const std::string & prefix = \fR''\fP)"
+
+.PP
+Format a uint16_t value to a hex string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP the value to be formatted\&. 
+.br
+\fIupper\fP whether to use upper case or lower case for hex characters, default is upper case\&. 
+.br
+\fIprefix\fP the prefix of the formatted string, default is empty\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::to_hex (uint32_t value, bool upper = \fRtrue\fP, const std::string & prefix = \fR''\fP)"
+
+.PP
+Format a uint32_t value to a hex string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP the value to be formatted\&. 
+.br
+\fIupper\fP whether to use upper case or lower case for hex characters, default is upper case\&. 
+.br
+\fIprefix\fP the prefix of the formatted string, default is empty\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::to_hex (uint64_t value, bool upper = \fRtrue\fP, const std::string & prefix = \fR''\fP)"
+
+.PP
+Format a uint64_t value to a hex string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP the value to be formatted\&. 
+.br
+\fIupper\fP whether to use upper case or lower case for hex characters, default is upper case\&. 
+.br
+\fIprefix\fP the prefix of the formatted string, default is empty\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::to_hex (uint8_t value, bool upper = \fRtrue\fP, const std::string & prefix = \fR''\fP)"
+
+.PP
+Format a uint8_t value to a hex string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP the value to be formatted\&. 
+.br
+\fIupper\fP whether to use upper case or lower case for hex characters, default is upper case\&. 
+.br
+\fIprefix\fP the prefix of the formatted string, default is empty\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the formatted string\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.

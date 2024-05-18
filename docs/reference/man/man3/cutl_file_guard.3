@@ -1,0 +1,60 @@
+.TH "cutl::file_guard" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cutl::file_guard \- The file guard class to manage the FILE pointer automatically\&. \fBfile_guard\fP object can close the FILE pointer automatically when his scope is exit\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <fileutil\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBfile_guard\fP (FILE *\fBfile\fP)"
+.br
+.RI "Construct a new file guard object\&. "
+.ti -1c
+.RI "\fB~file_guard\fP ()"
+.br
+.RI "Destroy the file guard object\&. "
+.ti -1c
+.RI "FILE * \fBgetfd\fP () const"
+.br
+.RI "Get the FILE pointer\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+The file guard class to manage the FILE pointer automatically\&. \fBfile_guard\fP object can close the FILE pointer automatically when his scope is exit\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "cutl::file_guard::file_guard (FILE * file)\fR [explicit]\fP"
+
+.PP
+Construct a new file guard object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfile\fP the pointer of the FILE object 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "FILE * cutl::file_guard::getfd () const"
+
+.PP
+Get the FILE pointer\&. 
+.PP
+\fBReturns\fP
+.RS 4
+FILE* 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.

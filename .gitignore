@@ -1,8 +1,9 @@
 # Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
+build/
+publish/
+# test directories
+fileutil_test/
+fileutil_test_copy/
 
 # Other files and folders
 .settings/

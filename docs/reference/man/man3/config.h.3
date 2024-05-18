@@ -1,0 +1,97 @@
+.TH "src/common_util/config.h" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/common_util/config.h \- Config for common_util library, such as initialization and destory for library\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include 'logtype\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "std::string \fBcutl::library_name\fP ()"
+.br
+.RI "Get the name of the library\&. "
+.ti -1c
+.RI "std::string \fBcutl::library_version\fP ()"
+.br
+.RI "Get the version of the library\&. "
+.ti -1c
+.RI "void \fBcutl::library_init\fP (\fBLogFuncType\fP log_func)"
+.br
+.RI "Initialize the library\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Config for common_util library, such as initialization and destory for library\&. 
+
+
+.PP
+\fBCopyright\fP
+.RS 4
+Copyright (c) 2024, Spencer\&.Luo\&. All Rights Reserved\&.
+.RE
+.PP
+Licensed under the Apache License, Version 2\&.0 (the 'License'); you may not use this file except in compliance with the License\&. You may obtain a copy of the License at 
+.PP
+.nf
+  http://www\&.apache\&.org/licenses/LICENSE-2\&.0
+
+.fi
+.PP
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied\&. See the License for the specific language governing permissions and limitations\&.
+.PP
+\fBAuthor\fP
+.RS 4
+spencer\&.luo 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+2024-05-13 
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "void cutl::library_init (\fBLogFuncType\fP log_func)"
+
+.PP
+Initialize the library\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIlog_func\fP The function pointer for LogFuncType, register a log function for the library\&. 
+.RE
+.PP
+
+.SS "std::string cutl::library_name ()"
+
+.PP
+Get the name of the library\&. 
+.PP
+\fBReturns\fP
+.RS 4
+library name\&. 
+.RE
+.PP
+
+.SS "std::string cutl::library_version ()"
+
+.PP
+Get the version of the library\&. 
+.PP
+\fBReturns\fP
+.RS 4
+the version of the library 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.

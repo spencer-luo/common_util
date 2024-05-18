@@ -1,0 +1,116 @@
+.TH "src/common_util/filetype.h" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/common_util/filetype.h \- Define the structs about fileutil, such as filetype and file_entity\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <vector>\fP
+.br
+\fR#include <string>\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "struct \fBcutl::file_entity\fP"
+.br
+.RI "file entity struct\&. include file type and file path\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "using \fBcutl::filevec\fP = std::vector<\fBfile_entity\fP>"
+.br
+.RI "The vector of \fBfile_entity\fP\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBcutl::filetype\fP { \fBcutl::unknown\fP = 0x00, \fBcutl::directory\fP = 0x01, \fBcutl::file\fP = 0x02, \fBcutl::symlink\fP = 0x04, \fBcutl::char_special\fP = 0x08, \fBcutl::block_special\fP = 0x10, \fBcutl::pipefifo\fP = 0x20, \fBcutl::socket\fP = 0x40, \fBcutl::all\fP = 0xFF }"
+.br
+.RI "The type of file\&. "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "constexpr int \fBcutl::MAX_PATH_LEN\fP = 1024"
+.br
+.RI "Constants value: max path length\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Define the structs about fileutil, such as filetype and file_entity\&. 
+
+
+.PP
+\fBCopyright\fP
+.RS 4
+Copyright (c) 2024, Spencer\&.Luo\&. All Rights Reserved\&.
+.RE
+.PP
+Licensed under the Apache License, Version 2\&.0 (the 'License'); you may not use this file except in compliance with the License\&. You may obtain a copy of the License at 
+.PP
+.nf
+  http://www\&.apache\&.org/licenses/LICENSE-2\&.0
+
+.fi
+.PP
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied\&. See the License for the specific language governing permissions and limitations\&.
+.PP
+\fBAuthor\fP
+.RS 4
+spencer\&.luo 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+2024-05-13 
+.RE
+.PP
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBcutl::filetype\fP"
+
+.PP
+The type of file\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIunknown \fP\fP
+undefined 
+.TP
+\fB\fIdirectory \fP\fP
+directory 
+.TP
+\fB\fIfile \fP\fP
+regular file 
+.TP
+\fB\fIsymlink \fP\fP
+symbolic link 
+.TP
+\fB\fIchar_special \fP\fP
+character device, only for unix 
+.TP
+\fB\fIblock_special \fP\fP
+block device, only for unix 
+.TP
+\fB\fIpipefifo \fP\fP
+named pipe, only for unix 
+.TP
+\fB\fIsocket \fP\fP
+socket file, only for unix 
+.TP
+\fB\fIall \fP\fP
+type mask, includes all types 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.

@@ -1,0 +1,238 @@
+.TH "src/common_util/timeutil.h" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/common_util/timeutil.h \- Common time utilities\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <cstdint>\fP
+.br
+
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum class \fBcutl::timeunit\fP { \fBs\fP, \fBms\fP, \fBus\fP }"
+.br
+.RI "Time unit enum\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "uint64_t \fBcutl::timestamp\fP (\fBtimeunit\fP unit)"
+.br
+.RI "Get current timestamp\&. "
+.ti -1c
+.RI "uint64_t \fBcutl::clocktime\fP (\fBtimeunit\fP unit)"
+.br
+.RI "Get current clock time for monotone increment time\&. "
+.ti -1c
+.RI "uint64_t \fBcutl::ms2s\fP (uint64_t time)"
+.br
+.RI "Convert time from milliseconds to seconds\&. "
+.ti -1c
+.RI "uint64_t \fBcutl::us2s\fP (uint64_t time)"
+.br
+.RI "Convert time from microseconds to seconds\&. "
+.ti -1c
+.RI "uint64_t \fBcutl::us2ms\fP (uint64_t time)"
+.br
+.RI "Convert time from seconds to milliseconds\&. "
+.ti -1c
+.RI "uint64_t \fBcutl::s2ms\fP (uint64_t time)"
+.br
+.RI "Convert time from seconds to microseconds\&. "
+.ti -1c
+.RI "uint64_t \fBcutl::s2us\fP (uint64_t time)"
+.br
+.RI "Convert time from seconds to microseconds\&. "
+.ti -1c
+.RI "uint64_t \fBcutl::ms2us\fP (uint64_t time)"
+.br
+.RI "Convert time from milliseconds to microseconds\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Common time utilities\&. 
+
+
+.PP
+\fBCopyright\fP
+.RS 4
+Copyright (c) 2024, Spencer\&.Luo\&. All Rights Reserved\&.
+.RE
+.PP
+Licensed under the Apache License, Version 2\&.0 (the 'License'); you may not use this file except in compliance with the License\&. You may obtain a copy of the License at 
+.PP
+.nf
+  http://www\&.apache\&.org/licenses/LICENSE-2\&.0
+
+.fi
+.PP
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied\&. See the License for the specific language governing permissions and limitations\&.
+.PP
+\fBAuthor\fP
+.RS 4
+spencer\&.luo 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+2024-05-13 
+.RE
+.PP
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum class \fBcutl::timeunit\fP\fR [strong]\fP"
+
+.PP
+Time unit enum\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIs \fP\fP
+second 
+.TP
+\fB\fIms \fP\fP
+millisecond 
+.TP
+\fB\fIus \fP\fP
+microsecond 
+.SH "Function Documentation"
+.PP 
+.SS "uint64_t cutl::clocktime (\fBtimeunit\fP unit)"
+
+.PP
+Get current clock time for monotone increment time\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIunit\fP time unit 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+uint64_t clock time 
+.RE
+.PP
+
+.SS "uint64_t cutl::ms2s (uint64_t time)"
+
+.PP
+Convert time from milliseconds to seconds\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItime\fP time in milliseconds 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+uint64_t time in seconds 
+.RE
+.PP
+
+.SS "uint64_t cutl::ms2us (uint64_t time)"
+
+.PP
+Convert time from milliseconds to microseconds\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItime\fP time in milliseconds 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+uint64_t time in microseconds 
+.RE
+.PP
+
+.SS "uint64_t cutl::s2ms (uint64_t time)"
+
+.PP
+Convert time from seconds to microseconds\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItime\fP time in seconds 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+uint64_t time in microseconds 
+.RE
+.PP
+
+.SS "uint64_t cutl::s2us (uint64_t time)"
+
+.PP
+Convert time from seconds to microseconds\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItime\fP time in seconds 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+uint64_t time in microseconds 
+.RE
+.PP
+
+.SS "uint64_t cutl::timestamp (\fBtimeunit\fP unit)"
+
+.PP
+Get current timestamp\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIunit\fP time unit 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+uint64_t timestamp 
+.RE
+.PP
+
+.SS "uint64_t cutl::us2ms (uint64_t time)"
+
+.PP
+Convert time from seconds to milliseconds\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItime\fP time in seconds 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+uint64_t time in milliseconds 
+.RE
+.PP
+
+.SS "uint64_t cutl::us2s (uint64_t time)"
+
+.PP
+Convert time from microseconds to seconds\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItime\fP time in microseconds 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+uint64_t time in seconds 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.

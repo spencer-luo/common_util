@@ -1,0 +1,62 @@
+.TH "src/common_util/timecount.h" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/common_util/timecount.h \- A simple time counter class to measure the execution time of a function\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <cstdint>\fP
+.br
+\fR#include <atomic>\fP
+.br
+\fR#include <string>\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "class \fBcutl::timecount\fP"
+.br
+.RI "A simple time counter class to measure the execution time of a function\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A simple time counter class to measure the execution time of a function\&. 
+
+
+.PP
+\fBCopyright\fP
+.RS 4
+Copyright (c) 2024, Spencer\&.Luo\&. All Rights Reserved\&.
+.RE
+.PP
+Licensed under the Apache License, Version 2\&.0 (the 'License'); you may not use this file except in compliance with the License\&. You may obtain a copy of the License at 
+.PP
+.nf
+  http://www\&.apache\&.org/licenses/LICENSE-2\&.0
+
+.fi
+.PP
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied\&. See the License for the specific language governing permissions and limitations\&.
+.PP
+Measure the execution time of a function by using the feature that a class instance object automatically destructs when it exits it's scope\&.
+.PP
+The time precision is microsecond，use monotone increment time, which presents the duration time between the system start time and the current time\&. 
+.PP
+\fBAuthor\fP
+.RS 4
+spencer\&.luo 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+2024-05-13 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.

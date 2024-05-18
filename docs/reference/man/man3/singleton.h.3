@@ -1,0 +1,163 @@
+.TH "src/common_util/singleton.h" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/common_util/singleton.h \- Define some macro definitions for singleton pattern implementations\&. For convenience to use, this file defined some macro definitions about singleton pattern implementations\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <mutex>\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCUTL_COPY_AND_ASSIGN\fP(classname)"
+.br
+.RI "Macro definition for constructor and copy-assignment operator\&. "
+.ti -1c
+.RI "#define \fBCUTL_SINGLETON_PTR\fP(classname)"
+.br
+.RI "Macro definition for get singleton instance pointer implaementation\&. "
+.ti -1c
+.RI "#define \fBCUTL_SINGLETON_PTR_DEFAULT_CTOR\fP(classname)"
+.br
+.RI "Macro definition for get singleton instance pointer implementation with default constructor\&. "
+.ti -1c
+.RI "#define \fBCUTL_SINGLETON_REF\fP(classname)"
+.br
+.RI "Macro definition for get singleton instance reference implaementation\&. "
+.ti -1c
+.RI "#define \fBCUTL_SINGLETON_REF_DEFAULT_CTOR\fP(classname)"
+.br
+.RI "Macro definition for get singleton instance reference implementation with default constructor\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Define some macro definitions for singleton pattern implementations\&. For convenience to use, this file defined some macro definitions about singleton pattern implementations\&. 
+
+
+.PP
+\fBCopyright\fP
+.RS 4
+Copyright (c) 2024, Spencer\&.Luo\&. All Rights Reserved\&.
+.RE
+.PP
+Licensed under the Apache License, Version 2\&.0 (the 'License'); you may not use this file except in compliance with the License\&. You may obtain a copy of the License at 
+.PP
+.nf
+  http://www\&.apache\&.org/licenses/LICENSE-2\&.0
+
+.fi
+.PP
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied\&. See the License for the specific language governing permissions and limitations\&.
+.PP
+\fBAuthor\fP
+.RS 4
+spencer\&.luo 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+2024-05-13 
+.RE
+.PP
+
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define CUTL_COPY_AND_ASSIGN(classname)"
+\fBValue:\fP.PP
+.nf
+    classname(const classname &) = delete; \\
+    classname &operator=(const classname &) = delete;
+.fi
+
+.PP
+Macro definition for constructor and copy-assignment operator\&. 
+.SS "#define CUTL_SINGLETON_PTR(classname)"
+\fBValue:\fP.PP
+.nf
+public:                                                                          \\
+    static classname *get_instance(bool create_if_needed = true)                 \\
+    {                                                                            \\
+        static classname *obj = nullptr;                                         \\
+        if (!obj && create_if_needed)                                            \\
+        {                                                                        \\
+            static std::once_flag flag;                                          \\
+            std::call_once(flag, [&] { obj = new (std::nothrow) classname(); }); \\
+        }                                                                        \\
+        return obj;                                                              \\
+    }                                                                            \\
+    ~classname();                                                                \\
+                                                                                 \\
+private:                                                                         \\
+    classname();                                                                 \\
+    CUTL_COPY_AND_ASSIGN(classname)
+.fi
+
+.PP
+Macro definition for get singleton instance pointer implaementation\&. 
+.SS "#define CUTL_SINGLETON_PTR_DEFAULT_CTOR(classname)"
+\fBValue:\fP.PP
+.nf
+public:                                                                          \\
+    static classname *get_instance(bool create_if_needed = true)                 \\
+    {                                                                            \\
+        static classname *obj = nullptr;                                         \\
+        if (!obj && create_if_needed)                                            \\
+        {                                                                        \\
+            static std::once_flag flag;                                          \\
+            std::call_once(flag, [&] { obj = new (std::nothrow) classname(); }); \\
+        }                                                                        \\
+        return obj;                                                              \\
+    }                                                                            \\
+    ~classname();                                                                \\
+                                                                                 \\
+private:                                                                         \\
+    classname() = default;                                                       \\
+    CUTL_COPY_AND_ASSIGN(classname)
+.fi
+
+.PP
+Macro definition for get singleton instance pointer implementation with default constructor\&. 
+.SS "#define CUTL_SINGLETON_REF(classname)"
+\fBValue:\fP.PP
+.nf
+public:                                                          \\
+    static classname &get_instance(bool create_if_needed = true) \\
+    {                                                            \\
+        static classname obj;                                    \\
+        return obj;                                              \\
+    }                                                            \\
+    ~classname();                                                \\
+                                                                 \\
+private:                                                         \\
+    classname();                                                 \\
+    CUTL_COPY_AND_ASSIGN(classname)
+.fi
+
+.PP
+Macro definition for get singleton instance reference implaementation\&. 
+.SS "#define CUTL_SINGLETON_REF_DEFAULT_CTOR(classname)"
+\fBValue:\fP.PP
+.nf
+public:                                                          \\
+    static classname &get_instance(bool create_if_needed = true) \\
+    {                                                            \\
+        static classname obj;                                    \\
+        return obj;                                              \\
+    }                                                            \\
+    ~classname();                                                \\
+                                                                 \\
+private:                                                         \\
+    classname() = default;                                       \\
+    CUTL_COPY_AND_ASSIGN(classname)
+.fi
+
+.PP
+Macro definition for get singleton instance reference implementation with default constructor\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.
