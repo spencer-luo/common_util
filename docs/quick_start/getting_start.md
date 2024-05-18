@@ -2,12 +2,74 @@
 
 ## Windows
 
+### 1. 修改脚本
+
+**1.1 设置生成器**
+
+打开./script/build.bat文件，把下面这一行:
+```bash
+set generator="Visual Studio 14 2015"
+```
+替换成自己安装的对应Visual Studio的版本。可以是下面这些值：
+```
+Visual Studio 14 2015
+Visual Studio 15 2017
+Visual Studio 16 2019
+Visual Studio 17 2022
+```
+
+你可以通过 ```cmake -G``` 命令查看更多可支持的生成器。
+
+**1.2 设置CPU核数**
+
+打开./script/build.bat文件，把下面这一行:
+```bash
+set cpu_cores=6
+```
+替换成自己机器的CPU核数。
+
+查看cpu核数：
+```
+1. 打开cmd, 输入：
+wmic
+2. 输入：
+cpu get NumberOfCores
+```
+![](./imgs/win_cpu_core_num.png)
+
+
+### 2. 编译
+
+```bash
+./script/build.bat build [x86|x64] [release|rls|debug|dbg]
+# Debug模式
+# ./script/build.bat build dbg
+```
+
+参数1：构建的目标程序的平台类型，x86表示32位，x64表示64位。
+参数2：构建的目标程序的配置类型，release或rls表示发布版本，debug或dbg表示调试版本。
+
+### 3. 运行
+
+运行第1步编译的结果
+```bash
+./script/build.bat run
+```
+
+### 4. 清理缓存
+
+清理第1步编译的缓存
+
+```bash
+./script/build.bat clean
+```
+
 
 ## Unix-like
 
 包含Linux/macOS等类Unix系统
 
-1. 编译
+### 1. 编译
 
 ```bash
 ./script/build.sh build [release|rls|debug|dbg]
@@ -15,14 +77,14 @@
 # ./script/build.sh build dbg
 ```
 
-2. 运行
+### 2. 运行
 
 运行第1步编译的结果
 ```bash
 ./script/build.sh run
 ```
 
-3. 清理缓存
+### 3. 清理缓存
 
 清理第1步编译的缓存
 
