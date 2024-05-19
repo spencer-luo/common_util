@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['unknown_0',['unknown',['../filetype_8h.html#a9d3ee53b2774c37cc5a17766507de28ca612f2ae72b2701e3380be737ee7bec4a',1,'cutl']]],
-  ['us_1',['us',['../timeutil_8h.html#a5123cf2b94c1fabe15fb9ba61231d5f1a0b3b97fa66886c5688ee4ae80ec0c3c2',1,'cutl']]],
-  ['us2ms_2',['us2ms',['../timeutil_8h.html#aa22680f091e52ed6709aaa5c71be7da9',1,'cutl']]],
-  ['us2s_3',['us2s',['../timeutil_8h.html#ae200cc5e60d5eb1a706040cb77af8a61',1,'cutl']]],
-  ['utctime_4',['utctime',['../classcutl_1_1datetime.html#a3a0d03eb44d72d49e727d8bf6c6c6517',1,'cutl::datetime']]]
+  ['path_0',['path',['../filepath_8h.html#abb5a2e2fa6cfd41e8de3515d12a36eb6',1,'cutl']]],
+  ['pipefifo_1',['pipefifo',['../filetype_8h.html#a9d3ee53b2774c37cc5a17766507de28cac6cd4b325dd461e4823ecd700c4b0a95',1,'cutl']]],
+  ['platform_5fname_2',['platform_name',['../sysutil_8h.html#a0802ffda04848c6b280585dd1074c9df',1,'cutl']]],
+  ['platform_5ftype_3',['platform_type',['../sysutil_8h.html#a19eb0a17bd5a89ecbbf7c5d267923402',1,'cutl']]],
+  ['platforms_4',['Testing Platforms',['../index.html#autotoc_md52',1,'']]],
+  ['program_5fbit_5',['program_bit',['../sysutil_8h.html#ab34a4afb93e8948c1cf525142dd1ec37',1,'cutl']]]
 ];

@@ -1,0 +1,112 @@
+.TH "md_docs_2quick__start_2english_202_8build__library" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+md_docs_2quick__start_2english_202_8build__library \- Build and Run 
+.PP
+ 
+.SH "Windows"
+.PP
+.SS "1\&. Modify Scripts"
+\fB1\&.1 Set the Generator\fP
+.PP
+Open the \&./script/build\&.bat file and replace the following line: 
+.PP
+.nf
+set generator="Visual Studio 14 2015"
+
+.fi
+.PP
+ with the corresponding version of Visual Studio installed on your machine\&. It can be one of the following values: 
+.PP
+.nf
+Visual Studio 14 2015
+Visual Studio 15 2017
+Visual Studio 16 2019
+Visual Studio 17 2022
+
+.fi
+.PP
+.PP
+You can use the \fRcmake -G\fP command to view more supported generators\&.
+.PP
+\fB1\&.2 Set the Number of CPU Cores\fP
+.PP
+Open the \&./script/build\&.bat file and replace the following line: 
+.PP
+.nf
+set cpu_cores=6
+
+.fi
+.PP
+ with the number of CPU cores on your machine\&.
+.PP
+To check the number of CPU cores: 
+.PP
+.nf
+1\&. Open cmd, then input:
+wmic
+2\&. Input:
+cpu get NumberOfCores
+
+.fi
+.PP
+ 
+.SS "2\&. Compilation"
+.PP
+.nf
+\&./script/build\&.bat build [x86|x64] [release|rls|debug|dbg]
+# Debug模式
+# \&./script/build\&.bat build dbg
+.fi
+.PP
+.PP
+.IP "\(bu" 2
+Argument 1: Platform type of the target program to build, x86 means 32-bit program, and x64 means 64-bit program\&.
+.IP "\(bu" 2
+Argument 2: Configuration type of the target program to build, release or rls means the release version, and debug or dbg means the debug version\&.
+.PP
+.SS "3\&. Run"
+Run the results compiled in step 2\&. 
+.PP
+.nf
+\&./script/build\&.bat run
+
+.fi
+.PP
+.SS "4\&. Clean Cache"
+Clear the cache from the compilation in step 2\&.
+.PP
+.PP
+.nf
+\&./script/build\&.bat clean
+.fi
+.PP
+.SH "Unix-like"
+.PP
+Including Linux/macOS and other Unix-like systems\&.
+.SS "1\&. Compilation"
+.PP
+.nf
+\&./script/build\&.sh build [release|rls|debug|dbg]
+# Debug模式
+# \&./script/build\&.sh build dbg
+.fi
+.PP
+.SS "2\&. Run"
+Run the results compiled in step 1\&. 
+.PP
+.nf
+\&./script/build\&.sh run
+
+.fi
+.PP
+.SS "3\&. Clean Cache"
+Clear the cache from the compilation in step 1\&.
+.PP
+.PP
+.nf
+\&./script/build\&.sh clean
+.fi
+.PP
+ 

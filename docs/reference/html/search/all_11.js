@@ -1,14 +1,16 @@
 var searchData=
 [
-  ['testing_20platforms_0',['Testing Platforms',['../index.html#autotoc_md2',1,'']]],
-  ['timecount_1',['timecount',['../classcutl_1_1timecount.html',1,'cutl::timecount'],['../classcutl_1_1timecount.html#a35e56757510b5610d9f2caf1cbeeed2b',1,'cutl::timecount::timecount()']]],
-  ['timecount_2eh_2',['timecount.h',['../timecount_8h.html',1,'']]],
-  ['timestamp_3',['timestamp',['../classcutl_1_1datetime.html#a51fa427db5c0c7da4b4af906a958fdf2',1,'cutl::datetime::timestamp()'],['../timeutil_8h.html#a2a99e9f55412f069169e60623ba1964a',1,'cutl::timestamp(timeunit unit)']]],
-  ['timeunit_4',['timeunit',['../timeutil_8h.html#a5123cf2b94c1fabe15fb9ba61231d5f1',1,'cutl']]],
-  ['timeutil_2eh_5',['timeutil.h',['../timeutil_8h.html',1,'']]],
-  ['to_5fbin_6',['to_bin',['../strfmt_8h.html#ac0fcf92ddbc589cd425dcd268b3ec0fb',1,'cutl::to_bin(uint8_t value, char separator=&apos;,&apos;)'],['../strfmt_8h.html#a71f370257e90b2cd1942fbde6b59bf00',1,'cutl::to_bin(uint16_t value, char separator=&apos; &apos;)'],['../strfmt_8h.html#afdda5ff14a10315c15a9101fb30c61e1',1,'cutl::to_bin(uint32_t value, char separator=&apos; &apos;)'],['../strfmt_8h.html#a206058d4c39d850add094c2eb56bfd5d',1,'cutl::to_bin(uint64_t value, char separator=&apos; &apos;)']]],
-  ['to_5fhex_7',['to_hex',['../strfmt_8h.html#af36c89420f606dcf367cab2d71bb189f',1,'cutl::to_hex(const uint8_t *data, size_t len, bool upper=true, char separator=&apos; &apos;)'],['../strfmt_8h.html#a69d9afe63b32912e5dd8191277177efa',1,'cutl::to_hex(uint8_t value, bool upper=true, const std::string &amp;prefix=&quot;&quot;)'],['../strfmt_8h.html#afee308b97fbeadfab3ee50192f0c1bd3',1,'cutl::to_hex(uint16_t value, bool upper=true, const std::string &amp;prefix=&quot;&quot;)'],['../strfmt_8h.html#a11eceeb09277084a3eb986e2f6a544e7',1,'cutl::to_hex(uint32_t value, bool upper=true, const std::string &amp;prefix=&quot;&quot;)'],['../strfmt_8h.html#a921ce1ac6968f6e45e0faf00109f329f',1,'cutl::to_hex(uint64_t value, bool upper=true, const std::string &amp;prefix=&quot;&quot;)']]],
-  ['to_5flower_8',['to_lower',['../strutil_8h.html#a191b809565dda0b675926b0759e41c4e',1,'cutl']]],
-  ['to_5fupper_9',['to_upper',['../strutil_8h.html#a3726a74d715fb5d878fe450b64e439c6',1,'cutl']]],
-  ['type_10',['type',['../structcutl_1_1file__entity.html#a0ee8ddd0d728a15d34d4b6e641eec18b',1,'cutl::file_entity::type'],['../classcutl_1_1filepath.html#aab0dce6ab5cec2ab5371262ba39c6d5c',1,'cutl::filepath::type()']]]
+  ['operator_2b_0',['operator+',['../classcutl_1_1datetime.html#a75282bebb7e0f1a9f359d8fc3cc98a3b',1,'cutl::datetime']]],
+  ['operator_2b_3d_1',['operator+=',['../classcutl_1_1datetime.html#ad2fc579ef4a4b885b6c52b3bb8716022',1,'cutl::datetime']]],
+  ['operator_2d_2',['operator-',['../classcutl_1_1datetime.html#ab4eb96ab29e504b7b9037338d2f9d0be',1,'cutl::datetime::operator-(uint64_t ms)'],['../classcutl_1_1datetime.html#af2de8f10337d6750870393076d1a02d3',1,'cutl::datetime::operator-(const datetime &amp;other) const']]],
+  ['operator_2d_3d_3',['operator-=',['../classcutl_1_1datetime.html#a411c0ba1168f95601b8cc2e708959f23',1,'cutl::datetime']]],
+  ['operator_3c_3c_4',['operator&lt;&lt;',['../datetime_8h.html#ade576064506faebb5f0ce249d023b4c4',1,'cutl::operator&lt;&lt;(std::ostream &amp;os, const datetime &amp;dt)'],['../filepath_8h.html#aea582cd0e28ae859ea712d730418143a',1,'cutl::operator&lt;&lt;(std::ostream &amp;os, const filepath &amp;fp)']]],
+  ['operator_3d_5',['operator=',['../classcutl_1_1datetime.html#a894c09f6eb005ed597a1de2392cbf737',1,'cutl::datetime::operator=()'],['../classcutl_1_1filepath.html#a067ef2d4e58b5746c375d16eccad55af',1,'cutl::filepath::operator=()']]],
+  ['os_5flinux_6',['os_linux',['../sysutil_8h.html#a74208522103f8b280572279e56105242aaf0e42c7c50c918d4570544ca7fad65f',1,'cutl']]],
+  ['os_5fmacos_7',['os_macos',['../sysutil_8h.html#a74208522103f8b280572279e56105242a776a1d886fdbbb04b1a8764fd3d41c9e',1,'cutl']]],
+  ['os_5fplatform_8',['os_platform',['../sysutil_8h.html#a74208522103f8b280572279e56105242',1,'cutl']]],
+  ['os_5funix_9',['os_unix',['../sysutil_8h.html#a74208522103f8b280572279e56105242a0f8ec0e3af19b871d9014e5109e5072a',1,'cutl']]],
+  ['os_5funknown_10',['os_unknown',['../sysutil_8h.html#a74208522103f8b280572279e56105242ab6363d75c866dbc9675af5f48ebc1fcc',1,'cutl']]],
+  ['os_5fwindows_11',['os_windows',['../sysutil_8h.html#a74208522103f8b280572279e56105242a4c7cfa22ccbb49a0418d12bdb8694bfb',1,'cutl']]],
+  ['overview_12',['Overview',['../md_docs_2quick__start_2english_203_8getting__start.html#autotoc_md21',1,'Overview'],['../index.html#autotoc_md50',1,'Overview']]]
 ];

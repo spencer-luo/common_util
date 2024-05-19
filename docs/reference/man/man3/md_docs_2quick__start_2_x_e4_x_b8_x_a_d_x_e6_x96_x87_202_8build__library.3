@@ -1,0 +1,108 @@
+.TH "md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_202_8build__library" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_202_8build__library \- 构建和运行 
+.PP
+ 
+.SH "Windows"
+.PP
+.SS "1\&. 修改脚本"
+\fB1\&.1 设置生成器\fP
+.PP
+打开\&./script/build\&.bat文件，把下面这一行: 
+.PP
+.nf
+set generator="Visual Studio 14 2015"
+
+.fi
+.PP
+ 替换成自己安装的对应Visual Studio的版本。可以是下面这些值： 
+.PP
+.nf
+Visual Studio 14 2015
+Visual Studio 15 2017
+Visual Studio 16 2019
+Visual Studio 17 2022
+
+.fi
+.PP
+.PP
+你可以通过 \fRcmake -G\fP 命令查看更多可支持的生成器。
+.PP
+\fB1\&.2 设置CPU核数\fP
+.PP
+打开\&./script/build\&.bat文件，把下面这一行: 
+.PP
+.nf
+set cpu_cores=6
+
+.fi
+.PP
+ 替换成自己机器的CPU核数。
+.PP
+查看cpu核数： 
+.PP
+.nf
+1\&. 打开cmd, 输入：
+wmic
+2\&. 输入：
+cpu get NumberOfCores
+
+.fi
+.PP
+ 
+.SS "2\&. 编译"
+.PP
+.nf
+\&./script/build\&.bat build [x86|x64] [release|rls|debug|dbg]
+# Debug模式
+# \&./script/build\&.bat build dbg
+.fi
+.PP
+.PP
+参数1：构建的目标程序的平台类型，x86表示32位，x64表示64位。 参数2：构建的目标程序的配置类型，release或rls表示发布版本，debug或dbg表示调试版本。
+.SS "3\&. 运行"
+运行第2步编译的结果。 
+.PP
+.nf
+\&./script/build\&.bat run
+
+.fi
+.PP
+.SS "4\&. 清理缓存"
+清理第2步编译的缓存。
+.PP
+.PP
+.nf
+\&./script/build\&.bat clean
+.fi
+.PP
+.SH "Unix-like"
+.PP
+包含Linux/macOS等类Unix系统
+.SS "1\&. 编译"
+.PP
+.nf
+\&./script/build\&.sh build [release|rls|debug|dbg]
+# Debug模式
+# \&./script/build\&.sh build dbg
+.fi
+.PP
+.SS "2\&. 运行"
+运行第1步编译的结果 
+.PP
+.nf
+\&./script/build\&.sh run
+
+.fi
+.PP
+.SS "3\&. 清理缓存"
+清理第1步编译的缓存
+.PP
+.PP
+.nf
+\&./script/build\&.sh clean
+.fi
+.PP
+ 

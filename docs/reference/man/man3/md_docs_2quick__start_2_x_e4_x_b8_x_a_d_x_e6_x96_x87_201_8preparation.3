@@ -1,0 +1,123 @@
+.TH "md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_201_8preparation" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_201_8preparation \- 软件环境 
+.PP
+在对本项目进行本地编译时，需要安装以下软件：
+.IP "1." 4
+支持C++11及以上标准的编译器。(Visual Studio 2015或更高版本，GCC 4\&.8\&.1或更高版本，Clang 3\&.3或更高版本)
+.IP "2." 4
+CMake 3\&.28\&.3 或更高版本。
+.PP
+.SH "Windows"
+.PP
+.SS "安装Visual Studio"
+.IP "1." 4
+下载 Visual Studio 2015 或更高版本。 https://msdn.itellyou.cn/
+.PP
+
+.IP "2." 4
+安装下载好的Visual Studio 这里唯一需要注意的是：安装的时候选择“自定义”安装，只安装“Visual C++”相关的模块（如果你只用来开发C++相关的项目），否则安装时间会非常久。
+.PP
+ 
+.IP "3." 4
+测试验证
+.PP
+创建一个控制台应用程序，写一个打印'Hello World'的代码。然后编译运行，如果能正常打印出'Hello World'，则说明安装成功。
+.PP
+.SS "安装CMake"
+.IP "1." 4
+安装 CMake 3\&.28\&.3 或更高版本。 https://cmake.org/download/
+.IP "2." 4
+安装下载好的CMake
+.PP
+这里需要注意的是：
+.PP
+.IP "\(bu" 2
+选择“Add CMake to the system PATH”，将cmake添加到系统环境变量中，否则安装完后需要手动添加。 
+.IP "\(bu" 2
+建议自定义安装目录，目录名不能带空格和特殊字符。不然命令行执行时可能会遇到路径相关的问题。 
+.PP
+.IP "3." 4
+测试验证
+.PP
+打开命令行，输入 \fRcmake --version\fP ，如果能正常显示版本号，则说明安装成功。
+.PP
+.SH "Linux(Ubuntu)"
+.PP
+.SS "安装GCC编译器"
+.IP "1." 4
+安装GCC 4\&.8\&.1
+.PP
+.PP
+.PP
+.nf
+sudo apt update
+sudo apt install gcc
+.fi
+.PP
+.PP
+.IP "1." 4
+测试验证
+.PP
+.PP
+打开命令行，输入 \fRgcc --version\fP ，如果能正常显示版本号，则说明安装成功。
+.SS "安装CMake"
+.IP "1." 4
+安装 CMake 3\&.28\&.3 或更高版本
+.PP
+.PP
+.PP
+.nf
+sudo apt install cmake
+.fi
+.PP
+.PP
+.IP "2." 4
+测试验证
+.PP
+.PP
+打开命令行，输入 \fRcmake --version\fP ，如果能正常显示版本号，则说明安装成功。
+.SH "MacOS"
+.PP
+.SS "安装GCC编译器"
+.IP "1." 4
+安装
+.PP
+.PP
+.PP
+.nf
+brew install gcc
+.fi
+.PP
+.PP
+如果homebrew未安装，请先安装homebrew: 
+.PP
+.nf
+/bin/bash \-c "$(curl \-fsSL https://raw\&.githubusercontent\&.com/Homebrew/install/HEAD/install\&.sh)"
+
+.fi
+.PP
+.PP
+.IP "1." 4
+测试验证
+.PP
+.PP
+打开命令行，输入 \fRgcc --version\fP ，如果能正常显示版本号，则说明安装成功。
+.SS "安装CMake"
+.IP "1." 4
+安装 CMake 3\&.28\&.3 或更高版本
+.PP
+.PP
+.PP
+.nf
+brew install cmake
+.fi
+.PP
+.PP
+.IP "2." 4
+测试验证
+.PP
+.PP
+打开命令行，输入 \fRcmake --version\fP ，如果能正常显示版本号，则说明安装成功。 

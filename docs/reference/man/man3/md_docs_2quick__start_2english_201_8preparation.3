@@ -1,0 +1,126 @@
+.TH "md_docs_2quick__start_2english_201_8preparation" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+md_docs_2quick__start_2english_201_8preparation \- Software Environment 
+.PP
+ When compiling this project locally, the following software needs to be installed:
+.PP
+.IP "1." 4
+A compiler that supports C++11 and later standards (Visual Studio 2015 or later, GCC 4\&.8\&.1 or later, Clang 3\&.3 or later)
+.IP "2." 4
+CMake 3\&.28\&.3 or later\&.
+.PP
+.SH "Windows"
+.PP
+.SS "Download Visual Studio"
+.IP "1." 4
+Download Visual Studio 2015 or later\&. https://msdn.itellyou.cn/ 
+.IP "2." 4
+Install Visual Studio The only thing you need to care about is to choose 'Custom' installation and only install the 'Visual C++' related modules (if you are only using it for developing C++ projects), otherwise the installation time will be very long\&.
+.PP
+ 
+.IP "3." 4
+Test and verify
+.PP
+.PP
+Create a \fIConsole Application project\fP, write some code to print 'Hello World'\&. Then compile and run it, if 'Hello World' is printed correctly, the installation is successful\&.
+.SS "Install CMake"
+.IP "1." 4
+Download CMake 3\&.28\&.3 or later\&. https://cmake.org/download/
+.IP "2." 4
+Install CMake
+.PP
+Here are some things to note:
+.PP
+.IP "\(bu" 2
+Choose 'Add CMake to the system PATH' to add CMake to the system environment variables, otherwise you need to add CMake to the PATH environment mannually\&.
+.PP
+
+.IP "\(bu" 2
+t is recommended to customize the installation directory, and the directory name should not contain spaces or special characters, otherwise there may be path-related issues when executing from the command line\&.
+.PP
+
+.PP
+.IP "3." 4
+Test and verify
+.PP
+Open the command line and enter \fRcmake --version\fP , If the version number is displayed correctly, the installation is successful\&.
+.PP
+.SH "Linux(Ubuntu)"
+.PP
+.SS "Install GCC Compile"
+.IP "1." 4
+Install GCC 4\&.8\&.1 
+.PP
+.nf
+sudo apt update
+sudo apt install gcc
+
+.fi
+.PP
+
+.IP "2." 4
+Test and verify
+.PP
+.PP
+Open the command line and enter \fRcmake --version\fP , If the version number is displayed correctly, the installation is successful\&.
+.SS "Install CMake"
+.IP "1." 4
+Install CMake 3\&.28\&.3 or later
+.PP
+.PP
+.PP
+.nf
+sudo apt install cmake
+.fi
+.PP
+.PP
+.IP "2." 4
+Test and verify
+.PP
+.PP
+Open the command line and enter \fRgcc --version\fP , If the version number is displayed correctly, the installation is successful\&.
+.SH "MacOS"
+.PP
+.SS "Install GCC Compiler"
+.IP "1." 4
+Install GCC 
+.PP
+.nf
+brew install gcc
+
+.fi
+.PP
+
+.PP
+.PP
+If Homebrew is not installed, please install Homebrew first: 
+.PP
+.nf
+/bin/bash \-c "$(curl \-fsSL https://raw\&.githubusercontent\&.com/Homebrew/install/HEAD/install\&.sh)"
+
+.fi
+.PP
+.PP
+.IP "2." 4
+Test and verify
+.PP
+.PP
+Open the command line and enter \fRgcc --version\fP , If the version number is displayed correctly, the installation is successful\&.
+.SS "Install CMake"
+.IP "1." 4
+Install CMake 3\&.28\&.3 or later
+.PP
+.PP
+.PP
+.nf
+brew install cmake
+.fi
+.PP
+.PP
+.IP "2." 4
+Test and verify
+.PP
+.PP
+Open the command line and enter \fRcmake --version\fP , If the version number is displayed correctly, the installation is successful\&. 

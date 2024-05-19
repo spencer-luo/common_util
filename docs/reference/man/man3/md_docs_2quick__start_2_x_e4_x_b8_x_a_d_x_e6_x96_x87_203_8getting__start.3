@@ -1,12 +1,18 @@
-# 快速指引
-
-## 概述
-
+.TH "md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_203_8getting__start" 3 "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_203_8getting__start \- 快速指引 
+.PP
+ 
+.SH "概述"
+.PP
 common_util是C++的一个通用工具库，采用现代C++语法（C++11及以上）实现，使用cutl作为命名空间，所有接口的命名方式与STL保持一致，可以作为STL库的一个补充，你可以像使用STL一样使用common_util。
-
-## 目录结构
-```bash
-./common_util
+.SH "目录结构"
+.PP
+.PP
+.nf
+\&./common_util
 ├── build                       # 程序构建时的缓存目录
 ├── docs                        # 文档目录
 │   ├── quick_start             # 快速指引文档
@@ -20,25 +26,33 @@ common_util是C++的一个通用工具库，采用现代C++语法（C++11及以�
 └── src                         # 源代码目录
     ├── common_util             # common_util源码目录
     └── usage_demo              # common_util_demo源码目录
-```
-
-## 使用方式
-
-简单的几个步骤如下：
-> 1. 包含 common_util.h 头文件
-> 2. 库的初始化，注册日志打印的回调函数
-> 3. 库的使用
-
+.fi
+.PP
+.SH "使用方式"
+.PP
+简单的几个步骤如下： 
+.PP
+.RS 4
+1\&. 包含 \fBcommon_util\&.h\fP 头文件
+.IP "2." 4
+库的初始化，注册日志打印的回调函数
+.IP "3." 4
+库的使用 
+.PP
+.RE
+.PP
 具体样例如下：
-
-```c++
+.PP
+.PP
+.nf
+ ++
 #pragma once
 
 #include <iostream>
 #include <map>
 #include <mutex>
 #include <thread>
-#include "common_util.h"
+#include "common_util\&.h"
 
 std::string loglevel2flag(cutl::loglevel level)
 {
@@ -48,10 +62,10 @@ std::string loglevel2flag(cutl::loglevel level)
         {cutl::loglevel::warn_level, "[W]"},
         {cutl::loglevel::error_level, "[E]"},
     };
-    auto itr = levelMap.find(level);
-    if (itr != levelMap.end())
+    auto itr = levelMap\&.find(level);
+    if (itr != levelMap\&.end())
     {
-        return itr->second;
+        return itr\->second;
     }
     return "[?]";
 }
@@ -83,40 +97,46 @@ int main(int argc, char *argv[])
 
     // 数据格式化
     std::cout << "fmt_uint: " << cutl::fmt_uint(12, 5) << std::endl;
-    std::cout << "fmt_double: " << cutl::fmt_double(3.141592653, 4) << std::endl;
+    std::cout << "fmt_double: " << cutl::fmt_double(3\&.141592653, 4) << std::endl;
     std::cout << "fmt_filesize: " << cutl::fmt_filesize(33600) << std::endl;
     // 获取系统当前时间
     auto now = cutl::datetime::now();
-    std::cout << "current time(UTC time): " << now.utctime() << std::endl;
-    std::cout << "current time(local time): " << now.format() << std::endl;
+    std::cout << "current time(UTC time): " << now\&.utctime() << std::endl;
+    std::cout << "current time(local time): " << now\&.format() << std::endl;
 
     return 0;
 }
-```
-
-允许结果如下：
-```bash
-[2024-05-18 16:01:03.477][I]]0x7ff844a9b100](cutl) [config.cpp:39:library_init] common_util library initialized, version:1.0.0
+.fi
+.PP
+.PP
+运行结果如下： 
+.PP
+.nf
+[2024\-05\-18 16:01:03\&.477][I]]0x7ff844a9b100](cutl) [config\&.cpp:39:library_init] common_util library initialized, version:1\&.0\&.0
 fmt_uint: 00012
-fmt_double: 3.1416
-fmt_filesize: 32.8K
-current time(UTC time): 2024-05-18 08:01:03.478
-current time(local time): 2024-05-18 16:01:03.478
-```
+fmt_double: 3\&.1416
+fmt_filesize: 32\&.8K
+current time(UTC time): 2024\-05\-18 08:01:03\&.478
+current time(local time): 2024\-05\-18 16:01:03\&.478
 
-## Demo
-
+.fi
+.PP
+.SH "Demo"
+.PP
 src/usage_demo 有各个模块的使用示例。
-
-```bash
-config.hpp      # 初始化配置
-datetime.hpp    # 日期时间类的使用
-filepath.hpp    # 文件路径类的使用
-fileutil.hpp    # 文件系统相关的操作
-strfmt.hpp      # 字符串格式化
-strutil.hpp     # 字符串相关的操作
-sysutil.hpp     # 系统调用相关的操作
-timecount.hpp   # 函数计时器类
-timeutil.hpp    # 时间相关的操作
-verutil.hpp     # 版本号相关的操作
-```
+.PP
+.PP
+.nf
+config\&.hpp      # 初始化配置
+datetime\&.hpp    # 日期时间类的使用
+filepath\&.hpp    # 文件路径类的使用
+fileutil\&.hpp    # 文件系统相关的操作
+strfmt\&.hpp      # 字符串格式化
+strutil\&.hpp     # 字符串相关的操作
+sysutil\&.hpp     # 系统调用相关的操作
+timecount\&.hpp   # 函数计时器类
+timeutil\&.hpp    # 时间相关的操作
+verutil\&.hpp     # 版本号相关的操作
+.fi
+.PP
+ 
