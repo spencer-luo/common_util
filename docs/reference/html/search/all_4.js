@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['abspath_0',['abspath',['../classcutl_1_1filepath.html#a0866810ee3ee44d2dd1e37ed711f119d',1,'cutl::filepath']]],
-  ['all_1',['all',['../filetype_8h.html#a9d3ee53b2774c37cc5a17766507de28ca2f81ea5535f9ec58b162200d3c6a29c6',1,'cutl']]],
-  ['and_20run_2',['Build and Run',['../md_docs_2quick__start_2english_202_8build__library.html',1,'']]],
-  ['architecture_3',['architecture',['../sysutil_8h.html#aa39de7789fd275dec468bf2543f9c38e',1,'cutl']]]
+  ['4_20清理缓存_0',['1.1.4. 清理缓存',['../md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_202_8build__library.html#autotoc_md40',1,'']]],
+  ['4_20clean_20cache_1',['1.1.4. Clean Cache',['../md_docs_2quick__start_2english_202_8build__library.html#autotoc_md15',1,'']]],
+  ['4_20demo_2',['4 Demo',['../md_docs_2quick__start_2english_203_8getting__start.html#autotoc_md24',1,'1.4. Demo'],['../md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_203_8getting__start.html#autotoc_md49',1,'1.4. Demo']]],
+  ['4_20testing_20platforms_3',['4. Testing Platforms',['../index.html#autotoc_md53',1,'']]]
 ];

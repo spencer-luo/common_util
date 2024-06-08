@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>common_util: 软件环境</title>
+<title>common_util: 01.preparation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -71,17 +71,35 @@ $(function() {
 
 </div><!-- top -->
 <div><div class="header">
-  <div class="headertitle"><div class="title">软件环境</div></div>
+  <div class="headertitle"><div class="title">01.preparation</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md25"></a>在对本项目进行本地编译时，需要安装以下软件：</p><ol type="1">
+<div class="textblock"><ul>
+<li>1. 软件环境</li>
+</ul>
+<p>1.1. Windows</p><ul>
+<li>1.1.1. 安装Visual Studio</li>
+<li>1.1.2. 安装CMake</li>
+</ul>
+<p>1.2. Linux(Ubuntu)</p><ul>
+<li>1.2.1. 安装GCC编译器</li>
+<li>1.2.2. 安装CMake</li>
+</ul>
+<p>1.3. MacOS</p><ul>
+<li>1.3.1. 安装GCC编译器</li>
+<li>1.3.2. 安装CMake</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md25"></a>
+1. 软件环境</h1>
+<p>在对本项目进行本地编译时，需要安装以下软件：</p>
+<ol type="1">
 <li>支持C++11及以上标准的编译器。(Visual Studio 2015或更高版本，GCC 4.8.1或更高版本，Clang 3.3或更高版本)</li>
 <li>CMake 3.28.3 或更高版本。</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md26"></a>
-Windows</h1>
-<h2><a class="anchor" id="autotoc_md27"></a>
-安装Visual Studio</h2>
+<h2><a class="anchor" id="autotoc_md26"></a>
+1.1. Windows</h2>
+<h3><a class="anchor" id="autotoc_md27"></a>
+1.1.1. 安装Visual Studio</h3>
 <ol type="1">
 <li><p class="startli">下载 Visual Studio 2015 或更高版本。 <a href="https://msdn.itellyou.cn/">https://msdn.itellyou.cn/</a></p>
 <p class="startli"><img src="https://gitee.com/spencer_luo/common_util/raw/master/docs/quick_start/imgs/msdn_itellyou_win7_64.png" alt="" class="inline"/></p>
@@ -93,8 +111,8 @@ Windows</h1>
 <p class="startli">创建一个控制台应用程序，写一个打印"Hello World"的代码。然后编译运行，如果能正常打印出"Hello World"，则说明安装成功。</p>
 </li>
 </ol>
-<h2><a class="anchor" id="autotoc_md28"></a>
-安装CMake</h2>
+<h3><a class="anchor" id="autotoc_md28"></a>
+1.1.2. 安装CMake</h3>
 <ol type="1">
 <li>安装 CMake 3.28.3 或更高版本。 <a href="https://cmake.org/download/">https://cmake.org/download/</a></li>
 <li><p class="startli">安装下载好的CMake</p>
@@ -110,10 +128,10 @@ Windows</h1>
 <p class="startli">打开命令行，输入 <code>cmake --version</code> ，如果能正常显示版本号，则说明安装成功。</p>
 </li>
 </ol>
-<h1><a class="anchor" id="autotoc_md29"></a>
-Linux(Ubuntu)</h1>
-<h2><a class="anchor" id="autotoc_md30"></a>
-安装GCC编译器</h2>
+<h2><a class="anchor" id="autotoc_md29"></a>
+1.2. Linux(Ubuntu)</h2>
+<h3><a class="anchor" id="autotoc_md30"></a>
+1.2.1. 安装GCC编译器</h3>
 <ol type="1">
 <li>安装GCC 4.8.1</li>
 </ol>
@@ -123,8 +141,8 @@ Linux(Ubuntu)</h1>
 <li>测试验证</li>
 </ol>
 <p>打开命令行，输入 <code>gcc --version</code> ，如果能正常显示版本号，则说明安装成功。</p>
-<h2><a class="anchor" id="autotoc_md31"></a>
-安装CMake</h2>
+<h3><a class="anchor" id="autotoc_md31"></a>
+1.2.2. 安装CMake</h3>
 <ol type="1">
 <li>安装 CMake 3.28.3 或更高版本</li>
 </ol>
@@ -133,21 +151,22 @@ Linux(Ubuntu)</h1>
 <li>测试验证</li>
 </ol>
 <p>打开命令行，输入 <code>cmake --version</code> ，如果能正常显示版本号，则说明安装成功。</p>
-<h1><a class="anchor" id="autotoc_md32"></a>
-MacOS</h1>
-<h2><a class="anchor" id="autotoc_md33"></a>
-安装GCC编译器</h2>
+<h2><a class="anchor" id="autotoc_md32"></a>
+1.3. MacOS</h2>
+<h3><a class="anchor" id="autotoc_md33"></a>
+1.3.1. 安装GCC编译器</h3>
 <ol type="1">
 <li>安装</li>
 </ol>
 <div class="fragment"><div class="line">brew install gcc</div>
-</div><!-- fragment --><p>如果homebrew未安装，请先安装homebrew: </p><div class="fragment"><div class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</div>
+</div><!-- fragment --><p>如果homebrew未安装，请先安装homebrew:</p>
+<div class="fragment"><div class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</div>
 </div><!-- fragment --><ol type="1">
 <li>测试验证</li>
 </ol>
 <p>打开命令行，输入 <code>gcc --version</code> ，如果能正常显示版本号，则说明安装成功。</p>
-<h2><a class="anchor" id="autotoc_md34"></a>
-安装CMake</h2>
+<h3><a class="anchor" id="autotoc_md34"></a>
+1.3.2. 安装CMake</h3>
 <ol type="1">
 <li>安装 CMake 3.28.3 或更高版本</li>
 </ol>

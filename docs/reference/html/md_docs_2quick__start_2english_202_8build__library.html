@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>common_util: Build and Run</title>
+<title>common_util: 02.build_library</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -71,31 +71,50 @@ $(function() {
 
 </div><!-- top -->
 <div><div class="header">
-  <div class="headertitle"><div class="title">Build and Run</div></div>
+  <div class="headertitle"><div class="title">02.build_library</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md10"></a> </p>
-<h1><a class="anchor" id="autotoc_md11"></a>
-Windows</h1>
-<h2><a class="anchor" id="autotoc_md12"></a>
-1. Modify Scripts</h2>
+<div class="textblock"><ul>
+<li>1. Build and Run</li>
+</ul>
+<p>1.1. Windows</p><ul>
+<li>1.1.1. Modify Scripts</li>
+<li>1.1.2. Compilation</li>
+<li>1.1.3. Run</li>
+<li>1.1.4. Clean Cache</li>
+</ul>
+<p>1.2. Unix-like</p><ul>
+<li>1.2.1. Compilation</li>
+<li>1.2.2. Run</li>
+<li>1.2.3. Clean Cache</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md10"></a>
+1. Build and Run</h1>
+<h2><a class="anchor" id="autotoc_md11"></a>
+1.1. Windows</h2>
+<h3><a class="anchor" id="autotoc_md12"></a>
+1.1.1. Modify Scripts</h3>
 <p><b>1.1 Set the Generator</b></p>
-<p>Open the ./script/build.bat file and replace the following line: </p><div class="fragment"><div class="line">set generator=&quot;Visual Studio 14 2015&quot;</div>
-</div><!-- fragment --><p> with the corresponding version of Visual Studio installed on your machine. It can be one of the following values: </p><div class="fragment"><div class="line">Visual Studio 14 2015</div>
+<p>Open the ./script/build.bat file and replace the following line:</p>
+<div class="fragment"><div class="line">set generator=&quot;Visual Studio 14 2015&quot;</div>
+</div><!-- fragment --><p>with the corresponding version of Visual Studio installed on your machine. It can be one of the following values:</p>
+<div class="fragment"><div class="line">Visual Studio 14 2015</div>
 <div class="line">Visual Studio 15 2017</div>
 <div class="line">Visual Studio 16 2019</div>
 <div class="line">Visual Studio 17 2022</div>
 </div><!-- fragment --><p>You can use the <code>cmake -G</code> command to view more supported generators.</p>
 <p><b>1.2 Set the Number of CPU Cores</b></p>
-<p>Open the ./script/build.bat file and replace the following line: </p><div class="fragment"><div class="line">set cpu_cores=6</div>
-</div><!-- fragment --><p> with the number of CPU cores on your machine.</p>
-<p>To check the number of CPU cores: </p><div class="fragment"><div class="line">1. Open cmd, then input:</div>
+<p>Open the ./script/build.bat file and replace the following line:</p>
+<div class="fragment"><div class="line">set cpu_cores=6</div>
+</div><!-- fragment --><p>with the number of CPU cores on your machine.</p>
+<p>To check the number of CPU cores:</p>
+<div class="fragment"><div class="line">1. Open cmd, then input:</div>
 <div class="line">wmic</div>
 <div class="line">2. Input:</div>
 <div class="line">cpu get NumberOfCores</div>
-</div><!-- fragment --><p> <img src="https://gitee.com/spencer_luo/common_util/raw/master/docs/quick_start/imgs/win_cpu_core_num.png" alt="" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md13"></a>
-2. Compilation</h2>
+</div><!-- fragment --><p><img src="https://gitee.com/spencer_luo/common_util/raw/master/docs/quick_start/imgs/win_cpu_core_num.png" alt="" class="inline"/></p>
+<h3><a class="anchor" id="autotoc_md13"></a>
+1.1.2. Compilation</h3>
 <div class="fragment"><div class="line">./script/build.bat build [x86|x64] [release|rls|debug|dbg]</div>
 <div class="line"># Debug模式</div>
 <div class="line"># ./script/build.bat build dbg</div>
@@ -103,26 +122,28 @@ Windows</h1>
 <li>Argument 1: Platform type of the target program to build, x86 means 32-bit program, and x64 means 64-bit program.</li>
 <li>Argument 2: Configuration type of the target program to build, release or rls means the release version, and debug or dbg means the debug version.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md14"></a>
-3. Run</h2>
-<p>Run the results compiled in step 2. </p><div class="fragment"><div class="line">./script/build.bat run</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md15"></a>
-4. Clean Cache</h2>
+<h3><a class="anchor" id="autotoc_md14"></a>
+1.1.3. Run</h3>
+<p>Run the results compiled in step 2.</p>
+<div class="fragment"><div class="line">./script/build.bat run</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md15"></a>
+1.1.4. Clean Cache</h3>
 <p>Clear the cache from the compilation in step 2.</p>
 <div class="fragment"><div class="line">./script/build.bat clean</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md16"></a>
-Unix-like</h1>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md16"></a>
+1.2. Unix-like</h2>
 <p>Including Linux/macOS and other Unix-like systems.</p>
-<h2><a class="anchor" id="autotoc_md17"></a>
-1. Compilation</h2>
+<h3><a class="anchor" id="autotoc_md17"></a>
+1.2.1. Compilation</h3>
 <div class="fragment"><div class="line">./script/build.sh build [release|rls|debug|dbg]</div>
 <div class="line"># Debug模式</div>
 <div class="line"># ./script/build.sh build dbg</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md18"></a>
-2. Run</h2>
-<p>Run the results compiled in step 1. </p><div class="fragment"><div class="line">./script/build.sh run</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md19"></a>
-3. Clean Cache</h2>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md18"></a>
+1.2.2. Run</h3>
+<p>Run the results compiled in step 1.</p>
+<div class="fragment"><div class="line">./script/build.sh run</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md19"></a>
+1.2.3. Clean Cache</h3>
 <p>Clear the cache from the compilation in step 1.</p>
 <div class="fragment"><div class="line">./script/build.sh clean</div>
 </div><!-- fragment --> </div></div><!-- contents -->

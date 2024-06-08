@@ -2,17 +2,44 @@
 .ad l
 .nh
 .SH NAME
-md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_201_8preparation \- 软件环境 
+md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_201_8preparation \- 01\&.preparation 
+.PP
+
+.IP "\(bu" 2
+\fB1\&. 软件环境\fP
+.PP
+.PP
+\fB1\&.1\&. Windows\fP
+.IP "\(bu" 2
+\fB1\&.1\&.1\&. 安装Visual Studio\fP
+.IP "\(bu" 2
+\fB1\&.1\&.2\&. 安装CMake\fP
+.PP
+.PP
+\fB1\&.2\&. Linux(Ubuntu)\fP
+.IP "\(bu" 2
+\fB1\&.2\&.1\&. 安装GCC编译器\fP
+.IP "\(bu" 2
+\fB1\&.2\&.2\&. 安装CMake\fP
+.PP
+.PP
+\fB1\&.3\&. MacOS\fP
+.IP "\(bu" 2
+\fB1\&.3\&.1\&. 安装GCC编译器\fP
+.IP "\(bu" 2
+\fB1\&.3\&.2\&. 安装CMake\fP
+.PP
+.SH "1\&. 软件环境"
 .PP
 在对本项目进行本地编译时，需要安装以下软件：
+.PP
 .IP "1." 4
 支持C++11及以上标准的编译器。(Visual Studio 2015或更高版本，GCC 4\&.8\&.1或更高版本，Clang 3\&.3或更高版本)
 .IP "2." 4
 CMake 3\&.28\&.3 或更高版本。
 .PP
-.SH "Windows"
-.PP
-.SS "安装Visual Studio"
+.SS "1\&.1\&. Windows"
+.SS "1\&.1\&.1\&. 安装Visual Studio"
 .IP "1." 4
 下载 Visual Studio 2015 或更高版本。 https://msdn.itellyou.cn/
 .PP
@@ -26,7 +53,7 @@ CMake 3\&.28\&.3 或更高版本。
 .PP
 创建一个控制台应用程序，写一个打印'Hello World'的代码。然后编译运行，如果能正常打印出'Hello World'，则说明安装成功。
 .PP
-.SS "安装CMake"
+.SS "1\&.1\&.2\&. 安装CMake"
 .IP "1." 4
 安装 CMake 3\&.28\&.3 或更高版本。 https://cmake.org/download/
 .IP "2." 4
@@ -44,9 +71,8 @@ CMake 3\&.28\&.3 或更高版本。
 .PP
 打开命令行，输入 \fRcmake --version\fP ，如果能正常显示版本号，则说明安装成功。
 .PP
-.SH "Linux(Ubuntu)"
-.PP
-.SS "安装GCC编译器"
+.SS "1\&.2\&. Linux(Ubuntu)"
+.SS "1\&.2\&.1\&. 安装GCC编译器"
 .IP "1." 4
 安装GCC 4\&.8\&.1
 .PP
@@ -63,7 +89,7 @@ sudo apt install gcc
 .PP
 .PP
 打开命令行，输入 \fRgcc --version\fP ，如果能正常显示版本号，则说明安装成功。
-.SS "安装CMake"
+.SS "1\&.2\&.2\&. 安装CMake"
 .IP "1." 4
 安装 CMake 3\&.28\&.3 或更高版本
 .PP
@@ -79,9 +105,8 @@ sudo apt install cmake
 .PP
 .PP
 打开命令行，输入 \fRcmake --version\fP ，如果能正常显示版本号，则说明安装成功。
-.SH "MacOS"
-.PP
-.SS "安装GCC编译器"
+.SS "1\&.3\&. MacOS"
+.SS "1\&.3\&.1\&. 安装GCC编译器"
 .IP "1." 4
 安装
 .PP
@@ -92,11 +117,11 @@ brew install gcc
 .fi
 .PP
 .PP
-如果homebrew未安装，请先安装homebrew: 
+如果homebrew未安装，请先安装homebrew:
+.PP
 .PP
 .nf
 /bin/bash \-c "$(curl \-fsSL https://raw\&.githubusercontent\&.com/Homebrew/install/HEAD/install\&.sh)"
-
 .fi
 .PP
 .PP
@@ -105,7 +130,7 @@ brew install gcc
 .PP
 .PP
 打开命令行，输入 \fRgcc --version\fP ，如果能正常显示版本号，则说明安装成功。
-.SS "安装CMake"
+.SS "1\&.3\&.2\&. 安装CMake"
 .IP "1." 4
 安装 CMake 3\&.28\&.3 或更高版本
 .PP

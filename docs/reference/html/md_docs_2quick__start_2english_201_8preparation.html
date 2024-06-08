@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>common_util: Software Environment</title>
+<title>common_util: 01.preparation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -71,18 +71,35 @@ $(function() {
 
 </div><!-- top -->
 <div><div class="header">
-  <div class="headertitle"><div class="title">Software Environment</div></div>
+  <div class="headertitle"><div class="title">01.preparation</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> When compiling this project locally, the following software needs to be installed:</p>
+<div class="textblock"><ul>
+<li>1. Software Environment</li>
+</ul>
+<p>1.1. Windows</p><ul>
+<li>1.1.1. Download Visual Studio</li>
+<li>1.1.2. Install CMake</li>
+</ul>
+<p>1.2. Linux(Ubuntu)</p><ul>
+<li>1.2.1. Install GCC Compile</li>
+<li>1.2.2. Install CMake</li>
+</ul>
+<p>1.3. MacOS</p><ul>
+<li>1.3.1. Install GCC Compiler</li>
+<li>1.3.2. Install CMake</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md0"></a>
+1. Software Environment</h1>
+<p>When compiling this project locally, the following software needs to be installed:</p>
 <ol type="1">
 <li>A compiler that supports C++11 and later standards (Visual Studio 2015 or later, GCC 4.8.1 or later, Clang 3.3 or later)</li>
 <li>CMake 3.28.3 or later.</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md1"></a>
-Windows</h1>
-<h2><a class="anchor" id="autotoc_md2"></a>
-Download Visual Studio</h2>
+<h2><a class="anchor" id="autotoc_md1"></a>
+1.1. Windows</h2>
+<h3><a class="anchor" id="autotoc_md2"></a>
+1.1.1. Download Visual Studio</h3>
 <ol type="1">
 <li>Download Visual Studio 2015 or later. <a href="https://msdn.itellyou.cn/">https://msdn.itellyou.cn/</a> <img src="https://gitee.com/spencer_luo/common_util/raw/master/docs/quick_start/imgs/msdn_itellyou_win7_64.png" alt="" class="inline"/></li>
 <li><p class="startli">Install Visual Studio The only thing you need to care about is to choose "Custom" installation and only install the "Visual C++" related modules (if you are only using it for developing C++ projects), otherwise the installation time will be very long.</p>
@@ -91,8 +108,8 @@ Download Visual Studio</h2>
 <li>Test and verify</li>
 </ol>
 <p>Create a <em>Console Application project</em>, write some code to print "Hello World". Then compile and run it, if "Hello World" is printed correctly, the installation is successful.</p>
-<h2><a class="anchor" id="autotoc_md3"></a>
-Install CMake</h2>
+<h3><a class="anchor" id="autotoc_md3"></a>
+1.1.2. Install CMake</h3>
 <ol type="1">
 <li>Download CMake 3.28.3 or later. <a href="https://cmake.org/download/">https://cmake.org/download/</a></li>
 <li><p class="startli">Install CMake</p>
@@ -112,19 +129,21 @@ Install CMake</h2>
 <p class="startli">Open the command line and enter <code>cmake --version</code> , If the version number is displayed correctly, the installation is successful.</p>
 </li>
 </ol>
-<h1><a class="anchor" id="autotoc_md4"></a>
-Linux(Ubuntu)</h1>
-<h2><a class="anchor" id="autotoc_md5"></a>
-Install GCC Compile</h2>
+<h2><a class="anchor" id="autotoc_md4"></a>
+1.2. Linux(Ubuntu)</h2>
+<h3><a class="anchor" id="autotoc_md5"></a>
+1.2.1. Install GCC Compile</h3>
 <ol type="1">
-<li>Install GCC 4.8.1 <div class="fragment"><div class="line">sudo apt update</div>
+<li>Install GCC 4.8.1</li>
+</ol>
+<div class="fragment"><div class="line">sudo apt update</div>
 <div class="line">sudo apt install gcc</div>
-</div><!-- fragment --></li>
+</div><!-- fragment --><ol type="1">
 <li>Test and verify</li>
 </ol>
 <p>Open the command line and enter <code>cmake --version</code> , If the version number is displayed correctly, the installation is successful.</p>
-<h2><a class="anchor" id="autotoc_md6"></a>
-Install CMake</h2>
+<h3><a class="anchor" id="autotoc_md6"></a>
+1.2.2. Install CMake</h3>
 <ol type="1">
 <li>Install CMake 3.28.3 or later</li>
 </ol>
@@ -133,21 +152,22 @@ Install CMake</h2>
 <li>Test and verify</li>
 </ol>
 <p>Open the command line and enter <code>gcc --version</code> , If the version number is displayed correctly, the installation is successful.</p>
-<h1><a class="anchor" id="autotoc_md7"></a>
-MacOS</h1>
-<h2><a class="anchor" id="autotoc_md8"></a>
-Install GCC Compiler</h2>
+<h2><a class="anchor" id="autotoc_md7"></a>
+1.3. MacOS</h2>
+<h3><a class="anchor" id="autotoc_md8"></a>
+1.3.1. Install GCC Compiler</h3>
 <ol type="1">
-<li>Install GCC <div class="fragment"><div class="line">brew install gcc</div>
-</div><!-- fragment --></li>
+<li>Install GCC</li>
 </ol>
-<p>If Homebrew is not installed, please install Homebrew first: </p><div class="fragment"><div class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</div>
+<div class="fragment"><div class="line">brew install gcc</div>
+</div><!-- fragment --><p>If Homebrew is not installed, please install Homebrew first:</p>
+<div class="fragment"><div class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</div>
 </div><!-- fragment --><ol type="1">
 <li>Test and verify</li>
 </ol>
 <p>Open the command line and enter <code>gcc --version</code> , If the version number is displayed correctly, the installation is successful.</p>
-<h2><a class="anchor" id="autotoc_md9"></a>
-Install CMake</h2>
+<h3><a class="anchor" id="autotoc_md9"></a>
+1.3.2. Install CMake</h3>
 <ol type="1">
 <li>Install CMake 3.28.3 or later</li>
 </ol>

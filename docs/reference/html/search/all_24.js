@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['相关文档_0',['相关文档',['../index.html#autotoc_md57',1,'']]]
+  ['已验证的平台_0',['9. 已验证的平台',['../index.html#autotoc_md58',1,'']]]
 ];

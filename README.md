@@ -1,6 +1,24 @@
 @mainpage
 
-## Overview
+- [1. Source code](#1-source-code)
+- [2. Overview](#2-overview)
+- [3. Library Features](#3-library-features)
+- [4. Testing Platforms](#4-testing-platforms)
+- [5. Related Documents](#5-related-documents)
+- [6. 源码仓库](#6-源码仓库)
+- [7. 概述](#7-概述)
+- [8. 设计特点](#8-设计特点)
+- [9. 已验证的平台](#9-已验证的平台)
+- [10. 相关文档](#10-相关文档)
+
+## 1. Source code
+
+| Region | Platform | Source Code Repository URL |
+| --- | --- | --- |
+| Mainland China | Gitee | [https://gitee.com/spencer_luo/common_util](https://gitee.com/spencer_luo/common_util) |
+| International | Github | [https://github.com/spencer-luo/common_util](https://github.com/spencer-luo/common_util) |
+
+## 2. Overview
 
 common_util is a general-purpose C++ utility library, include the following functions:
 
@@ -25,7 +43,7 @@ std::cout << "current time(UTC time): " << now.utctime() << std::endl;
 std::cout << "current time(local time): " << now.format() << std::endl;
 ```
 
-## Library Features
+## 3. Library Features
 
 - **Simple and lightweigh**: Based on basic C++ syntax and STL, it independent on any third-party libraries.
 - **Multi-platform support**: Supports multiple platforms such as Linux/macOS/Windows, it can be compiled and run on multiple platforms.
@@ -33,7 +51,7 @@ std::cout << "current time(local time): " << now.format() << std::endl;
 - **Comprehensive documentation**: All exported header files have detail comments, it has complete API reference and usage demos.
 - **C++ version requirement**: C++11 and above versions.
 
-## Testing Platforms
+## 4. Testing Platforms
 
 This library has been tested and verified on the following platforms:
 
@@ -46,12 +64,21 @@ This library has been tested and verified on the following platforms:
 | iOS                                   |                          | To be tested |         |
 | HarmonyOS                             |                          | To be tested |         |
 
-## Related Documents
+## 5. Related Documents
 
-- API Reference: [docs/reference/html/index.html](./docs/reference/html/index.html)
-- User Guide: [common_util wiki](https://gitee.com/spencer_luo/common_util/wikis/Home)
+- off-line: [docs/reference/html/index.html](./docs/reference/html/index.html)
+- on line : [http://sunlogging.com/common_util/](http://sunlogging.com/common_util/)
 
-## 概述
+
+
+## 6. 源码仓库
+
+| 地区 | 代码托管平台 | 源码仓库地址 |
+| --- | --- | --- |
+| 中国大陆 | Gitee | [https://gitee.com/spencer_luo/common_util](https://gitee.com/spencer_luo/common_util) |
+| 国际站点 | Github | [https://github.com/spencer-luo/common_util](https://github.com/spencer-luo/common_util) |
+
+## 7. 概述
 
 common_util是C++的一个通用工具库，主要包含以下功能：
 - 时间处理
@@ -75,7 +102,7 @@ std::cout << "current time(UTC time): " << now.utctime() << std::endl;
 std::cout << "current time(local time): " << now.format() << std::endl;
 ```
 
-## 设计特点
+## 8. 设计特点
 
 - **轻量极简**： 基于基础C++语法和STL，不依赖任何第三方库。
 - **多平台支持**： 支持Linux/OS-X/Windows等多个平台，一套代码多平台编译。
@@ -83,7 +110,7 @@ std::cout << "current time(local time): " << now.format() << std::endl;
 - **文档规范全面**： 所有对外接口的头文件都有详细的代码注释，且有完整的API文档和使用Demo，可供查阅。
 - **C++版本要求**： C++11及以上版本。
 
-## 已验证的平台
+## 9. 已验证的平台
 
 本库在以下平台上测试验证过：
 
@@ -96,7 +123,7 @@ std::cout << "current time(local time): " << now.format() << std::endl;
 | iOS                |                    | 待验证   |      |
 | HarmonyOS          |                    | 待验证   |      |
 
-## 相关文档
+## 10. 相关文档
 
-- API文档: [docs/reference/html/index.html](./docs/reference/html/index.html)
-- 使用指南: [common_util wiki](https://gitee.com/spencer_luo/common_util/wikis/Home)
+- 离线文档: [docs/reference/html/index.html](./docs/reference/html/index.html)
+- 在线文档: [http://sunlogging.com/common_util/](http://sunlogging.com/common_util/)

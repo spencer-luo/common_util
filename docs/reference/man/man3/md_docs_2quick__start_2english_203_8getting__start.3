@@ -2,14 +2,26 @@
 .ad l
 .nh
 .SH NAME
-md_docs_2quick__start_2english_203_8getting__start \- Quick Start Guide 
+md_docs_2quick__start_2english_203_8getting__start \- 03\&.getting_start 
 .PP
- 
-.SH "Overview"
+
+.IP "\(bu" 2
+\fB1\&. Quick Start Guide\fP
 .PP
+.PP
+\fB1\&.1\&. Overview\fP
+.IP "\(bu" 2
+\fB1\&.2\&. Directory Structure\fP
+.IP "\(bu" 2
+\fB1\&.3\&. Usage\fP
+.IP "\(bu" 2
+\fB1\&.4\&. Demo\fP
+.PP
+.SH "1\&. Quick Start Guide"
+.PP
+.SS "1\&.1\&. Overview"
 common_util is a general-purpose C++ utility library, implemented in modern C++ syntax (C++11 and above), using cutl as the namespace\&. The naming convention of all interfaces is consistent with the STL, and it can be used as an extensions of C++ standard library\&. You can use common_util just like using the STL\&.
-.SH "Directory Structure"
-.PP
+.SS "1\&.2\&. Directory Structure"
 .PP
 .nf
 \&./common_util
@@ -28,9 +40,8 @@ common_util is a general-purpose C++ utility library, implemented in modern C++ 
     └── usage_demo              # common_util_demo source code directory
 .fi
 .PP
-.SH "Usage"
-.PP
-The simple steps are as follows: 
+.SS "1\&.3\&. Usage"
+The simple steps are as follows:
 .PP
 .RS 4
 1\&. Include the \fBcommon_util\&.h\fP header file\&.
@@ -40,7 +51,6 @@ Initialize the library and register a callback function for logging\&.
 Use the library\&. 
 .PP
 .RE
-.PP
 .PP
 A detail example as follows:
 .PP
@@ -122,8 +132,7 @@ current time(UTC time): 2024\-05\-18 08:01:03\&.478
 current time(local time): 2024\-05\-18 16:01:03\&.478
 .fi
 .PP
-.SH "Demo"
-.PP
+.SS "1\&.4\&. Demo"
 Directory src/usage_demo contains usage examples for each module\&.
 .PP
 .PP
