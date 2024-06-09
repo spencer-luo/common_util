@@ -1,16 +1,5 @@
 @mainpage
 
-- [1. Source code](#1-source-code)
-- [2. Overview](#2-overview)
-- [3. Library Features](#3-library-features)
-- [4. Testing Platforms](#4-testing-platforms)
-- [5. Related Documents](#5-related-documents)
-- [6. 源码仓库](#6-源码仓库)
-- [7. 概述](#7-概述)
-- [8. 设计特点](#8-设计特点)
-- [9. 已验证的平台](#9-已验证的平台)
-- [10. 相关文档](#10-相关文档)
-
 ## 1. Source code
 
 | Region | Platform | Source Code Repository URL |
@@ -67,9 +56,7 @@ This library has been tested and verified on the following platforms:
 ## 5. Related Documents
 
 - off-line: [docs/reference/html/index.html](./docs/reference/html/index.html)
-- on line : [http://sunlogging.com/common_util/](http://sunlogging.com/common_util/)
-
-
+- on line : [http://sunlogging.com/docs/common_util/](http://sunlogging.com/docs/common_util/)
 
 ## 6. 源码仓库
 
@@ -126,4 +113,4 @@ std::cout << "current time(local time): " << now.format() << std::endl;
 ## 10. 相关文档
 
 - 离线文档: [docs/reference/html/index.html](./docs/reference/html/index.html)
-- 在线文档: [http://sunlogging.com/common_util/](http://sunlogging.com/common_util/)
+- 在线文档: [http://sunlogging.com/docs/common_util/](http://sunlogging.com/docs/common_util/)

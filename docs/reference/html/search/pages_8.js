@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['快速指引_0',['快速指引',['../md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_203_8getting__start.html',1,'']]]
+  ['software_20environment_0',['1. Software Environment',['../md_docs_2quick__start_2english_201_8preparation.html',1,'']]],
+  ['start_20guide_1',['1. Quick Start Guide',['../md_docs_2quick__start_2english_203_8getting__start.html',1,'']]]
 ];

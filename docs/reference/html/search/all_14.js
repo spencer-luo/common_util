@@ -1,15 +1,10 @@
 var searchData=
 [
-  ['library_20features_0',['3. Library Features',['../index.html#autotoc_md52',1,'']]],
-  ['library_5finit_1',['library_init',['../config_8h.html#aaff727190c9cbd114cb8123f3e61e93f',1,'cutl']]],
-  ['library_5fname_2',['library_name',['../config_8h.html#a01de4212c199745ff089ca5d89a064e8',1,'cutl']]],
-  ['library_5fversion_3',['library_version',['../config_8h.html#a0e5151f926522895af2783a1e5dd481a',1,'cutl']]],
-  ['like_4',['Like',['../md_docs_2quick__start_2english_202_8build__library.html#autotoc_md16',1,'1.2. Unix-like'],['../md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_202_8build__library.html#autotoc_md41',1,'1.2. Unix-like']]],
-  ['linux_20ubuntu_5',['Linux Ubuntu',['../md_docs_2quick__start_2english_201_8preparation.html#autotoc_md4',1,'1.2. Linux(Ubuntu)'],['../md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_201_8preparation.html#autotoc_md29',1,'1.2. Linux(Ubuntu)']]],
-  ['list_5ffiles_6',['list_files',['../fileutil_8h.html#aa4f744aa8a74118855fab1240f556c50',1,'cutl']]],
-  ['little_7',['little',['../sysutil_8h.html#aecaf674e04f64f60fd66feab407c606daaae6635e044ac56046b2893a529b5114',1,'cutl']]],
-  ['logfunctype_8',['LogFuncType',['../logtype_8h.html#a3ed54d05c652f02b6e80ce9bcfe61166',1,'cutl']]],
-  ['loglevel_9',['loglevel',['../logtype_8h.html#a4a361b2bdc027c9df2fa3e539fa16959',1,'cutl']]],
-  ['logtype_2eh_10',['logtype.h',['../logtype_8h.html',1,'']]],
-  ['lstrip_11',['lstrip',['../strutil_8h.html#a7f0e910cfe8e2aecb529dcb0a4780789',1,'cutl']]]
+  ['macos_0',['MacOS',['../md_docs_2quick__start_2english_201_8preparation.html#autotoc_md7',1,'1.3. MacOS'],['../md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_201_8preparation.html#autotoc_md32',1,'1.3. MacOS']]],
+  ['max_5fpath_5flen_1',['MAX_PATH_LEN',['../filetype_8h.html#a7c0e573c7e0cd198d3119f6c41afe740',1,'cutl']]],
+  ['min_2',['min',['../classcutl_1_1datetime.html#a2715f00996ee150322771d662f4513de',1,'cutl::datetime']]],
+  ['modify_20scripts_3',['1.1.1. Modify Scripts',['../md_docs_2quick__start_2english_202_8build__library.html#autotoc_md12',1,'']]],
+  ['ms_4',['ms',['../timeutil_8h.html#a5123cf2b94c1fabe15fb9ba61231d5f1aee33e909372d935d190f4fcb2a92d542',1,'cutl']]],
+  ['ms2s_5',['ms2s',['../timeutil_8h.html#aa6801f26864882bbce8e3aa2b3e58d4a',1,'cutl']]],
+  ['ms2us_6',['ms2us',['../timeutil_8h.html#a4c3160c938fa506c2383a3dc976c3fdc',1,'cutl']]]
 ];
