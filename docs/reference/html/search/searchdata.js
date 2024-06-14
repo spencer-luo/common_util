@@ -1,6 +1,6 @@
 var indexSectionsWithContent =
 {
-  0: "abcdefghijlmnoprstuvw~",
+  0: "123456789abcdefghijlmnopqrstuvw~使修安已快构概清源目相编设软运",
   1: "dft",
   2: "cdflstv",
   3: "abcdefghijlmnoprstuw~",
@@ -9,7 +9,7 @@ var indexSectionsWithContent =
   6: "deflot",
   7: "abcdefilmopsuw",
   8: "c",
-  9: "c"
+  9: "1abcegqrs快构软"
 };
 
 var indexSectionNames =

@@ -1,21 +1,15 @@
 var searchData=
 [
-  ['callcmd_0',['callcmd',['../sysutil_8h.html#a0f0fd47694016b4a0904702508edf58d',1,'cutl']]],
-  ['char_5fspecial_1',['char_special',['../filetype_8h.html#a9d3ee53b2774c37cc5a17766507de28ca9596d5b688af597f8fd89963dd7ce212',1,'cutl']]],
-  ['clocktime_2',['clocktime',['../timeutil_8h.html#a138f4ea5f89d12e1660b79877e8d5aa8',1,'cutl']]],
-  ['common_5futil_3',['common_util',['../index.html',1,'']]],
-  ['common_5futil_2eh_4',['common_util.h',['../common__util_8h.html',1,'']]],
-  ['compare_5fversion_5',['compare_version',['../verutil_8h.html#a4dd7764301751d990dc86c906c93d5d5',1,'cutl']]],
-  ['config_2eh_6',['config.h',['../config_8h.html',1,'']]],
-  ['copydir_7',['copydir',['../fileutil_8h.html#afa2d5fd4752b0b76ffcf5b3307800a9c',1,'cutl']]],
-  ['copyfile_8',['copyfile',['../fileutil_8h.html#a001077c7cc1071c8871ca7b338face04',1,'cutl']]],
-  ['cpp_5fstl_5fversion_9',['cpp_stl_version',['../sysutil_8h.html#a259f8f05fd841bc3c0c225e0c3936fae',1,'cutl']]],
-  ['createdir_10',['createdir',['../fileutil_8h.html#add3d8ef4215ce8d54c9dbe18dd35c82b',1,'cutl']]],
-  ['createfile_11',['createfile',['../fileutil_8h.html#a1e27df14bf44381e7e0a20e4c573d4f5',1,'cutl']]],
-  ['createlink_12',['createlink',['../fileutil_8h.html#a08d521298f87d3470d3163928d3cb1f1',1,'cutl']]],
-  ['cutl_5fcopy_5fand_5fassign_13',['CUTL_COPY_AND_ASSIGN',['../singleton_8h.html#a8f0365b2a51b6cd09037b83c5df250d7',1,'singleton.h']]],
-  ['cutl_5fsingleton_5fptr_14',['CUTL_SINGLETON_PTR',['../singleton_8h.html#a955faef8343c1603d8acb2b46572e7c9',1,'singleton.h']]],
-  ['cutl_5fsingleton_5fptr_5fdefault_5fctor_15',['CUTL_SINGLETON_PTR_DEFAULT_CTOR',['../singleton_8h.html#a18256d54de956ff9be4d6887354737d5',1,'singleton.h']]],
-  ['cutl_5fsingleton_5fref_16',['CUTL_SINGLETON_REF',['../singleton_8h.html#ae6202f16d5076942a5a57bd3feea2d1e',1,'singleton.h']]],
-  ['cutl_5fsingleton_5fref_5fdefault_5fctor_17',['CUTL_SINGLETON_REF_DEFAULT_CTOR',['../singleton_8h.html#a4b31c1f99744b5d01441b61e30f4903c',1,'singleton.h']]]
+  ['3_20使用方式_0',['1.3. 使用方式',['../md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_203_8getting__start.html#autotoc_md48',1,'']]],
+  ['3_20清理缓存_1',['1.2.3. 清理缓存',['../md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_202_8build__library.html#autotoc_md44',1,'']]],
+  ['3_20运行_2',['1.1.3. 运行',['../md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_202_8build__library.html#autotoc_md39',1,'']]],
+  ['3_201_20安装gcc编译器_3',['1.3.1. 安装GCC编译器',['../md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_201_8preparation.html#autotoc_md33',1,'']]],
+  ['3_201_20install_20gcc_20compiler_4',['1.3.1. Install GCC Compiler',['../md_docs_2quick__start_2english_201_8preparation.html#autotoc_md8',1,'']]],
+  ['3_202_20安装cmake_5',['1.3.2. 安装CMake',['../md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_201_8preparation.html#autotoc_md34',1,'']]],
+  ['3_202_20install_20cmake_6',['1.3.2. Install CMake',['../md_docs_2quick__start_2english_201_8preparation.html#autotoc_md9',1,'']]],
+  ['3_20clean_20cache_7',['1.2.3. Clean Cache',['../md_docs_2quick__start_2english_202_8build__library.html#autotoc_md19',1,'']]],
+  ['3_20library_20features_8',['3. Library Features',['../index.html#autotoc_md52',1,'']]],
+  ['3_20macos_9',['3 MacOS',['../md_docs_2quick__start_2english_201_8preparation.html#autotoc_md7',1,'1.3. MacOS'],['../md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_201_8preparation.html#autotoc_md32',1,'1.3. MacOS']]],
+  ['3_20run_10',['1.1.3. Run',['../md_docs_2quick__start_2english_202_8build__library.html#autotoc_md14',1,'']]],
+  ['3_20usage_11',['1.3. Usage',['../md_docs_2quick__start_2english_203_8getting__start.html#autotoc_md23',1,'']]]
 ];

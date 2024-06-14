@@ -74,8 +74,18 @@ $(function() {
   <div class="headertitle"><div class="title">common_util </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2><a class="anchor" id="autotoc_md0"></a>
-Overview</h2>
+<div class="textblock"><h2><a class="anchor" id="autotoc_md50"></a>
+1. Source code</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Region   </th><th class="markdownTableHeadNone">Platform   </th><th class="markdownTableHeadNone">Source Code Repository URL    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Mainland China   </td><td class="markdownTableBodyNone">Gitee   </td><td class="markdownTableBodyNone"><a href="https://gitee.com/spencer_luo/common_util">https://gitee.com/spencer_luo/common_util</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">International   </td><td class="markdownTableBodyNone">Github   </td><td class="markdownTableBodyNone"><a href="https://github.com/spencer-luo/common_util">https://github.com/spencer-luo/common_util</a>   </td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md51"></a>
+2. Overview</h2>
 <p>common_util is a general-purpose C++ utility library, include the following functions:</p>
 <ul>
 <li>Time utilities</li>
@@ -97,8 +107,8 @@ Overview</h2>
 <div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;current time(UTC time): &quot;</span> &lt;&lt; now.utctime() &lt;&lt; std::endl;</div>
 <div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;current time(local time): &quot;</span> &lt;&lt; now.format() &lt;&lt; std::endl;</div>
 <div class="ttc" id="aclasscutl_1_1datetime_html_a2f26f17577618f7133b62b0343ecca0c"><div class="ttname"><a href="classcutl_1_1datetime.html#a2f26f17577618f7133b62b0343ecca0c">cutl::datetime::now</a></div><div class="ttdeci">static datetime now()</div><div class="ttdoc">Get a datetime object for the current system time.</div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1"></a>
-Library Features</h2>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md52"></a>
+3. Library Features</h2>
 <ul>
 <li><b>Simple and lightweigh</b>: Based on basic C++ syntax and STL, it independent on any third-party libraries.</li>
 <li><b>Multi-platform support</b>: Supports multiple platforms such as Linux/macOS/Windows, it can be compiled and run on multiple platforms.</li>
@@ -106,8 +116,8 @@ Library Features</h2>
 <li><b>Comprehensive documentation</b>: All exported header files have detail comments, it has complete API reference and usage demos.</li>
 <li><b>C++ version requirement</b>: C++11 and above versions.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md2"></a>
-Testing Platforms</h2>
+<h2><a class="anchor" id="autotoc_md53"></a>
+4. Testing Platforms</h2>
 <p>This library has been tested and verified on the following platforms:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -125,11 +135,76 @@ Testing Platforms</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">HarmonyOS   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">To be tested   </td><td class="markdownTableBodyNone"></td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md3"></a>
-Related Documents</h2>
+<h2><a class="anchor" id="autotoc_md54"></a>
+5. Related Documents</h2>
 <ul>
-<li>API Reference: <a href="./docs/reference/html/index.html">docs/reference/html/index.html</a></li>
-<li>User Guide: <a href="https://gitee.com/spencer_luo/common_util/wikis/Home">common_util wiki</a> </li>
+<li>off-line: <a href="./docs/reference/html/index.html">docs/reference/html/index.html</a></li>
+<li>on line : <a href="http://sunlogging.com/docs/common_util/">http://sunlogging.com/docs/common_util/</a></li>
+</ul>
+<h2><a class="anchor" id="autotoc_md55"></a>
+6. 源码仓库</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">地区   </th><th class="markdownTableHeadNone">代码托管平台   </th><th class="markdownTableHeadNone">源码仓库地址    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">中国大陆   </td><td class="markdownTableBodyNone">Gitee   </td><td class="markdownTableBodyNone"><a href="https://gitee.com/spencer_luo/common_util">https://gitee.com/spencer_luo/common_util</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">国际站点   </td><td class="markdownTableBodyNone">Github   </td><td class="markdownTableBodyNone"><a href="https://github.com/spencer-luo/common_util">https://github.com/spencer-luo/common_util</a>   </td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md56"></a>
+7. 概述</h2>
+<p>common_util是C++的一个通用工具库，主要包含以下功能：</p><ul>
+<li>时间处理</li>
+<li>函数计时器</li>
+<li>路径处理</li>
+<li>文件操作</li>
+<li>字符串处理</li>
+<li>数据格式化</li>
+<li>单例模式宏定义</li>
+</ul>
+<p>common_util采用现代C++语法（C++11及以上）实现，使用cutl作为命名空间，所有接口的命名方式与STL保持一致，可以作为STL库的一个补充。你可以像使用STL一样使用common_util，如：</p>
+<div class="fragment"><div class="line"> ++</div>
+<div class="line"><span class="comment">// 数据格式化</span></div>
+<div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;fmt_uint: &quot;</span> &lt;&lt; cutl::fmt_uint(12, 5) &lt;&lt; std::endl;</div>
+<div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;fmt_double: &quot;</span> &lt;&lt; cutl::fmt_double(3.141592653, 4) &lt;&lt; std::endl;</div>
+<div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;fmt_filesize: &quot;</span> &lt;&lt; cutl::fmt_filesize(33600) &lt;&lt; std::endl;</div>
+<div class="line"><span class="comment">// 获取系统当前时间</span></div>
+<div class="line"><span class="keyword">auto</span> now = <a class="code hl_function" href="classcutl_1_1datetime.html#a2f26f17577618f7133b62b0343ecca0c">cutl::datetime::now</a>();</div>
+<div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;current time(UTC time): &quot;</span> &lt;&lt; now.utctime() &lt;&lt; std::endl;</div>
+<div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;current time(local time): &quot;</span> &lt;&lt; now.format() &lt;&lt; std::endl;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md57"></a>
+8. 设计特点</h2>
+<ul>
+<li>**轻量极简**： 基于基础C++语法和STL，不依赖任何第三方库。</li>
+<li>**多平台支持**： 支持Linux/OS-X/Windows等多个平台，一套代码多平台编译。</li>
+<li>**代码整洁**： 代码风格整洁，命名方式与STL保持一致，你可以像使用STL一样使用本库。</li>
+<li>**文档规范全面**： 所有对外接口的头文件都有详细的代码注释，且有完整的API文档和使用Demo，可供查阅。</li>
+<li>**C++版本要求**： C++11及以上版本。</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md58"></a>
+9. 已验证的平台</h2>
+<p>本库在以下平台上测试验证过：</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">操作系统平台及版本   </th><th class="markdownTableHeadNone">C++编译器及版本   </th><th class="markdownTableHeadNone">验证状态   </th><th class="markdownTableHeadNone">备注    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Windows 10   </td><td class="markdownTableBodyNone">Visual Studio 2015   </td><td class="markdownTableBodyNone">已验证   </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Ubuntu 20.04.4   </td><td class="markdownTableBodyNone">GNU GCC 9.4.0   </td><td class="markdownTableBodyNone">已验证   </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">macOS xxx   </td><td class="markdownTableBodyNone">Clang version 15.0.0   </td><td class="markdownTableBodyNone">已验证   </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Android   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">待验证   </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">iOS   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">待验证   </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">HarmonyOS   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">待验证   </td><td class="markdownTableBodyNone"></td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md59"></a>
+10. 相关文档</h2>
+<ul>
+<li>离线文档: <a href="./docs/reference/html/index.html">docs/reference/html/index.html</a></li>
+<li>在线文档: <a href="http://sunlogging.com/docs/common_util/">http://sunlogging.com/docs/common_util/</a> </li>
 </ul>
 </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"/>
