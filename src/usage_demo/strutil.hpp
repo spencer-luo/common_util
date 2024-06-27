@@ -59,7 +59,7 @@ void TestJoinSplit()
 
 void TestDesensitizing()
 {
-    PrintSubTitle("desensitizing");
+    PrintSubTitle("TestDesensitizing");
 
     std::string password = "2515774";
     std::cout << "password: " << cutl::desensitizing(password) << std::endl;
