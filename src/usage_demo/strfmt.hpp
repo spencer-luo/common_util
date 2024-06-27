@@ -7,15 +7,36 @@
 void TestFormatUintAndDouble()
 {
     PrintSubTitle("TestFormatUintAndDouble");
-    std::cout << "fmt_uint: " << cutl::fmt_uint(12, 5) << std::endl;
-    std::cout << "fmt_double: " << cutl::fmt_double(3.141592653, 4) << std::endl;
-    std::cout << "fmt_filesize1: " << cutl::fmt_filesize(33600) << std::endl;
-    std::cout << "fmt_filesize2: " << cutl::fmt_filesize(378711367, false, 2) << std::endl;
+
+    std::cout << "fmt_uint 1: " << cutl::fmt_uint(12) << std::endl;
+    std::cout << "fmt_uint 2: " << cutl::fmt_uint(12, 4) << std::endl;
+    std::cout << "fmt_uint 3: " << cutl::fmt_uint(12, 4, 'x') << std::endl;
+    std::cout << "fmt_double 1: " << cutl::fmt_double(3.141592653) << std::endl;
+    std::cout << "fmt_double 2: " << cutl::fmt_double(3.141592653, 3) << std::endl;
 }
 
-void TestFormatTime()
+void TestFormatFileSize()
 {
-    PrintSubTitle("TestFormatTime");
+    PrintSubTitle("TestFormatFileSize");
+
+    std::cout << "fmt_filesize 1: " << cutl::fmt_filesize(378711367) << std::endl;
+    std::cout << "fmt_filesize 2: " << cutl::fmt_filesize(378711367, true, 2) << std::endl;
+    std::cout << "fmt_filesize 2: " << cutl::fmt_filesize(378711367, false, 2) << std::endl;
+}
+
+void TestFormatDurationTime()
+{
+    PrintSubTitle("TestFormatDurationTime");
+
+    // 180100345), "2d:2h:1m:40s:345ms"
+    std::cout << "duration1: " << cutl::fmt_timeduration_s(180100) << std::endl;
+    std::cout << "duration2: " << cutl::fmt_timeduration_ms(180100345) << std::endl;
+    std::cout << "duration3: " << cutl::fmt_timeduration_us(180100345678) << std::endl;
+}
+
+void TestFormatTimestamp()
+{
+    PrintSubTitle("TestFormatTimestamp");
     // timestamp
     auto curTimeS = cutl::timestamp(cutl::timeunit::s);
     auto curTimeMS = cutl::timestamp(cutl::timeunit::ms);
@@ -25,17 +46,12 @@ void TestFormatTime()
     std::cout << "current datetime ms: " << cutl::fmt_timestamp_ms(curTimeMS) << std::endl;
     std::cout << "current datetime ms in UTC: " << cutl::fmt_timestamp_ms(curTimeMS, false) << std::endl;
     std::cout << "current datetime us: " << cutl::fmt_timestamp_us(curTimeUS) << std::endl;
-    // duration
-    // 180100345), "2d:2h:1m:40s:345ms"
-    std::cout << "duration1: " << cutl::fmt_timeduration_s(180100) << std::endl;
-    std::cout << "duration2: " << cutl::fmt_timeduration_ms(180100345) << std::endl;
-    std::cout << "duration3: " << cutl::fmt_timeduration_us(180100345678) << std::endl;
 }
 
 void TestToBin()
 {
-    // format uint to binary string
     PrintSubTitle("TestToBin");
+
     uint8_t a = 0x0f;
     std::cout << "uint8: " << cutl::to_bin(a) << std::endl;
     uint16_t b = 0xfc;
@@ -48,8 +64,8 @@ void TestToBin()
 
 void TestToHex()
 {
-    // format uint to hex string
     PrintSubTitle("TestToHex");
+
     uint8_t a = 0x0f;
     std::cout << "uint8: " << cutl::to_hex(a) << std::endl;
     uint16_t b = 0xfc;
@@ -66,7 +82,9 @@ void TestStrfmt()
 {
     PrintTitle("strfmt");
     TestFormatUintAndDouble();
-    TestFormatTime();
+    TestFormatFileSize();
+    TestFormatDurationTime();
+    TestFormatTimestamp();
     TestToBin();
     TestToHex();
 }

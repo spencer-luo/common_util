@@ -4,14 +4,32 @@
 #include "common.hpp"
 #include "sysutil.h"
 
-void TestBaseFunc()
+void TestPlatformName()
 {
-    PrintSubTitle("TestBaseFunc");
+    PrintSubTitle("TestPlatformName");
 
     auto type = cutl::platform_type();
     std::cout << "OS platform: " << cutl::platform_name(type) << std::endl;
+}
+
+void TestArchitecture()
+{
+    PrintSubTitle("TestArchitecture");
+
     std::cout << "OS architecture: " << cutl::architecture() << std::endl;
+}
+
+void TestCppStlVersion()
+{
+    PrintSubTitle("TestCppStlVersion");
+
     std::cout << "C++ STL version: " << cutl::cpp_stl_version() << std::endl;
+}
+
+void TestProgramBit()
+{
+    PrintSubTitle("TestProgramBit");
+
     std::cout << "program bit: x" << cutl::program_bit() << std::endl;
 }
 
@@ -51,6 +69,11 @@ void TestSystemCall()
     ret = cutl::callcmd(cmd, result_text);
     std::cout << "callcmd " << cmd << ", return: " << ret << std::endl;
     std::cout << "callcmd " << cmd << ", result text: " << result_text << std::endl;
+}
+
+void TestGetEnv()
+{
+    PrintSubTitle("TestGetEnv");
 
     auto result = cutl::getenv("PATH", "not found");
     std::cout << "getenv for PATH, result:" << std::endl
@@ -75,8 +98,12 @@ void TestSysutil()
 {
     PrintTitle("sysutil");
 
-    TestBaseFunc();
+    TestPlatformName();
+    TestArchitecture();
+    TestCppStlVersion();
+    TestProgramBit();
     TestEndian();
     TestSystemCall();
+    TestGetEnv();
     TestGetcwdAndHomedir();
 }
