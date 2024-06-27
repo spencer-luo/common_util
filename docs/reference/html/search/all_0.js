@@ -44,5 +44,7 @@ var searchData=
   ['1_20quick_20start_20guide_41',['1. Quick Start Guide',['../md_docs_2quick__start_2english_203_8getting__start.html',1,'']]],
   ['1_20software_20environment_42',['1. Software Environment',['../md_docs_2quick__start_2english_201_8preparation.html',1,'']]],
   ['1_20source_20code_43',['1. Source code',['../index.html#autotoc_md50',1,'']]],
-  ['10_20相关文档_44',['10. 相关文档',['../index.html#autotoc_md59',1,'']]]
+  ['10_20已验证的平台_44',['10. 已验证的平台',['../index.html#autotoc_md59',1,'']]],
+  ['11_20相关文档_45',['11. 相关文档',['../index.html#autotoc_md60',1,'']]],
+  ['12_20欢迎共建_46',['12. 欢迎共建',['../index.html#autotoc_md61',1,'']]]
 ];
