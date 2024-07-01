@@ -2,6 +2,7 @@
 
 #include <string>
 #include <cstdio>
+#include <cstdint>
 #include "filetype.h"
 
 namespace cutl

@@ -20,6 +20,7 @@
 
 #include <string>
 #include <cstdio>
+#include <cstdint>
 #include "filetype.h"
 #include "filepath.h"
 
