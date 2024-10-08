@@ -16,9 +16,10 @@
  * @date 2024-05-13
  */
 
-#include <cctype>
-#include <algorithm>
 #include "strutil.h"
+#include "inner/string_util.h"
+#include <algorithm>
+#include <cctype>
 
 namespace cutl
 {
@@ -221,6 +222,22 @@ namespace cutl
             // 长度控制在最长12位
             result = str.substr(0, 4) + std::string(4, '*') + str.substr(str.length() - 4, 4);
         }
+        return result;
+    }
+
+    std::string ws2s(const std::wstring& ws, const std::string& locale)
+    {
+        std::string strLocale = setlocale(LC_ALL, locale.c_str());
+        auto result = wstring2string(ws);
+        setlocale(LC_ALL, strLocale.c_str());
+        return result;
+    }
+
+    std::wstring s2ws(const std::string& s, const std::string& locale)
+    {
+        std::string strLocale = setlocale(LC_ALL, locale.c_str());
+        auto result = string2wstring(s);
+        setlocale(LC_ALL, strLocale.c_str());
         return result;
     }
 

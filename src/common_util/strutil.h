@@ -110,4 +110,22 @@ namespace cutl
      */
     std::string desensitizing(const std::string &str);
 
+    /**
+     * @brief Convert a wide string to a string.
+     * @param ws the wide string to be converted.
+     * @param locale the locale used to convert the wide string, default is "". the locale
+     * parameter is reference to setlocale()
+     * @return std::string the converted string.
+     */
+    std::string ws2s(const std::wstring& ws, const std::string& locale = "");
+
+    /**
+     * @brief Convert a string to a wide string.
+     * @param s the string to be converted.
+     * @param locale the locale used to convert the string, default is "". the locale parameter is
+     * reference to setlocale()
+     * @return std::wstring the converted wide string.
+     */
+    std::wstring s2ws(const std::string& s, const std::string& locale = "");
+
 } // namespace cutl
