@@ -31,25 +31,26 @@
 
 /**
  * @brief Macro definition for get singleton instance pointer implaementation.
+ * TODO: 这种方式，进程结束时单例对象不会自动析构
  *
  */
 #undef CUTL_SINGLETON_PTR
-#define CUTL_SINGLETON_PTR(classname)                                            \
-public:                                                                          \
-    static classname *get_instance(bool create_if_needed = true)                 \
-    {                                                                            \
-        static classname *obj = nullptr;                                         \
-        if (!obj && create_if_needed)                                            \
-        {                                                                        \
-            static std::once_flag flag;                                          \
-            std::call_once(flag, [&] { obj = new (std::nothrow) classname(); }); \
-        }                                                                        \
-        return obj;                                                              \
-    }                                                                            \
-    ~classname();                                                                \
-                                                                                 \
-private:                                                                         \
-    classname();                                                                 \
+#define CUTL_SINGLETON_PTR(classname)                                                             \
+public:                                                                                           \
+    static classname* get_instance()                                                              \
+    {                                                                                             \
+        static classname* obj = nullptr;                                                          \
+        if (!obj)                                                                                 \
+        {                                                                                         \
+            static std::once_flag flag;                                                           \
+            std::call_once(flag, [&] { obj = new (std::nothrow) classname(); });                  \
+        }                                                                                         \
+        return obj;                                                                               \
+    }                                                                                             \
+    ~classname();                                                                                 \
+                                                                                                  \
+private:                                                                                          \
+    classname();                                                                                  \
     CUTL_COPY_AND_ASSIGN(classname)
 
 /**
@@ -57,22 +58,22 @@ private:                                                                        
  *
  */
 #undef CUTL_SINGLETON_PTR_DEFAULT_CTOR
-#define CUTL_SINGLETON_PTR_DEFAULT_CTOR(classname)                               \
-public:                                                                          \
-    static classname *get_instance(bool create_if_needed = true)                 \
-    {                                                                            \
-        static classname *obj = nullptr;                                         \
-        if (!obj && create_if_needed)                                            \
-        {                                                                        \
-            static std::once_flag flag;                                          \
-            std::call_once(flag, [&] { obj = new (std::nothrow) classname(); }); \
-        }                                                                        \
-        return obj;                                                              \
-    }                                                                            \
-    ~classname();                                                                \
-                                                                                 \
-private:                                                                         \
-    classname() = default;                                                       \
+#define CUTL_SINGLETON_PTR_DEFAULT_CTOR(classname)                                                \
+public:                                                                                           \
+    static classname* get_instance()                                                              \
+    {                                                                                             \
+        static classname* obj = nullptr;                                                          \
+        if (!obj)                                                                                 \
+        {                                                                                         \
+            static std::once_flag flag;                                                           \
+            std::call_once(flag, [&] { obj = new (std::nothrow) classname(); });                  \
+        }                                                                                         \
+        return obj;                                                                               \
+    }                                                                                             \
+    ~classname();                                                                                 \
+                                                                                                  \
+private:                                                                                          \
+    classname() = default;                                                                        \
     CUTL_COPY_AND_ASSIGN(classname)
 
 /**
@@ -80,17 +81,17 @@ private:                                                                        
  *
  */
 #undef CUTL_SINGLETON_REF
-#define CUTL_SINGLETON_REF(classname)                            \
-public:                                                          \
-    static classname &get_instance(bool create_if_needed = true) \
-    {                                                            \
-        static classname obj;                                    \
-        return obj;                                              \
-    }                                                            \
-    ~classname();                                                \
-                                                                 \
-private:                                                         \
-    classname();                                                 \
+#define CUTL_SINGLETON_REF(classname)                                                             \
+public:                                                                                           \
+    static classname& get_instance()                                                              \
+    {                                                                                             \
+        static classname obj;                                                                     \
+        return obj;                                                                               \
+    }                                                                                             \
+    ~classname();                                                                                 \
+                                                                                                  \
+private:                                                                                          \
+    classname();                                                                                  \
     CUTL_COPY_AND_ASSIGN(classname)
 
 /**
@@ -98,15 +99,15 @@ private:                                                         \
  *
  */
 #undef CUTL_SINGLETON_REF_DEFAULT_CTOR
-#define CUTL_SINGLETON_REF_DEFAULT_CTOR(classname)               \
-public:                                                          \
-    static classname &get_instance(bool create_if_needed = true) \
-    {                                                            \
-        static classname obj;                                    \
-        return obj;                                              \
-    }                                                            \
-    ~classname();                                                \
-                                                                 \
-private:                                                         \
-    classname() = default;                                       \
+#define CUTL_SINGLETON_REF_DEFAULT_CTOR(classname)                                                \
+public:                                                                                           \
+    static classname& get_instance()                                                              \
+    {                                                                                             \
+        static classname obj;                                                                     \
+        return obj;                                                                               \
+    }                                                                                             \
+    ~classname();                                                                                 \
+                                                                                                  \
+private:                                                                                          \
+    classname() = default;                                                                        \
     CUTL_COPY_AND_ASSIGN(classname)

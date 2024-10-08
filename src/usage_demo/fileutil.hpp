@@ -2,6 +2,7 @@
 
 #include "common.hpp"
 #include "fileutil.h"
+#include "sysutil.h"
 
 static const std::string kBaseDir = "./fileutil_test";
 static const std::string kTargetDir = "./fileutil_test_copy";
