@@ -13,8 +13,8 @@
 
 int main(int argc, char *argv[])
 {
-    LibraryInit();
-    TestSingleton();
+    // LibraryInit();
+    // TestSingleton();
     // std::cout << "test done" << std::endl;
     // TestSysutil();
     // TestStrfmt();
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     // TestTimecount();
     // TestDatetime();
     // TestVerUtil();
-    // TestStrUtil();
+    TestStrUtil();
     // TestFilePath();
     // TestFileUtil();
 
