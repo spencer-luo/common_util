@@ -1,4 +1,4 @@
-#if defined(_WIN32) || defined(__WIN32__)
+#if defined(_WIN32)
 
 #include <cstdlib>
 #include "system_util.h"
@@ -47,4 +47,4 @@ namespace cutl
 
 } // namespace cutl
 
-#endif // defined(_WIN32) || defined(__WIN32__)
+#endif // defined(_WIN32)

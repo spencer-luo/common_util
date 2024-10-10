@@ -80,7 +80,7 @@ namespace cutl
 
     char filepath::separator()
     {
-#if defined(_WIN32) || defined(__WIN32__)
+#if defined(_WIN32)
         return win_separator;
 #else
         return unix_separator;

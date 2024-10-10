@@ -1,4 +1,4 @@
-#if defined(_WIN32) || defined(__WIN32__)
+#if defined(_WIN32)
 // do nothing
 #else
 
@@ -36,4 +36,4 @@ std::wstring string2wstring(const std::string& s)
 
 } // namespace cutl
 
-#endif // defined(_WIN32) || defined(__WIN32__)
+#endif // defined(_WIN32)
