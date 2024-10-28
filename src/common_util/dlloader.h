@@ -1,6 +1,5 @@
 #pragma once
 
-#include <map>
 #include <string>
 
 namespace cutl
@@ -24,7 +23,6 @@ public:
 
 private:
     dl_handle_t library_handle_;
-    std::map<std::string, void*> symbol_map_;
 };
 
 } // namespace cutl

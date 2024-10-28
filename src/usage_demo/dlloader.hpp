@@ -12,6 +12,7 @@ void TestDlLoader()
     cutl::dlloader soloader(so_path);
 
     typedef int (*MathFun)(int, int);
+
     auto add = (MathFun)soloader.get_symbol("add");
     int result = add(3, 2);
     std::cout << "3 + 2 = " << result << std::endl;
