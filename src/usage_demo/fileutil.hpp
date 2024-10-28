@@ -4,6 +4,74 @@
 #include "fileutil.h"
 #include "sysutil.h"
 
+void test_fileutil()
+{
+    PrintSubTitle("test_fileutil");
+
+    // ./test_dir
+    auto basedir = cutl::path("./test_dir");
+    // ./test_dir/file_01.txt
+    auto file_01 = basedir.join("file_01.txt");
+    // ./test_dir/file_02.data
+    auto file_02 = basedir.join("file_02.data");
+    // ./test_dir/dir_01
+    auto dir_01 = basedir.join("dir_01");
+    // ./test_dir/dir_02
+    auto dir_02 = basedir.join("dir_02");
+    // ./test_dir/dir_02/test_01.txt
+    auto file_02_01 = dir_02.join("test_01.txt");
+
+    // 创建目录和文件
+    cutl::createdir(basedir);
+    cutl::createfile(file_01);
+    cutl::createfile(file_02);
+    cutl::createdir(dir_01);
+    cutl::createdir(dir_02);
+    cutl::createfile(file_02_01);
+
+    // 读写文件
+    cutl::writetext(file_02_01, "Hello, This is a test file.");
+    auto filesize = cutl::filesize(file_02_01);
+    std::cout << file_02_01 << "文件大小：" << filesize << ", 文件内容如下：" << std::endl;
+    std::cout << cutl::readtext(file_02_01) << std::endl;
+    std::cout << std::endl;
+
+    // 列出目录下的文件
+    std::cout << basedir << "目录文件列表：" << std::endl;
+    auto filelist = cutl::list_files(basedir, cutl::filetype::all, true);
+    for (auto& file : filelist)
+    {
+        std::cout << "[" << cutl::filetype_flag(file.type) << "] " << file.filepath << std::endl;
+    }
+    std::cout << std::endl;
+
+    // 复制文件
+    auto file_01_01 = dir_01.join("test_01.bak");
+    auto ret = cutl::copyfile(file_02_01, file_01_01, true);
+    std::cout << "拷贝文件 " << file_02_01 << " 到 " << file_01_01 << " "
+              << (ret ? "成功" : "失败") << std::endl;
+    // 复制文件夹
+    auto copyed_dir = cutl::path("./test_dir_copy");
+    ret = cutl::copydir(basedir, copyed_dir);
+    std::cout << "拷贝目录 " << basedir << " 到 " << copyed_dir << " " << (ret ? "成功" : "失败")
+              << std::endl;
+    std::cout << std::endl;
+
+    // 拷贝后文件列表
+    std::cout << copyed_dir << "拷贝后文件列表:" << std::endl;
+    auto copyed_filelist = cutl::list_files(copyed_dir, cutl::filetype::all, true);
+    for (auto& file : copyed_filelist)
+    {
+        std::cout << "[" << cutl::filetype_flag(file.type) << "] " << file.filepath << std::endl;
+    }
+    std::cout << std::endl;
+
+    // 删除文件夹
+    cutl::removedir(basedir, true);
+    cutl::removedir(copyed_dir, true);
+    std::cout << "所有目录已删除成功" << std::endl;
+}
+
 static const std::string kBaseDir = "./fileutil_test";
 static const std::string kTargetDir = "./fileutil_test_copy";
 
@@ -209,15 +277,16 @@ void TestCopyFileAndDir()
 
 void TestFileUtil()
 {
-    PrintTitle("fileutil");
+    // PrintTitle("fileutil");
 
+    test_fileutil();
     // TestGetCwd();
-    TestCreateFileAndDir();
-    TestReadAndWriteText();
-    TestCreateSymlink();
-    TestFilesizeAndDirsize();
-    TestListfile();
-    TestFindfile();
-    TestCopyFileAndDir();
+    // TestCreateFileAndDir();
+    // TestReadAndWriteText();
+    // TestCreateSymlink();
+    // TestFilesizeAndDirsize();
+    // TestListfile();
+    // TestFindfile();
+    // TestCopyFileAndDir();
     // TestRemoveFileAndDir();
 }
