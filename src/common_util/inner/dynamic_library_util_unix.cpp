@@ -7,17 +7,17 @@
 namespace cutl
 {
 
-handle_t load_library(const std::string& libname)
+dl_handle_t load_library(const std::string& libname)
 {
     return dlopen(libname.c_str(), RTLD_LAZY);
 }
 
-void* get_symbol_address(handle_t hDll, const std::string& symbol_name)
+void* get_symbol_address(dl_handle_t hDll, const std::string& symbol_name)
 {
     return dlsym(hDll, symbol_name.c_str());
 }
 
-int free_library(handle_t& hDll)
+int free_library(dl_handle_t hDll)
 {
     return dlclose(hDll);
 }

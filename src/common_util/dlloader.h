@@ -7,9 +7,9 @@ namespace cutl
 
 #if defined(_WIN32)
 #include <windows.h>
-typedef HMODULE dl_handle_t; /* WIN32 handle type */
+using dl_handle_t = HMODULE; /* WIN32 handle type */
 #else
-typedef void* dl_handle_t; /* UNIX handle type */
+using dl_handle_t = void*; /* UNIX handle type */
 #endif
 
 class dlloader
