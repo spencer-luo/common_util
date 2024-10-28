@@ -1,6 +1,7 @@
 #include "common.hpp"
 #include "config.hpp"
 #include "datetime.hpp"
+#include "dlloader.hpp"
 #include "filepath.hpp"
 #include "fileutil.hpp"
 #include "singleton.hpp"
@@ -22,9 +23,10 @@ int main(int argc, char *argv[])
     // TestTimecount();
     // TestDatetime();
     // TestVerUtil();
-    TestStrUtil();
+    // TestStrUtil();
     // TestFilePath();
     // TestFileUtil();
+    TestDlLoader();
 
     return 0;
 }
