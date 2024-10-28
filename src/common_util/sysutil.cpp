@@ -116,9 +116,8 @@ namespace cutl
     // https://blog.csdn.net/Frederick_Fung/article/details/115333125?utm_source=miniapp_weixin
     endian endian_type()
     {
-        int a = 1;
-        int *p = &a;
-        uint8_t *pBtye = (uint8_t *)p;
+        int a = 0x01;
+        uint8_t* pBtye = (uint8_t*)(&a);
         if (*pBtye == 1)
         {
             return endian::little;
