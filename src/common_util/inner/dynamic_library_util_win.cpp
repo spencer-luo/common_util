@@ -26,6 +26,7 @@ std::string get_last_error()
     std::string strErr;
     std::string str;
     std::strstream ss;
+    // 将返回的DWORD类型转换成std::string类型
     ss << GetLastError();
     ss >> str;
     strErr += str.c_str();
