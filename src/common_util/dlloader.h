@@ -23,6 +23,7 @@ public:
     dl_handle_t get_symbol(const std::string& symbol_name);
 
 private:
+    dl_handle_t library_handle_;
     std::map<std::string, void*> symbol_map_;
 };
 

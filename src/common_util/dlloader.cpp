@@ -7,7 +7,6 @@ namespace cutl
 
 dlloader::dlloader(const std::string& lib_path)
 {
-    // TODO
     library_handle_ = load_library(lib_path);
     if (!library_handle_)
     {
