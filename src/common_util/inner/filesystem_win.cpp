@@ -227,7 +227,7 @@ namespace cutl
 
     filetype get_file_type(DWORD attributes, const std::string &extension)
     {
-        filetype type = filetype::unknown;
+        filetype type = filetype::ft_unknown;
 
         if (attributes == INVALID_FILE_ATTRIBUTES)
         {
@@ -235,7 +235,7 @@ namespace cutl
             if (extension == ".lnk")
             {
                 // 注意：测试时发现，有些快捷方式访问会失败，用后缀名判断进行兜底
-                type = filetype::symlink;
+                type = filetype::ft_symlink;
             }
             return type;
         }
@@ -243,17 +243,17 @@ namespace cutl
         {
             if (attributes & FILE_ATTRIBUTE_DIRECTORY)
             {
-                type = filetype::directory; // directory
+                type = filetype::ft_directory; // directory
             }
             else if (attributes & FILE_ATTRIBUTE_NORMAL || attributes & FILE_ATTRIBUTE_READONLY)
             {
                 // 普通文件|只读文件
-                type = filetype::file; // regular file
+                type = filetype::ft_file; // regular file
             }
             else if ((attributes & FILE_ATTRIBUTE_ARCHIVE) && extension == ".lnk")
             {
                 // windows的快捷方式
-                type = filetype::symlink; // symbolic link
+                type = filetype::ft_symlink; // symbolic link
             }
         }
 

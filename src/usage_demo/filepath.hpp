@@ -8,13 +8,13 @@ void test_filepath()
     PrintSubTitle("test_filepath");
 
     auto path1 = cutl::path("/home/spencer/workspace/common_util/README.md");
-    std::cout << path1.str() << (path1.exists() ? "存在" : "不存在") << ", 是一个"
-              << (path1.isfile() ? "文件" : "文件夹") << std::endl;
-    std::cout << "父目录: " << path1.dirname() << std::endl;
-    std::cout << "文件名: " << path1.basename() << std::endl;
-    std::cout << "扩展名: " << path1.extension() << std::endl;
+    std::cout << path1.str() << (path1.exists() ? "exist" : "not exist") << ", this is a "
+              << (path1.isfile() ? "file" : "directory") << std::endl;
+    std::cout << "parent dir: " << path1.dirname() << std::endl;
+    std::cout << "file name: " << path1.basename() << std::endl;
+    std::cout << "extension: " << path1.extension() << std::endl;
     auto path2 = cutl::path(path1.dirname()).join("LICENSE");
-    std::cout << "LICENSE文件的路径: " << path2 << std::endl;
+    std::cout << "LICENSE file path: " << path2 << std::endl;
 }
 
 void TestConstructor()

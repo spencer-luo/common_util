@@ -127,17 +127,17 @@ namespace cutl
 
     bool filepath::isfile() const
     {
-        return type() == filetype::file;
+        return type() == filetype::ft_file;
     }
 
     bool filepath::isdir() const
     {
-        return type() == filetype::directory;
+        return type() == filetype::ft_directory;
     }
 
     bool filepath::issymlink() const
     {
-        return type() == filetype::symlink;
+        return type() == filetype::ft_symlink;
     }
 
     std::string filepath::dirname() const

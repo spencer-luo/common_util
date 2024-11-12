@@ -7,8 +7,10 @@ void TestDlLoader()
 {
     PrintTitle("TestDlLoader");
 
+    // auto so_path =
+    //   "/home/spencer/workspace/sdk_dev_guide/src/best_practice/unix/cpp_util/libutil.so";
     auto so_path =
-      "/home/spencer/workspace/sdk_dev_guide/src/best_practice/unix/cpp_util/libutil.so";
+      R"(D:\workspace\sdk_dev_guide\src\best_practice\vs_project_best_practice\Debug\cpp_util.dll)";
     cutl::dlloader soloader(so_path);
 
     typedef int (*MathFun)(int, int);

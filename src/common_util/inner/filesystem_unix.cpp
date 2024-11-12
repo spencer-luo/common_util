@@ -208,35 +208,35 @@ namespace cutl
 
     filetype get_file_type(int mode)
     {
-        filetype type = filetype::unknown;
+        filetype type = filetype::ft_unknown;
         if (S_ISBLK(mode))
         {
-            type = filetype::block_special;
+            type = filetype::ft_block_special;
         }
         else if (S_ISCHR(mode))
         {
-            type = filetype::char_special;
+            type = filetype::ft_char_special;
         }
         else if (S_ISDIR(mode))
         {
-            type = filetype::directory;
+            type = filetype::ft_directory;
         }
         else if (S_ISFIFO(mode))
         {
-            type = filetype::pipefifo;
+            type = filetype::ft_pipefifo;
         }
 
         else if (S_ISLNK(mode))
         {
-            type = filetype::symlink;
+            type = filetype::ft_symlink;
         }
         else if (S_ISREG(mode))
         {
-            type = filetype::file;
+            type = filetype::ft_file;
         }
         else if (S_ISSOCK(mode))
         {
-            type = filetype::socket;
+            type = filetype::ft_socket;
         }
         return type;
     }
@@ -296,7 +296,7 @@ namespace cutl
         if (0 != ret)
         {
             CUTL_ERROR("stat error. filepath:" + filepath + ", error:" + strerror(errno));
-            return filetype::unknown;
+            return filetype::ft_unknown;
         }
 
         return get_file_type(file_stat.st_mode);

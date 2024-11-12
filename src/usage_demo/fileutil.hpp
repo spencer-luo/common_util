@@ -32,13 +32,13 @@ void test_fileutil()
     // 读写文件
     cutl::writetext(file_02_01, "Hello, This is a test file.");
     auto filesize = cutl::filesize(file_02_01);
-    std::cout << file_02_01 << "文件大小：" << filesize << ", 文件内容如下：" << std::endl;
+    std::cout << file_02_01 << "filesize:" << filesize << ", content:" << std::endl;
     std::cout << cutl::readtext(file_02_01) << std::endl;
     std::cout << std::endl;
 
     // 列出目录下的文件
-    std::cout << basedir << "目录文件列表：" << std::endl;
-    auto filelist = cutl::list_files(basedir, cutl::filetype::all, true);
+    std::cout << basedir << "file/dir list:" << std::endl;
+    auto filelist = cutl::list_files(basedir, cutl::filetype::ft_all, true);
     for (auto& file : filelist)
     {
         std::cout << "[" << cutl::filetype_flag(file.type) << "] " << file.filepath << std::endl;
@@ -48,18 +48,18 @@ void test_fileutil()
     // 复制文件
     auto file_01_01 = dir_01.join("test_01.bak");
     auto ret = cutl::copyfile(file_02_01, file_01_01, true);
-    std::cout << "拷贝文件 " << file_02_01 << " 到 " << file_01_01 << " "
-              << (ret ? "成功" : "失败") << std::endl;
+    std::cout << "copy file from " << file_02_01 << " to " << file_01_01 << " "
+              << (ret ? "success" : "failed") << std::endl;
     // 复制文件夹
     auto copyed_dir = cutl::path("./test_dir_copy");
     ret = cutl::copydir(basedir, copyed_dir);
-    std::cout << "拷贝目录 " << basedir << " 到 " << copyed_dir << " " << (ret ? "成功" : "失败")
-              << std::endl;
+    std::cout << "copy dir from " << basedir << " to " << copyed_dir << " "
+              << (ret ? "success" : "failed") << std::endl;
     std::cout << std::endl;
 
     // 拷贝后文件列表
-    std::cout << copyed_dir << "拷贝后文件列表:" << std::endl;
-    auto copyed_filelist = cutl::list_files(copyed_dir, cutl::filetype::all, true);
+    std::cout << copyed_dir << "copied file/dir list:" << std::endl;
+    auto copyed_filelist = cutl::list_files(copyed_dir, cutl::filetype::ft_all, true);
     for (auto& file : copyed_filelist)
     {
         std::cout << "[" << cutl::filetype_flag(file.type) << "] " << file.filepath << std::endl;
@@ -69,7 +69,7 @@ void test_fileutil()
     // 删除文件夹
     cutl::removedir(basedir, true);
     cutl::removedir(copyed_dir, true);
-    std::cout << "所有目录已删除成功" << std::endl;
+    std::cout << "all dir is removed" << std::endl;
 }
 
 static const std::string kBaseDir = "./fileutil_test";
@@ -219,19 +219,19 @@ void TestListfile()
     PrintFileList(fileList);
 
     std::cout << "List all files in current directory:" << std::endl;
-    fileList = cutl::list_files(basedir, cutl::filetype::file);
+    fileList = cutl::list_files(basedir, cutl::filetype::ft_file);
     PrintFileList(fileList);
 
     std::cout << "List all files/dirs in directory by recursive:" << std::endl;
-    fileList = cutl::list_files(basedir, cutl::filetype::all, true);
+    fileList = cutl::list_files(basedir, cutl::filetype::ft_all, true);
     PrintFileList(fileList);
 
     std::cout << "List all files in directory by recursive:" << std::endl;
-    fileList = cutl::list_files(basedir, cutl::filetype::file, true);
+    fileList = cutl::list_files(basedir, cutl::filetype::ft_file, true);
     PrintFileList(fileList);
 
     std::cout << "List all dirs in directory by recursive:" << std::endl;
-    fileList = cutl::list_files(basedir, cutl::filetype::directory, true);
+    fileList = cutl::list_files(basedir, cutl::filetype::ft_directory, true);
     PrintFileList(fileList);
 }
 
