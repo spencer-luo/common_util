@@ -32,15 +32,11 @@ namespace cutl
     std::string filetype_flag(filetype type)
     {
         static std::map<filetype, std::string> flag_map = {
-            {filetype::unknown, "u"},
-            {filetype::directory, "d"},
-            {filetype::file, "-"},
-            {filetype::symlink, "l"},
-            {filetype::char_special, "c"},
-            {filetype::block_special, "b"},
-            {filetype::pipefifo, "p"},
-            {filetype::socket, "s"},
-            {filetype::all, "a"},
+            { filetype::ft_unknown, "u" },   { filetype::ft_directory, "d" },
+            { filetype::ft_file, "-" },      { filetype::ft_symlink, "l" },
+            { filetype::ft_char_special, "c" }, { filetype::ft_block_special, "b" },
+            { filetype::ft_pipefifo, "p" },     { filetype::ft_socket, "s" },
+            { filetype::ft_all, "a" },
         };
 
         auto itr = flag_map.find(type);
@@ -304,11 +300,11 @@ namespace cutl
 
     filevec find_files(const filepath &dirpath, const std::string &name, bool recursive)
     {
-        filevec filelist = list_files(dirpath, filetype::all, recursive);
+        filevec filelist = list_files(dirpath, filetype::ft_all, recursive);
         filevec result;
         for (auto &file : filelist)
         {
-            if (file.type == filetype::directory)
+            if (file.type == filetype::ft_directory)
             {
                 continue;
             }
@@ -323,11 +319,11 @@ namespace cutl
 
     filevec find_files_by_extension(const filepath &dirpath, const std::string &extension, bool recursive)
     {
-        filevec filelist = list_files(dirpath, filetype::all, recursive);
+        filevec filelist = list_files(dirpath, filetype::ft_all, recursive);
         filevec result;
         for (auto &file : filelist)
         {
-            if (file.type == filetype::directory)
+            if (file.type == filetype::ft_directory)
             {
                 continue;
             }
@@ -440,7 +436,7 @@ namespace cutl
             return false;
         }
 
-        auto filelist = list_files(srcdir, filetype::all, true);
+        auto filelist = list_files(srcdir, filetype::ft_all, true);
         for (size_t i = 0; i < filelist.size(); i++)
         {
             auto file = filelist[i];
@@ -448,14 +444,14 @@ namespace cutl
             auto reletive_path = src_file.substr(srcdir.str().length() + 1);
             auto dstpath = dstdir.join(reletive_path);
             auto srcpath = cutl::path(src_file);
-            if (file.type == filetype::file || file.type == filetype::symlink)
+            if (file.type == filetype::ft_file || file.type == filetype::ft_symlink)
             {
                 if (!copyfile(srcpath, dstpath, true))
                 {
                     return false;
                 }
             }
-            else if (file.type == filetype::directory)
+            else if (file.type == filetype::ft_directory)
             {
                 if (!createdir(dstpath, true))
                 {

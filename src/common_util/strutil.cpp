@@ -20,6 +20,7 @@
 #include "inner/string_util.h"
 #include <algorithm>
 #include <cctype>
+#include <locale>
 
 namespace cutl
 {

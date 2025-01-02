@@ -37,7 +37,9 @@ namespace cutl
     uint64_t get_dirsize(const std::string &dirpath);
 
     filetype get_file_type(const std::string &filepath);
-    filevec list_sub_files(const std::string &dirpath, filetype type = filetype::all, bool recursive = false);
+    filevec list_sub_files(const std::string& dirpath,
+                           filetype type = filetype::ft_all,
+                           bool recursive = false);
 
     // 拷贝文件/文件夹的属性，isdir参数只在windows下生效,Unix-like系统下不起作用
     bool copy_attributes(const std::string &srcpath, const std::string &dstpath, bool isdir = false);

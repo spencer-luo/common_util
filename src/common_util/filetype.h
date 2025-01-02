@@ -37,23 +37,23 @@ namespace cutl
     enum filetype
     {
         /** undefined */
-        unknown = 0x00,
+        ft_unknown = 0x00,
         /** directory */
-        directory = 0x01,
+        ft_directory = 0x01,
         /** regular file */
-        file = 0x02,
+        ft_file = 0x02,
         /** symbolic link */
-        symlink = 0x04,
+        ft_symlink = 0x04,
         /** character device, only for unix */
-        char_special = 0x08,
+        ft_char_special = 0x08,
         /** block device, only for unix */
-        block_special = 0x10,
+        ft_block_special = 0x10,
         /** named pipe, only for unix */
-        pipefifo = 0x20,
+        ft_pipefifo = 0x20,
         /** socket file, only for unix */
-        socket = 0x40,
+        ft_socket = 0x40,
         /** type mask, includes all types */
-        all = 0xFF,
+        ft_all = 0xFF,
     };
 
     /**
@@ -63,7 +63,7 @@ namespace cutl
     struct file_entity
     {
         /** file type */
-        filetype type = {filetype::unknown};
+        filetype type = { filetype::ft_unknown };
         /** file path */
         std::string filepath;
     };

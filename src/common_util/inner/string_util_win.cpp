@@ -1,10 +1,10 @@
-#if defined(_WIN32) || defined(__WIN32__)
+#if defined(_WIN32)
 
+#include "inner/logger.h"
 #include "string_util.h"
-
 #include <cstdlib>
-// #include <string.h>
 #include <string>
+
 namespace cutl
 {
 
@@ -17,7 +17,7 @@ std::string wstring2string(const std::wstring& ws)
     errno_t ret = wcstombs_s(&convertedChars, chDest, nDestSize, ws.c_str(), _TRUNCATE);
     if (ret != 0)
     {
-        std::cerr << "wcstombs_s error, ret:" << ret << std::endl;
+        CUTL_ERROR("wcstombs_s error, ret:" + ret);
     }
 
     std::string strResult = chDest;
@@ -34,7 +34,7 @@ std::wstring string2wstring(const std::string& s)
     errno_t ret = mbstowcs_s(&convertedChars, wchDest, nDestSize, s.c_str(), _TRUNCATE);
     if (ret != 0)
     {
-        std::cerr << "mbstowcs_s error, ret:" << ret << std::endl;
+        CUTL_ERROR("mbstowcs_s error, ret:" + ret);
     }
 
     std::wstring wstrResult = wchDest;
@@ -44,4 +44,4 @@ std::wstring string2wstring(const std::string& s)
 
 } // namespace cutl
 
-#endif // defined(_WIN32) || defined(__WIN32__)
+#endif // defined(_WIN32)

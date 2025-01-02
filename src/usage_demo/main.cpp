@@ -1,6 +1,7 @@
 #include "common.hpp"
 #include "config.hpp"
 #include "datetime.hpp"
+#include "dlloader.hpp"
 #include "filepath.hpp"
 #include "fileutil.hpp"
 #include "singleton.hpp"
@@ -13,7 +14,7 @@
 
 int main(int argc, char *argv[])
 {
-    // LibraryInit();
+    LibraryInit();
     // TestSingleton();
     // std::cout << "test done" << std::endl;
     // TestSysutil();
@@ -25,6 +26,7 @@ int main(int argc, char *argv[])
     TestStrUtil();
     // TestFilePath();
     // TestFileUtil();
+    TestDlLoader();
 
     return 0;
 }
