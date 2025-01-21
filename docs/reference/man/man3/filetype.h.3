@@ -7,9 +7,9 @@ src/common_util/filetype.h \- Define the structs about fileutil, such as filetyp
 .SH SYNOPSIS
 .br
 .PP
-\fR#include <vector>\fP
+\fC#include <vector>\fP
 .br
-\fR#include <string>\fP
+\fC#include <string>\fP
 .br
 
 .SS "Classes"
@@ -24,7 +24,7 @@ src/common_util/filetype.h \- Define the structs about fileutil, such as filetyp
 
 .in +1c
 .ti -1c
-.RI "using \fBcutl::filevec\fP = std::vector<\fBfile_entity\fP>"
+.RI "using \fBcutl::filevec\fP = std::vector< \fBfile_entity\fP >"
 .br
 .RI "The vector of \fBfile_entity\fP\&. "
 .in -1c
@@ -32,7 +32,7 @@ src/common_util/filetype.h \- Define the structs about fileutil, such as filetyp
 
 .in +1c
 .ti -1c
-.RI "enum \fBcutl::filetype\fP { \fBcutl::unknown\fP = 0x00, \fBcutl::directory\fP = 0x01, \fBcutl::file\fP = 0x02, \fBcutl::symlink\fP = 0x04, \fBcutl::char_special\fP = 0x08, \fBcutl::block_special\fP = 0x10, \fBcutl::pipefifo\fP = 0x20, \fBcutl::socket\fP = 0x40, \fBcutl::all\fP = 0xFF }"
+.RI "enum \fBcutl::filetype\fP { \fBcutl::ft_unknown\fP = 0x00, \fBcutl::ft_directory\fP = 0x01, \fBcutl::ft_file\fP = 0x02, \fBcutl::ft_symlink\fP = 0x04, \fBcutl::ft_char_special\fP = 0x08, \fBcutl::ft_block_special\fP = 0x10, \fBcutl::ft_pipefifo\fP = 0x20, \fBcutl::ft_socket\fP = 0x40, \fBcutl::ft_all\fP = 0xFF }"
 .br
 .RI "The type of file\&. "
 .in -1c
@@ -85,31 +85,31 @@ The type of file\&.
 \fBEnumerator\fP
 .in +1c
 .TP
-\fB\fIunknown \fP\fP
+\fB\fIft_unknown \fP\fP
 undefined 
 .TP
-\fB\fIdirectory \fP\fP
+\fB\fIft_directory \fP\fP
 directory 
 .TP
-\fB\fIfile \fP\fP
+\fB\fIft_file \fP\fP
 regular file 
 .TP
-\fB\fIsymlink \fP\fP
+\fB\fIft_symlink \fP\fP
 symbolic link 
 .TP
-\fB\fIchar_special \fP\fP
+\fB\fIft_char_special \fP\fP
 character device, only for unix 
 .TP
-\fB\fIblock_special \fP\fP
+\fB\fIft_block_special \fP\fP
 block device, only for unix 
 .TP
-\fB\fIpipefifo \fP\fP
+\fB\fIft_pipefifo \fP\fP
 named pipe, only for unix 
 .TP
-\fB\fIsocket \fP\fP
+\fB\fIft_socket \fP\fP
 socket file, only for unix 
 .TP
-\fB\fIall \fP\fP
+\fB\fIft_all \fP\fP
 type mask, includes all types 
 .SH "Author"
 .PP 

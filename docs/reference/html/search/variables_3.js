@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['max_5fpath_5flen_0',['MAX_PATH_LEN',['../filetype_8h.html#a7c0e573c7e0cd198d3119f6c41afe740',1,'cutl']]],
-  ['min_1',['min',['../classcutl_1_1datetime.html#a2715f00996ee150322771d662f4513de',1,'cutl::datetime']]]
+  ['filepath_0',['filepath',['../structcutl_1_1file__entity.html#aa0e3fea1b1db91bd27adadefb745adc8',1,'cutl::file_entity']]],
+  ['fuschia_1',['fuschia',['../classcutl_1_1color__argb.html#abd10e0eaff8dc47c9e02d6e0c5cf6530',1,'cutl::color_argb']]]
 ];

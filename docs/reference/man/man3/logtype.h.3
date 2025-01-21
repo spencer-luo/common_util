@@ -7,16 +7,16 @@ src/common_util/logtype.h \- Defines the log level and log function type\&.
 .SH SYNOPSIS
 .br
 .PP
-\fR#include <string>\fP
+\fC#include <string>\fP
 .br
-\fR#include <functional>\fP
+\fC#include <functional>\fP
 .br
 
 .SS "Typedefs"
 
 .in +1c
 .ti -1c
-.RI "using \fBcutl::LogFuncType\fP = std::function<void(\fBloglevel\fP, const std::string &)>"
+.RI "using \fBcutl::LogFuncType\fP = std::function< void(\fBloglevel\fP, const std::string &)>"
 .br
 .RI "The type of log function\&. "
 .in -1c
@@ -61,7 +61,7 @@ spencer\&.luo
 
 .SH "Typedef Documentation"
 .PP 
-.SS "using \fBcutl::LogFuncType\fP = std::function<void(loglevel, const std::string &)>"
+.SS "using \fBcutl::LogFuncType\fP = typedef std::function<void(loglevel, const std::string &)>"
 
 .PP
 The type of log function\&. 
@@ -81,7 +81,7 @@ void
 
 .SH "Enumeration Type Documentation"
 .PP 
-.SS "enum class \fBcutl::loglevel\fP\fR [strong]\fP"
+.SS "enum class \fBcutl::loglevel\fP\fC [strong]\fP"
 
 .PP
 The type of log level\&. 

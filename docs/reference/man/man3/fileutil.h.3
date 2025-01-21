@@ -7,13 +7,15 @@ src/common_util/fileutil.h \- The functions and classes about filesystem, such a
 .SH SYNOPSIS
 .br
 .PP
-\fR#include <string>\fP
+\fC#include <string>\fP
 .br
-\fR#include <cstdio>\fP
+\fC#include <cstdio>\fP
 .br
-\fR#include 'filetype\&.h'\fP
+\fC#include <cstdint>\fP
 .br
-\fR#include 'filepath\&.h'\fP
+\fC#include 'filetype\&.h'\fP
+.br
+\fC#include 'filepath\&.h'\fP
 .br
 
 .SS "Classes"
@@ -68,7 +70,7 @@ src/common_util/fileutil.h \- The functions and classes about filesystem, such a
 .br
 .RI "Get the size of a directory, include all files and subdirectories\&. "
 .ti -1c
-.RI "\fBfilevec\fP \fBcutl::list_files\fP (const \fBfilepath\fP &dirpath, \fBfiletype\fP type=\fBfiletype::all\fP, bool recursive=false)"
+.RI "\fBfilevec\fP \fBcutl::list_files\fP (const \fBfilepath\fP &dirpath, \fBfiletype\fP type=\fBfiletype::ft_all\fP, bool recursive=false)"
 .br
 .RI "List all files in a directory\&. "
 .ti -1c
@@ -144,7 +146,7 @@ If the destination directory already exists, it will be overwritten\&.
 .RE
 .PP
 
-.SS "bool cutl::copyfile (const \fBfilepath\fP & srcpath, const \fBfilepath\fP & dstpath, bool attributes = \fRfalse\fP)"
+.SS "bool cutl::copyfile (const \fBfilepath\fP & srcpath, const \fBfilepath\fP & dstpath, bool attributes = \fCfalse\fP)"
 
 .PP
 Copy a file or symbolic link(shortcut on windows)\&. 
@@ -174,7 +176,7 @@ false
 .RE
 .PP
 
-.SS "bool cutl::createdir (const \fBfilepath\fP & path, bool recursive = \fRfalse\fP)"
+.SS "bool cutl::createdir (const \fBfilepath\fP & path, bool recursive = \fCfalse\fP)"
 
 .PP
 Create a new directory\&. 
@@ -242,7 +244,7 @@ the total size of the directory in bytes
 .RE
 .PP
 
-.SS "uint64_t cutl::filesize (const \fBfilepath\fP & filepath, bool link_target = \fRfalse\fP)"
+.SS "uint64_t cutl::filesize (const \fBfilepath\fP & filepath, bool link_target = \fCfalse\fP)"
 
 .PP
 Get the size of a file\&. 
@@ -281,7 +283,7 @@ the flag string of the file type
 .RE
 .PP
 
-.SS "filevec cutl::find_files (const \fBfilepath\fP & dirpath, const std::string & name, bool recursive = \fRfalse\fP)"
+.SS "filevec cutl::find_files (const \fBfilepath\fP & dirpath, const std::string & name, bool recursive = \fCfalse\fP)"
 
 .PP
 Find all files in a directory by name\&. 
@@ -301,7 +303,7 @@ filevec the vector of file_entity, filepaths in the directory\&.
 .RE
 .PP
 
-.SS "filevec cutl::find_files_by_extension (const \fBfilepath\fP & dirpath, const std::string & extension, bool recursive = \fRfalse\fP)"
+.SS "filevec cutl::find_files_by_extension (const \fBfilepath\fP & dirpath, const std::string & extension, bool recursive = \fCfalse\fP)"
 
 .PP
 Find all files in a directory by extension\&. 
@@ -321,7 +323,7 @@ filevec the vector of file_entity, filepaths in the directory\&.
 .RE
 .PP
 
-.SS "filevec cutl::list_files (const \fBfilepath\fP & dirpath, \fBfiletype\fP type = \fR\fBfiletype::all\fP\fP, bool recursive = \fRfalse\fP)"
+.SS "filevec cutl::list_files (const \fBfilepath\fP & dirpath, \fBfiletype\fP type = \fC\fBfiletype::ft_all\fP\fP, bool recursive = \fCfalse\fP)"
 
 .PP
 List all files in a directory\&. 
@@ -341,7 +343,7 @@ filevec the vector of file_entity, filepaths in the directory\&.
 .RE
 .PP
 
-.SS "std::string cutl::readtext (const \fBfilepath\fP & path, uint64_t max_read_size = \fR4096\fP)"
+.SS "std::string cutl::readtext (const \fBfilepath\fP & path, uint64_t max_read_size = \fC4096\fP)"
 
 .PP
 Read the text content of a file\&. 
@@ -361,7 +363,7 @@ text content of the file
 .RE
 .PP
 
-.SS "bool cutl::removedir (const \fBfilepath\fP & path, bool recursive = \fRfalse\fP)"
+.SS "bool cutl::removedir (const \fBfilepath\fP & path, bool recursive = \fCfalse\fP)"
 
 .PP
 Remove a directory\&. 

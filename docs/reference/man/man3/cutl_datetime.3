@@ -8,7 +8,7 @@ cutl::datetime \- A simple, feature-rich modern C++ date-time class\&.
 .br
 .PP
 .PP
-\fR#include <datetime\&.h>\fP
+\fC#include <datetime\&.h>\fP
 .SS "Public Member Functions"
 
 .in +1c
@@ -126,7 +126,7 @@ Construct a new datetime object\&.
 
 .SH "Member Function Documentation"
 .PP 
-.SS "std::string cutl::datetime::format (const std::string & fmt, bool local = \fRtrue\fP, bool show_milliseconds = \fRtrue\fP) const"
+.SS "std::string cutl::datetime::format (const std::string & fmt, bool local = \fCtrue\fP, bool show_milliseconds = \fCtrue\fP) const"
 
 .PP
 Format the datetime object to a string with a custom format string\&. 
@@ -146,7 +146,7 @@ formatted datetime string described by std::string
 .RE
 .PP
 
-.SS "std::string cutl::datetime::format (\fBdatetime_format\fP dfmt = \fR\fBdatetime_format::datetime_format_a\fP\fP, bool local = \fRtrue\fP, bool show_milliseconds = \fRtrue\fP) const"
+.SS "std::string cutl::datetime::format (\fBdatetime_format\fP dfmt = \fC\fBdatetime_format::datetime_format_a\fP\fP, bool local = \fCtrue\fP, bool show_milliseconds = \fCtrue\fP) const"
 
 .PP
 format the datetime object to a string 
@@ -166,7 +166,7 @@ formatted datetime string described by std::string
 .RE
 .PP
 
-.SS "static \fBdatetime\fP cutl::datetime::get (const std::string & time_text, int isdst = \fR\-1\fP)\fR [static]\fP"
+.SS "static \fBdatetime\fP cutl::datetime::get (const std::string & time_text, int isdst = \fC\-1\fP)\fC [static]\fP"
 
 .PP
 Constructs a datetime object from a local time string\&. Only the following time formats are supported:
@@ -202,7 +202,7 @@ datetime object constructed from the local time string
 
 .PP
 
-.SS "static \fBdatetime\fP cutl::datetime::now ()\fR [static]\fP"
+.SS "static \fBdatetime\fP cutl::datetime::now ()\fC [static]\fP"
 
 .PP
 Get a datetime object for the current system time\&. 
@@ -320,7 +320,7 @@ the timestamp in milliseconds
 .RE
 .PP
 
-.SS "std::string cutl::datetime::utctime () const\fR [inline]\fP"
+.SS "std::string cutl::datetime::utctime () const\fC [inline]\fP"
 
 .PP
 Get the string of UTC time described by datetime object\&. 
