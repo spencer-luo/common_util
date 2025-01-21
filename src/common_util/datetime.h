@@ -28,7 +28,7 @@
 namespace cutl
 {
     /**
-     * @brief the string datetime format for parsing and formatting
+     * @brief The string datetime format for parsing and formatting
      *
      */
     enum class datetime_format
