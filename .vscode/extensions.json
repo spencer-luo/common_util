@@ -1,13 +1,14 @@
 {
    "recommendations": [
-      "ms-vscode.cpptools-extension-pack",
-      "ms-vscode.cpptools",
-      "ms-vscode.cpptools-themes",
-      "twxs.cmake",
-      "ms-vscode.cmake-tools",
-      "xaver.clang-format",
-      "hars.cppsnippets",
-      "qiumingge.cpp-check-lint",
-      "tostc.vscl"
+     "ms-vscode.cpptools-extension-pack",
+     "ms-vscode.cpptools",
+     "ms-vscode.cpptools-themes",
+     "twxs.cmake",
+     "ms-vscode.cmake-tools",
+     "xaver.clang-format",
+     "hars.cppsnippets",
+     "qiumingge.cpp-check-lint",
+     "tostc.vscl",
+     "cschlosser.doxdocgen"
    ]
 }
