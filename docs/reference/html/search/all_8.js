@@ -1,4 +1,30 @@
 var searchData=
 [
-  ['9_20设计特点_0',['9. 设计特点',['../index.html#autotoc_md58',1,'']]]
+  ['cache_0',['cache',['../md_docs_2quick__start_2english_202_8build__library.html#autotoc_md15',1,'1.1.4. Clean Cache'],['../md_docs_2quick__start_2english_202_8build__library.html#autotoc_md19',1,'1.2.3. Clean Cache']]],
+  ['callcmd_1',['callcmd',['../sysutil_8h.html#a0f0fd47694016b4a0904702508edf58d',1,'cutl']]],
+  ['clean_20cache_2',['clean cache',['../md_docs_2quick__start_2english_202_8build__library.html#autotoc_md15',1,'1.1.4. Clean Cache'],['../md_docs_2quick__start_2english_202_8build__library.html#autotoc_md19',1,'1.2.3. Clean Cache']]],
+  ['clocktime_3',['clocktime',['../timeutil_8h.html#a138f4ea5f89d12e1660b79877e8d5aa8',1,'cutl']]],
+  ['cmake_4',['cmake',['../md_docs_2quick__start_2english_201_8preparation.html#autotoc_md3',1,'1.1.2. Install CMake'],['../md_docs_2quick__start_2english_201_8preparation.html#autotoc_md6',1,'1.2.2. Install CMake'],['../md_docs_2quick__start_2english_201_8preparation.html#autotoc_md9',1,'1.3.2. Install CMake']]],
+  ['code_5',['1.1. Source code',['../index.html#autotoc_md51',1,'']]],
+  ['collaborate_6',['1.6. Welcome to Collaborate',['../index.html#autotoc_md56',1,'']]],
+  ['color_2eh_7',['color.h',['../color_8h.html',1,'']]],
+  ['color_5fargb_8',['color_argb',['../classcutl_1_1color__argb.html',1,'cutl::color_argb'],['../classcutl_1_1color__argb.html#acc8131ba1a8cd731e41e7486a1acb57f',1,'cutl::color_argb::color_argb()'],['../classcutl_1_1color__argb.html#acf3f6d059a6220e37f63d3bed2668148',1,'cutl::color_argb::color_argb(uint32_t value)'],['../classcutl_1_1color__argb.html#aa15616c4a69853e337fd4a473cc9dd61',1,'cutl::color_argb::color_argb(uint8_t r, uint8_t g, uint8_t b)'],['../classcutl_1_1color__argb.html#aa98b175a8265c2240eb133f3142603b4',1,'cutl::color_argb::color_argb(uint8_t a, uint8_t r, uint8_t g, uint8_t b)']]],
+  ['common_5futil_9',['common_util',['../index.html',1,'']]],
+  ['common_5futil_2eh_10',['common_util.h',['../common__util_8h.html',1,'']]],
+  ['compare_5fversion_11',['compare_version',['../verutil_8h.html#a4dd7764301751d990dc86c906c93d5d5',1,'cutl']]],
+  ['compilation_12',['compilation',['../md_docs_2quick__start_2english_202_8build__library.html#autotoc_md13',1,'1.1.2. Compilation'],['../md_docs_2quick__start_2english_202_8build__library.html#autotoc_md17',1,'1.2.1. Compilation']]],
+  ['compile_13',['1.2.1. Install GCC Compile',['../md_docs_2quick__start_2english_201_8preparation.html#autotoc_md5',1,'']]],
+  ['compiler_14',['1.3.1. Install GCC Compiler',['../md_docs_2quick__start_2english_201_8preparation.html#autotoc_md8',1,'']]],
+  ['config_2eh_15',['config.h',['../config_8h.html',1,'']]],
+  ['copydir_16',['copydir',['../fileutil_8h.html#afa2d5fd4752b0b76ffcf5b3307800a9c',1,'cutl']]],
+  ['copyfile_17',['copyfile',['../fileutil_8h.html#a001077c7cc1071c8871ca7b338face04',1,'cutl']]],
+  ['cpp_5fstl_5fversion_18',['cpp_stl_version',['../sysutil_8h.html#a259f8f05fd841bc3c0c225e0c3936fae',1,'cutl']]],
+  ['createdir_19',['createdir',['../fileutil_8h.html#add3d8ef4215ce8d54c9dbe18dd35c82b',1,'cutl']]],
+  ['createfile_20',['createfile',['../fileutil_8h.html#a1e27df14bf44381e7e0a20e4c573d4f5',1,'cutl']]],
+  ['createlink_21',['createlink',['../fileutil_8h.html#a08d521298f87d3470d3163928d3cb1f1',1,'cutl']]],
+  ['cutl_5fcopy_5fand_5fassign_22',['CUTL_COPY_AND_ASSIGN',['../singleton_8h.html#a8f0365b2a51b6cd09037b83c5df250d7',1,'singleton.h']]],
+  ['cutl_5fsingleton_5fptr_23',['CUTL_SINGLETON_PTR',['../singleton_8h.html#a955faef8343c1603d8acb2b46572e7c9',1,'singleton.h']]],
+  ['cutl_5fsingleton_5fptr_5fdefault_5fctor_24',['CUTL_SINGLETON_PTR_DEFAULT_CTOR',['../singleton_8h.html#a18256d54de956ff9be4d6887354737d5',1,'singleton.h']]],
+  ['cutl_5fsingleton_5fref_25',['CUTL_SINGLETON_REF',['../singleton_8h.html#ae6202f16d5076942a5a57bd3feea2d1e',1,'singleton.h']]],
+  ['cutl_5fsingleton_5fref_5fdefault_5fctor_26',['CUTL_SINGLETON_REF_DEFAULT_CTOR',['../singleton_8h.html#a4b31c1f99744b5d01441b61e30f4903c',1,'singleton.h']]]
 ];
