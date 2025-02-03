@@ -7,16 +7,16 @@ src/common_util/strutil.h \- Common string utilities\&.
 .SH SYNOPSIS
 .br
 .PP
-\fR#include <string>\fP
+\fC#include <string>\fP
 .br
-\fR#include <vector>\fP
+\fC#include <vector>\fP
 .br
 
 .SS "Typedefs"
 
 .in +1c
 .ti -1c
-.RI "using \fBcutl::strvec\fP = std::vector<std::string>"
+.RI "using \fBcutl::strvec\fP = std::vector< std::string >"
 .br
 .RI "The type of vector strings used in this library\&. "
 .in -1c
@@ -63,6 +63,14 @@ src/common_util/strutil.h \- Common string utilities\&.
 .RI "std::string \fBcutl::desensitizing\fP (const std::string &str)"
 .br
 .RI "Desensitizing a string by replacing some characters with '*'\&. "
+.ti -1c
+.RI "std::string \fBcutl::ws2s\fP (const std::wstring &ws, const std::string &locale='')"
+.br
+.RI "Convert a wide string to a string\&. "
+.ti -1c
+.RI "std::wstring \fBcutl::s2ws\fP (const std::string &\fBs\fP, const std::string &locale='')"
+.br
+.RI "Convert a string to a wide string\&. "
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -113,7 +121,7 @@ std::string the desensitized string\&.
 .RE
 .PP
 
-.SS "bool cutl::ends_with (const std::string & str, const std::string & end, bool ignoreCase = \fRfalse\fP)"
+.SS "bool cutl::ends_with (const std::string & str, const std::string & end, bool ignoreCase = \fCfalse\fP)"
 
 .PP
 Check if a string ends with a given substring\&. 
@@ -133,7 +141,7 @@ true if the string ends with the substring, false otherwise\&.
 .RE
 .PP
 
-.SS "std::string cutl::join (const \fBstrvec\fP & strlist, const std::string & separator = \fR''\fP)"
+.SS "std::string cutl::join (const \fBstrvec\fP & strlist, const std::string & separator = \fC''\fP)"
 
 .PP
 Join a vector of strings into a single string using a given separator\&. 
@@ -183,6 +191,24 @@ std::string the stripped string\&.
 .RE
 .PP
 
+.SS "std::wstring cutl::s2ws (const std::string & s, const std::string & locale = \fC''\fP)"
+
+.PP
+Convert a string to a wide string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIs\fP the string to be converted\&. 
+.br
+\fIlocale\fP the locale used to convert the string, default is ''\&. the locale parameter is reference to setlocale() 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::wstring the converted wide string\&. 
+.RE
+.PP
+
 .SS "strvec cutl::split (const std::string & str, const std::string & separator)"
 
 .PP
@@ -201,7 +227,7 @@ strvec the vector of substrings\&.
 .RE
 .PP
 
-.SS "bool cutl::starts_with (const std::string & str, const std::string & start, bool ignoreCase = \fRfalse\fP)"
+.SS "bool cutl::starts_with (const std::string & str, const std::string & start, bool ignoreCase = \fCfalse\fP)"
 
 .PP
 Check if a string starts with a given substring\&. 
@@ -261,6 +287,24 @@ Convert a string to upper case\&.
 \fBParameters\fP
 .RS 4
 \fIstr\fP the string to be converted\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+std::string the converted string\&. 
+.RE
+.PP
+
+.SS "std::string cutl::ws2s (const std::wstring & ws, const std::string & locale = \fC''\fP)"
+
+.PP
+Convert a wide string to a string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIws\fP the wide string to be converted\&. 
+.br
+\fIlocale\fP the locale used to convert the wide string, default is ''\&. the locale parameter is reference to setlocale() 
 .RE
 .PP
 \fBReturns\fP

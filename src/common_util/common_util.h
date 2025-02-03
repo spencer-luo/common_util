@@ -28,3 +28,6 @@
 #include "datetime.h"
 #include "sysutil.h"
 #include "verutil.h"
+#include "filepath.h"
+#include "fileutil.h"
+#include "color.h"

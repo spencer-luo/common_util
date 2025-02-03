@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.28.3)
 
 # 项目名称
 # project name
-project(common_util VERSION 1.0.0 LANGUAGES CXX)
+project(common_util VERSION 1.1.0 LANGUAGES CXX)
 # 构建时间
 # build time
 string(TIMESTAMP BUILD_TIME "%y-%m-%d %H:%M:%S")
@@ -41,7 +41,7 @@ message("COMMON_UTIL_HEADER": ${COMMON_UTIL_HEADER})
 # include directories
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-# 斌阿姨静态库
+# 编译成静态库
 # build library
 add_library(${PROJECT_NAME} STATIC ${COMMON_UTIL_SRC})
 

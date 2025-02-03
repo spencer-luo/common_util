@@ -2,100 +2,32 @@
     "editor.formatOnSave": true,
     "editor.formatOnSaveMode": "modificationsIfAvailable",
     "editor.minimap.enabled": true,
+    // 开启|禁用缩进(Tab)字符字符检测，可选值: true, false
+    "editor.detectIndentation": true,
+    // 将文件(或拓展名)与某种编程语言关联
+    "files.associations": {
+        "*.in": "c",
+        "README": "markdown"
+    },
+    // 启用|禁用错误提示，可选值: enabled, disabled
+    "C_Cpp.errorSquiggles": "enabled",
+    // Intellisense的配置。启用|禁用智能提示，可选值：Default、Disabled
     "C_Cpp.autocomplete": "Default",
+    // C++语言编辑哪些内容时会进行智能提示和补全
     "[cpp]": {
         "editor.quickSuggestions": {
-            "comments": "on",
-            "strings": "on",
-            "other": "on"
+            "comments": "on", // 代码注释
+            "strings": "on", // 常量字符串
+            "other": "on" // 其他
         }
     },
+    // C语言编辑哪些内容时会进行智能提示和补全
     "[c]": {
         "editor.quickSuggestions": {
-            "comments": "on",
-            "strings": "on",
-            "other": "on"
+            "comments": "on", // 代码注释
+            "strings": "on", // 常量字符串
+            "other": "on" // 其他
         }
-    },
-    "C_Cpp.errorSquiggles": "disabled",
-    "editor.formatOnSaveMode": "modificationsIfAvailable",
-    "editor.formatOnSave": true,
-    "editor.detectIndentation": false,
-    "files.associations": {
-        "string": "cpp",
-        "ostream": "cpp",
-        "__bit_reference": "cpp",
-        "__config": "cpp",
-        "__debug": "cpp",
-        "__errc": "cpp",
-        "__hash_table": "cpp",
-        "__locale": "cpp",
-        "__mutex_base": "cpp",
-        "__node_handle": "cpp",
-        "__split_buffer": "cpp",
-        "__threading_support": "cpp",
-        "__tree": "cpp",
-        "__verbose_abort": "cpp",
-        "array": "cpp",
-        "atomic": "cpp",
-        "bitset": "cpp",
-        "cctype": "cpp",
-        "charconv": "cpp",
-        "clocale": "cpp",
-        "cmath": "cpp",
-        "complex": "cpp",
-        "cstdarg": "cpp",
-        "cstddef": "cpp",
-        "cstdint": "cpp",
-        "cstdio": "cpp",
-        "cstdlib": "cpp",
-        "cstring": "cpp",
-        "ctime": "cpp",
-        "cwchar": "cpp",
-        "cwctype": "cpp",
-        "exception": "cpp",
-        "fstream": "cpp",
-        "initializer_list": "cpp",
-        "iomanip": "cpp",
-        "ios": "cpp",
-        "iosfwd": "cpp",
-        "iostream": "cpp",
-        "istream": "cpp",
-        "limits": "cpp",
-        "locale": "cpp",
-        "map": "cpp",
-        "mutex": "cpp",
-        "new": "cpp",
-        "optional": "cpp",
-        "ratio": "cpp",
-        "sstream": "cpp",
-        "stdexcept": "cpp",
-        "streambuf": "cpp",
-        "string_view": "cpp",
-        "system_error": "cpp",
-        "thread": "cpp",
-        "tuple": "cpp",
-        "typeinfo": "cpp",
-        "unordered_map": "cpp",
-        "variant": "cpp",
-        "vector": "cpp",
-        "algorithm": "cpp",
-        "deque": "cpp",
-        "queue": "cpp",
-        "stack": "cpp",
-        "chrono": "cpp",
-        "__availability": "cpp",
-        "filesystem": "cpp",
-        "format": "cpp",
-        "version": "cpp",
-        "regex": "cpp",
-        "functional": "cpp",
-        "memory_resource": "cpp",
-        "memory": "cpp",
-        "utility": "cpp",
-        "iterator": "cpp",
-        "type_traits": "cpp",
-        "*.in": "c"
     },
     "cmake.configureOnOpen": true,
     "doxdocgen.generic.useGitUserName": true,

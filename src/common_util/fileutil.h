@@ -20,6 +20,7 @@
 
 #include <string>
 #include <cstdio>
+#include <cstdint>
 #include "filetype.h"
 #include "filepath.h"
 
@@ -163,7 +164,9 @@ namespace cutl
      * If true, means list the whole directory recursively, like the 'ls -R' command.
      * @return filevec the vector of file_entity, filepaths in the directory.
      */
-    filevec list_files(const filepath &dirpath, filetype type = filetype::all, bool recursive = false);
+    filevec list_files(const filepath& dirpath,
+                       filetype type = filetype::ft_all,
+                       bool recursive = false);
 
     /**
      * @brief Find all files in a directory by name.

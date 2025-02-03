@@ -8,12 +8,12 @@ cutl::file_guard \- The file guard class to manage the FILE pointer automaticall
 .br
 .PP
 .PP
-\fR#include <fileutil\&.h>\fP
+\fC#include <fileutil\&.h>\fP
 .SS "Public Member Functions"
 
 .in +1c
 .ti -1c
-.RI "\fBfile_guard\fP (FILE *\fBfile\fP)"
+.RI "\fBfile_guard\fP (FILE *file)"
 .br
 .RI "Construct a new file guard object\&. "
 .ti -1c
@@ -30,7 +30,7 @@ cutl::file_guard \- The file guard class to manage the FILE pointer automaticall
 The file guard class to manage the FILE pointer automatically\&. \fBfile_guard\fP object can close the FILE pointer automatically when his scope is exit\&. 
 .SH "Constructor & Destructor Documentation"
 .PP 
-.SS "cutl::file_guard::file_guard (FILE * file)\fR [explicit]\fP"
+.SS "cutl::file_guard::file_guard (FILE * file)\fC [explicit]\fP"
 
 .PP
 Construct a new file guard object\&. 

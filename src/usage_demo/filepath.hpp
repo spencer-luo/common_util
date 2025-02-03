@@ -3,6 +3,20 @@
 #include "common.hpp"
 #include "fileutil.h"
 
+void test_filepath()
+{
+    PrintSubTitle("test_filepath");
+
+    auto path1 = cutl::path("/home/spencer/workspace/common_util/README.md");
+    std::cout << path1.str() << (path1.exists() ? "exist" : "not exist") << ", this is a "
+              << (path1.isfile() ? "file" : "directory") << std::endl;
+    std::cout << "parent dir: " << path1.dirname() << std::endl;
+    std::cout << "file name: " << path1.basename() << std::endl;
+    std::cout << "extension: " << path1.extension() << std::endl;
+    auto path2 = cutl::path(path1.dirname()).join("LICENSE");
+    std::cout << "LICENSE file path: " << path2 << std::endl;
+}
+
 void TestConstructor()
 {
     PrintSubTitle("TestConstructor");
@@ -135,14 +149,16 @@ void TestPermission()
 
 void TestFilePath()
 {
-    PrintTitle("filepath");
+    // PrintTitle("filepath");
 
-    TestConstructor();
-    TestJoin();
-    TestDirnameBasename();
-    TestRealpathAndAbspath();
-    TestFileType();
-    TestExtenstion();
-    TestExist();
-    TestPermission();
+    test_filepath();
+
+    // TestConstructor();
+    // TestJoin();
+    // TestDirnameBasename();
+    // TestRealpathAndAbspath();
+    // TestFileType();
+    // TestExtenstion();
+    // TestExist();
+    // TestPermission();
 }

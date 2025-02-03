@@ -19,6 +19,7 @@ common_util is a general-purpose C++ utility library, include the following func
 - String utilities
 - Data formatting
 - Singleton pattern macro definition
+- Dynamic library loader
 
 common_util is implemented in modern C++ syntax (C++11 and above), using cutl as the namespace. The naming convention of all interfaces is consistent with the STL, and it can be used as an extensions of C++ standard library. You can use common_util just like using the STL, For example:
 
@@ -93,6 +94,7 @@ common_util是C++的一个通用工具库，主要包含以下功能：
 - 字符串处理
 - 数据格式化
 - 单例模式宏定义
+- 动态库加载器
 
 common_util采用现代C++语法（C++11及以上）实现，使用cutl作为命名空间，所有接口的命名方式与STL保持一致，可以作为STL库的一个补充。你可以像使用STL一样使用common_util，如：
 

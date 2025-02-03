@@ -7,15 +7,15 @@ src/common_util/strfmt.h \- String format functions\&. this file defines a serie
 .SH SYNOPSIS
 .br
 .PP
-\fR#include <string>\fP
+\fC#include <string>\fP
 .br
-\fR#include <cstdint>\fP
+\fC#include <cstdint>\fP
 .br
-\fR#include <sstream>\fP
+\fC#include <sstream>\fP
 .br
-\fR#include <iomanip>\fP
+\fC#include <iomanip>\fP
 .br
-\fR#include 'timeutil\&.h'\fP
+\fC#include 'timeutil\&.h'\fP
 .br
 
 .SS "Functions"
@@ -131,7 +131,7 @@ spencer\&.luo
 
 .SH "Function Documentation"
 .PP 
-.SS "std::string cutl::fmt_double (double val, int precision = \fR2\fP)"
+.SS "std::string cutl::fmt_double (double val, int precision = \fC2\fP)"
 
 .PP
 Format double value to a string with a given precision\&. 
@@ -149,7 +149,7 @@ std::string the formatted string\&.
 .RE
 .PP
 
-.SS "std::string cutl::fmt_filesize (uint64_t size, bool simplify = \fRtrue\fP, int precision = \fR1\fP)"
+.SS "std::string cutl::fmt_filesize (uint64_t size, bool simplify = \fCtrue\fP, int precision = \fC1\fP)"
 
 .PP
 Format a file size to a human-readable string with a given precision\&. 
@@ -237,7 +237,7 @@ std::string the formatted string\&.
 .RE
 .PP
 
-.SS "std::string cutl::fmt_timestamp_ms (uint64_t ms, bool local = \fRtrue\fP)"
+.SS "std::string cutl::fmt_timestamp_ms (uint64_t ms, bool local = \fCtrue\fP)"
 
 .PP
 Format a timestamp to a human-readable string\&. 
@@ -255,7 +255,7 @@ std::string the formatted string\&.
 .RE
 .PP
 
-.SS "std::string cutl::fmt_timestamp_s (uint64_t second, bool local = \fRtrue\fP)"
+.SS "std::string cutl::fmt_timestamp_s (uint64_t second, bool local = \fCtrue\fP)"
 
 .PP
 Format a timestamp to a human-readable string\&. 
@@ -273,7 +273,7 @@ std::string the formatted string\&.
 .RE
 .PP
 
-.SS "std::string cutl::fmt_timestamp_us (uint64_t us, bool local = \fRtrue\fP)"
+.SS "std::string cutl::fmt_timestamp_us (uint64_t us, bool local = \fCtrue\fP)"
 
 .PP
 Format a timestamp to a human-readable string\&. 
@@ -291,7 +291,7 @@ std::string the formatted string\&.
 .RE
 .PP
 
-.SS "std::string cutl::fmt_uint (uint64_t val, uint8_t width = \fR0\fP, char fill = \fR'0'\fP)"
+.SS "std::string cutl::fmt_uint (uint64_t val, uint8_t width = \fC0\fP, char fill = \fC'0'\fP)"
 
 .PP
 Format uint64 value to a string with a given width and fill character\&. 
@@ -311,7 +311,7 @@ std::string the formatted string\&.
 .RE
 .PP
 
-.SS "std::string cutl::to_bin (uint16_t value, char separator = \fR' '\fP)"
+.SS "std::string cutl::to_bin (uint16_t value, char separator = \fC' '\fP)"
 
 .PP
 Format uint16_t value to a binary string\&. 
@@ -329,7 +329,7 @@ std::string the formatted string\&.
 .RE
 .PP
 
-.SS "std::string cutl::to_bin (uint32_t value, char separator = \fR' '\fP)"
+.SS "std::string cutl::to_bin (uint32_t value, char separator = \fC' '\fP)"
 
 .PP
 Format uint32_t value to a binary string\&. 
@@ -347,7 +347,7 @@ std::string the formatted string\&.
 .RE
 .PP
 
-.SS "std::string cutl::to_bin (uint64_t value, char separator = \fR' '\fP)"
+.SS "std::string cutl::to_bin (uint64_t value, char separator = \fC' '\fP)"
 
 .PP
 Format uint64_t value to a binary string\&. 
@@ -365,7 +365,7 @@ std::string the formatted string\&.
 .RE
 .PP
 
-.SS "std::string cutl::to_bin (uint8_t value, char separator = \fR','\fP)"
+.SS "std::string cutl::to_bin (uint8_t value, char separator = \fC','\fP)"
 
 .PP
 Format uint8_t value to a binary string\&. 
@@ -383,7 +383,7 @@ std::string the formatted string\&.
 .RE
 .PP
 
-.SS "std::string cutl::to_hex (const uint8_t * data, size_t len, bool upper = \fRtrue\fP, char separator = \fR' '\fP)"
+.SS "std::string cutl::to_hex (const uint8_t * data, size_t len, bool upper = \fCtrue\fP, char separator = \fC' '\fP)"
 
 .PP
 Format data to a hex string\&. 
@@ -405,7 +405,7 @@ std::string the formatted string\&.
 .RE
 .PP
 
-.SS "std::string cutl::to_hex (uint16_t value, bool upper = \fRtrue\fP, const std::string & prefix = \fR''\fP)"
+.SS "std::string cutl::to_hex (uint16_t value, bool upper = \fCtrue\fP, const std::string & prefix = \fC''\fP)"
 
 .PP
 Format a uint16_t value to a hex string\&. 
@@ -425,7 +425,7 @@ std::string the formatted string\&.
 .RE
 .PP
 
-.SS "std::string cutl::to_hex (uint32_t value, bool upper = \fRtrue\fP, const std::string & prefix = \fR''\fP)"
+.SS "std::string cutl::to_hex (uint32_t value, bool upper = \fCtrue\fP, const std::string & prefix = \fC''\fP)"
 
 .PP
 Format a uint32_t value to a hex string\&. 
@@ -445,7 +445,7 @@ std::string the formatted string\&.
 .RE
 .PP
 
-.SS "std::string cutl::to_hex (uint64_t value, bool upper = \fRtrue\fP, const std::string & prefix = \fR''\fP)"
+.SS "std::string cutl::to_hex (uint64_t value, bool upper = \fCtrue\fP, const std::string & prefix = \fC''\fP)"
 
 .PP
 Format a uint64_t value to a hex string\&. 
@@ -465,7 +465,7 @@ std::string the formatted string\&.
 .RE
 .PP
 
-.SS "std::string cutl::to_hex (uint8_t value, bool upper = \fRtrue\fP, const std::string & prefix = \fR''\fP)"
+.SS "std::string cutl::to_hex (uint8_t value, bool upper = \fCtrue\fP, const std::string & prefix = \fC''\fP)"
 
 .PP
 Format a uint8_t value to a hex string\&. 
