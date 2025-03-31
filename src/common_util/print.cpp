@@ -13,9 +13,17 @@ void set_color(uint8_t fgcolor, uint8_t bgcolor)
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, (bgcolor << 4) | fgcolor);
 #else
-    // 这里采用16色模式，16色模式的兼容性更好
+    // 【16 色模式】这里采用16色模式，16色模式的兼容性更好
+    //  前景色：\033[XXm（XX 为颜色代码）
+    //  背景色：\033[YYm（YY = XX + 10）
     std::cout << "\033[" << std::to_string(fgcolor) << "m" << "\033["
               << std::to_string(bgcolor + 10) << "m";
+    // 【256 色模式】
+    // 前景色：\033[38;5;{n}m（n 为 0-255）
+    // 背景色：\033[48;5;{n}m
+    // std::cout << "\033[38;5;" << std::to_string(fgcolor) << "m" << "\033[38;5;"
+    //           << std::to_string(bgcolor + 10) << "m";
+
 #endif
 }
 

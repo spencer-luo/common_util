@@ -29,39 +29,39 @@ namespace cutl
 {
 
 #if defined(_WIN32)
-constexpr int cli_clr_black = 0;
-constexpr int cli_clr_red = 4;
-constexpr int cli_clr_green = 2;
-constexpr int cli_clr_blue = 1;
-constexpr int cli_clr_yellow = 6;
-constexpr int cli_clr_purple = 5;
-constexpr int cli_clr_cyan = 3;
-constexpr int cli_clr_white = 15;
-constexpr int cli_clr_gray = 7;
-constexpr int cli_clr_bright_red = 12;
-constexpr int cli_clr_bright_green = 10;
-constexpr int cli_clr_bright_blue = 9;
-constexpr int cli_clr_bright_yellow = 14;
-constexpr int cli_clr_bright_purple = 13;
-constexpr int cli_clr_bright_cyan = 11;
-constexpr int cli_clr_deep_gray = 8;
+constexpr uint8_t cli_clr_black = 0;
+constexpr uint8_t cli_clr_red = 4;
+constexpr uint8_t cli_clr_green = 2;
+constexpr uint8_t cli_clr_blue = 1;
+constexpr uint8_t cli_clr_yellow = 6;
+constexpr uint8_t cli_clr_purple = 5;
+constexpr uint8_t cli_clr_cyan = 3;
+constexpr uint8_t cli_clr_white = 15;
+constexpr uint8_t cli_clr_gray = 7;
+constexpr uint8_t cli_clr_bright_red = 12;
+constexpr uint8_t cli_clr_bright_green = 10;
+constexpr uint8_t cli_clr_bright_blue = 9;
+constexpr uint8_t cli_clr_bright_yellow = 14;
+constexpr uint8_t cli_clr_bright_purple = 13;
+constexpr uint8_t cli_clr_bright_cyan = 11;
+constexpr uint8_t cli_clr_deep_gray = 8;
 #else
-constexpr int cli_clr_black = 30;
-constexpr int cli_clr_red = 31;
-constexpr int cli_clr_green = 32;
-constexpr int cli_clr_blue = 34;
-constexpr int cli_clr_yellow = 33;
-constexpr int cli_clr_purple = 35;
-constexpr int cli_clr_cyan = 36;
-constexpr int cli_clr_white = 37;
-constexpr int cli_clr_gray = cli_clr_white;
-constexpr int cli_clr_deep_gray = 90;
-constexpr int cli_clr_bright_red = 91;
-constexpr int cli_clr_bright_green = 92;
-constexpr int cli_clr_bright_blue = 94;
-constexpr int cli_clr_bright_yellow = 93;
-constexpr int cli_clr_bright_purple = 95;
-constexpr int cli_clr_bright_cyan = 96;
+constexpr uint8_t cli_clr_black = 30;
+constexpr uint8_t cli_clr_red = 31;
+constexpr uint8_t cli_clr_green = 32;
+constexpr uint8_t cli_clr_blue = 34;
+constexpr uint8_t cli_clr_yellow = 33;
+constexpr uint8_t cli_clr_purple = 35;
+constexpr uint8_t cli_clr_cyan = 36;
+constexpr uint8_t cli_clr_white = 37;
+constexpr uint8_t cli_clr_gray = cli_clr_white;
+constexpr uint8_t cli_clr_deep_gray = 90;
+constexpr uint8_t cli_clr_bright_red = 91;
+constexpr uint8_t cli_clr_bright_green = 92;
+constexpr uint8_t cli_clr_bright_blue = 94;
+constexpr uint8_t cli_clr_bright_yellow = 93;
+constexpr uint8_t cli_clr_bright_purple = 95;
+constexpr uint8_t cli_clr_bright_cyan = 96;
 #endif
 
 /**
