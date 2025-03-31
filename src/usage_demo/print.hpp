@@ -1,5 +1,5 @@
 #include "common.hpp"
-#include "common_util.h"
+#include "print.h"
 
 void PrintArr()
 {
@@ -34,14 +34,20 @@ void PrintColor()
 
     // 彩色颜色打印
     cutl::print_clr("red: Hello World", cutl::cli_clr_red);
-    cutl::print_clr("green: Hello World", cutl::cli_clr_green);
-    cutl::print_clr("blue: Hello World", cutl::cli_clr_blue);
-    cutl::print_clr("yellow: Hello World", cutl::cli_clr_yellow);
-    cutl::print_clr("purple: Hello World", cutl::cli_clr_purple);
-    cutl::print_clr("cyan: Hello World", cutl::cli_clr_cyan);
     cutl::print_clr("bright_red: Hello World", cutl::cli_clr_bright_red);
+    cutl::print_clr("green: Hello World", cutl::cli_clr_green);
+    cutl::print_clr("bright_green: Hello World", cutl::cli_clr_bright_green);
+    cutl::print_clr("blue: Hello World", cutl::cli_clr_blue);
+    cutl::print_clr("bright_blue: Hello World", cutl::cli_clr_bright_blue);
+    cutl::print_clr("yellow: Hello World", cutl::cli_clr_yellow);
+    cutl::print_clr("bright_yellow: Hello World", cutl::cli_clr_bright_yellow);
+    cutl::print_clr("purple: Hello World", cutl::cli_clr_purple);
+    cutl::print_clr("bright_purple: Hello World", cutl::cli_clr_bright_purple);
+    cutl::print_clr("cyan: Hello World", cutl::cli_clr_cyan);
+    cutl::print_clr("bright_cyan: Hello World", cutl::cli_clr_bright_cyan);
     cutl::print_clr("white: Hello World", cutl::cli_clr_white);
-    cutl::print_clr("black-yellow: Hello World", cutl::cli_clr_black, cutl::cli_clr_yellow);
+    cutl::print_clr("gray: Hello World", cutl::cli_clr_gray, cutl::cli_clr_blue);
+    cutl::print_clr("deep_gray: Hello World", cutl::cli_clr_deep_gray, cutl::cli_clr_white);
     // 正常打印
     std::cout << "norman: Hello World" << std::endl;
 }

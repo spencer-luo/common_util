@@ -29,17 +29,39 @@ namespace cutl
 {
 
 #if defined(_WIN32)
-
-#else
 constexpr int cli_clr_black = 0;
-constexpr int cli_clr_red = 1;
+constexpr int cli_clr_red = 4;
 constexpr int cli_clr_green = 2;
-constexpr int cli_clr_yellow = 3;
-constexpr int cli_clr_blue = 4;
+constexpr int cli_clr_blue = 1;
+constexpr int cli_clr_yellow = 6;
 constexpr int cli_clr_purple = 5;
-constexpr int cli_clr_cyan = 6;
-constexpr int cli_clr_white = 7;
-constexpr int cli_clr_bright_red = 196;
+constexpr int cli_clr_cyan = 3;
+constexpr int cli_clr_white = 15;
+constexpr int cli_clr_gray = 7;
+constexpr int cli_clr_bright_red = 12;
+constexpr int cli_clr_bright_green = 10;
+constexpr int cli_clr_bright_blue = 9;
+constexpr int cli_clr_bright_yellow = 14;
+constexpr int cli_clr_bright_purple = 13;
+constexpr int cli_clr_bright_cyan = 11;
+constexpr int cli_clr_deep_gray = 8;
+#else
+constexpr int cli_clr_black = 30;
+constexpr int cli_clr_red = 31;
+constexpr int cli_clr_green = 32;
+constexpr int cli_clr_blue = 34;
+constexpr int cli_clr_yellow = 33;
+constexpr int cli_clr_purple = 35;
+constexpr int cli_clr_cyan = 36;
+constexpr int cli_clr_white = 37;
+constexpr int cli_clr_gray = cli_clr_white;
+constexpr int cli_clr_deep_gray = 90;
+constexpr int cli_clr_bright_red = 91;
+constexpr int cli_clr_bright_green = 92;
+constexpr int cli_clr_bright_blue = 94;
+constexpr int cli_clr_bright_yellow = 93;
+constexpr int cli_clr_bright_purple = 95;
+constexpr int cli_clr_bright_cyan = 96;
 #endif
 
 void print_clr(const std::string& str, uint8_t fgcolor, uint8_t bgcolor = cli_clr_black);
