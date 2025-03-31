@@ -4,6 +4,7 @@
 #include "dlloader.hpp"
 #include "filepath.hpp"
 #include "fileutil.hpp"
+#include "print.hpp"
 #include "singleton.hpp"
 #include "strfmt.hpp"
 #include "strutil.hpp"
@@ -23,10 +24,11 @@ int main(int argc, char *argv[])
     // TestTimecount();
     // TestDatetime();
     // TestVerUtil();
-    TestStrUtil();
+    // TestStrUtil();
     // TestFilePath();
     // TestFileUtil();
-    TestDlLoader();
+    // TestDlLoader();
+    TestPrint();
 
     return 0;
 }
