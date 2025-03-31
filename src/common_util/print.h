@@ -64,8 +64,22 @@ constexpr int cli_clr_bright_purple = 95;
 constexpr int cli_clr_bright_cyan = 96;
 #endif
 
+/**
+ * @brief Print text with color in console
+ *
+ * @param str the text string for print
+ * @param fgcolor fore-ground, use constant value from cli_clr_xxx
+ * @param bgcolor back-ground, use constant value from cli_clr_xxx
+ */
 void print_clr(const std::string& str, uint8_t fgcolor, uint8_t bgcolor = cli_clr_black);
 
+/**
+ * @brief Print array with basic data type, such as int, float, double, char, etc.
+ *
+ * @tparam T the data type of array's element
+ * @param arr array
+ * @param size size of array
+ */
 template<typename T>
 void print_arr(T* arr, uint32_t size)
 {
@@ -83,6 +97,12 @@ void print_arr(T* arr, uint32_t size)
     std::cout << "]" << std::endl;
 }
 
+/**
+ * @brief Print simple vector with basic data type, such as int, float, double, char, string etc.
+ *
+ * @tparam T the data type of vector's element
+ * @param vec vector's object
+ */
 template<typename T>
 void print_vec(const std::vector<T>& vec)
 {
@@ -100,6 +120,15 @@ void print_vec(const std::vector<T>& vec)
     std::cout << "]" << std::endl;
 }
 
+/**
+ * @brief Print simple map with basic data type, such as int, float, double, char, string etc.
+ *
+ * @tparam K the data type of key in map
+ * @tparam V the data type of value in map
+ * @param mp map's object
+ * @param format wheather format the output or not, if true, use multi-line output, otherwise, use
+ * one-line output
+ */
 template<typename K, typename V>
 void print_map(const std::map<K, V>& mp, bool format = false)
 {
