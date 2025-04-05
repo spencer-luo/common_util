@@ -10,6 +10,7 @@
 #include "strutil.hpp"
 #include "sysutil.hpp"
 #include "timecount.hpp"
+#include "timer.hpp"
 #include "timeutil.hpp"
 #include "verutil.hpp"
 
@@ -28,7 +29,8 @@ int main(int argc, char *argv[])
     // TestFilePath();
     // TestFileUtil();
     // TestDlLoader();
-    TestPrint();
+    // TestPrint();
+    TestTimer();
 
     return 0;
 }
