@@ -110,9 +110,29 @@ private:
 
 void TestTimerCase_4()
 {
+    // 【Case4】 在回调函数中停止定时器
     TimerTestClass obj;
     obj.start();
     std::this_thread::sleep_for(std::chrono::seconds(5));
+}
+
+void TestTimerCase_5()
+{
+    // 【Case5】 调整系统时间
+    cutl::timer timer1("TimerTest-5", SayHello, std::chrono::seconds(1));
+    timer1.start();
+    std::this_thread::sleep_for(std::chrono::seconds(10));
+}
+
+void TestTimerCase_6()
+{
+    // 【Case6】 暂停再继续
+    cutl::timer timer1("TimerTest-6", SayHello, std::chrono::seconds(1));
+    timer1.start();
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    timer1.stop();
+    timer1.start();
+    std::this_thread::sleep_for(std::chrono::seconds(4));
 }
 
 void TestTimerClass()
@@ -122,7 +142,12 @@ void TestTimerClass()
     // TestTimerCase_1();
     // TestTimerCase_2();
     // TestTimerCase_3();
-    TestTimerCase_4();
+    // // 在回调函数中停止定时器
+    // TestTimerCase_4();
+    // 调整系统时间
+    TestTimerCase_5();
+    // 暂停再继续
+    // TestTimerCase_6();
 
     std::cout << "Main thread finished." << std::endl;
 }
