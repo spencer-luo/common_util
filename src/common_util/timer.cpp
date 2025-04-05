@@ -1,4 +1,6 @@
 #include "timer.h"
+#include "inner/logger.h"
+#include "threadutil.h"
 
 namespace cutl
 {
@@ -14,12 +16,6 @@ timer::timer(const std::string& name, Task task, Duration interval)
 timer::~timer()
 {
     stop();
-
-    // 等待线程退出
-    if (thread_.joinable())
-    {
-        thread_.join();
-    }
 }
 
 void timer::start()
@@ -44,7 +40,7 @@ void timer::start()
     CUTL_INFO("Timer [" + name_ + "] started.");
 }
 
-void timer::stop()
+void timer::stop(bool wait_for_stop)
 {
     if (!running_)
     {
@@ -55,8 +51,14 @@ void timer::stop()
 
     // running_标致设置为false, 并通知线程退出
     running_.store(false);
-    // cv_stopping_.notify_one();
-    cv_stopping_.notify_all();
+    cv_stopping_.notify_one();
+    // cv_stopping_.notify_all();
+
+    // 等待线程退出
+    if (wait_for_stop && thread_.joinable())
+    {
+        thread_.join();
+    }
 
     CUTL_INFO("Timer [" + name_ + "] stoped.");
 }

@@ -1,16 +1,11 @@
 #pragma once
 
-#include "inner/logger.h"
-#include "threadutil.h"
 #include <atomic>
 #include <chrono>
 #include <condition_variable>
 #include <functional>
-#include <iostream>
 #include <mutex>
 #include <thread>
-// #include <unique_lock>
-#include <utility>
 
 namespace cutl
 {
@@ -46,7 +41,7 @@ public:
 
     void start();
 
-    void stop();
+    void stop(bool wait_for_stop = true);
 
     bool is_running() const { return running_.load(); }
 

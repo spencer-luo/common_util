@@ -25,6 +25,8 @@ void set_current_thread_name(const std::string& name)
     {
         CUTL_ERROR("Failed to set thread name on Windows. name" + name);
     }
+#elif defined(__APPLE__)
+    pthread_setname_np(name.c_str());
 #else
     // Linux 平台使用 pthread_setname_np 设置线程名称
     int result = pthread_setname_np(pthread_self(), name.c_str());

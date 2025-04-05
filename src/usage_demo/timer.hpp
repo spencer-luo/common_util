@@ -74,7 +74,6 @@ void TestTimerCase_3()
     timer3.start();
     std::this_thread::sleep_for(std::chrono::seconds(5));
     timer3.stop();
-    std::cout << "Main thread finished." << std::endl;
 }
 
 class TimerTestClass
@@ -86,7 +85,10 @@ public:
           "TimerTest-4", std::bind(&TimerTestClass::sayHello, this), std::chrono::seconds(1)));
     }
 
-    ~TimerTestClass() { hello_timer_->stop(); }
+    ~TimerTestClass()
+    {
+        // hello_timer_->stop();
+    }
 
     void start() { hello_timer_->start(); }
 
@@ -99,7 +101,7 @@ public:
         std::cout << count_ << ": Hello World!" << std::endl;
         if (count_ == 3)
         {
-            hello_timer_->stop();
+            hello_timer_->stop(false);
         }
     }
 
@@ -121,7 +123,7 @@ void TestTimerCase_5()
     // 【Case5】 调整系统时间
     cutl::timer timer1("TimerTest-5", SayHello, std::chrono::seconds(1));
     timer1.start();
-    std::this_thread::sleep_for(std::chrono::seconds(10));
+    std::this_thread::sleep_for(std::chrono::seconds(15));
 }
 
 void TestTimerCase_6()
@@ -139,13 +141,16 @@ void TestTimerClass()
 {
     PrintSubTitle("timer");
 
+    // 一般用例
     // TestTimerCase_1();
+    // 任务的执行时间超过轮训的周期
     // TestTimerCase_2();
+    // 停止定时器
     // TestTimerCase_3();
-    // // 在回调函数中停止定时器
-    // TestTimerCase_4();
+    // 在回调函数中停止定时器
+    TestTimerCase_4();
     // 调整系统时间
-    TestTimerCase_5();
+    // TestTimerCase_5();
     // 暂停再继续
     // TestTimerCase_6();
 
