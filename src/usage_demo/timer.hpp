@@ -88,6 +88,7 @@ public:
     ~TimerTestClass()
     {
         // hello_timer_->stop();
+        hello_timer_.release();
     }
 
     void start() { hello_timer_->start(); }
