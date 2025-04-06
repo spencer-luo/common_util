@@ -36,17 +36,19 @@ B::~B()
     std::cout << "~B()" << std::endl;
 }
 
+cutl::garbage_collector<B> g_obj_b(B::get_instance());
+
 class C
 {
 public:
-    C();
+    ~C();
     static C* get_instance();
 
 public:
     int c_;
 
 private:
-    ~C();
+    C();
 };
 
 C::C()
@@ -69,6 +71,8 @@ C* C::get_instance()
     }
     return c_obj;
 }
+
+cutl::garbage_collector<C> g_obj_c(C::get_instance());
 
 void TestSingleton()
 {

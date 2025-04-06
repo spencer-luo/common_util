@@ -111,3 +111,34 @@ public:                                                                         
 private:                                                                                          \
     classname() = default;                                                                        \
     CUTL_COPY_AND_ASSIGN(classname)
+
+namespace cutl
+{
+
+/**
+ * @brief garbage collector for singleton instance pointer.
+ *
+ * @tparam T singleton object pointer
+ */
+template<typename T>
+class garbage_collector
+{
+public:
+    garbage_collector(T* obj_ptr)
+      : obj_ptr_(obj_ptr)
+    {
+    }
+    ~garbage_collector()
+    {
+        if (obj_ptr_)
+        {
+            delete obj_ptr_;
+            obj_ptr_ = nullptr;
+        }
+    }
+
+private:
+    T* obj_ptr_;
+};
+
+} // namespace cutl
