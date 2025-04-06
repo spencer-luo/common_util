@@ -33,11 +33,12 @@ class timer
 {
 public:
     using Task = std::function<void()>;
-    // 微秒
-    using Duration = std::chrono::microseconds;
+    using Duration = std::chrono::microseconds; // us
 
+    timer() = delete;
+    timer(const timer&) = delete;
+    timer& operator=(const timer&) = delete;
     timer(const std::string& name, Task task, Duration interval);
-
     ~timer();
 
     void start();
