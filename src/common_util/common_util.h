@@ -29,6 +29,8 @@
 #include "singleton.h"
 #include "strfmt.h"
 #include "sysutil.h"
+#include "threadutil.h"
 #include "timecount.h"
+#include "timer.h"
 #include "timeutil.h"
 #include "verutil.h"
