@@ -61,15 +61,15 @@ namespace cutl
         }
     }
 
-    filepath::filepath(const std::string &path)
+    filepath::filepath(const std::string& path)
+      : filepath_(path)
     {
-        filepath_ = path;
         fixpath(filepath_);
     }
 
-    filepath::filepath(const filepath &other)
+    filepath::filepath(const filepath& other)
+      : filepath_(other.filepath_)
     {
-        filepath_ = other.filepath_;
     }
 
     filepath &filepath::operator=(const filepath &other)

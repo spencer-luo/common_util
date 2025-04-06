@@ -6,7 +6,7 @@ class A
 {
     CUTL_SINGLETON_REF(A)
 public:
-    int a_;
+    int a_{ 0 };
 };
 
 A::A()
@@ -23,7 +23,7 @@ class B
 {
     CUTL_SINGLETON_PTR(B)
 public:
-    int b_;
+    int b_{ 0 };
 };
 
 B::B()
@@ -45,7 +45,7 @@ public:
     static C* get_instance();
 
 public:
-    int c_;
+    int c_{ 0 };
 
 private:
     C();

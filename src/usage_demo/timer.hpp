@@ -3,7 +3,7 @@
 #include <memory>
 
 // 示例用法
-void sayHello(std::string name)
+void sayHello(const std::string& name)
 {
     std::cout << "Hello " << name << "!" << std::endl;
 }

@@ -31,7 +31,6 @@
 
 /**
  * @brief Macro definition for get singleton instance pointer implaementation.
- * TODO: 这种方式，进程结束时单例对象不会自动析构
  *
  */
 #undef CUTL_SINGLETON_PTR
