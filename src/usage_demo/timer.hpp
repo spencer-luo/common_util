@@ -1,4 +1,5 @@
 #include "common.hpp"
+#include "threadutil.h"
 #include "timer.h"
 #include <memory>
 
@@ -30,7 +31,7 @@ void SayHello()
 {
     std::lock_guard<std::mutex> lock(sayhello_mtx_);
     auto curTime = cutl::fmt_timestamp_ms(cutl::timestamp(cutl::timeunit::ms));
-    auto threadId = std::this_thread::get_id();
+    auto threadId = cutl::get_current_thread_tid();
     std::cerr << "[" << curTime << " " << threadId << "]";
     // std::this_thread::sleep_for(std::chrono::milliseconds(400));
     std::cout << " Hello World!" << std::endl;
@@ -54,7 +55,7 @@ void TestTimerCase_2()
       {
           count++;
           auto curTime = cutl::fmt_timestamp_ms(cutl::timestamp(cutl::timeunit::ms));
-          auto threadId = std::this_thread::get_id();
+          auto threadId = cutl::get_current_thread_tid();
           std::cerr << "[" << curTime << " " << threadId << "]";
           std::cout << count << ": Hello World!" << std::endl;
           if (count % 2 == 0)
@@ -97,7 +98,7 @@ public:
     {
         count_++;
         auto curTime = cutl::fmt_timestamp_ms(cutl::timestamp(cutl::timeunit::ms));
-        auto threadId = std::this_thread::get_id();
+        auto threadId = cutl::get_current_thread_tid();
         std::cerr << "[" << curTime << " " << threadId << "]--";
         std::cout << count_ << ": Hello World!" << std::endl;
         if (count_ == 3)
