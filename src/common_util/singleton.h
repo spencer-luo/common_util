@@ -36,13 +36,14 @@
 #undef CUTL_SINGLETON_PTR
 #define CUTL_SINGLETON_PTR(classname)                                                             \
 public:                                                                                           \
-    static classname* get_instance()                                                              \
+    static std::shared_ptr<classname> get_instance()                                              \
     {                                                                                             \
-        static classname* obj = nullptr;                                                          \
+        static std::shared_ptr<classname> obj = nullptr;                                          \
         if (!obj)                                                                                 \
         {                                                                                         \
             static std::once_flag flag;                                                           \
-            std::call_once(flag, [&] { obj = new (std::nothrow) classname(); });                  \
+            std::call_once(                                                                       \
+              flag, [&] { obj = std::shared_ptr<classname>(new (std::nothrow) classname()); });   \
         }                                                                                         \
         return obj;                                                                               \
     }                                                                                             \
@@ -110,34 +111,3 @@ public:                                                                         
 private:                                                                                          \
     classname() = default;                                                                        \
     CUTL_COPY_AND_ASSIGN(classname)
-
-namespace cutl
-{
-
-/**
- * @brief garbage collector for singleton instance pointer.
- *
- * @tparam T singleton object pointer
- */
-template<typename T>
-class garbage_collector
-{
-public:
-    garbage_collector(T* obj_ptr)
-      : obj_ptr_(obj_ptr)
-    {
-    }
-    ~garbage_collector()
-    {
-        if (obj_ptr_)
-        {
-            delete obj_ptr_;
-            obj_ptr_ = nullptr;
-        }
-    }
-
-private:
-    T* obj_ptr_;
-};
-
-} // namespace cutl

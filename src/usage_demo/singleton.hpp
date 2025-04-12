@@ -36,13 +36,11 @@ B::~B()
     std::cout << "~B()" << std::endl;
 }
 
-cutl::garbage_collector<B> g_obj_b(B::get_instance());
-
 class C
 {
 public:
     ~C();
-    static C* get_instance();
+    static std::shared_ptr<C> get_instance();
 
 public:
     int c_{ 0 };
@@ -61,18 +59,26 @@ C::~C()
     std::cout << "~C()" << std::endl;
 }
 
-static C* c_obj = nullptr;
-C* C::get_instance()
+std::shared_ptr<C> C::get_instance()
 {
-    if (!c_obj)
+    // static C* c_obj = nullptr;
+    // if (!c_obj)
+    // {
+    //     static std::once_flag flag;
+    //     std::call_once(flag, [&] { c_obj = new (std::nothrow) C(); });
+    // }
+    // return c_obj;
+
+    static std::shared_ptr<C> obj = nullptr;
+    if (!obj)
     {
         static std::once_flag flag;
-        std::call_once(flag, [&] { c_obj = new (std::nothrow) C(); });
+        std::call_once(flag, [&] { obj = std::shared_ptr<C>(new C()); });
     }
-    return c_obj;
+    return obj;
 }
 
-cutl::garbage_collector<C> g_obj_c(C::get_instance());
+// cutl::garbage_collector<C> g_obj_c(C::get_instance());
 
 void TestSingleton()
 {
