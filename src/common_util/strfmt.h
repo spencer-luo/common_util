@@ -162,6 +162,17 @@ namespace cutl
     std::string to_hex(uint64_t value, bool upper = true, const std::string &prefix = "");
 
     /**
+     * @brief Format a pointer to a hex string.
+     *
+     * @param ptr the pointer to be formatted.
+     * @param upper whether to use upper case or lower case for hex characters, default is lower
+     * case.
+     * @param auto_fill_prefix wheather to auto fill the prefix with "0" or not, default is false.
+     * @return std::string
+     */
+    std::string to_hex(void* ptr, bool upper = false, bool auto_fill_prefix = false);
+
+    /**
      * @brief Format uint8_t value to a binary string.
      *
      * @param value the value to be formatted.

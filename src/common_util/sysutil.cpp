@@ -108,8 +108,7 @@ namespace cutl
 
     uint16_t program_bit()
     {
-        int a = 0;
-        auto byte = sizeof(&a);
+        auto byte = sizeof(void*);
         return byte * 8;
     }
 

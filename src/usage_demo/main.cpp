@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
     LibraryInit();
     // TestSingleton();
     // std::cout << "test done" << std::endl;
-    // TestSysutil();
-    // TestStrfmt();
+    TestSysutil();
+    TestStrfmt();
     // TestTimeutil();
     // TestTimecount();
     // TestDatetime();
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     // TestFileUtil();
     // TestDlLoader();
     // TestPrint();
-    TestTimer();
+    // TestTimer();
 
     return 0;
 }
