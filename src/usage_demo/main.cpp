@@ -4,6 +4,7 @@
 #include "dlloader.hpp"
 #include "filepath.hpp"
 #include "fileutil.hpp"
+#include "lrucache.hpp"
 #include "print.hpp"
 #include "singleton.hpp"
 #include "strfmt.hpp"
@@ -19,8 +20,8 @@ int main(int argc, char *argv[])
     LibraryInit();
     // TestSingleton();
     // std::cout << "test done" << std::endl;
-    TestSysutil();
-    TestStrfmt();
+    // TestSysutil();
+    // TestStrfmt();
     // TestTimeutil();
     // TestTimecount();
     // TestDatetime();
@@ -31,6 +32,7 @@ int main(int argc, char *argv[])
     // TestDlLoader();
     // TestPrint();
     // TestTimer();
+    TestLRUCache();
 
     return 0;
 }
