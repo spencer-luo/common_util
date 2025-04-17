@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <unordered_map>
 
 namespace cutl
@@ -202,8 +203,8 @@ private:
 private:
     lru_node* head_;
     lru_node* tail_;
-    int capacity_;
-    int count_;
+    uint64_t capacity_;
+    uint64_t count_;
     std::unordered_map<K, lru_node*> map_;
 };
 
