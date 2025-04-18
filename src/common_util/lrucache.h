@@ -1,3 +1,23 @@
+/**
+ * @copyright Copyright (c) 2025, Spencer.Luo. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing permissions and
+ * limitations.
+ *
+ * @file lrucache.h
+ * @brief LRU Cache algorithm container
+ * @author Spencer
+ * @date 2025-04-18
+ */
+
 #pragma once
 
 #include <cstdint>
@@ -7,6 +27,13 @@
 namespace cutl
 {
 
+/**
+ * @brief A template class container for the LRU cache algorithm that can be adapted to various
+ * data types, and all operations are thread - safe.
+ *
+ * @tparam K The Type of Key
+ * @tparam V The Type of Value
+ */
 template<typename K, typename V>
 class lru_cache
 {
@@ -29,6 +56,11 @@ private:
     };
 
 public:
+    /**
+     * @brief Construct a new lru_cache object
+     *
+     * @param capacity The maximum capacity of the cache
+     */
     lru_cache(int capacity)
       : capacity_(capacity)
       , count_(0)
@@ -36,26 +68,31 @@ public:
         // std::cout << "lru_cache() called" << std::endl;
     }
 
+    /**
+     * @brief Destroy the lru cache object
+     *
+     */
     ~lru_cache() { clear(); }
 
-    using visit_lru_node_func = std::function<void(const K& key, const V& value)>;
-    void for_each(visit_lru_node_func callback)
-    {
-        std::lock_guard<std::mutex> lock(mutex_);
-        lru_node* itr = head_;
-        while (itr)
-        {
-            callback(itr->key, itr->value);
-            itr = itr->next;
-        }
-    }
-
+    /**
+     * @brief Whether the cache contains the key
+     *
+     * @param key
+     * @return true
+     * @return false
+     */
     bool exist(K key) const
     {
         std::lock_guard<std::mutex> lock(mutex_);
         return map_.count(key);
     }
 
+    /**
+     * @brief Get the value of the key, if the key does not exist, return a default value.
+     * Time complexity: O(1)
+     * @param key The key to get the value of
+     * @return V The value of the key, or a default value if the key does not exist.
+     */
     V get(K key)
     {
         std::lock_guard<std::mutex> lock(mutex_);
@@ -75,6 +112,12 @@ public:
         return node->value;
     }
 
+    /**
+     * @brief Put the key-value pair into the cache. If the key already exists, update the value.
+     * Time complexity: O(1)
+     * @param key The key to put the value of
+     * @param value The value to put into the cache
+     */
     void put(K key, V value)
     {
         std::lock_guard<std::mutex> lock(mutex_);
@@ -96,6 +139,10 @@ public:
         }
     }
 
+    /**
+     * @brief Clean the cache, remove all elements.
+     *
+     */
     void clear()
     {
         // std::cout << "start ~lru_cache() count:" << count_ << std::endl;
@@ -112,6 +159,27 @@ public:
         tail_ = nullptr;
         count_ = 0;
         // std::cout << "~lru_cache() called, count:" << count_ << std::endl;
+    }
+
+    /**
+     * @brief Callback function type for for_each()
+     *
+     */
+    using visit_lru_node_func = std::function<void(const K& key, const V& value)>;
+    /**
+     * @brief Traverse all elements in the cache
+     * @note This is a time - consuming operation. Please use it with caution.
+     * @param callback The callback function to be called for each element in the cache.
+     */
+    void for_each(visit_lru_node_func callback)
+    {
+        std::lock_guard<std::mutex> lock(mutex_);
+        lru_node* itr = head_;
+        while (itr)
+        {
+            callback(itr->key, itr->value);
+            itr = itr->next;
+        }
     }
 
 private:
