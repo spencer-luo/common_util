@@ -1,13 +1,14 @@
 #pragma once
 
 #include <cstdint>
+#include <mutex>
 #include <unordered_map>
 
 namespace cutl
 {
 
 template<typename K, typename V>
-class LRUCache
+class lru_cache
 {
 private:
     // lru_node以 private的方式定义在LRUCache类的内部，防止被外部直接调用
@@ -28,33 +29,35 @@ private:
     };
 
 public:
-    LRUCache(int capacity)
+    lru_cache(int capacity)
       : capacity_(capacity)
       , count_(0)
     {
-        // std::cout << "LRUCache() called" << std::endl;
+        // std::cout << "lru_cache() called" << std::endl;
     }
 
-    ~LRUCache()
+    ~lru_cache() { clear(); }
+
+    using visit_lru_node_func = std::function<void(const K& key, const V& value)>;
+    void for_each(visit_lru_node_func callback) const
     {
-        // std::cout << "start ~LRUCache() count:" << count_ << std::endl;
         lru_node* itr = head_;
         while (itr)
         {
-            lru_node* tmp = itr;
+            callback(itr->key, itr->value);
             itr = itr->next;
-            delete tmp;
         }
-        head_ = nullptr;
-        tail_ = nullptr;
-        count_ = 0;
-        // std::cout << "~LRUCache() called, count:" << count_ << std::endl;
     }
 
-    bool exist(K key) const { return map_.count(key); }
+    bool exist(K key) const
+    {
+        std::lock_guard<std::mutex> lock(mutex_);
+        return map_.count(key);
+    }
 
     V get(K key)
     {
+        std::lock_guard<std::mutex> lock(mutex_);
         // key不存在
         if (!map_.count(key))
         {
@@ -73,6 +76,7 @@ public:
 
     void put(K key, V value)
     {
+        std::lock_guard<std::mutex> lock(mutex_);
         if (map_.count(key))
         {
             // key在队列中已经存在
@@ -89,6 +93,24 @@ public:
             push_to_queue(node);
             map_[key] = node;
         }
+    }
+
+    void clear()
+    {
+        // std::cout << "start ~lru_cache() count:" << count_ << std::endl;
+        std::lock_guard<std::mutex> lock(mutex_);
+        map_.clear();
+        lru_node* itr = head_;
+        while (itr)
+        {
+            lru_node* tmp = itr;
+            itr = itr->next;
+            delete tmp;
+        }
+        head_ = nullptr;
+        tail_ = nullptr;
+        count_ = 0;
+        // std::cout << "~lru_cache() called, count:" << count_ << std::endl;
     }
 
 private:
@@ -201,6 +223,7 @@ private:
     }
 
 private:
+    std::mutex mutex_;
     lru_node* head_;
     lru_node* tail_;
     uint64_t capacity_;
