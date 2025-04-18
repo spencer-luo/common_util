@@ -9,7 +9,7 @@ void case_01_02()
     //  [[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]
     // [null, null, null, 1, null, -1, null, -1, 3, 4]
     auto visit_lru_node = [](int k, int v) { std::cout << k << ":" << v << " "; };
-    auto iterate_lru_cache = [visit_lru_node](const cutl::lru_cache<int, int>& cache)
+    auto iterate_lru_cache = [visit_lru_node](cutl::lru_cache<int, int>& cache)
     {
         std::cout << "[ ";
         cache.for_each(visit_lru_node);
@@ -87,7 +87,7 @@ void case_03()
     using PersonCache = cutl::lru_cache<std::string, Person>;
     PersonCache cache(2);
     auto visit_lru_node = [](const std::string& k, const Person& v) { std::cout << k << " "; };
-    auto iterate_lru_cache = [visit_lru_node](const PersonCache& cache)
+    auto iterate_lru_cache = [visit_lru_node](PersonCache& cache)
     {
         std::cout << "[ ";
         cache.for_each(visit_lru_node);

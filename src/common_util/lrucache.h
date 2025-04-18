@@ -39,8 +39,9 @@ public:
     ~lru_cache() { clear(); }
 
     using visit_lru_node_func = std::function<void(const K& key, const V& value)>;
-    void for_each(visit_lru_node_func callback) const
+    void for_each(visit_lru_node_func callback)
     {
+        std::lock_guard<std::mutex> lock(mutex_);
         lru_node* itr = head_;
         while (itr)
         {
