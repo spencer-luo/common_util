@@ -2,6 +2,7 @@
 #include "config.hpp"
 #include "datetime.hpp"
 #include "dlloader.hpp"
+#include "eventloop.hpp"
 #include "filepath.hpp"
 #include "fileutil.hpp"
 #include "lrucache.hpp"
@@ -32,7 +33,8 @@ int main(int argc, char *argv[])
     // TestDlLoader();
     // TestPrint();
     // TestTimer();
-    TestLRUCache();
+    // TestLRUCache();
+    TestEventLoop();
 
     return 0;
 }
