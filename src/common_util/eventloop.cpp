@@ -1,8 +1,6 @@
 #include "eventloop.h"
 
 #include <cstring>
-#include <sys/eventfd.h>
-#include <sys/select.h>
 #include <unistd.h>
 
 #include "inner/logger.h"
@@ -289,7 +287,8 @@ size_t eventloop::handle_timer_task()
             continue;
         }
 
-        // CUTL_INFO("[" + task->name_ + "]left_times:" + std::to_string(task->left_times_.load()));
+        // CUTL_INFO("[" + task->name_ + "]left_times:" +
+        // std::to_string(task->left_times_.load()));
         task->func_();
         task->update_left_times();
         ++done;
