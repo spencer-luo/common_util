@@ -1,6 +1,7 @@
 #pragma once
 
 #include <atomic>
+#include <condition_variable>
 #include <functional>
 #include <list>
 #include <memory>
@@ -88,10 +89,9 @@ public:
                                         int64_t repeat = -1);
 
     /**
-     * 运行EventLoopBase，如果满足运行条件该接口会阻塞直到Stop被调用
-     * @return true表示运行成功，false表示运行失败
+     * @brief 运行EventLoopBase，如果满足运行条件该接口会阻塞直到Stop被调用
      */
-    bool start();
+    void start();
 
     /**
      * 停止EventLoopBase
@@ -117,11 +117,11 @@ public:
 
 private:
     // 唤醒Loop线程
-    void wakeup() const;
+    void wakeup();
     // 等待超时或者被唤醒
     void wait_for_timeout_or_wakeup(std::chrono::microseconds timeout);
     // 执行单次循序的任务
-    void loop_once(EventloopDuration timeout);
+    void loop_once(EventloopDuration default_timeout);
 
 private:
     // 处理任务
@@ -150,8 +150,9 @@ private:
     // 定时任务 优先队列， 特点：循环执行，时间优先
     std::mutex timer_task_mutex_;
     std::priority_queue<TimerTaskPtr, TimerTaskVec, decltype(&TimerTaskCompare)> timer_task_queue_;
-    // TODO: 事件fd
-    int event_fd_;
+    // 唤醒Loop线程的条件变量
+    std::mutex cv_mutex_;
+    std::condition_variable cv_wakeup_;
 };
 
 } // namespace cutl

@@ -142,43 +142,16 @@ bool timer_task_handler::isvalid()
     return p && p->is_valid();
 }
 
-int CreateEventFd()
-{
-    int event_fd = ::eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
-    // todo
-    // ROBOLOG_CHECK(event_fd >= 0) << "Create event fd failed. errno:" << errno
-    //                              << " strerrno:" << strerror(errno);
-    return event_fd;
-}
-
-void ReadEventFd(int event_fd)
-{
-    uint64_t buffer = 0;
-    ssize_t ret = ::read(event_fd, &buffer, sizeof(buffer));
-    static_cast<void>(ret);
-}
-
-void WriteEventFd(int event_fd)
-{
-    uint64_t one = 1;
-    ssize_t ret = ::write(event_fd, &one, sizeof(one));
-    static_cast<void>(ret);
-}
-
 eventloop::eventloop()
   : is_running_(false)
   , loop_thread_id_()
   , task_queue_()
   , timer_task_mutex_()
   , timer_task_queue_(&TimerTaskCompare)
-  , event_fd_(CreateEventFd())
 {
 }
 
-eventloop::~eventloop()
-{
-    ::close(event_fd_);
-}
+eventloop::~eventloop() {}
 
 void eventloop::post_event(const EventloopTask& task)
 {
@@ -196,24 +169,22 @@ void eventloop::post_event(const EventloopTask& task)
     }
 }
 
-bool eventloop::start()
+void eventloop::start()
 {
-    if (is_running_)
+    if (is_running_.load())
     {
         // 重复调用
         CUTL_WARN("recursive call of start.");
-        return false;
+        return;
     }
 
-    is_running_ = true;
+    is_running_.store(true);
     loop_thread_id_ = std::this_thread::get_id();
 
-    while (is_running_)
+    while (is_running_.load())
     {
-        loop_once(std::chrono::seconds(1));
+        loop_once(std::chrono::milliseconds(500));
     }
-
-    return true;
 }
 
 bool eventloop::is_loop_thread() const
@@ -221,9 +192,9 @@ bool eventloop::is_loop_thread() const
     return loop_thread_id_ == std::this_thread::get_id();
 }
 
-void eventloop::wakeup() const
+void eventloop::wakeup()
 {
-    WriteEventFd(event_fd_);
+    cv_wakeup_.notify_one();
 }
 
 void eventloop::wait_for_timeout_or_wakeup(std::chrono::microseconds timeout)
@@ -233,35 +204,15 @@ void eventloop::wait_for_timeout_or_wakeup(std::chrono::microseconds timeout)
         timeout = std::chrono::microseconds::zero();
     }
 
-    // TODO(yongsen.yang): 完善event driven
-    auto tv_microseconds = timeout.count();
-    constexpr decltype(tv_microseconds) microsec_to_sec = 1000000;
-    struct timeval tv
+    std::unique_lock<std::mutex> lock(cv_mutex_);
+    EventloopTimePoint abs_timeout = std::chrono::steady_clock::now() + timeout;
+    if (cv_wakeup_.wait_until(lock, abs_timeout) == std::cv_status::timeout)
     {
-        .tv_sec = static_cast<time_t>(tv_microseconds / microsec_to_sec),
-        .tv_usec = static_cast<time_t>(tv_microseconds % microsec_to_sec),
-    };
-
-    fd_set readfds;
-    FD_ZERO(&readfds);
-    FD_SET(event_fd_, &readfds);
-
-    int ret = select(event_fd_ + 1, &readfds, nullptr, nullptr, &tv);
-    if (ret < 0)
-    {
-        if (errno != EINTR)
-        {
-            CUTL_ERROR("select failed. ret:" + std::to_string(ret) +
-                       ", errno:" + std::to_string(errno) + ", strerrno:" + strerror(errno));
-        }
-    }
-    else if (ret == 1)
-    {
-        ReadEventFd(event_fd_);
+        CUTL_DEBUG("Timeout occurred!");
     }
     else
     {
-        // 无事件就绪
+        CUTL_DEBUG("Condition met!");
     }
 }
 
