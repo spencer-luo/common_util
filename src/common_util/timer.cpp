@@ -6,10 +6,10 @@ namespace cutl
 {
 
 timer::timer(const std::string& name, Task task, Duration interval)
-  : name_(name)
+  : running_(false)
+  , name_(name)
   , task_(std::move(task))
   , interval_(interval)
-  , running_(false)
 {
 }
 

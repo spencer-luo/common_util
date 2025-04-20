@@ -271,7 +271,6 @@ namespace cutl
                 closedir(dir);
                 return totalSize;
             }
-            auto ftype = get_file_type(file_stat.st_mode);
 
             if (S_ISDIR(file_stat.st_mode))
             {

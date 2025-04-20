@@ -146,8 +146,8 @@ eventloop::eventloop(uint32_t task_max_size, uint32_t timer_task_max_size)
   , task_queue_()
   , task_max_size_(task_max_size)
   , timer_task_mutex_()
-  , timer_task_max_size_(timer_task_max_size)
   , timer_task_queue_(&TimerTaskCompare)
+  , timer_task_max_size_(timer_task_max_size)
 {
 }
 
