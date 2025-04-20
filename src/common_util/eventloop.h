@@ -62,7 +62,7 @@ class eventloop
 public:
     using TimerTaskVec = std::vector<TimerTaskPtr>;
 
-    eventloop();
+    eventloop(uint32_t task_max_size = 10, uint32_t timer_task_max_size = 5);
     ~eventloop();
 
     // 不可以复制
@@ -73,7 +73,7 @@ public:
      * 转发任务到EventLoopBase的线程执行
      * @param task 任务
      */
-    void post_event(const EventloopTask& task);
+    bool post_event(const EventloopTask& task);
 
     /**
      * 增加定时任务
@@ -147,9 +147,11 @@ private:
     // 普通任务 队列， 特点：单次执行，先进先出
     std::mutex task_mutex_;
     std::list<EventloopTask> task_queue_;
+    uint32_t task_max_size_;
     // 定时任务 优先队列， 特点：循环执行，时间优先
     std::mutex timer_task_mutex_;
     std::priority_queue<TimerTaskPtr, TimerTaskVec, decltype(&TimerTaskCompare)> timer_task_queue_;
+    uint32_t timer_task_max_size_;
     // 唤醒Loop线程的条件变量
     std::mutex cv_mutex_;
     std::condition_variable cv_wakeup_;

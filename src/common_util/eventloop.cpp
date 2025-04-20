@@ -140,22 +140,31 @@ bool timer_task_handler::isvalid()
     return p && p->is_valid();
 }
 
-eventloop::eventloop()
+eventloop::eventloop(uint32_t task_max_size, uint32_t timer_task_max_size)
   : is_running_(false)
   , loop_thread_id_()
   , task_queue_()
+  , task_max_size_(task_max_size)
   , timer_task_mutex_()
+  , timer_task_max_size_(timer_task_max_size)
   , timer_task_queue_(&TimerTaskCompare)
 {
 }
 
 eventloop::~eventloop() {}
 
-void eventloop::post_event(const EventloopTask& task)
+bool eventloop::post_event(const EventloopTask& task)
 {
     bool empty = true;
     {
         std::lock_guard<std::mutex> guard(task_mutex_);
+        if (task_queue_.size() >= task_max_size_)
+        {
+            CUTL_ERROR(
+              "Task queue is full, discard task. size:" + std::to_string(task_queue_.size()) +
+              ", max_size:" + std::to_string(task_max_size_));
+            return false;
+        }
         empty = task_queue_.empty();
         task_queue_.emplace_back(task);
     }
@@ -165,6 +174,8 @@ void eventloop::post_event(const EventloopTask& task)
     {
         wakeup();
     }
+
+    return true;
 }
 
 void eventloop::start()
@@ -225,6 +236,16 @@ timer_task_handler eventloop::post_timer_event(const std::string& name,
                                                const EventloopDuration& period,
                                                int64_t repeat)
 {
+    {
+        std::lock_guard<std::mutex> lock(timer_task_mutex_);
+        if (timer_task_queue_.size() >= timer_task_max_size_)
+        {
+            CUTL_ERROR("Timer task queue is full, discard task. size:" +
+                       std::to_string(timer_task_queue_.size()) +
+                       ", max_size:" + std::to_string(timer_task_max_size_));
+            return timer_task_handler(nullptr);
+        }
+    }
     auto handler = post_to_priorityqueue(name, func, period, repeat);
     wakeup();
     return handler;
