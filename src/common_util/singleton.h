@@ -19,6 +19,7 @@
 #pragma once
 
 #include <mutex>
+#include <memory>
 
 /**
  * @brief Macro definition for constructor and copy-assignment operator.
