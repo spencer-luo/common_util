@@ -140,7 +140,7 @@ private:
     TimerTaskVec get_expired_timer_tasks(EventloopTimePoint now);
 
 private:
-    // 时间循环是否运行中
+    // 事件循环是否运行中
     std::atomic<bool> is_running_;
     // 事件循环的线程id
     std::thread::id loop_thread_id_;
