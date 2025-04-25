@@ -21,7 +21,9 @@ void test_case_01()
       3);
     // normal task
     eventLoop.post_event(
-      []() { std::cout << cutl::datetime::now().format() << " execute Task" << std::endl; });
+      []() { std::cout << cutl::datetime::now().format() << " execute Task 01" << std::endl; });
+    eventLoop.post_event(
+      []() { std::cout << cutl::datetime::now().format() << " execute Task 02" << std::endl; });
 
     // 主线程处理事件循环
     eventLoop.start();
@@ -84,6 +86,6 @@ void TestEventLoop()
 {
     PrintTitle("Test EventLoop");
 
-    // test_case_01();
-    test_case_02();
+    test_case_01();
+    // test_case_02();
 }

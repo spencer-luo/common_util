@@ -62,7 +62,7 @@ class eventloop
 public:
     using TimerTaskVec = std::vector<TimerTaskPtr>;
 
-    eventloop(uint32_t task_max_size = 10, uint32_t timer_task_max_size = 5);
+    eventloop(uint32_t task_max_size = 20, uint32_t timer_task_max_size = 10);
     ~eventloop();
 
     // 不可以复制
