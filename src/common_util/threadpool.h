@@ -17,6 +17,7 @@ class threadpool
 {
 public:
     using Task = std::function<void()>;
+    using Duration = std::chrono::steady_clock::duration;
 
 public:
     threadpool(const std::string& name, uint32_t max_task_size = 1024);
@@ -27,7 +28,7 @@ public:
     void stop(bool clear_in_destroctor = false);
 
     bool add_task(const Task& task);
-    bool add_task_for(const Task& task, std::chrono::microseconds timeout);
+    bool add_task(const Task& task, const Duration& timeout);
 
     template<class F, class... Args>
     auto add_task_with_args_and_return(F&& f, Args&&... args)
@@ -40,18 +41,17 @@ public:
 
         std::future<return_type> res = task->get_future();
         {
-            std::unique_lock<std::mutex> lock(task_mutex_);
-            if (!is_running_.load())
-                throw std::runtime_error("enqueue on stopped ThreadPool");
-            post_task([task]() { (*task)(); });
+            auto res = add_task([task]() { (*task)(); });
+            if (!res)
+            {
+                throw std::runtime_error("add task failure!");
+            }
         }
         cv_consumer_.notify_one();
         return res;
     }
 
 private:
-    bool post_task(const Task& task);
-    bool post_task_for(const Task& task, std::chrono::microseconds timeout);
     void call_one_task();
     void clear();
 

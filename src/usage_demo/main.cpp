@@ -11,6 +11,7 @@
 #include "strfmt.hpp"
 #include "strutil.hpp"
 #include "sysutil.hpp"
+#include "threadpool.hpp"
 #include "timecount.hpp"
 #include "timer.hpp"
 #include "timeutil.hpp"
@@ -34,7 +35,8 @@ int main(int argc, char *argv[])
     // TestPrint();
     // TestTimer();
     // TestLRUCache();
-    TestEventLoop();
+    // TestEventLoop();
+    TestThreadPool();
 
     return 0;
 }

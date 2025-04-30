@@ -61,6 +61,7 @@ void threadpool::start(uint32_t thread_num)
         cutl::set_current_thread_name(name_ + "_" + std::to_string(i));
         threads_.emplace_back(std::move(thread));
     }
+    CUTL_INFO("Threadpool " + name_ + " started");
 }
 
 // clear_in_destroctor为true时，延迟到threadpool的析构函数中清理线程和任务队列
@@ -79,19 +80,10 @@ void threadpool::stop(bool clear_in_destroctor)
     {
         clear();
     }
+    CUTL_INFO("Threadpool " + name_ + " stopped");
 }
 
 bool threadpool::add_task(const Task& task)
-{
-    return post_task(task);
-}
-
-bool threadpool::add_task_for(const Task& task, std::chrono::microseconds timeout)
-{
-    return post_task_for(task, timeout);
-}
-
-bool threadpool::post_task(const Task& task)
 {
     if (!is_running_.load())
     {
@@ -111,7 +103,7 @@ bool threadpool::post_task(const Task& task)
     return true;
 }
 
-bool threadpool::post_task_for(const Task& task, std::chrono::microseconds timeout)
+bool threadpool::add_task(const Task& task, const Duration& timeout)
 {
     if (!is_running_.load())
     {
@@ -146,7 +138,7 @@ void threadpool::call_one_task()
     {
         lock.unlock();
         cv_producer_.notify_one();
-        CUTL_WARN("Threadpool " + name_ + " task_queue_ is empty");
+        // CUTL_WARN("Threadpool " + name_ + " task_queue_ is empty");
         return;
     }
 
