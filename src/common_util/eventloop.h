@@ -1,5 +1,26 @@
+/**
+ * @copyright Copyright (c) 2025, Spencer.Luo. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing permissions and
+ * limitations.
+ *
+ * @file eventloop.h
+ * @brief event loop
+ * @author Spencer
+ * @date 2025-04-30
+ */
+
 #pragma once
 
+#include "threadpool.h"
 #include <atomic>
 #include <condition_variable>
 #include <functional>
@@ -25,16 +46,36 @@ using EventloopTimePoint = std::chrono::steady_clock::time_point;
 using EventloopTask = std::function<void()>;
 
 /**
- * 定时任务句柄，当句柄被析构时会自动取消对应的定时任务，使用方需要一直持有直到定时任务取消
+ * Timer task handler. The caller can use this object to cancel timer task.
  */
 class timer_task_handler
 {
 public:
+    /**
+     * @brief Construct a new timer task handler object
+     *
+     * @param timer_task the timer task
+     */
     explicit timer_task_handler(const TimerTaskPtr& timer_task);
+    /**
+     * @brief Destroy the timer task handler object
+     *
+     */
     ~timer_task_handler() = default;
-    // 可移动
-    timer_task_handler(timer_task_handler&&) noexcept;
-    timer_task_handler& operator=(timer_task_handler&&) noexcept;
+    /**
+     * @brief Construct a new timer task handler object
+     *
+     * @param other the other object of timer task handler
+     */
+    timer_task_handler(timer_task_handler&& other) noexcept;
+    /**
+     * @brief Move assignment function
+     *
+     * @param other the other object of timer task handler
+     *
+     * @return timer_task_handler&
+     */
+    timer_task_handler& operator=(timer_task_handler&& other) noexcept;
 
     // 禁用默认构造函数
     timer_task_handler() = delete;
@@ -43,12 +84,16 @@ public:
     timer_task_handler& operator=(const timer_task_handler&) = delete;
 
     /**
-     * 取消定时任务
+     * @brief Cancel the timer task.
+     *
      */
     void cancel();
 
     /**
-     * 定时任务是否有效。
+     * @brief Is the timer task valid?
+     *
+     * @return true
+     * @return false
      */
     bool isvalid();
 
@@ -57,31 +102,49 @@ private:
     TimerTaskWPtr timer_task_;
 };
 
+/**
+ * @brief The class of event loop
+ *
+ */
 class eventloop
 {
 public:
     using TimerTaskVec = std::vector<TimerTaskPtr>;
 
+    /**
+     * @brief Construct a new eventloop object
+     *
+     * @param task_max_size the max size of task queue
+     * @param timer_task_max_size the max size of timer task queue
+     */
     eventloop(uint32_t task_max_size = 20, uint32_t timer_task_max_size = 10);
-    ~eventloop();
+    /**
+     * @brief Destroy the eventloop object
+     *
+     */
+    virtual ~eventloop();
 
     // 不可以复制
     eventloop(const eventloop&) = delete;
     eventloop& operator=(const eventloop&) = delete;
 
     /**
-     * 转发任务到EventLoopBase的线程执行
-     * @param task 任务
+     * @brief Post ordinary task
+     *
+     * @param task task object
+     * @return true
+     * @return false
      */
     bool post_event(const EventloopTask& task);
 
     /**
-     * 增加定时任务
-     * @param name 定时任务名称
-     * @param func 任务
-     * @param period 周期
-     * @param repeat 重复次数，默认值-1表示无限次执行
-     * @return 定时任务句柄
+     * @brief Post timer task
+     *
+     * @param name the name of timer task
+     * @param func the callback function of timer task
+     * @param period the period of timer task
+     * @param repeat the repeat times of timer task, -1 means repeat forever
+     * @return timer_task_handler
      */
     timer_task_handler post_timer_event(const std::string& name,
                                         const EventloopTask& func,
@@ -91,15 +154,22 @@ public:
     /**
      * @brief 运行EventLoopBase，如果满足运行条件该接口会阻塞直到Stop被调用
      */
-    void start();
 
     /**
-     * 停止EventLoopBase
+     * @brief Start to run the event loop.
+     * @note If the running conditions are satisfied, this interface will block until Stop is
+     * called.
      */
-    void stop();
+    virtual void start();
 
     /**
-     * @brief 是否正在运行
+     * @brief Stop the event loop.
+     *
+     */
+    virtual void stop();
+
+    /**
+     * @brief Is the event loop running or not?
      *
      * @return true
      * @return false
@@ -107,8 +177,10 @@ public:
     bool is_running() { return is_running_.load(); }
 
     /**
-     * 当前线程是否Loop线程
-     * @return true表示是，false表示不是
+     * @brief Is the calling thread equals the event loop thread or not?
+     *
+     * @return true
+     * @return false
      */
     bool is_loop_thread() const;
 
@@ -123,11 +195,11 @@ private:
     // 执行单次循序的任务
     void loop_once(EventloopDuration default_timeout);
 
-private:
+protected:
     // 处理任务
-    size_t handle_task();
+    virtual size_t handle_task();
     // 执行到点的定时任务
-    size_t handle_timer_task();
+    virtual size_t handle_timer_task();
     // 添加定时任务
     timer_task_handler post_to_priorityqueue(const std::string& name,
                                              const EventloopTask& func,
@@ -139,7 +211,7 @@ private:
     // 获取所有到期的定时任务
     TimerTaskVec get_expired_timer_tasks(EventloopTimePoint now);
 
-private:
+protected:
     // 事件循环是否运行中
     std::atomic<bool> is_running_;
     // 事件循环的线程id
@@ -155,6 +227,52 @@ private:
     // 唤醒Loop线程的条件变量
     std::mutex cv_mutex_;
     std::condition_variable cv_wakeup_;
+};
+
+/**
+ * @brief The class of multithread event loop
+ *
+ */
+class multithread_eventloop : public eventloop
+{
+public:
+    /**
+     * @brief Construct a new multithread eventloop object
+     *
+     * @param task_max_size
+     * @param timer_task_max_size
+     * @param thread_num
+     */
+    multithread_eventloop(uint32_t task_max_size = 20,
+                          uint32_t timer_task_max_size = 10,
+                          uint32_t thread_num = 0);
+    /**
+     * @brief Destroy the multithread eventloop object
+     *
+     */
+    ~multithread_eventloop();
+
+public:
+    /**
+     * @brief Start to run the event loop.
+     * @note If the running conditions are satisfied, this interface will block until Stop is
+     * called.
+     */
+    void start();
+
+    /**
+     * @brief Stop the event loop.
+     *
+     */
+    void stop();
+
+private:
+    size_t handle_task();
+    size_t handle_timer_task();
+
+private:
+    uint32_t thread_num_;
+    threadpool thread_pool_;
 };
 
 } // namespace cutl

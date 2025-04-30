@@ -397,4 +397,80 @@ uint64_t clocktime_duration(const EventloopTimePoint& tp)
     return us;
 }
 
+multithread_eventloop::multithread_eventloop(uint32_t task_max_size,
+                                             uint32_t timer_task_max_size,
+                                             uint32_t thread_num)
+  : eventloop(task_max_size, timer_task_max_size)
+  , thread_pool_("multi-evtloop", task_max_size + timer_task_max_size)
+  , thread_num_(thread_num)
+{
+}
+multithread_eventloop::~multithread_eventloop() {}
+
+void multithread_eventloop::start()
+{
+    thread_pool_.start(thread_num_);
+    eventloop::start();
+}
+
+void multithread_eventloop::stop()
+{
+    eventloop::stop();
+    thread_pool_.stop();
+}
+
+size_t multithread_eventloop::handle_task()
+{
+    std::list<EventloopTask> tasks;
+    {
+        std::lock_guard<std::mutex> guard(task_mutex_);
+        // swap后，task_queue_变成了空队列，tasks获取到了所有队列元素
+        tasks.swap(task_queue_);
+    }
+
+    for (const auto& task : tasks)
+    {
+        thread_pool_.add_task(task);
+    }
+    return tasks.size();
+}
+
+size_t multithread_eventloop::handle_timer_task()
+{
+    EventloopTimePoint now = std::chrono::steady_clock::now();
+    // 一次性取出所有就绪的定时任务
+    TimerTaskVec ready_tasks = get_expired_timer_tasks(now);
+
+    // 执行就绪的定时任务
+    size_t done = 0;
+    for (auto& task : ready_tasks)
+    {
+        if (!task->is_valid())
+        {
+            continue;
+        }
+
+        thread_pool_.add_task(task->func_);
+        task->update_left_times();
+        ++done;
+    }
+
+    // 再获取一次 now，因为上面可能比较耗时
+    now = std::chrono::steady_clock::now();
+
+    // 任务执行完后再将有效的定时任务重新放入优先队列
+    std::lock_guard<std::mutex> guard(timer_task_mutex_);
+    for (auto& task : ready_tasks)
+    {
+        if (!task->is_valid())
+        {
+            continue;
+        }
+        task->update_next_run_time(now);
+        timer_task_queue_.emplace(task);
+    }
+
+    return done;
+}
+
 } // namespace cutl
