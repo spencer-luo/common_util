@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "algoutil.h"
 #include "color.h"
 #include "config.h"
 #include "datetime.h"
