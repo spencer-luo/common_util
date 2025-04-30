@@ -23,9 +23,22 @@ void PrintMap()
 {
     PrintSubTitle("print_map");
 
-    std::map<std::string, int> map1 = { { "apple", 1 }, { "banana", 2 }, { "orange", 3 } };
+    std::map<std::string, int> map1 = { { "apple", 1 }, { "orange", 3 }, { "banana", 2 } };
     cutl::print_map(map1);
     cutl::print_map(map1, true);
+}
+
+void PrintUnorderedMap()
+{
+    PrintSubTitle("print_unordered_map");
+
+    std::unordered_map<std::string, int> map1 = {
+        { "apple", 1 },
+        { "orange", 3 },
+        { "banana", 2 },
+    };
+    cutl::print_unordered_map(map1);
+    cutl::print_unordered_map(map1, true);
 }
 
 void PrintColor()
@@ -60,4 +73,5 @@ void TestPrint()
     PrintArr();
     PrintVec();
     PrintMap();
+    PrintUnorderedMap();
 }

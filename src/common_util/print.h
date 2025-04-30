@@ -23,6 +23,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace cutl
@@ -131,6 +132,46 @@ void print_vec(const std::vector<T>& vec)
  */
 template<typename K, typename V>
 void print_map(const std::map<K, V>& mp, bool format = false)
+{
+    if (mp.empty())
+    {
+        std::cout << "{}" << std::endl;
+        return;
+    }
+    if (format)
+    {
+        std::cout << "{" << std::endl;
+        for (auto it = mp.begin(); it != mp.end(); it++)
+        {
+            std::cout << "    " << it->first << ": " << it->second << "," << std::endl;
+        }
+        std::cout << "}" << std::endl;
+    }
+    else
+    {
+        std::cout << "{";
+        auto it_begin = mp.begin();
+        std::cout << it_begin->first << ": " << it_begin->second;
+        it_begin++;
+        for (auto it = it_begin; it != mp.end(); it++)
+        {
+            std::cout << ",  " << it->first << ": " << it->second;
+        }
+        std::cout << "}" << std::endl;
+    }
+}
+
+/**
+ * @brief Print simple map with basic data type, such as int, float, double, char, string etc.
+ *
+ * @tparam K the data type of key in map
+ * @tparam V the data type of value in map
+ * @param mp map's object
+ * @param format wheather format the output or not, if true, use multi-line output, otherwise, use
+ * one-line output
+ */
+template<typename K, typename V>
+void print_unordered_map(const std::unordered_map<K, V>& mp, bool format = false)
 {
     if (mp.empty())
     {
