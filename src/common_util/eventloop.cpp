@@ -240,11 +240,11 @@ void eventloop::loop_once(EventloopDuration timeout)
 {
     // 处理定时任务
     size_t timer_task_done = handle_timer_task();
-    CUTL_DEBUG(std::to_string(timer_task_done) + " timer task(s) done.");
+    // CUTL_DEBUG(std::to_string(timer_task_done) + " timer task(s) done.");
 
     // 处理普通任务
     size_t task_done = handle_task();
-    CUTL_DEBUG(task_done + " task(s) done.");
+    // CUTL_DEBUG(std::to_string(task_done) + " task(s) done.");
 
     // 从定时任务队列中获取离当前时间最近的定时任务的到期间隔
     EventloopDuration next_timer_task_duration = get_next_run_time();

@@ -87,7 +87,9 @@ int32_t get_current_thread_tid()
 #if defined(_WIN32)
     thread_id = static_cast<int32_t>(GetCurrentThreadId());
 #elif defined(__APPLE__)
-    pthread_threadid_np(pthread_self(), &thread_id);
+    uint64_t thread_id64 = 0;
+    pthread_threadid_np(pthread_self(), &thread_id64);
+    thread_id = static_cast<int32_t>(thread_id64);
 #elif defined(__linux__) || defined(__unix__)
     thread_id = static_cast<int32_t>(syscall(__NR_gettid));
 #else
