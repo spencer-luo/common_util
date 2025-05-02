@@ -1,29 +1,8 @@
 #include "eventloop.h"
-
-#include <cstring>
-// #include <unistd.h>
-
 #include "inner/logger.h"
-// #include "log_macro.h"
-
-// #include "strfmt.h"
 
 namespace cutl
 {
-
-// int64_t get_ms_from_timepoint(const EventloopTimePoint& pt)
-// {
-//     auto run_time_duration =
-//       std::chrono::duration_cast<std::chrono::milliseconds>(pt.time_since_epoch()).count();
-//     auto ms = static_cast<uint64_t>(run_time_duration);
-//     return ms;
-// }
-
-// std::string fmt_timepoint(const EventloopTimePoint& pt)
-// {
-//     auto ms = get_ms_from_timepoint(pt);
-//     return fmt_timeduration_ms(ms);
-// }
 
 struct TimerTask
 {
