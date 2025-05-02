@@ -9,7 +9,7 @@ void thread_pool_case_01()
 {
     PrintSubTitle("thread_pool case 01");
 
-    cutl::threadpool tp("ThreadPol");
+    cutl::threadpool tp("ThreadPool");
     tp.start(2);
     tp.add_task(
       []()

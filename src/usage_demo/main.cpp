@@ -16,6 +16,7 @@
 #include "timer.hpp"
 #include "timeutil.hpp"
 #include "verutil.hpp"
+#include "threadutil.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -35,8 +36,9 @@ int main(int argc, char *argv[])
     // TestPrint();
     // TestTimer();
     // TestLRUCache();
+    TestThreadUtil();
     // TestEventLoop();
-    TestThreadPool();
+    // TestThreadPool();
 
     return 0;
 }

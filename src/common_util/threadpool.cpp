@@ -18,7 +18,10 @@ threadpool::threadpool(const std::string& name, uint32_t max_task_size)
 
 threadpool::~threadpool()
 {
-    stop();
+    if (is_running_.load())
+    {
+        stop();
+    }
 
     if (!threads_.empty())
     {
