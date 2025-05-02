@@ -1,0 +1,36 @@
+# clang-format的般般： 18.1.8
+# 基于Mozilla的样式进行自定义
+
+Language: Cpp
+BasedOnStyle: Mozilla
+# 代码缩进：空格数
+IndentWidth: 4
+# Tab键设置：不使用换行符\t（使用空格）
+UseTab: Never
+# Tab键设置：4个空格
+TabWidth: 4
+# 权限关键字(public, private, protected): 往左缩进4个字符
+AccessModifierOffset: -4
+# 最大列宽：99
+ColumnLimit: 99
+# 大括号({})换行
+BreakBeforeBraces: Allman
+# 函数声明时返回值类型后的缓存策略：智能换行
+AlwaysBreakAfterDefinitionReturnType: None
+# 返回值类型后的缓存策略：不换行
+AlwaysBreakAfterReturnType: None
+
+# # 短函数的处理策略：只有空函数才会合并成一行
+# AllowShortFunctionsOnASingleLine: Empty
+# # 短条件语句的处理策略：从不合并成一行
+# AllowShortIfStatementsOnASingleLine: Never
+# # 短循环语句的处理策略：从不合并成一行
+# AllowShortLoopsOnASingleLine: false
+# # 短代码块的处理策略：只有空代码块才会合并成一行
+# AllowShortBlocksOnASingleLine: Empty
+# 模板声明后的换行策略：总是换行
+# BreakTemplateDeclarations: Yes
+# # 指针的对齐方式：右对齐
+# PointerAlignment: Right
+# # # 指针(引用)的对齐方式：会分析文件内的大部分指针的对齐方式来决定自己的策略
+# DerivePointerAlignment: true

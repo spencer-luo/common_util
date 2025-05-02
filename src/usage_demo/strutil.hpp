@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "common.hpp"
 #include "strutil.h"
@@ -67,13 +67,30 @@ void TestDesensitizing()
     std::cout << "phone: " << cutl::desensitizing(phone) << std::endl;
 }
 
+void TestStrConvert()
+{
+    // 注意： std::cout与std::wcout不能混用
+    PrintSubTitle("TestStrConvert");
+
+    std::string str1 = "中国";
+    std::wstring wstr1 = cutl::s2ws(str1);
+    std::wcout << "wstr1: " << wstr1 << std::endl;
+    std::wcout.flush();
+
+    std::wstring wstr2 = L"中华大地";
+    std::string str2 = cutl::ws2s(wstr2);
+    std::cout << "str2: " << str2 << std::endl;
+    std::cout.flush();
+}
+
 void TestStrUtil()
 {
-    PrintTitle("strutil");
+    // PrintTitle("strutil");
 
-    TestUpperLower();
-    TestStrip();
-    TestStartswithEndswith();
-    TestJoinSplit();
-    TestDesensitizing();
+    // TestUpperLower();
+    // TestStrip();
+    // TestStartswithEndswith();
+    // TestJoinSplit();
+    // TestDesensitizing();
+    TestStrConvert();
 }

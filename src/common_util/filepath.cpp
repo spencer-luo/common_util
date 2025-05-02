@@ -61,15 +61,15 @@ namespace cutl
         }
     }
 
-    filepath::filepath(const std::string &path)
+    filepath::filepath(const std::string& path)
+      : filepath_(path)
     {
-        filepath_ = path;
         fixpath(filepath_);
     }
 
-    filepath::filepath(const filepath &other)
+    filepath::filepath(const filepath& other)
+      : filepath_(other.filepath_)
     {
-        filepath_ = other.filepath_;
     }
 
     filepath &filepath::operator=(const filepath &other)
@@ -80,7 +80,7 @@ namespace cutl
 
     char filepath::separator()
     {
-#if defined(_WIN32) || defined(__WIN32__)
+#if defined(_WIN32)
         return win_separator;
 #else
         return unix_separator;
@@ -127,17 +127,17 @@ namespace cutl
 
     bool filepath::isfile() const
     {
-        return type() == filetype::file;
+        return type() == filetype::ft_file;
     }
 
     bool filepath::isdir() const
     {
-        return type() == filetype::directory;
+        return type() == filetype::ft_directory;
     }
 
     bool filepath::issymlink() const
     {
-        return type() == filetype::symlink;
+        return type() == filetype::ft_symlink;
     }
 
     std::string filepath::dirname() const

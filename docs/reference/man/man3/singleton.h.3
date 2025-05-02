@@ -1,4 +1,4 @@
-.TH "src/common_util/singleton.h" 3 "common_util" \" -*- nroff -*-
+.TH "src/common_util/singleton.h" 3 "Version 1.1.0" "common_util" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -7,7 +7,7 @@ src/common_util/singleton.h \- Define some macro definitions for singleton patte
 .SH SYNOPSIS
 .br
 .PP
-\fR#include <mutex>\fP
+\fC#include <mutex>\fP
 .br
 
 .SS "Macros"
@@ -20,7 +20,7 @@ src/common_util/singleton.h \- Define some macro definitions for singleton patte
 .ti -1c
 .RI "#define \fBCUTL_SINGLETON_PTR\fP(classname)"
 .br
-.RI "Macro definition for get singleton instance pointer implaementation\&. "
+.RI "Macro definition for get singleton instance pointer implaementation\&. TODO: 这种方式，进程结束时单例对象不会自动析构 "
 .ti -1c
 .RI "#define \fBCUTL_SINGLETON_PTR_DEFAULT_CTOR\fP(classname)"
 .br
@@ -79,44 +79,44 @@ Macro definition for constructor and copy-assignment operator\&.
 .SS "#define CUTL_SINGLETON_PTR(classname)"
 \fBValue:\fP.PP
 .nf
-public:                                                                          \\
-    static classname *get_instance(bool create_if_needed = true)                 \\
-    {                                                                            \\
-        static classname *obj = nullptr;                                         \\
-        if (!obj && create_if_needed)                                            \\
-        {                                                                        \\
-            static std::once_flag flag;                                          \\
-            std::call_once(flag, [&] { obj = new (std::nothrow) classname(); }); \\
-        }                                                                        \\
-        return obj;                                                              \\
-    }                                                                            \\
-    ~classname();                                                                \\
-                                                                                 \\
-private:                                                                         \\
-    classname();                                                                 \\
+public:                                                                                           \\
+    static classname* get_instance()                                                              \\
+    {                                                                                             \\
+        static classname* obj = nullptr;                                                          \\
+        if (!obj)                                                                                 \\
+        {                                                                                         \\
+            static std::once_flag flag;                                                           \\
+            std::call_once(flag, [&] { obj = new (std::nothrow) classname(); });                  \\
+        }                                                                                         \\
+        return obj;                                                                               \\
+    }                                                                                             \\
+    ~classname();                                                                                 \\
+                                                                                                  \\
+private:                                                                                          \\
+    classname();                                                                                  \\
     CUTL_COPY_AND_ASSIGN(classname)
 .fi
 
 .PP
-Macro definition for get singleton instance pointer implaementation\&. 
+Macro definition for get singleton instance pointer implaementation\&. TODO: 这种方式，进程结束时单例对象不会自动析构 
 .SS "#define CUTL_SINGLETON_PTR_DEFAULT_CTOR(classname)"
 \fBValue:\fP.PP
 .nf
-public:                                                                          \\
-    static classname *get_instance(bool create_if_needed = true)                 \\
-    {                                                                            \\
-        static classname *obj = nullptr;                                         \\
-        if (!obj && create_if_needed)                                            \\
-        {                                                                        \\
-            static std::once_flag flag;                                          \\
-            std::call_once(flag, [&] { obj = new (std::nothrow) classname(); }); \\
-        }                                                                        \\
-        return obj;                                                              \\
-    }                                                                            \\
-    ~classname();                                                                \\
-                                                                                 \\
-private:                                                                         \\
-    classname() = default;                                                       \\
+public:                                                                                           \\
+    static classname* get_instance()                                                              \\
+    {                                                                                             \\
+        static classname* obj = nullptr;                                                          \\
+        if (!obj)                                                                                 \\
+        {                                                                                         \\
+            static std::once_flag flag;                                                           \\
+            std::call_once(flag, [&] { obj = new (std::nothrow) classname(); });                  \\
+        }                                                                                         \\
+        return obj;                                                                               \\
+    }                                                                                             \\
+    ~classname();                                                                                 \\
+                                                                                                  \\
+private:                                                                                          \\
+    classname() = default;                                                                        \\
     CUTL_COPY_AND_ASSIGN(classname)
 .fi
 
@@ -125,16 +125,16 @@ Macro definition for get singleton instance pointer implementation with default 
 .SS "#define CUTL_SINGLETON_REF(classname)"
 \fBValue:\fP.PP
 .nf
-public:                                                          \\
-    static classname &get_instance(bool create_if_needed = true) \\
-    {                                                            \\
-        static classname obj;                                    \\
-        return obj;                                              \\
-    }                                                            \\
-    ~classname();                                                \\
-                                                                 \\
-private:                                                         \\
-    classname();                                                 \\
+public:                                                                                           \\
+    static classname& get_instance()                                                              \\
+    {                                                                                             \\
+        static classname obj;                                                                     \\
+        return obj;                                                                               \\
+    }                                                                                             \\
+    ~classname();                                                                                 \\
+                                                                                                  \\
+private:                                                                                          \\
+    classname();                                                                                  \\
     CUTL_COPY_AND_ASSIGN(classname)
 .fi
 
@@ -143,16 +143,16 @@ Macro definition for get singleton instance reference implaementation\&.
 .SS "#define CUTL_SINGLETON_REF_DEFAULT_CTOR(classname)"
 \fBValue:\fP.PP
 .nf
-public:                                                          \\
-    static classname &get_instance(bool create_if_needed = true) \\
-    {                                                            \\
-        static classname obj;                                    \\
-        return obj;                                              \\
-    }                                                            \\
-    ~classname();                                                \\
-                                                                 \\
-private:                                                         \\
-    classname() = default;                                       \\
+public:                                                                                           \\
+    static classname& get_instance()                                                              \\
+    {                                                                                             \\
+        static classname obj;                                                                     \\
+        return obj;                                                                               \\
+    }                                                                                             \\
+    ~classname();                                                                                 \\
+                                                                                                  \\
+private:                                                                                          \\
+    classname() = default;                                                                        \\
     CUTL_COPY_AND_ASSIGN(classname)
 .fi
 

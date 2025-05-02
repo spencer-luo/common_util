@@ -76,6 +76,10 @@ void TestToHex()
     std::cout << "uint64: " << cutl::to_hex(d) << std::endl;
     uint8_t bytes[] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10};
     std::cout << "bytes: " << cutl::to_hex(bytes, 16) << std::endl;
+    int iVal = 10;
+    printf("Address of iVal: %p\n", &iVal);
+    std::cout << "[case1] &iVal: " << cutl::to_hex(&iVal) << std::endl;
+    std::cout << "[case2] &iVal: " << cutl::to_hex(&iVal, true, true) << std::endl;
 }
 
 void TestStrfmt()

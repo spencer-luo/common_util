@@ -23,11 +23,12 @@
 
 namespace cutl
 {
-    timecount::timecount(const std::string &func_name)
-        : func_name_(func_name)
-    {
-        start_time_ = clocktime(timeunit::us);
-    }
+
+timecount::timecount(const std::string& func_name)
+  : func_name_(func_name)
+  , start_time_(clocktime(timeunit::us))
+{
+}
 
     timecount::~timecount()
     {

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['join_0',['join',['../classcutl_1_1filepath.html#a80c42c1066444e1f855ec99441e13f2c',1,'cutl::filepath::join()'],['../strutil_8h.html#a53028b182f613c301ac433fbf3723ac0',1,'cutl::join()']]]
+  ['navy_0',['navy',['../classcutl_1_1color__argb.html#a1abcc7be8b007f7b6a689a43be371d97',1,'cutl::color_argb']]],
+  ['now_1',['now',['../classcutl_1_1datetime.html#a2f26f17577618f7133b62b0343ecca0c',1,'cutl::datetime']]]
 ];

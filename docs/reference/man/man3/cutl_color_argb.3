@@ -1,0 +1,291 @@
+.TH "cutl::color_argb" 3 "Version 1.1.0" "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cutl::color_argb \- argb clolor space  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <color\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBcolor_argb\fP ()"
+.br
+.RI "Construct a new color argb object, default color is black\&. "
+.ti -1c
+.RI "\fBcolor_argb\fP (uint32_t \fBvalue\fP)"
+.br
+.RI "Construct a new color argb object\&. "
+.ti -1c
+.RI "\fBcolor_argb\fP (uint8_t \fBr\fP, uint8_t \fBg\fP, uint8_t \fBb\fP)"
+.br
+.RI "Construct a new color argb object\&. "
+.ti -1c
+.RI "\fBcolor_argb\fP (uint8_t \fBa\fP, uint8_t \fBr\fP, uint8_t \fBg\fP, uint8_t \fBb\fP)"
+.br
+.RI "Construct a new color argb object\&. "
+.ti -1c
+.RI "virtual \fB~color_argb\fP ()"
+.br
+.RI "Destroy the color argb object\&. "
+.ti -1c
+.RI "uint32_t \fBvalue\fP () const"
+.br
+.RI "Get the value of argb color\&. "
+.ti -1c
+.RI "uint8_t \fBa\fP () const"
+.br
+.RI "Get alpha value\&. "
+.ti -1c
+.RI "uint8_t \fBr\fP () const"
+.br
+.RI "Get red value\&. "
+.ti -1c
+.RI "uint8_t \fBg\fP () const"
+.br
+.RI "Get green value\&. "
+.ti -1c
+.RI "uint8_t \fBb\fP () const"
+.br
+.RI "Get blue value\&. "
+.ti -1c
+.RI "void \fBset_value\fP (uint32_t uValue)"
+.br
+.RI "Set the value object\&. "
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBcolor_argb\fP &color)"
+.br
+.RI "Is equal to another \fBcolor_argb\fP object\&. "
+.ti -1c
+.RI "bool \fBoperator!=\fP (const \fBcolor_argb\fP &color)"
+.br
+.RI "Is not equal to another \fBcolor_argb\fP object\&. "
+.in -1c
+.SS "Static Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBwhite\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, white color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBblack\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, black color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBaqua\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, aqua color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBblue\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, blue color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBfuschia\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, fuchsia color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBgray\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, gray color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBgreen\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, green color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBlime\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, lime color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBmaroon\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, maroon color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBnavy\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, navy color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBolive\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, olive color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBpurple\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, orange color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBred\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, red color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBsilver\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, silver color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fBteal\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, teal color\&. "
+.ti -1c
+.RI "static \fBcolor_argb\fP \fByellow\fP"
+.br
+.RI "Const \fBcolor_argb\fP object, yellow color\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+argb clolor space 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "cutl::color_argb::color_argb (uint32_t value)"
+
+.PP
+Construct a new color argb object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP the value of argb color 
+.RE
+.PP
+
+.SS "cutl::color_argb::color_argb (uint8_t r, uint8_t g, uint8_t b)"
+
+.PP
+Construct a new color argb object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIr\fP red value 
+.br
+\fIg\fP green value 
+.br
+\fIb\fP blue value 
+.RE
+.PP
+
+.SS "cutl::color_argb::color_argb (uint8_t a, uint8_t r, uint8_t g, uint8_t b)"
+
+.PP
+Construct a new color argb object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIa\fP alpha value 
+.br
+\fIr\fP red value 
+.br
+\fIg\fP green value 
+.br
+\fIb\fP blue value 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "uint8_t cutl::color_argb::a () const"
+
+.PP
+Get alpha value\&. 
+.PP
+\fBReturns\fP
+.RS 4
+uint8_t 
+.RE
+.PP
+
+.SS "uint8_t cutl::color_argb::b () const"
+
+.PP
+Get blue value\&. 
+.PP
+\fBReturns\fP
+.RS 4
+uint8_t 
+.RE
+.PP
+
+.SS "uint8_t cutl::color_argb::g () const"
+
+.PP
+Get green value\&. 
+.PP
+\fBReturns\fP
+.RS 4
+uint8_t 
+.RE
+.PP
+
+.SS "bool cutl::color_argb::operator!= (const \fBcolor_argb\fP & color)"
+
+.PP
+Is not equal to another \fBcolor_argb\fP object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcolor\fP 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true 
+.PP
+false 
+.RE
+.PP
+
+.SS "bool cutl::color_argb::operator== (const \fBcolor_argb\fP & color)"
+
+.PP
+Is equal to another \fBcolor_argb\fP object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcolor\fP 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true 
+.PP
+false 
+.RE
+.PP
+
+.SS "uint8_t cutl::color_argb::r () const"
+
+.PP
+Get red value\&. 
+.PP
+\fBReturns\fP
+.RS 4
+uint8_t 
+.RE
+.PP
+
+.SS "void cutl::color_argb::set_value (uint32_t uValue)"
+
+.PP
+Set the value object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIuValue\fP 
+.RE
+.PP
+
+.SS "uint32_t cutl::color_argb::value () const"
+
+.PP
+Get the value of argb color\&. 
+.PP
+\fBReturns\fP
+.RS 4
+uint32_t 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.

@@ -33,7 +33,7 @@ namespace cutl
     // https://blog.csdn.net/qq_40340448/article/details/122117270
     os_platform platform_type()
     {
-#if defined(_WIN32) || defined(__WIN32__)
+#if defined(_WIN32)
         // #ifdef _WIN64
         //         std::cout << "64-bit Windows" << std::endl;
         // #else
@@ -53,7 +53,7 @@ namespace cutl
 
     std::string architecture()
     {
-#if defined(_WIN32) || defined(__WIN32__)
+#if defined(_WIN32)
         return cutl::getenv("PROCESSOR_ARCHITECTURE", "");
 #else
         static std::string arch;
@@ -108,17 +108,15 @@ namespace cutl
 
     uint16_t program_bit()
     {
-        int a = 0;
-        auto byte = sizeof(&a);
+        auto byte = sizeof(void*);
         return byte * 8;
     }
 
     // https://blog.csdn.net/Frederick_Fung/article/details/115333125?utm_source=miniapp_weixin
     endian endian_type()
     {
-        int a = 1;
-        int *p = &a;
-        uint8_t *pBtye = (uint8_t *)p;
+        int a = 0x01;
+        uint8_t* pBtye = (uint8_t*)(&a);
         if (*pBtye == 1)
         {
             return endian::little;
@@ -219,7 +217,7 @@ namespace cutl
 
     std::string homedir()
     {
-#if defined(_WIN32) || defined(__WIN32__)
+#if defined(_WIN32)
         return cutl::getenv("USERPROFILE", "");
 #else
         return cutl::getenv("HOME", "");

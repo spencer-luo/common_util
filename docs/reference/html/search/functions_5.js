@@ -16,5 +16,5 @@ var searchData=
   ['fmt_5ftimestamp_5fs_13',['fmt_timestamp_s',['../strfmt_8h.html#a19def540b218ad8b392c77ac0bf0f9e8',1,'cutl']]],
   ['fmt_5ftimestamp_5fus_14',['fmt_timestamp_us',['../strfmt_8h.html#ab5e1423e9aff8e23357419d27380ba13',1,'cutl']]],
   ['fmt_5fuint_15',['fmt_uint',['../strfmt_8h.html#a2e78cd1710a89e2f94f496bc47cd2d46',1,'cutl']]],
-  ['format_16',['format',['../classcutl_1_1datetime.html#a3b652358d578694167f43d3dfe304e57',1,'cutl::datetime::format(datetime_format dfmt=datetime_format::datetime_format_a, bool local=true, bool show_milliseconds=true) const'],['../classcutl_1_1datetime.html#a1cc0a22792d1523874a647a3e336229f',1,'cutl::datetime::format(const std::string &amp;fmt, bool local=true, bool show_milliseconds=true) const']]]
+  ['format_16',['format',['../classcutl_1_1datetime.html#a1cc0a22792d1523874a647a3e336229f',1,'cutl::datetime::format(const std::string &amp;fmt, bool local=true, bool show_milliseconds=true) const'],['../classcutl_1_1datetime.html#a3b652358d578694167f43d3dfe304e57',1,'cutl::datetime::format(datetime_format dfmt=datetime_format::datetime_format_a, bool local=true, bool show_milliseconds=true) const']]]
 ];

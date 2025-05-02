@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['all_0',['all',['../filetype_8h.html#a9d3ee53b2774c37cc5a17766507de28ca2f81ea5535f9ec58b162200d3c6a29c6',1,'cutl']]]
+  ['big_0',['big',['../sysutil_8h.html#aecaf674e04f64f60fd66feab407c606dad861877da56b8b4ceb35c8cbfdf65bb4',1,'cutl']]]
 ];

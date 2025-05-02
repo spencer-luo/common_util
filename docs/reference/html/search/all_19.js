@@ -1,11 +1,10 @@
 var searchData=
 [
-  ['readable_0',['readable',['../classcutl_1_1filepath.html#adb5bd1e2ba786706f01ba33e98b7e7b9',1,'cutl::filepath']]],
-  ['readtext_1',['readtext',['../fileutil_8h.html#a27c4f2c12172b95c3f64090e431e0393',1,'cutl']]],
-  ['realpath_2',['realpath',['../classcutl_1_1filepath.html#a248fee180c2e60045067d9b88408d43b',1,'cutl::filepath']]],
-  ['related_20documents_3',['5. Related Documents',['../index.html#autotoc_md54',1,'']]],
-  ['removedir_4',['removedir',['../fileutil_8h.html#a59de688713570479a87f534309f7ec6a',1,'cutl']]],
-  ['removefile_5',['removefile',['../fileutil_8h.html#ab5971fce037518ec1d89532511e84cdf',1,'cutl']]],
-  ['rstrip_6',['rstrip',['../strutil_8h.html#a11c02ddd4eb2a2ca0ec3aa76321920f5',1,'cutl']]],
-  ['run_7',['Run',['../md_docs_2quick__start_2english_202_8build__library.html',1,'1. Build and Run'],['../md_docs_2quick__start_2english_202_8build__library.html#autotoc_md14',1,'1.1.3. Run'],['../md_docs_2quick__start_2english_202_8build__library.html#autotoc_md18',1,'1.2.2. Run']]]
+  ['ubuntu_0',['ubuntu',['../md_docs_2quick__start_2english_201_8preparation.html#autotoc_md4',1,'1.2. Linux(Ubuntu)'],['../md_docs_2quick__start_2_xE4_xB8_xAD_xE6_x96_x87_201_8preparation.html#autotoc_md29',1,'1.2. Linux(Ubuntu)']]],
+  ['unix_20like_1',['unix like',['../md_docs_2quick__start_2english_202_8build__library.html#autotoc_md16',1,'1.2. Unix-like'],['../md_docs_2quick__start_2_xE4_xB8_xAD_xE6_x96_x87_202_8build__library.html#autotoc_md41',1,'1.2. Unix-like']]],
+  ['us_2',['us',['../timeutil_8h.html#a5123cf2b94c1fabe15fb9ba61231d5f1a0b3b97fa66886c5688ee4ae80ec0c3c2',1,'cutl']]],
+  ['us2ms_3',['us2ms',['../timeutil_8h.html#aa22680f091e52ed6709aaa5c71be7da9',1,'cutl']]],
+  ['us2s_4',['us2s',['../timeutil_8h.html#ae200cc5e60d5eb1a706040cb77af8a61',1,'cutl']]],
+  ['usage_5',['1.3. Usage',['../md_docs_2quick__start_2english_203_8getting__start.html#autotoc_md23',1,'']]],
+  ['utctime_6',['utctime',['../classcutl_1_1datetime.html#a3a0d03eb44d72d49e727d8bf6c6c6517',1,'cutl::datetime']]]
 ];

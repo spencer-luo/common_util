@@ -1,8 +1,12 @@
 var searchData=
 [
-  ['basename_0',['basename',['../classcutl_1_1filepath.html#aae6e9da74d378b70d42274d95d0f3d12',1,'cutl::filepath']]],
-  ['big_1',['big',['../sysutil_8h.html#aecaf674e04f64f60fd66feab407c606dad861877da56b8b4ceb35c8cbfdf65bb4',1,'cutl']]],
-  ['block_5fspecial_2',['block_special',['../filetype_8h.html#a9d3ee53b2774c37cc5a17766507de28cabb6198a909b613aebf917ac5b83b0cba',1,'cutl']]],
-  ['build_20and_20run_3',['1. Build and Run',['../md_docs_2quick__start_2english_202_8build__library.html',1,'']]],
-  ['byteswap_4',['byteswap',['../sysutil_8h.html#a96eea564b8c9916db1961f755b58829a',1,'cutl::byteswap(uint16_t value)'],['../sysutil_8h.html#a5cf9adcd67703aa4510e082a125f592f',1,'cutl::byteswap(uint32_t value)'],['../sysutil_8h.html#a8840f1db0653c00e54e802b9e17d2dd6',1,'cutl::byteswap(uint64_t value)'],['../sysutil_8h.html#ad2e3f87ac25981420fe10718a4f4276a',1,'cutl::byteswap(uint8_t *data, uint32_t size)']]]
+  ['endian_0',['endian',['../sysutil_8h.html#aecaf674e04f64f60fd66feab407c606d',1,'cutl']]],
+  ['endian_5ftype_1',['endian_type',['../sysutil_8h.html#a644ae9daa2b64710b983ef767e1f10ea',1,'cutl']]],
+  ['ends_5fwith_2',['ends_with',['../strutil_8h.html#a12ec77887a1aa7ccd6a2e1d4caf820dc',1,'cutl']]],
+  ['english_3',['1. English',['../index.html#autotoc_md50',1,'']]],
+  ['environment_4',['1. Software Environment',['../md_docs_2quick__start_2english_201_8preparation.html',1,'']]],
+  ['error_5flevel_5',['error_level',['../logtype_8h.html#a4a361b2bdc027c9df2fa3e539fa16959a54e6ba1d51124f9798ceb09872895038',1,'cutl']]],
+  ['executable_6',['executable',['../classcutl_1_1filepath.html#aae9d22857d0e15b9ed3c3822fd2784bd',1,'cutl::filepath']]],
+  ['exists_7',['exists',['../classcutl_1_1filepath.html#a35860a2df77cda9186771e9eb7652fa9',1,'cutl::filepath']]],
+  ['extension_8',['extension',['../classcutl_1_1filepath.html#a2188c2296ac0d3dae44cc5241ddaf801',1,'cutl::filepath']]]
 ];

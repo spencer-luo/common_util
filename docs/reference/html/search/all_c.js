@@ -1,20 +1,15 @@
 var searchData=
 [
-  ['datetime_0',['datetime',['../classcutl_1_1datetime.html',1,'cutl::datetime'],['../classcutl_1_1datetime.html#ac6a75875790295481a05a136af4a2439',1,'cutl::datetime::datetime(uint64_t ms)'],['../classcutl_1_1datetime.html#a9d1d9cc43a398a20909754ffa3de7366',1,'cutl::datetime::datetime(const datetime &amp;other)']]],
-  ['datetime_2eh_1',['datetime.h',['../datetime_8h.html',1,'']]],
-  ['datetime_5fformat_2',['datetime_format',['../datetime_8h.html#a4e11bf4fcf504b16f185690443d143b4',1,'cutl']]],
-  ['datetime_5fformat_5fa_3',['datetime_format_a',['../datetime_8h.html#a4e11bf4fcf504b16f185690443d143b4afc53fb608f9400b917e42c8c643be5a2',1,'cutl']]],
-  ['datetime_5fformat_5fb_4',['datetime_format_b',['../datetime_8h.html#a4e11bf4fcf504b16f185690443d143b4acb35d671f58ee198728dd4bb5869d919',1,'cutl']]],
-  ['datetime_5fformat_5fc_5',['datetime_format_c',['../datetime_8h.html#a4e11bf4fcf504b16f185690443d143b4a4e7170b4333cf5c16894c74cc4779eca',1,'cutl']]],
-  ['datetime_5fformat_5fd_6',['datetime_format_d',['../datetime_8h.html#a4e11bf4fcf504b16f185690443d143b4a5bbd4410e0cdffa6e4e82e48cef15bd9',1,'cutl']]],
-  ['day_7',['day',['../classcutl_1_1datetime.html#a3ad1b6141da3c1a9cab0737c6c227c9c',1,'cutl::datetime']]],
-  ['debug_5flevel_8',['debug_level',['../logtype_8h.html#a4a361b2bdc027c9df2fa3e539fa16959af6d9a205f82f25f11fb8d8e54ab11c2a',1,'cutl']]],
-  ['demo_9',['Demo',['../md_docs_2quick__start_2english_203_8getting__start.html#autotoc_md24',1,'1.4. Demo'],['../md_docs_2quick__start_2_x_e4_x_b8_x_a_d_x_e6_x96_x87_203_8getting__start.html#autotoc_md49',1,'1.4. Demo']]],
-  ['desensitizing_10',['desensitizing',['../strutil_8h.html#a96f118a5cc0f1cc4fef2488e8cbc6631',1,'cutl']]],
-  ['directory_11',['directory',['../filetype_8h.html#a9d3ee53b2774c37cc5a17766507de28cab9f27ff413d2970ce84dbd4c5b0e3ac8',1,'cutl']]],
-  ['directory_20structure_12',['1.2. Directory Structure',['../md_docs_2quick__start_2english_203_8getting__start.html#autotoc_md22',1,'']]],
-  ['dirname_13',['dirname',['../classcutl_1_1filepath.html#aa33e29aa8d9710b91bad420493f18601',1,'cutl::filepath']]],
-  ['dirsize_14',['dirsize',['../fileutil_8h.html#add5974dfd24e73d6ea0384d986e03291',1,'cutl']]],
-  ['documents_15',['5. Related Documents',['../index.html#autotoc_md54',1,'']]],
-  ['download_20visual_20studio_16',['1.1.1. Download Visual Studio',['../md_docs_2quick__start_2english_201_8preparation.html#autotoc_md2',1,'']]]
+  ['g_0',['g',['../classcutl_1_1color__argb.html#aa4b0ff51db0f8a07c0ed81709bee07fa',1,'cutl::color_argb']]],
+  ['gcc_20compile_1',['1.2.1. Install GCC Compile',['../md_docs_2quick__start_2english_201_8preparation.html#autotoc_md5',1,'']]],
+  ['gcc_20compiler_2',['1.3.1. Install GCC Compiler',['../md_docs_2quick__start_2english_201_8preparation.html#autotoc_md8',1,'']]],
+  ['get_3',['get',['../classcutl_1_1datetime.html#add0aca89e3efa88a933113e181903be9',1,'cutl::datetime']]],
+  ['get_5fsymbol_4',['get_symbol',['../classcutl_1_1dlloader.html#a83e951afcbf859f96ac89e775bbbfc35',1,'cutl::dlloader']]],
+  ['get_5fversion_5',['get_version',['../verutil_8h.html#a99aab6b25e43d31dfaef49a86d8ac39a',1,'cutl']]],
+  ['getcwd_6',['getcwd',['../sysutil_8h.html#ae555d03fceaa9fd502210da3b84d18c5',1,'cutl']]],
+  ['getenv_7',['getenv',['../sysutil_8h.html#a19b7c742ba00bfbfc133ffd7d3854527',1,'cutl']]],
+  ['getfd_8',['getfd',['../classcutl_1_1file__guard.html#aa2dae82b780807b217c42854e50ac9a8',1,'cutl::file_guard']]],
+  ['gray_9',['gray',['../classcutl_1_1color__argb.html#a36379d303898425a67da7c2f141be9b3',1,'cutl::color_argb']]],
+  ['green_10',['green',['../classcutl_1_1color__argb.html#a655b4b20b48c6dc4f1608626eb011f47',1,'cutl::color_argb']]],
+  ['guide_11',['1. Quick Start Guide',['../md_docs_2quick__start_2english_203_8getting__start.html',1,'']]]
 ];

@@ -1,4 +1,4 @@
-.TH "cutl::file_entity" 3 "common_util" \" -*- nroff -*-
+.TH "cutl::file_entity" 3 "Version 1.1.0" "common_util" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -8,12 +8,12 @@ cutl::file_entity \- file entity struct\&. include file type and file path\&.
 .br
 .PP
 .PP
-\fR#include <filetype\&.h>\fP
+\fC#include <filetype\&.h>\fP
 .SS "Public Attributes"
 
 .in +1c
 .ti -1c
-.RI "\fBfiletype\fP \fBtype\fP = {\fBfiletype::unknown\fP}"
+.RI "\fBfiletype\fP \fBtype\fP = { \fBfiletype::ft_unknown\fP }"
 .br
 .ti -1c
 .RI "std::string \fBfilepath\fP"
@@ -26,7 +26,7 @@ file entity struct\&. include file type and file path\&.
 .PP 
 .SS "std::string cutl::file_entity::filepath"
 file path 
-.SS "\fBfiletype\fP cutl::file_entity::type = {\fBfiletype::unknown\fP}"
+.SS "\fBfiletype\fP cutl::file_entity::type = { \fBfiletype::ft_unknown\fP }"
 file type 
 
 .SH "Author"

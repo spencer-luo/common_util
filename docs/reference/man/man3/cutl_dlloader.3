@@ -1,0 +1,65 @@
+.TH "cutl::dlloader" 3 "Version 1.1.0" "common_util" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cutl::dlloader \- Dynamic(Shared) library loader\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <dlloader\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBdlloader\fP (const std::string &lib_path)"
+.br
+.RI "Construct a new dlloader object\&. "
+.ti -1c
+.RI "\fB~dlloader\fP ()"
+.br
+.RI "Destroy the dlloader object\&. "
+.ti -1c
+.RI "dl_handle_t \fBget_symbol\fP (const std::string &symbol_name)"
+.br
+.RI "Get the symbol object\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Dynamic(Shared) library loader\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "cutl::dlloader::dlloader (const std::string & lib_path)"
+
+.PP
+Construct a new dlloader object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIlib_path\fP library path 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "dl_handle_t cutl::dlloader::get_symbol (const std::string & symbol_name)"
+
+.PP
+Get the symbol object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsymbol_name\fP symbol name 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+dl_handle_t 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for common_util from the source code\&.
