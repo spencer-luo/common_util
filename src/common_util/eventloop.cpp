@@ -1,7 +1,7 @@
 #include "eventloop.h"
 
 #include <cstring>
-#include <unistd.h>
+// #include <unistd.h>
 
 #include "inner/logger.h"
 // #include "log_macro.h"
@@ -386,15 +386,6 @@ EventloopDuration eventloop::get_next_run_time()
         return EventloopDuration::zero();
     }
     return timer_task_queue_.top()->next_run_time_ - now;
-}
-
-uint64_t clocktime_duration(const EventloopTimePoint& tp)
-{
-    // for C++11 and later
-    auto run_time_duration =
-      std::chrono::duration_cast<std::chrono::microseconds>(tp.time_since_epoch()).count();
-    auto us = static_cast<uint64_t>(run_time_duration);
-    return us;
 }
 
 multithread_eventloop::multithread_eventloop(uint32_t task_max_size,

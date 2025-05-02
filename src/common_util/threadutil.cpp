@@ -49,15 +49,17 @@ std::string get_current_thread_name()
 {
 #if defined(_WIN32)
     // Windows 平台使用 GetThreadDescription 获取线程名称
-    std::wstring wname;
-    HRESULT hr = GetThreadDescription(GetCurrentThread(), &wname);
+    PWSTR desc = nullptr;
+    HRESULT hr = GetThreadDescription(GetCurrentThread(), &desc);
     if (!SUCCEEDED(hr))
     {
         auto dwErr = GetLastError();
         CUTL_ERROR("get thread name failed. errMsg:" + std::to_string(dwErr));
         return {};
     }
+    std::wstring wname(desc);
     std::string name = ws2s(wname);
+    LocalFree(desc); // 必须释放内存！
     return name;
 #else
     char thread_name[16]{};

@@ -12,6 +12,11 @@ namespace cutl
 
 std::string wstring2string(const std::wstring& ws)
 {
+    if (ws.empty())
+    {
+        return std::string();
+    }
+
     const wchar_t* wchSrc = ws.c_str();
     size_t nDestSize = wcstombs(NULL, wchSrc, 0) + 1;
     char* chDest = new char[nDestSize];
