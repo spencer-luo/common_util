@@ -16,12 +16,13 @@
  * @date 2024-05-13
  */
 
-#include <sstream>
-#include <iomanip>
-#include <bitset>
 #include "strfmt.h"
 #include "inner/logger.h"
 #include "inner/time_util.h"
+#include <algorithm>
+#include <bitset>
+#include <iomanip>
+#include <sstream>
 
 namespace cutl
 {
@@ -251,6 +252,25 @@ namespace cutl
         text += to_hex((uint8_t)((value >> 8) & 0xFF), upper);
         text += to_hex((uint8_t)(value & 0xFF), upper);
         return text;
+    }
+
+    std::string to_hex(void* ptr, bool upper, bool auto_fill_prefix)
+    {
+
+        std::stringstream ss;
+        if (auto_fill_prefix)
+        {
+            auto byte = sizeof(void*);
+            ss << std::setfill('0') << std::setw(2 * byte);
+        }
+        ss << ptr;
+        // return ss.str();
+        auto result = ss.str();
+        if (upper)
+        {
+            std::transform(result.begin(), result.end(), result.begin(), ::toupper);
+        }
+        return result;
     }
 
     std::string to_bin(uint8_t value, char separator)

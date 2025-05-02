@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.28.3)
 
 # 项目名称
 # project name
-project(common_util VERSION 1.1.0 LANGUAGES CXX)
+project(common_util VERSION 1.2.0 LANGUAGES CXX)
 # 构建时间
 # build time
 string(TIMESTAMP BUILD_TIME "%y-%m-%d %H:%M:%S")
@@ -39,11 +39,14 @@ message("COMMON_UTIL_HEADER": ${COMMON_UTIL_HEADER})
 
 # 添加头文件的包含目录
 # include directories
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+# include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 # 编译成静态库
 # build library
 add_library(${PROJECT_NAME} STATIC ${COMMON_UTIL_SRC})
+# 添加头文件的包含目录
+# include directories
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # 如果是windows，设置 管理员权限 和 UAC绕过UI保护
 if (CMAKE_SYSTEM_NAME MATCHES "Windows")

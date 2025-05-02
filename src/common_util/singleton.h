@@ -19,6 +19,7 @@
 #pragma once
 
 #include <mutex>
+#include <memory>
 
 /**
  * @brief Macro definition for constructor and copy-assignment operator.
@@ -31,19 +32,19 @@
 
 /**
  * @brief Macro definition for get singleton instance pointer implaementation.
- * TODO: 这种方式，进程结束时单例对象不会自动析构
  *
  */
 #undef CUTL_SINGLETON_PTR
 #define CUTL_SINGLETON_PTR(classname)                                                             \
 public:                                                                                           \
-    static classname* get_instance()                                                              \
+    static std::shared_ptr<classname> get_instance()                                              \
     {                                                                                             \
-        static classname* obj = nullptr;                                                          \
+        static std::shared_ptr<classname> obj = nullptr;                                          \
         if (!obj)                                                                                 \
         {                                                                                         \
             static std::once_flag flag;                                                           \
-            std::call_once(flag, [&] { obj = new (std::nothrow) classname(); });                  \
+            std::call_once(                                                                       \
+              flag, [&] { obj = std::shared_ptr<classname>(new (std::nothrow) classname()); });   \
         }                                                                                         \
         return obj;                                                                               \
     }                                                                                             \

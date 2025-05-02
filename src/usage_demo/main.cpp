@@ -2,15 +2,33 @@
 #include "config.hpp"
 #include "datetime.hpp"
 #include "dlloader.hpp"
+#include "eventloop.hpp"
 #include "filepath.hpp"
 #include "fileutil.hpp"
+#include "lrucache.hpp"
+#include "print.hpp"
 #include "singleton.hpp"
 #include "strfmt.hpp"
 #include "strutil.hpp"
 #include "sysutil.hpp"
+#include "threadpool.hpp"
 #include "timecount.hpp"
+#include "timer.hpp"
 #include "timeutil.hpp"
 #include "verutil.hpp"
+#include "threadutil.hpp"
+
+void usage_demo()
+{
+    // Data formatting
+    std::cout << "fmt_uint: " << cutl::fmt_uint(12, 5) << std::endl;
+    std::cout << "fmt_double: " << cutl::fmt_double(3.141592653, 4) << std::endl;
+    std::cout << "fmt_filesize: " << cutl::fmt_filesize(33600) << std::endl;
+    // Get the current system time
+    auto now = cutl::datetime::now();
+    std::cout << "current time(UTC time): " << now.utctime() << std::endl;
+    std::cout << "current time(local time): " << now.format() << std::endl;
+}
 
 int main(int argc, char *argv[])
 {
@@ -23,10 +41,18 @@ int main(int argc, char *argv[])
     // TestTimecount();
     // TestDatetime();
     // TestVerUtil();
-    TestStrUtil();
+    // TestStrUtil();
     // TestFilePath();
     // TestFileUtil();
-    TestDlLoader();
+    // TestDlLoader();
+    // TestPrint();
+    // TestTimer();
+    // TestLRUCache();
+    // TestThreadUtil();
+    // TestEventLoop();
+    // TestThreadPool();
+
+    usage_demo();
 
     return 0;
 }
