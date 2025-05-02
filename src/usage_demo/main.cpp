@@ -18,6 +18,18 @@
 #include "verutil.hpp"
 #include "threadutil.hpp"
 
+void usage_demo()
+{
+    // Data formatting
+    std::cout << "fmt_uint: " << cutl::fmt_uint(12, 5) << std::endl;
+    std::cout << "fmt_double: " << cutl::fmt_double(3.141592653, 4) << std::endl;
+    std::cout << "fmt_filesize: " << cutl::fmt_filesize(33600) << std::endl;
+    // Get the current system time
+    auto now = cutl::datetime::now();
+    std::cout << "current time(UTC time): " << now.utctime() << std::endl;
+    std::cout << "current time(local time): " << now.format() << std::endl;
+}
+
 int main(int argc, char *argv[])
 {
     LibraryInit();
@@ -36,9 +48,11 @@ int main(int argc, char *argv[])
     // TestPrint();
     // TestTimer();
     // TestLRUCache();
-    TestThreadUtil();
+    // TestThreadUtil();
     // TestEventLoop();
     // TestThreadPool();
+
+    usage_demo();
 
     return 0;
 }

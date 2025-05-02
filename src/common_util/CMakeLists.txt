@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.28.3)
 
 # 项目名称
 # project name
-project(common_util VERSION 1.1.0 LANGUAGES CXX)
+project(common_util VERSION 1.2.0 LANGUAGES CXX)
 # 构建时间
 # build time
 string(TIMESTAMP BUILD_TIME "%y-%m-%d %H:%M:%S")
