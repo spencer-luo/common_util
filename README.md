@@ -11,18 +11,11 @@
 
 ## 1.2. Overview
 
-common_util is a general-purpose C++ utility library, include the following functions:
+common_util is a general - purpose utility library for C++. It is lightweight and easy to operate.
 
-- Time utilities
-- Function timer
-- Filepath utilities
-- Filesystem utilities
-- String utilities
-- Data formatting
-- Singleton pattern macro definition
-- Dynamic library loader
+common_util is implemented using modern C++ syntax (C++11 and above), with "cutl" as the namespace. The naming convention of all its interfaces is consistent with that of the STL, and it can be used as an extensions of C++ STL. You can use common_util just like using the STL, For example:
 
-common_util is implemented in modern C++ syntax (C++11 and above), using cutl as the namespace. The naming convention of all interfaces is consistent with the STL, and it can be used as an extensions of C++ standard library. You can use common_util just like using the STL, For example:
+**Usage demo:**
 
 ```C++
 // Data formatting
@@ -35,6 +28,16 @@ std::cout << "current time(UTC time): " << now.utctime() << std::endl;
 std::cout << "current time(local time): " << now.format() << std::endl;
 ```
 
+**Running result:**
+
+```bash
+fmt_uint: 00012
+fmt_double: 3.1416
+fmt_filesize: 32.8K
+current time(UTC time): 2025-05-02 10:29:10.785
+current time(local time): 2025-05-02 18:29:10.785
+```
+
 ## 1.3. Library Features
 
 - **Simple and lightweigh**: Based on basic C++ syntax and STL, it independent on any third-party libraries.
@@ -43,7 +46,35 @@ std::cout << "current time(local time): " << now.format() << std::endl;
 - **Comprehensive documentation**: All exported header files have detail comments, it has complete API reference and usage demos.
 - **C++ version requirement**: C++11 and above versions.
 
-## 1.4. Testing Platforms
+## 1.4. Module Description
+
+| Header File | Main Function |
+| :-- | :-- |
+| `algoutil.h` | A supplement to `<algorithm>`, providing some commonly used algorithm functions, such as those that were not available in C++11 but have been added in later versions. |
+| `color.h` | A class for encapsulating ARGB color values. |
+| `common_util.h` | The import header file of common_util contains all other header files. |
+| `config.h` | Provides the library initialization function, as well as functions to obtain the library version and name. |
+| `datetime.h` | A simple date and time class based on the system clock. |
+| `dlloader.h` | A dynamic loader for dynamic libraries (shared libraries). |
+| `eventloop.h` | An event loop that supports ordinary tasks and timer tasks (timer tasks support specifying the number of executions and cancellation). The execution of tasks comes in single-thread(`eventloop`) and multi-thread(`multithread_eventloop`) versions. |
+| `filepath.h` | Operations on file paths, such as file path concatenation and file type judgment. |
+| `filetype.h` | Definitions of file types. |
+| `fileutil.h` | Operations on the file system, such as file creation/deletion, file reading/writing, etc. |
+| `logtype.h` | Type definitions related to log recording. |
+| `print.h` | Helper functions for console printing, including printing arrays、vectors、maps of basic types, and printing colored strings. |
+| `singleton.h` | Template classes and macro definitions for the singleton pattern. |
+| `strfmt.h` | String formatting, such as time formatting, file size formatting, converting int to hexadecimal, etc. |
+| `strutil.h` | Utility functions for string operations, such as case conversion, string split, string join, etc. |
+| `sysutil.h` | System utility functions, such as system calls, obtaining the CPU architecture/endianness, etc. |
+| `threadpool.h` | A thread pool, a lightweight and simple implementation of a thread pool. |
+| `threadutil.h` | Thread - related utility functions, such as setting the thread name, obtaining the thread ID, etc. |
+| `timecount.h` | A time counter for measuring the running time of functions. |
+| `timer.h` | A timer that supports single-task timer (delayed execution) and repeating-task timer (periodic execution). |
+| `timeutil.h` | Utility functions for time processing, such as time unit conversion, obtaining timestamps, etc. |
+| `version.h` | Definition of the version number of the common_util library. |
+| `verutil.h` | Version number processing, such as parsing version number substrings from strings, version number comparison, etc. |
+
+## 1.5. Testing Platforms
 
 This library has been tested and verified on the following platforms:
 
@@ -56,12 +87,12 @@ This library has been tested and verified on the following platforms:
 | iOS                                   |                          | To be tested |         |
 | HarmonyOS                             |                          | To be tested |         |
 
-## 1.5. Related Documents
+## 1.6. Related Documents
 
 - off-line: [docs/reference/html/index.html](./docs/reference/html/index.html)
 - on line : [http://sunlogging.com/docs/common_util/](http://sunlogging.com/docs/common_util/)
 
-## 1.6. Welcome to Collaborate
+## 1.7. Welcome to Collaborate
 
 We welcome all developers who are interested in this project to join us, whether you are an experienced senior developer or a newcomer just starting out, we look forward to your participation. You can get involved in the project in the following ways:
 
@@ -91,6 +122,8 @@ common_util是C++的一个通用工具库，轻量级、操作简便。
 
 common_util采用现代C++语法（C++11及以上）实现，使用cutl作为命名空间，所有接口的命名方式与STL保持一致，可以作为STL库的一个补充。你可以像使用STL一样使用common_util，如：
 
+**用法示例：**
+
 ```C++
 // 数据格式化
 std::cout << "fmt_uint: " << cutl::fmt_uint(12, 5) << std::endl;
@@ -100,6 +133,16 @@ std::cout << "fmt_filesize: " << cutl::fmt_filesize(33600) << std::endl;
 auto now = cutl::datetime::now();
 std::cout << "current time(UTC time): " << now.utctime() << std::endl;
 std::cout << "current time(local time): " << now.format() << std::endl;
+```
+
+**运行结果：**
+
+```bash
+fmt_uint: 00012
+fmt_double: 3.1416
+fmt_filesize: 32.8K
+current time(UTC time): 2025-05-02 10:29:10.785
+current time(local time): 2025-05-02 18:29:10.785
 ```
 
 ## 2.3. 设计特点
@@ -116,11 +159,11 @@ std::cout << "current time(local time): " << now.format() << std::endl;
 | :-------------- | :----------------------------------------------------------------------------------------------------- |
 | `algoutil.h`    | `<algorithm>`的补充，提供一些常用的算法函数，如：C++11没有，但是后面版本已加入的算法函数。             |
 | `color.h`       | ARGB颜色值的封装类。                                                                                   |
-| `common_util.h` | common_util的核心头文件，包含所有其他头文件。                                                          |
+| `common_util.h` | common_util的导入头文件，包含所有其他头文件。                                                          |
 | `config.h`      | 提供库的初始化函数，提供库的版本和名称获取函数。                                                       |
 | `datetime.h`    | 基于系统时钟的简易的日期时间类。                                                                       |
 | `dlloader.h`    | 动态库(共享库)的动态加载器。                                                                           |
-| `eventloop.h`   | 事件循环，支持：普通任务、定时任务(定时任务支持指定次数和取消)，任务的执行分为单线程和多线程两个版本。 |
+| `eventloop.h`   | 事件循环，支持：普通任务、定时任务(定时任务支持指定次数和取消)，任务的执行分为单线程(`eventloop`)和多线程(`multithread_eventloop`)两个版本。 |
 | `filepath.h`    | 文件路径的操作，如路径拼接、文件类型判断等。                                                           |
 | `filetype.h`    | 文件类型的定义。                                                                                       |
 | `fileutil.h`    | 文件系统的操作，如：文件的创建/删除、文件的读/写等。                                                   |
