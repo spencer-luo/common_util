@@ -6,7 +6,6 @@
 
 | Region | Platform | Source Code Repository URL |
 | --- | --- | --- |
-| Mainland China | gitcode | [https://gitcode.com/luoweifu1/common_util](https://gitcode.com/luoweifu1/common_util) |
 | Mainland China | Gitee | [https://gitee.com/spencer_luo/common_util](https://gitee.com/spencer_luo/common_util) |
 | International | Github | [https://github.com/spencer-luo/common_util](https://github.com/spencer-luo/common_util) |
 
@@ -125,6 +124,7 @@ docs/quick_start/Chinese/03.getting_start.md   # Quick guide
 
 ## 1.7. Related Documents
 
+
 - off-line: [docs/reference/html/index.html](./docs/reference/html/index.html)
 - on line : [http://sunlogging.com/docs/common_util/](http://sunlogging.com/docs/common_util/)
 
@@ -149,7 +149,6 @@ Looking forward to your participation!
 
 | 地区 | 代码托管平台 | 源码仓库地址 |
 | --- | --- | --- |
-| 中国大陆 | gitcode | [https://gitcode.com/luoweifu1/common_util](https://gitcode.com/luoweifu1/common_util) |
 | 中国大陆 | Gitee | [https://gitee.com/spencer_luo/common_util](https://gitee.com/spencer_luo/common_util) |
 | 国际站点 | Github | [https://github.com/spencer-luo/common_util](https://github.com/spencer-luo/common_util) |
 
