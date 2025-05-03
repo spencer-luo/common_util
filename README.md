@@ -87,12 +87,47 @@ This library has been tested and verified on the following platforms:
 | iOS                                   |                          | To be tested |         |
 | HarmonyOS                             |                          | To be tested |         |
 
-## 1.6. Related Documents
+## 1.6. Usage of the Library
+
+There are usage examples of each module in src/usage_demo.
+
+```bash
+common.hpp      # Common header file for the Demo
+config.hpp      # Initialization configuration
+datetime.hpp    # Usage of the datetime class
+dlloader.hpp    # Usage of the dynamic library loader
+eventloop.hpp   # Usage of the eventloop class
+filepath.hpp    # Usage of the filepath class
+fileutil.hpp    # Operations related to the file system
+lrucache.hpp    # Usage of the LRU cache algorithm class
+main.cpp        # Main function of the Demo
+print.hpp       # Operations related to printing
+singleton.hpp   # Usage of macro definitions related to the singleton pattern
+strfmt.hpp      # Usage of String formatting functions
+strutil.hpp     # Operations related to strings
+sysutil.hpp     # Operations related to system calls
+threadpool.hpp  # Usage of the threadpool class
+threadutil.hpp  # Operations related to threads
+timecount.hpp   # time counter of the function
+timer.hpp       # Usage of the timer class
+timeutil.hpp    # Operations related to time
+verutil.hpp     # Operations related to version numbers
+```
+
+For more usage documentation, refer to:
+
+```bash
+docs/quick_start/Chinese/01.preparation.md     # environment preparation
+docs/quick_start/Chinese/02.build_library.md   # Building and running
+docs/quick_start/Chinese/03.getting_start.md   # Quick guide
+```
+
+## 1.7. Related Documents
 
 - off-line: [docs/reference/html/index.html](./docs/reference/html/index.html)
 - on line : [http://sunlogging.com/docs/common_util/](http://sunlogging.com/docs/common_util/)
 
-## 1.7. Welcome to Collaborate
+## 1.8. Welcome to Collaborate
 
 We welcome all developers who are interested in this project to join us, whether you are an experienced senior developer or a newcomer just starting out, we look forward to your participation. You can get involved in the project in the following ways:
 
@@ -116,7 +151,7 @@ Looking forward to your participation!
 | 中国大陆 | Gitee | [https://gitee.com/spencer_luo/common_util](https://gitee.com/spencer_luo/common_util) |
 | 国际站点 | Github | [https://github.com/spencer-luo/common_util](https://github.com/spencer-luo/common_util) |
 
-## 2.2. 概述
+## 2.2. 项目概述
 
 common_util是C++的一个通用工具库，轻量级、操作简便。
 
@@ -148,7 +183,7 @@ current time(local time): 2025-05-02 18:29:10.785
 ## 2.3. 设计特点
 
 - **轻量极简**： 基于基础C++语法和STL，不依赖任何第三方库。
-- **多平台支持**： 支持Linux/OS-X/Windows等多个平台，一套代码多平台编译。
+- **多平台支持**： 支持Linux/macOS/Windows等多个平台，一套代码多平台编译。
 - **代码整洁**： 代码风格整洁，命名方式与STL保持一致，你可以像使用STL一样使用本库。
 - **文档规范全面**： 所有对外接口的头文件都有详细的代码注释，且有完整的API文档和使用Demo，可供查阅。
 - **C++版本要求**： C++11及以上版本。
@@ -194,12 +229,47 @@ current time(local time): 2025-05-02 18:29:10.785
 | iOS                |                    | 待验证   |      |
 | HarmonyOS          |                    | 待验证   |      |
 
-## 2.6. 相关文档
+## 2.6. 库的用法
+
+src/usage_demo 有各个模块的使用示例。
+
+```bash
+common.hpp      # Demo的公共头文件
+config.hpp      # 初始化配置
+datetime.hpp    # 日期时间类的用法
+dlloader.hpp    # 显示加载动态库的用法
+eventloop.hpp   # 事件循环的用法
+filepath.hpp    # 文件路径类的用法
+fileutil.hpp    # 文件系统相关的操作
+lrucache.hpp    # LRU缓存算法类的用法
+main.cpp        # Demo的主函数
+print.hpp       # 打印相关的操作
+singleton.hpp   # 单例模式相关的宏定义的用法
+strfmt.hpp      # 字符串格式化
+strutil.hpp     # 字符串相关的操作
+sysutil.hpp     # 系统调用相关的操作
+threadpool.hpp  # 线程池的用法
+threadutil.hpp  # 线程相关的操作
+timecount.hpp   # 函数计时器类
+timer.hpp       # 定时器的用法
+timeutil.hpp    # 时间相关的操作
+verutil.hpp     # 版本号相关的操作
+```
+
+更多的使用说明文档，参考：
+
+```bash
+docs/quick_start/中文/01.preparation.md     # 软件环境准备
+docs/quick_start/中文/02.build_library.md   # 构建和运行
+docs/quick_start/中文/03.getting_start.md   # 快速指引
+```
+
+## 2.7. 相关文档
 
 - 离线文档: [docs/reference/html/index.html](./docs/reference/html/index.html)
 - 在线文档: [http://sunlogging.com/docs/common_util/](http://sunlogging.com/docs/common_util/)
 
-## 2.7. 欢迎共建
+## 2.8. 欢迎共建
 
 我们欢迎所有对此项目感兴趣的开发者加入我们，无论您是经验丰富的资深开发者，还是刚刚入门的新手，我们都期待您的参与。您可以通过以下方式参与到项目中：
 
