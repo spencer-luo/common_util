@@ -164,6 +164,12 @@ namespace cutl
 
     std::string datetime::format(const std::string &fmt, bool local, bool show_milliseconds) const
     {
+        if (timestamp_ms_ == 0)
+        {
+            CUTL_ERROR("datetime is not initialized");
+            return {};
+        }
+
         auto s = timestamp_ms_ / 1000;
         auto ms = timestamp_ms_ % 1000;
         auto text = fmt_timestamp(s, local, fmt);
