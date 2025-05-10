@@ -30,6 +30,13 @@ namespace cutl
 
     void fixpath(std::string &path)
     {
+        if (path.empty())
+        {
+            CUTL_ERROR("path is empty.");
+            return;
+        }
+
+        // 文件分隔符修正为对于平台的分隔符
         if (win_separator == filepath::separator())
         {
             for (size_t i = 0; i < path.size(); i++)
@@ -55,7 +62,8 @@ namespace cutl
             // do nothing
         }
 
-        while (path.empty() || path.back() == filepath::separator())
+        // 去掉末尾的分隔符
+        while (!path.empty() && path.back() == filepath::separator())
         {
             path.pop_back();
         }

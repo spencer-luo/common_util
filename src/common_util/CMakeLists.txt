@@ -30,23 +30,19 @@ message("CMAKE_SOURCE_DIR:" ${CMAKE_SOURCE_DIR})
 file(GLOB_RECURSE COMMON_UTIL_SRC
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 )
-message(DEBUG "COMMON_UTIL_SRC": ${COMMON_UTIL_SRC})
-
-file(GLOB COMMON_UTIL_HEADER
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
-)
-message("COMMON_UTIL_HEADER": ${COMMON_UTIL_HEADER})
-
-# 添加头文件的包含目录
-# include directories
-# include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+message(DEBUG "COMMON_UTIL_SRC:" ${COMMON_UTIL_SRC})
 
 # 编译成静态库
 # build library
 add_library(${PROJECT_NAME} STATIC ${COMMON_UTIL_SRC})
+
 # 添加头文件的包含目录
 # include directories
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME}
+    PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>  # 构建时使用源码目录的 include
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}># 安装后使用安装目录的 include
+)
 
 # 如果是windows，设置 管理员权限 和 UAC绕过UI保护
 if (CMAKE_SYSTEM_NAME MATCHES "Windows")
