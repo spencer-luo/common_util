@@ -47,4 +47,7 @@ namespace cutl
     // fsync to disk, only for unix system
     bool file_sync(FILE *handle);
 
+    // 获取文件最近修改时间，返回以秒为单位的时间戳
+    uint64_t get_last_modified_time_s(const std::string& filepath);
+
 } // namespace cutl

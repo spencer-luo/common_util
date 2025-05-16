@@ -113,6 +113,24 @@ namespace cutl
     bool removedir(const filepath &path, bool recursive = false);
 
     /**
+     * @brief Rename a file.
+     *
+     * @param oldfile The file path of the file to be renamed.
+     * @param newfile The file path of the new file.
+     * @return true
+     * @return false
+     */
+    bool renamefile(const filepath& oldfile, const filepath& newfile);
+
+    /**
+     * @brief Get the last modified time of a file.
+     * @note Return the timestamp in seconds.
+     * @param path The file path of the file to be checked.
+     * @return uint64_t
+     */
+    uint64_t last_modified_time(const filepath& path);
+
+    /**
      * @brief Read the text content of a file.
      *
      * @param path the filepath of the file to be read
