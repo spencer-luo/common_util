@@ -200,6 +200,34 @@ namespace cutl
         }
     }
 
+    bool renamefile(const filepath& oldfile, const filepath& newfile)
+    {
+        if (!oldfile.exists())
+        {
+            CUTL_ERROR(oldfile.str() + "is not exist.");
+            return false;
+        }
+
+        if (newfile.exists())
+        {
+            CUTL_ERROR("Already exist target file: " + oldfile.str());
+            return false;
+        }
+
+        int ret = rename(oldfile.str().c_str(), newfile.str().c_str());
+        if (ret != 0)
+        {
+            CUTL_ERROR("rename " + oldfile.str() + " error, ret:" + std::to_string(ret));
+            return false;
+        }
+        return true;
+    }
+
+    uint64_t last_modified_time(const filepath& path)
+    {
+        return get_last_modified_time_s(path.str());
+    }
+
     std::string readtext(const filepath &path, uint64_t max_read_size)
     {
         file_guard fg(fopen(path.str().c_str(), "r"));

@@ -1,3 +1,4 @@
+#include "algoutil.hpp"
 #include "common.hpp"
 #include "config.hpp"
 #include "datetime.hpp"
@@ -12,11 +13,11 @@
 #include "strutil.hpp"
 #include "sysutil.hpp"
 #include "threadpool.hpp"
+#include "threadutil.hpp"
 #include "timecount.hpp"
 #include "timer.hpp"
 #include "timeutil.hpp"
 #include "verutil.hpp"
-#include "threadutil.hpp"
 
 void usage_demo()
 {
@@ -43,7 +44,7 @@ int main(int argc, char *argv[])
     // TestVerUtil();
     // TestStrUtil();
     // TestFilePath();
-    // TestFileUtil();
+    TestFileUtil();
     // TestDlLoader();
     // TestPrint();
     // TestTimer();
@@ -51,8 +52,9 @@ int main(int argc, char *argv[])
     // TestThreadUtil();
     // TestEventLoop();
     // TestThreadPool();
+    // TestAlgorithmUtil();
 
-    usage_demo();
+    // usage_demo();
 
     return 0;
 }

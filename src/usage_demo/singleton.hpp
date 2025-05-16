@@ -1,5 +1,5 @@
 #include "common.hpp"
-#include "singleton.h"
+#include "common_util/singleton.h"
 #include <iostream>
 
 class A

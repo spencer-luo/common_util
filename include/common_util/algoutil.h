@@ -20,12 +20,15 @@
  */
 #pragma once
 
+#include <algorithm>
+
 namespace cutl
 {
 
 /**
- * @brief limit the value to the range [min_val, max_val]
- * @note The function has the same functionality as std::clamp() in C++17.
+ * @brief limit the value to the range [min_val, max_val], The function has the same functionality
+ * as std::clamp() in C++17.
+ * @note min_val <= return_value <= max_val.
  * @tparam T Type of the variable
  * @param value Variable that needs to be restricted
  * @param min_val The minimum value of the range
@@ -37,6 +40,22 @@ T clamp(const T& value, const T& min_val, const T& max_val) noexcept
 {
     // 先限制最大值，再限制最小值
     return std::max(min_val, std::min(value, max_val));
+}
+
+/**
+ * @brief Check if the value is within the specified range: [min_val, max_val)
+ * @note if min_val <= value < max_val, return true. otherwise, return false.
+ * @tparam T Type of the variable
+ * @param value Variable to be checked
+ * @param min_val The minimum value of the range
+ * @param max_val The maximum value of the range
+ * @return true
+ * @return false
+ */
+template<typename T>
+bool in_range(const T& value, const T& min_val, const T& max_val) noexcept
+{
+    return (value >= min_val) && (value < max_val);
 }
 
 } // namespace cutl

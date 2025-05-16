@@ -1,12 +1,13 @@
 #if defined(_WIN32)
 
-#include <io.h>
-#include <direct.h>
-#include <Windows.h>
-#include <stdlib.h>
-#include "strutil.h"
 #include "filesystem.h"
 #include "logger.h"
+#include "strutil.h"
+#include "timeutil.h"
+#include <Windows.h>
+#include <direct.h>
+#include <io.h>
+#include <stdlib.h>
 
 namespace cutl
 {
@@ -439,6 +440,34 @@ namespace cutl
     bool file_sync(FILE *handle)
     {
         return true;
+    }
+
+    uint64_t get_last_modified_time_s(const std::string& filepath)
+    {
+        std::wstring wide_path = s2ws(filepath);
+
+        // Windows实现
+        std::wstring wide_path = utf8_to_wide(path);
+        WIN32_FILE_ATTRIBUTE_DATA fileData;
+
+        if (!GetFileAttributesExW(wide_path.c_str(), GetFileExInfoStandard, &fileData))
+        {
+            CUTL_ERROR("Get last modified time failed for " + filepath);
+            return timestamp(timeunit::s);
+        }
+
+        // 转换FILETIME到UNIX时间戳
+        FILETIME ft = fileData.ftLastWriteTime;
+        ULARGE_INTEGER uli;
+        uli.LowPart = ft.dwLowDateTime;
+        uli.HighPart = ft.dwHighDateTime;
+
+        // Windows时间（1601-01-01起100纳秒单位）转UNIX时间戳
+        const uint64_t WINDOWS_TICK = 10000000;
+        const uint64_t EPOCH_DIFF = 11644473600ULL; // 1601到1970的秒数
+
+        uint64_t timestamp = uli.QuadPart / WINDOWS_TICK - EPOCH_DIFF;
+        return timestamp;
     }
 
 } // namespace cutl

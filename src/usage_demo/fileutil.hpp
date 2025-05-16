@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common.hpp"
-#include "fileutil.h"
-#include "sysutil.h"
+#include "common_util/fileutil.h"
+#include "common_util/sysutil.h"
 
 void test_fileutil()
 {
@@ -275,11 +275,33 @@ void TestCopyFileAndDir()
     cutl::copydir(basedir, targetdir);
 }
 
+void test_rename_and_property()
+{
+    PrintSubTitle("Test rename and property");
+
+    // ./test_dir
+    auto basedir = cutl::path("./test_dir");
+    cutl::createdir(basedir, true);
+    // ./test_dir/file_01.txt
+    auto file_01 = basedir.join("file_01.txt");
+    cutl::writetext(file_01, "Hello, This is a test file.");
+    auto modified_time = cutl::last_modified_time(file_01);
+    std::cout << "modified time: " << cutl::fmt_timestamp_s(modified_time) << std::endl;
+
+    std::this_thread::sleep_for(std::chrono::seconds(10));
+
+    auto file_02 = basedir.join("file_02.txt");
+    cutl::renamefile(file_01, file_02);
+
+    modified_time = cutl::last_modified_time(file_02);
+    std::cout << "modified time: " << cutl::fmt_timestamp_s(modified_time) << std::endl;
+}
+
 void TestFileUtil()
 {
     // PrintTitle("fileutil");
 
-    test_fileutil();
+    // test_fileutil();
     // TestGetCwd();
     // TestCreateFileAndDir();
     // TestReadAndWriteText();
@@ -289,4 +311,5 @@ void TestFileUtil()
     // TestFindfile();
     // TestCopyFileAndDir();
     // TestRemoveFileAndDir();
+    test_rename_and_property();
 }
