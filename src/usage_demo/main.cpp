@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     // TestVerUtil();
     // TestStrUtil();
     // TestFilePath();
-    // TestFileUtil();
+    TestFileUtil();
     // TestDlLoader();
     // TestPrint();
     // TestTimer();
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     // TestThreadUtil();
     // TestEventLoop();
     // TestThreadPool();
-    TestAlgorithmUtil();
+    // TestAlgorithmUtil();
 
     // usage_demo();
 

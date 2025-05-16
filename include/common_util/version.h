@@ -22,10 +22,10 @@
  * @brief Library name.
  *
  */
-#define CUTL_NAME "common_util"
+#define CUTL_NAME "TINY_FRAMEWORK"
 
 /**
  * @brief Library version.
  *
  */
-#define CUTL_VERSION "1.2.0"
+#define CUTL_VERSION "1.0.0"

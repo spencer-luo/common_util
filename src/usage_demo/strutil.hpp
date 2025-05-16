@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "common.hpp"
-#include "strutil.h"
+#include "common_util/strutil.h"
 
 void TestUpperLower()
 {

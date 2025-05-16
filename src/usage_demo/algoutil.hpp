@@ -1,7 +1,7 @@
 #pragma once
 
-#include "algoutil.h"
 #include "common.hpp"
+#include "common_util/algoutil.h"
 
 void TestClamp()
 {

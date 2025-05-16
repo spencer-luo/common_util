@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common.hpp"
-#include "fileutil.h"
-#include "sysutil.h"
+#include "common_util/fileutil.h"
+#include "common_util/sysutil.h"
 
 void test_fileutil()
 {

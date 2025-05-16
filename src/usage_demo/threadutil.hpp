@@ -1,9 +1,9 @@
 #pragma once
 
 #include "common.hpp"
-#include "threadutil.h"
-#include <thread>
+#include "common_util/threadutil.h"
 #include <iostream>
+#include <thread>
 
 void TestThreadUtil()
 {
