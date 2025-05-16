@@ -44,13 +44,13 @@ int main(int argc, char *argv[])
     // TestVerUtil();
     // TestStrUtil();
     // TestFilePath();
-    TestFileUtil();
+    // TestFileUtil();
     // TestDlLoader();
     // TestPrint();
     // TestTimer();
     // TestLRUCache();
     // TestThreadUtil();
-    // TestEventLoop();
+    TestEventLoop();
     // TestThreadPool();
     // TestAlgorithmUtil();
 

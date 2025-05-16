@@ -74,6 +74,12 @@ constexpr uint8_t cli_clr_bright_cyan = 96;
  */
 void print_clr(const std::string& str, uint8_t fgcolor, uint8_t bgcolor = cli_clr_black);
 
+void print_debug(const std::string& str);
+void print_info(const std::string& str);
+void print_warn(const std::string& str);
+void print_error(const std::string& str);
+void print_success(const std::string& str);
+
 /**
  * @brief Print array with basic data type, such as int, float, double, char, etc.
  *

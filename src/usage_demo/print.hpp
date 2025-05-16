@@ -61,6 +61,11 @@ void PrintColor()
     cutl::print_clr("white: Hello World", cutl::cli_clr_white);
     cutl::print_clr("gray: Hello World", cutl::cli_clr_gray, cutl::cli_clr_blue);
     cutl::print_clr("deep_gray: Hello World", cutl::cli_clr_deep_gray, cutl::cli_clr_white);
+    cutl::print_debug("Debug: Hello World");
+    cutl::print_info("Info: Hello World");
+    cutl::print_warn("Warn: Hello World");
+    cutl::print_error("Error: Hello World");
+    cutl::print_success("Success: Hello World");
     // 正常打印
     std::cout << "norman: Hello World" << std::endl;
 }

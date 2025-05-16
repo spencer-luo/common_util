@@ -6,7 +6,7 @@ message(STATUS "--------- begin cmake ---------")
 # cmake version
 cmake_minimum_required(VERSION 3.28.3)
 # project name
-project(common_util VERSION 1.2.0 LANGUAGES CXX)
+project(common_util VERSION 1.3.0 LANGUAGES CXX)
 # 构建时间
 # build time
 string(TIMESTAMP BUILD_TIME "%y-%m-%d %H:%M:%S")
@@ -14,6 +14,10 @@ string(TIMESTAMP BUILD_TIME "%y-%m-%d %H:%M:%S")
 # C/C++ standard: C99/C++11
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 11)
+
+# 根据version.h.in模板生产version.h头文件
+# generate version.h from version.h.in
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/common_util/version.h)
 
 # 获取构建目标的CPU架构
 message("CMAKE_SYSTEM_NAME:" ${CMAKE_SYSTEM_NAME})

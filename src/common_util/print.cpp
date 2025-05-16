@@ -40,4 +40,29 @@ void print_clr(const std::string& str, uint8_t fgcolor, uint8_t bgcolor)
     std::cout << std::endl;
 }
 
+void print_debug(const std::string& str)
+{
+    cutl::print_clr(str, cutl::cli_clr_deep_gray);
+}
+
+void print_info(const std::string& str)
+{
+    cutl::print_clr(str, cutl::cli_clr_white);
+}
+
+void print_warn(const std::string& str)
+{
+    cutl::print_clr(str, cutl::cli_clr_bright_purple);
+}
+
+void print_error(const std::string& str)
+{
+    cutl::print_clr(str, cutl::cli_clr_bright_red);
+}
+
+void print_success(const std::string& str)
+{
+    cutl::print_clr(str, cutl::cli_clr_bright_green);
+}
+
 } // namespace cutl

@@ -2,9 +2,9 @@
 #include "common_util/datetime.h"
 #include "common_util/eventloop.h"
 
-void test_case_01()
+void test_eventloop()
 {
-    PrintSubTitle("test_case_01");
+    PrintSubTitle("test_eventloop");
 
     cutl::eventloop eventLoop;
     // timer task
@@ -31,11 +31,13 @@ void test_case_01()
     std::cout << "main thread exit" << std::endl;
 }
 
-void test_case_02()
+void test_singlethread_eventloop()
 {
-    PrintSubTitle("test_case_02");
+    PrintSubTitle("test_singlethread_eventloop");
 
-    cutl::eventloop eventLoop(2, 1);
+    // , 2, 1
+    cutl::singlethread_eventloop eventLoop("single_thrd_ev");
+
     // timer task 01
     int repet_count = 0;
     eventLoop.post_timer_event(
@@ -58,9 +60,9 @@ void test_case_02()
       []()
       { std::cout << cutl::datetime::now().format() << " execute normal task 01" << std::endl; });
 
-    std::thread loop([&eventLoop]() { eventLoop.start(); });
+    eventLoop.start();
     std::cout << "main thread id:" << std::this_thread::get_id()
-              << ", eventloop thread id:" << loop.get_id() << std::endl;
+              << ", main thread is eventloop thread:" << eventLoop.is_loop_thread() << std::endl;
 
     // normal task 02
     std::this_thread::sleep_for(std::chrono::milliseconds(1200));
@@ -78,13 +80,13 @@ void test_case_02()
     std::this_thread::sleep_for(std::chrono::seconds(5));
     timer_2s.cancel();
 
-    loop.join();
+    eventLoop.stop();
     std::cout << "main thread exit" << std::endl;
 }
 
-void test_case_03()
+void test_multithread_eventloop()
 {
-    PrintSubTitle("test_case_03");
+    PrintSubTitle("test_multithread_eventloop");
 
     cutl::multithread_eventloop eventLoop;
     // timer task
@@ -133,7 +135,7 @@ void TestEventLoop()
 {
     PrintTitle("Test EventLoop");
 
-    // test_case_01();
-    // test_case_02();
-    test_case_03();
+    // test_eventloop();
+    test_singlethread_eventloop();
+    // test_multithread_eventloop();
 }
