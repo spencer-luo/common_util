@@ -1,3 +1,4 @@
+#include "algoutil.hpp"
 #include "common.hpp"
 #include "config.hpp"
 #include "datetime.hpp"
@@ -12,11 +13,11 @@
 #include "strutil.hpp"
 #include "sysutil.hpp"
 #include "threadpool.hpp"
+#include "threadutil.hpp"
 #include "timecount.hpp"
 #include "timer.hpp"
 #include "timeutil.hpp"
 #include "verutil.hpp"
-#include "threadutil.hpp"
 
 void usage_demo()
 {
@@ -30,7 +31,7 @@ void usage_demo()
     std::cout << "current time(local time): " << now.format() << std::endl;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     LibraryInit();
     // TestSingleton();
@@ -49,10 +50,11 @@ int main(int argc, char *argv[])
     // TestTimer();
     // TestLRUCache();
     // TestThreadUtil();
-    // TestEventLoop();
+    TestEventLoop();
     // TestThreadPool();
+    // TestAlgorithmUtil();
 
-    usage_demo();
+    // usage_demo();
 
     return 0;
 }

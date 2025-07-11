@@ -1,5 +1,6 @@
 #include "eventloop.h"
 #include "inner/logger.h"
+#include "threadutil.h"
 
 namespace cutl
 {
@@ -166,13 +167,7 @@ void eventloop::start()
         return;
     }
 
-    is_running_.store(true);
-    loop_thread_id_ = std::this_thread::get_id();
-
-    while (is_running_.load())
-    {
-        loop_once(std::chrono::milliseconds(500));
-    }
+    start_loop();
 }
 
 bool eventloop::is_loop_thread() const
@@ -228,12 +223,6 @@ timer_task_handler eventloop::post_timer_event(const std::string& name,
     auto handler = post_to_priorityqueue(name, func, period, repeat);
     wakeup();
     return handler;
-}
-
-size_t eventloop::test_get_task_size()
-{
-    std::lock_guard<std::mutex> lg(task_mutex_);
-    return task_queue_.size();
 }
 
 void eventloop::loop_once(EventloopDuration timeout)
@@ -312,6 +301,17 @@ size_t eventloop::handle_timer_task()
     return done;
 }
 
+void eventloop::start_loop()
+{
+    is_running_.store(true);
+    loop_thread_id_ = std::this_thread::get_id();
+
+    while (is_running_.load())
+    {
+        loop_once(std::chrono::milliseconds(500));
+    }
+}
+
 eventloop::TimerTaskVec eventloop::get_expired_timer_tasks(EventloopTimePoint now)
 {
     std::vector<TimerTaskPtr> ready_tasks;
@@ -367,6 +367,44 @@ EventloopDuration eventloop::get_next_run_time()
     return timer_task_queue_.top()->next_run_time_ - now;
 }
 
+singlethread_eventloop::singlethread_eventloop(const std::string thread_name,
+                                               uint32_t task_max_size,
+                                               uint32_t timer_task_max_size)
+  : eventloop(task_max_size, timer_task_max_size)
+  , thread_name_(thread_name)
+{
+}
+
+void singlethread_eventloop::start()
+{
+    if (is_running_.load())
+    {
+        // 重复调用
+        CUTL_WARN("recursive call of start.");
+        return;
+    }
+
+    // 开启一个独立的字线程来执行事件循环的任务
+    loop_thread_ = std::thread(
+      [this]()
+      {
+          cutl::set_current_thread_name(thread_name_);
+          start_loop();
+      });
+}
+
+void singlethread_eventloop::stop()
+{
+    // 执行父类的stop函数
+    eventloop::stop();
+
+    // 等待线程退出
+    if (loop_thread_.joinable())
+    {
+        loop_thread_.join();
+    }
+}
+
 multithread_eventloop::multithread_eventloop(uint32_t task_max_size,
                                              uint32_t timer_task_max_size,
                                              uint32_t thread_num)
@@ -379,8 +417,15 @@ multithread_eventloop::~multithread_eventloop() {}
 
 void multithread_eventloop::start()
 {
+    if (is_running_.load())
+    {
+        // 重复调用
+        CUTL_WARN("recursive call of start.");
+        return;
+    }
+
     thread_pool_.start(thread_num_);
-    eventloop::start();
+    start_loop();
 }
 
 void multithread_eventloop::stop()

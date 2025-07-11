@@ -1,8 +1,8 @@
 #pragma once
 
-#include <iostream>
-#include "datetime.h"
 #include "common.hpp"
+#include "common_util/datetime.h"
+#include <iostream>
 
 void TestDatetimeBasicUsage()
 {
@@ -90,10 +90,24 @@ void TestDatetimeParseString()
     std::cout << "dt12 timestamp: " << dt12.timestamp() << std::endl;
 }
 
+void TestFormatByStr(const cutl::datetime& dt, bool is_logging, int log_index)
+{
+    // auto s = dt.timestamp() / 1000;
+    // std::string str_datetime = cutl::fmt_timestamp(s, true, "%Y%m%d_%H%M");
+    std::string str_datetime = dt.format("%Y%m%d_%H%M", true, false);
+    // TINYLOG_INFO(tinylog) << "str_datetime:" << str_datetime;
+    auto suffix = (is_logging ? "logging" : "log");
+    str_datetime += "." + std::to_string(log_index);
+    str_datetime += "." + std::string(suffix);
+    std::cout << "str_datetime: " << str_datetime << std::endl;
+}
+
 void TestDatetime()
 {
     PrintTitle("datetime");
-    TestDatetimeBasicUsage();
-    TestDatetimeOperator();
-    TestDatetimeParseString();
+    // TestDatetimeBasicUsage();
+    // TestDatetimeOperator();
+    // TestDatetimeParseString();
+
+    TestFormatByStr(cutl::datetime::now(), true, 1);
 }

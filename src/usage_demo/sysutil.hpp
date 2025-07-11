@@ -1,8 +1,8 @@
 #pragma once
 
-#include <iostream>
 #include "common.hpp"
-#include "sysutil.h"
+#include "common_util/sysutil.h"
+#include <iostream>
 
 void TestPlatformName()
 {

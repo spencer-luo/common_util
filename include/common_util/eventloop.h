@@ -128,6 +128,7 @@ public:
     eventloop(const eventloop&) = delete;
     eventloop& operator=(const eventloop&) = delete;
 
+public:
     /**
      * @brief Post ordinary task
      *
@@ -184,9 +185,6 @@ public:
      */
     bool is_loop_thread() const;
 
-    // TODO: 获取普通任务的数量（只供测试使用！）
-    size_t test_get_task_size();
-
 private:
     // 唤醒Loop线程
     void wakeup();
@@ -200,6 +198,8 @@ protected:
     virtual size_t handle_task();
     // 执行到点的定时任务
     virtual size_t handle_timer_task();
+    // 开始事件循环
+    void start_loop();
     // 添加定时任务
     timer_task_handler post_to_priorityqueue(const std::string& name,
                                              const EventloopTask& func,
@@ -230,7 +230,39 @@ protected:
 };
 
 /**
- * @brief The class of multithread event loop
+ * @brief The class of single thread event loop
+ *
+ */
+class singlethread_eventloop : public eventloop
+{
+public:
+    singlethread_eventloop(const std::string thread_name,
+                           uint32_t task_max_size = 20,
+                           uint32_t timer_task_max_size = 10);
+
+    ~singlethread_eventloop() = default;
+
+public:
+    /**
+     * @brief Start to run the event loop.
+     * @note If the running conditions are satisfied, this interface will block until Stop is
+     * called.
+     */
+    void start();
+
+    /**
+     * @brief Stop the event loop.
+     *
+     */
+    void stop();
+
+private:
+    std::thread loop_thread_;
+    std::string thread_name_;
+};
+
+/**
+ * @brief The class of multi thread event loop
  *
  */
 class multithread_eventloop : public eventloop

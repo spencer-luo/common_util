@@ -1,5 +1,5 @@
 #include "common.hpp"
-#include "lrucache.h"
+#include "common_util/lrucache.h"
 
 void case_01_02()
 {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <iostream>
 #include "common.hpp"
-#include "strfmt.h"
+#include "common_util/strfmt.h"
+#include <iostream>
 
 void TestFormatUintAndDouble()
 {

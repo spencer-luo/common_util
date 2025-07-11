@@ -1,6 +1,7 @@
 {
     "editor.formatOnSave": true,
     "editor.formatOnSaveMode": "modificationsIfAvailable",
+    // 启用|禁用(编辑区域右侧滑动条的)小地图，可选值：true、false
     "editor.minimap.enabled": true,
     // 开启|禁用缩进(Tab)字符字符检测，可选值: true, false
     "editor.detectIndentation": true,

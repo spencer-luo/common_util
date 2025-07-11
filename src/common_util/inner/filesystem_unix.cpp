@@ -2,16 +2,17 @@
 // do nothing
 #else
 
-#include <unistd.h>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <stack>
-#include <cstring>
-#include <utime.h>
-#include <stdlib.h>
-#include <sys/time.h>
 #include "filesystem.h"
 #include "inner/logger.h"
+#include "timeutil.h"
+#include <cstring>
+#include <dirent.h>
+#include <stack>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include <utime.h>
 
 namespace cutl
 {
@@ -424,6 +425,22 @@ namespace cutl
             return false;
         }
         return true;
+    }
+
+    uint64_t get_last_modified_time_s(const std::string& filepath)
+    {
+        // Linux/macOS实现
+        struct stat st;
+        int ret = stat(filepath.c_str(), &st);
+        if (ret != 0)
+        {
+            CUTL_ERROR("Get last modified time failed for " + filepath +
+                       " ret:" + std::to_string(ret));
+            return timestamp(timeunit::s);
+        }
+
+        // 时间精确到秒
+        return static_cast<uint64_t>(st.st_mtim.tv_sec);
     }
 
 } // namespace cutl

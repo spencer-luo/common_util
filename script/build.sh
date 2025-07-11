@@ -46,5 +46,5 @@ elif [ $1 == "clean" ]; then
     rm -rf ./build
     echo "./build Cleaned."
 else
-    echo "Invalid argument."
+    usage
 fi
