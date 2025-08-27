@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     // TestSysutil();
     // TestStrfmt();
     // TestTimeutil();
-    // TestTimecount();
+    TestTimecount();
     // TestDatetime();
     // TestVerUtil();
     // TestStrUtil();
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     // TestTimer();
     // TestLRUCache();
     // TestThreadUtil();
-    TestEventLoop();
+    // TestEventLoop();
     // TestThreadPool();
     // TestAlgorithmUtil();
 

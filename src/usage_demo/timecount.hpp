@@ -2,6 +2,7 @@
 
 #include "common.hpp"
 #include "common_util/timecount.h"
+#include <cmath>
 #include <iostream>
 #include <map>
 #include <unordered_map>
@@ -129,8 +130,19 @@ void TimecountUsage()
     PrintTitle("TimecountUsage");
 
     cutl::timecount tcount(__func__);
+    // 统计CPU占用时间，不包含休眠或等待时间
+    cutl::cpu_timecounter cpu_counter("CPU_Timer_Count");
     std::cout << "TestTimecount begin" << std::endl;
+
+    // 执行一些计算密集型操作
+    std::vector<double> numbers(1000000);
+    for (size_t i = 0; i < numbers.size(); ++i)
+    {
+        numbers[i] = std::sin(i) * std::cos(i);
+    }
+    // 休眠1s
     std::this_thread::sleep_for(std::chrono::seconds(1));
+
     std::cout << "TestTimecount end" << std::endl;
 }
 
@@ -139,5 +151,5 @@ void TestTimecount()
     PrintTitle("timecount");
 
     TimecountUsage();
-    TestGetFromContainer();
+    // TestGetFromContainer();
 }
