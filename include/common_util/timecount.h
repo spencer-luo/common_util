@@ -57,7 +57,8 @@ private:
     std::atomic<uint64_t> start_time_;
 };
 
-// Rename `timecount` to `steady_timecounter`
+// Rename `timecount` to `steady_timecounter`, In order to be compatible with older versions,
+// retain the original name.
 using steady_timecounter = timecount;
 
 /**
