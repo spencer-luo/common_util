@@ -264,7 +264,7 @@ void print_matrix(const T* matrix,
         {
             if (precision == 0)
             {
-                // 整数矩阵
+                // 整数矩阵，这里强制类型转换，否则int8_t类型会被当成char打印字符
                 std::cout << (int)(matrix[i * cols + j]) << " ";
             }
             else
