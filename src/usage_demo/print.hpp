@@ -70,6 +70,54 @@ void PrintColor()
     std::cout << "norman: Hello World" << std::endl;
 }
 
+// (用随机数)初始化矩阵
+void initializeMatrix(float* matrix, int rows, int cols)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            matrix[i * cols + j] = (static_cast<float>(rand()) / RAND_MAX) * 10;
+        }
+    }
+}
+
+// (用随机数)初始化矩阵
+void initializeMatrix(int8_t* matrix, int rows, int cols)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            matrix[i * cols + j] = i * cols + j;
+        }
+    }
+}
+
+void PrintIntMatrix()
+{
+    int M = 10;
+    int N = 12;
+    int8_t matrix[M * N] = { 0 };
+    // 初始化矩阵
+    initializeMatrix(matrix, M, N);
+    // 打印矩阵
+    cutl::print_int_matrix(matrix, M, N, "int matrix");
+    cutl::print_int_matrix(matrix, M, N, "int matrix", 5, 5, M - 5, N - 5);
+}
+
+void PrintFloatMatrix()
+{
+    int M = 10;
+    int N = 12;
+    float matrix[M * N] = { 0 };
+    // 初始化矩阵
+    initializeMatrix(matrix, M, N);
+    // 打印矩阵
+    cutl::print_float_matrix(matrix, M, N, "float matrix");
+    cutl::print_float_matrix(matrix, M, N, "float matrix", 1, 6, 8, M - 6, N - 8);
+}
+
 void TestPrint()
 {
     PrintTitle("print");
@@ -79,4 +127,6 @@ void TestPrint()
     PrintVec();
     PrintMap();
     PrintUnorderedMap();
+    PrintIntMatrix();
+    PrintFloatMatrix();
 }

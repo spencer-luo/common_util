@@ -20,6 +20,7 @@
 #pragma once
 
 #include <cstdint>
+#include <iomanip>
 #include <iostream>
 #include <map>
 #include <string>
@@ -205,6 +206,117 @@ void print_unordered_map(const std::unordered_map<K, V>& mp, bool format = false
         }
         std::cout << "}" << std::endl;
     }
+}
+
+/**
+ * @brief Print int matrix, support int8_t, int16_t, int32_t, int64_t
+ *
+ * @tparam T data type
+ * @param matrix
+ * @param rows
+ * @param cols
+ * @param name
+ * @param startY
+ * @param startX
+ * @param h
+ * @param w
+ */
+template<typename T>
+void print_int_matrix(const T* matrix,
+                      uint32_t rows,
+                      uint32_t cols,
+                      const std::string& name,
+                      uint32_t startY = 0,
+                      uint32_t startX = 0,
+                      uint32_t h = 5,
+                      uint32_t w = 5)
+{
+    uint32_t H = rows - startY;
+    if (H <= 0)
+    {
+        std::cout << "startY should less than rows:" << rows << std::endl;
+        return;
+    }
+    uint32_t W = cols - startX;
+    if (W <= 0)
+    {
+        std::cout << "startY should less than rows:" << rows << std::endl;
+        return;
+    }
+    H = std::min(H, h);
+    W = std::min(W, w);
+
+    // 打印矩阵
+    std::cout << "The sub matrix of " << name << ", from (" << startY << ", " << startX
+              << "), size: " << h << " * " << w << std::endl;
+    for (uint32_t i = startY; i < startY + H; i++)
+    {
+        for (uint32_t j = startX; j < startX + W; j++)
+        {
+            std::cout << (int)(matrix[i * cols + j]) << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+/**
+ * @brief Print float matrix, support float or double data type.
+ *
+ * @tparam T data type
+ * @param matrix matrix pointer
+ * @param rows
+ * @param cols
+ * @param name
+ * @param precision
+ * @param startY
+ * @param startX
+ * @param h
+ * @param w
+ */
+template<typename T>
+void print_float_matrix(const T* matrix,
+                        uint32_t rows,
+                        uint32_t cols,
+                        const std::string& name,
+                        uint32_t precision = 2,
+                        uint32_t startY = 0,
+                        uint32_t startX = 0,
+                        uint32_t h = 5,
+                        uint32_t w = 5)
+{
+    uint32_t H = rows - startY;
+    if (H <= 0)
+    {
+        std::cout << "startY should less than rows:" << rows << std::endl;
+        return;
+    }
+    uint32_t W = cols - startX;
+    if (W <= 0)
+    {
+        std::cout << "startY should less than rows:" << rows << std::endl;
+        return;
+    }
+    H = std::min(H, h);
+    W = std::min(W, w);
+
+    // 保存原始cout设置
+    std::ios old_state(nullptr);
+    old_state.copyfmt(std::cout);
+    // 设置输出格式：固定小数点和指定精度
+    std::cout << std::fixed << std::setprecision(precision);
+    // 打印矩阵
+    std::cout << "The sub matrix of " << name << ", from (" << startY << ", " << startX
+              << "), size: " << h << " * " << w << std::endl;
+    for (uint32_t i = startY; i < startY + H; i++)
+    {
+        for (uint32_t j = startX; j < startX + W; j++)
+        {
+            std::cout << matrix[i * cols + j] << " ";
+        }
+        std::cout << std::endl;
+    }
+    // 恢复原始cout设置
+    std::cout.copyfmt(old_state);
 }
 
 } // namespace cutl

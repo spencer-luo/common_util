@@ -39,14 +39,14 @@ int main(int argc, char *argv[])
     // TestSysutil();
     // TestStrfmt();
     // TestTimeutil();
-    TestTimecount();
+    // TestTimecount();
     // TestDatetime();
     // TestVerUtil();
     // TestStrUtil();
     // TestFilePath();
     // TestFileUtil();
     // TestDlLoader();
-    // TestPrint();
+    TestPrint();
     // TestTimer();
     // TestLRUCache();
     // TestThreadUtil();
