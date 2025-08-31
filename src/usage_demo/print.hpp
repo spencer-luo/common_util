@@ -102,8 +102,8 @@ void PrintIntMatrix()
     // 初始化矩阵
     initializeMatrix(matrix, M, N);
     // 打印矩阵
-    cutl::print_int_matrix(matrix, M, N, "int matrix");
-    cutl::print_int_matrix(matrix, M, N, "int matrix", 5, 5, M - 5, N - 5);
+    cutl::print_matrix(matrix, M, N, "int matrix", 0);
+    cutl::print_matrix(matrix, M, N, "int matrix", 0, 5, 5, M - 5, N - 5);
 }
 
 void PrintFloatMatrix()
@@ -114,8 +114,8 @@ void PrintFloatMatrix()
     // 初始化矩阵
     initializeMatrix(matrix, M, N);
     // 打印矩阵
-    cutl::print_float_matrix(matrix, M, N, "float matrix");
-    cutl::print_float_matrix(matrix, M, N, "float matrix", 1, 6, 8, M - 6, N - 8);
+    cutl::print_matrix(matrix, M, N, "float matrix");
+    cutl::print_matrix(matrix, M, N, "float matrix", 1, 6, 8, M - 6, N - 8);
 }
 
 void TestPrint()
