@@ -87,7 +87,8 @@ if %~1==build (
 )
 
 @REM TODO: 指定cmake的生成器，用户可以替换成自己安装的对应Visual Studio的版本
-set generator="Visual Studio 14 2015"
+@REM set generator="Visual Studio 14 2015"
+set generator="Visual Studio 17 2022"
 @REM TODO: 指定CPU核数，用户可以根据自己电脑的CPU核数来调整设置这个参数。使用的cpu核数越多，编译速度越快。
 set cpu_cores=6
 
