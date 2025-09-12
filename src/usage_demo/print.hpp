@@ -96,8 +96,8 @@ void initializeMatrix(int8_t* matrix, int rows, int cols)
 
 void PrintIntMatrix()
 {
-    int M = 10;
-    int N = 12;
+    constexpr int M = 10;
+    constexpr int N = 12;
     int8_t matrix[M * N] = { 0 };
     // 初始化矩阵
     initializeMatrix(matrix, M, N);
@@ -108,8 +108,8 @@ void PrintIntMatrix()
 
 void PrintFloatMatrix()
 {
-    int M = 10;
-    int N = 12;
+    constexpr int M = 10;
+    constexpr int N = 12;
     float matrix[M * N] = { 0 };
     // 初始化矩阵
     initializeMatrix(matrix, M, N);
