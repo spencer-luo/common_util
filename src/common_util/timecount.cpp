@@ -26,17 +26,17 @@
 namespace cutl
 {
 
-timecount::timecount(const std::string& func_name)
+steady_timecounter::steady_timecounter(const std::string& func_name)
   : func_name_(func_name)
   , start_time_(clocktime(timeunit::us))
 {
 }
 
-timecount::~timecount()
+steady_timecounter::~steady_timecounter()
 {
     auto end_time = clocktime(timeunit::us);
     auto duration = end_time - start_time_;
-    auto text = "[timecount] " + func_name_ + " used " + fmt_timeduration_us(duration);
+    auto text = "[timecounter] " + func_name_ + " used " + fmt_timeduration_us(duration);
     CUTL_LOGGER.info("", text);
 }
 
@@ -52,7 +52,7 @@ cpu_timecounter::~cpu_timecounter()
     uint64_t end_time = cpu_clocktime(timeunit::us);
     uint64_t duration = end_time - start_time_;
 
-    auto text = "[timecount] " + func_name_ + " used " + fmt_timeduration_us(duration);
+    auto text = "[timecounter] " + func_name_ + " used " + fmt_timeduration_us(duration);
     CUTL_LOGGER.info("", text);
 }
 

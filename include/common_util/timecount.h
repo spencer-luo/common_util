@@ -36,30 +36,30 @@ namespace cutl
  * @brief A simple time counter class for measure the execution time of a function.
  *
  */
-class timecount
+class steady_timecounter
 {
 public:
     /**
-     * @brief Construct a new timecount object
+     * @brief Construct a new steady_timecounter object
      * The constructor will record the begin time of the function calling.
      * @param func_name
      */
-    timecount(const std::string& func_name);
+    steady_timecounter(const std::string& func_name);
     /**
-     * @brief Destroy the timecount object
+     * @brief Destroy the steady_timecounter object
      * The desctructor will record the end time of the function calling and calculate the execution
      * time.
      */
-    ~timecount();
+    ~steady_timecounter();
 
 private:
     std::string func_name_;
     std::atomic<uint64_t> start_time_;
 };
 
-// Rename `timecount` to `steady_timecounter`, In order to be compatible with older versions,
+// Rename `steady_timecounter` to `timecount`, In order to be compatible with older versions,
 // retain the original name.
-using steady_timecounter = timecount;
+using timecount = steady_timecounter;
 
 /**
  * @brief A time counter class for counting the CPU usage time of a function

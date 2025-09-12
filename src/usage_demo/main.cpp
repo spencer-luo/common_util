@@ -31,7 +31,7 @@ void usage_demo()
     std::cout << "current time(local time): " << now.format() << std::endl;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     LibraryInit();
     // TestSingleton();
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     // TestSysutil();
     // TestStrfmt();
     // TestTimeutil();
-    // TestTimecount();
+    TestTimecount();
     // TestDatetime();
     // TestVerUtil();
     // TestStrUtil();

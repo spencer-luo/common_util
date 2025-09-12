@@ -96,6 +96,8 @@ void initializeMatrix(int8_t* matrix, int rows, int cols)
 
 void PrintIntMatrix()
 {
+    PrintSubTitle("print_int_matrix");
+
     constexpr int M = 10;
     constexpr int N = 12;
     int8_t matrix[M * N] = { 0 };
@@ -108,6 +110,8 @@ void PrintIntMatrix()
 
 void PrintFloatMatrix()
 {
+    PrintSubTitle("print_float_matrix");
+
     constexpr int M = 10;
     constexpr int N = 12;
     float matrix[M * N] = { 0 };
