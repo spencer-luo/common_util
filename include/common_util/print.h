@@ -92,6 +92,21 @@ void print_arr(T* arr, uint32_t size)
 }
 
 /**
+ * @brief Print array to string. support basic data type, such as int, float, double, char,
+ * etc.
+ *
+ * @tparam T the data type of array's element
+ * @tparam _Nm
+ * @param arr array
+ * @return std::string
+ */
+template<typename T, std::size_t _Nm>
+void print_arr(const std::array<T, _Nm>& arr)
+{
+    std::cout << fmt_arr(arr) << std::endl;
+}
+
+/**
  * @brief Print simple vector with basic data type, such as int, float, double, char, string etc.
  *
  * @tparam T the data type of vector's element

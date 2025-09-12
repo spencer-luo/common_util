@@ -19,6 +19,7 @@
 #pragma once
 
 #include "timeutil.h"
+#include <array>
 #include <cstdint>
 #include <iomanip>
 #include <map>
@@ -222,13 +223,41 @@ namespace cutl
         {
             return "[]";
         }
+
         std::string res("[" + std::to_string(arr[0]));
         for (uint32_t i = 1; i < size; i++)
         {
             res += ", " + std::to_string(arr[i]);
         }
-
         res += "]";
+
+        return res;
+    }
+
+    /**
+     * @brief Format array to string. support basic data type, such as int, float, double, char,
+     * etc.
+     *
+     * @tparam T the data type of array's element
+     * @tparam _Nm
+     * @param arr array
+     * @return std::string
+     */
+    template<typename T, std::size_t _Nm>
+    std::string fmt_arr(const std::array<T, _Nm>& arr)
+    {
+        if (arr.empty())
+        {
+            return "[]";
+        }
+
+        std::string res("[" + std::to_string(arr[0]));
+        for (uint32_t i = 1; i < arr.size(); i++)
+        {
+            res += ", " + std::to_string(arr[i]);
+        }
+        res += "]";
+
         return res;
     }
 

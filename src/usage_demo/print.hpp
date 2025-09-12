@@ -5,8 +5,11 @@ void PrintArr()
 {
     PrintSubTitle("print_arr");
 
-    int8_t arr[] = { 1, -2, 3 };
-    cutl::print_arr(arr, 3);
+    int8_t arr1[] = { 1, -2, 3 };
+    cutl::print_arr(arr1, 3);
+
+    std::array<float, 5> arr2 = { 1.21, 3.14, 5.22, 6.33 };
+    cutl::print_arr(arr2);
 }
 
 void PrintVec()
