@@ -5,7 +5,7 @@ void PrintArr()
 {
     PrintSubTitle("print_arr");
 
-    int8_t arr1[] = { 1, -2, 3 };
+    int8_t arr1[] = { 65, -2, 98 };
     cutl::print_arr(arr1, 3);
 
     std::array<float, 5> arr2 = { 1.21, 3.14, 5.22, 6.33 };
@@ -42,6 +42,22 @@ void PrintUnorderedMap()
     };
     cutl::print_unordered_map(map1);
     cutl::print_unordered_map(map1, true);
+}
+
+void PrintSet()
+{
+    PrintSubTitle("print_set");
+
+    std::set<int> s = { 5, 2, 8, 1, 9, 3 };
+    cutl::print_set(s);
+}
+
+void PrintUnorderedSet()
+{
+    PrintSubTitle("print_unordered_set");
+
+    std::unordered_set<int> s = { 5, 2, 8, 1, 9, 3 };
+    cutl::print_unordered_set(s);
 }
 
 void PrintColor()
@@ -134,6 +150,8 @@ void TestPrint()
     PrintVec();
     PrintMap();
     PrintUnorderedMap();
+    PrintSet();
+    PrintUnorderedSet();
     PrintIntMatrix();
     PrintFloatMatrix();
 }

@@ -23,9 +23,11 @@
 #include <cstdint>
 #include <iomanip>
 #include <map>
+#include <set>
 #include <sstream>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 namespace cutl
@@ -372,6 +374,59 @@ namespace cutl
         ss << "}";
 
         return ss.str();
+    }
+
+    /**
+     * @brief Format simple set with basic data type, such as int, float, double, char, string etc.
+     *
+     * @tparam T the data type of set's element
+     * @param s std::set's object
+     */
+    template<typename T>
+    std::string fmt_set(const std::set<T>& s)
+    {
+        if (s.empty())
+        {
+            return "{}";
+        }
+
+        auto itr = s.begin();
+        std::string res("{" + std::to_string(*itr));
+        itr++;
+        for (; itr != s.end(); itr++)
+        {
+            res += ", " + std::to_string(*itr);
+        }
+        res += "}";
+
+        return res;
+    }
+
+    /**
+     * @brief Format simple unordered_set with basic data type, such as int, float, double, char,
+     * string etc.
+     *
+     * @tparam T the data type of set's element
+     * @param s std::set's object
+     */
+    template<typename T>
+    std::string fmt_unordered_set(const std::unordered_set<T>& s)
+    {
+        if (s.empty())
+        {
+            return "{}";
+        }
+
+        auto itr = s.begin();
+        std::string res("{" + std::to_string(*itr));
+        itr++;
+        for (; itr != s.end(); itr++)
+        {
+            res += ", " + std::to_string(*itr);
+        }
+        res += "}";
+
+        return res;
     }
 
     /**

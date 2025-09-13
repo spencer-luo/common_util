@@ -150,6 +150,31 @@ void print_unordered_map(const std::unordered_map<K, V>& mp, bool format = false
 }
 
 /**
+ * @brief Print simple set with basic data type, such as int, float, double, char, string etc.
+ *
+ * @tparam T the data type of set's element
+ * @param s std::set's object
+ */
+template<typename T>
+void print_set(const std::set<T>& s)
+{
+    std::cout << fmt_set(s) << std::endl;
+}
+
+/**
+ * @brief Print simple unordered_set with basic data type, such as int, float, double, char, string
+ * etc.
+ *
+ * @tparam T the data type of set's element
+ * @param s std::set's object
+ */
+template<typename T>
+void print_unordered_set(const std::unordered_set<T>& s)
+{
+    std::cout << fmt_unordered_set(s) << std::endl;
+}
+
+/**
  * @brief Print a matrix, Matrices supporting the following parameters: float, double, int8_t,
  * int16_t, int32_t, int64_t.
  *
