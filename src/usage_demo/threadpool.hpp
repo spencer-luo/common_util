@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "common.hpp"
 #include "common_util/datetime.h"

@@ -53,7 +53,7 @@ target_include_directories(${PROJECT_NAME}
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>        # 安装后使用安装目录的 include
     PRIVATE # 仅 当前项目 可见(可以使用)
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/common_util>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src/common_util
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/common_util>
 )
 
 # 如果是windows，设置 管理员权限 和 UAC绕过UI保护
