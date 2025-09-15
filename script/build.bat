@@ -98,7 +98,7 @@ if %~1==build (
 
     echo Building...
     @REM configure
-    cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=%buildType% -S ./ -B ./build -G %generator% -A %platform%
+    cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=%buildType% -S ./ -B ./build -G %generator% -A %platform% -DBUILD_DEMO=ON
     @REM build
     cmake --build ./build --config %buildType% --target ALL_BUILD -j %cpu_cores% --
 )

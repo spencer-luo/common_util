@@ -106,9 +106,13 @@ elseif()
     message("current build is debug")
 endif()
 
+# 默认不编译usage_demo，cmake命令行参数传递BUILD_DEMO=on时才会编译
+option(BUILD_DEMO "Need to build usage_demo" OFF)
 
-# add sub moudle for usage_demo
-add_subdirectory(src/usage_demo)
+if (BUILD_DEMO)
+    # add sub moudle for usage_demo
+    add_subdirectory(src/usage_demo)
+endif()
 
 # # 打包安装
 # # pack and install
