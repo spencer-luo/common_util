@@ -168,12 +168,9 @@ public:
      */
     bitmap operator&(const bitmap& other) const
     {
-        if (this->size_ != other.size_)
-        {
-            throw std::invalid_argument("Bitmaps must have same size");
-        }
-        bitmap result(size_);
-        for (size_t i = 0; i < bits_.size(); i++)
+        auto minSize = std::min(size_, other.size_);
+        bitmap result(minSize);
+        for (size_t i = 0; i < minSize; i++)
         {
             result.bits_[i] = bits_[i] & other.bits_[i];
         }
@@ -185,16 +182,85 @@ public:
      */
     bitmap operator|(const bitmap& other) const
     {
-        if (this->size_ != other.size_)
+        auto minSize = std::min(size_, other.size_);
+        auto maxSize = std::max(size_, other.size_);
+
+        bitmap result(maxSize);
+        for (size_t i = 0; i < minSize; i++)
+        {
+            result.bits_[i] = bits_[i] | other.bits_[i];
+        }
+        for (size_t i = minSize; i < maxSize; i++)
+        {
+            result.bits_[i] = size_ > other.size_ ? bits_[i] : other.bits_[i];
+        }
+        return result;
+    }
+
+    // 按位取反
+    bitmap operator~() const
+    {
+        bitmap result(size_);
+        for (size_t i = 0; i < bits_.size(); i++)
+        {
+            // uint8_t类型本身可以进行按位取反操作
+            result.bits_[i] = ~bits_[i];
+        }
+        return result;
+    }
+
+    // 按位异或
+    bitmap operator^(const bitmap& other)
+    {
+        if (size_ != other.size_)
         {
             throw std::invalid_argument("Bitmaps must have same size");
         }
         bitmap result(size_);
         for (size_t i = 0; i < bits_.size(); i++)
         {
-            result.bits_[i] = bits_[i] | other.bits_[i];
+            result.bits_[i] = bits_[i] ^ other.bits_[i];
         }
         return result;
+    }
+
+    bitmap& operator&=(const bitmap& other)
+    {
+        if (size_ != other.size_)
+        {
+            throw std::invalid_argument("Bitmaps must have same size");
+        }
+        for (size_t i = 0; i < bits_.size(); i++)
+        {
+            bits_[i] = bits_[i] & other.bits_[i];
+        }
+        return *this;
+    }
+
+    bitmap& operator|=(const bitmap& other)
+    {
+        if (size_ != other.size_)
+        {
+            throw std::invalid_argument("Bitmaps must have same size");
+        }
+        for (size_t i = 0; i < bits_.size(); i++)
+        {
+            bits_[i] = bits_[i] | other.bits_[i];
+        }
+        return *this;
+    }
+
+    bitmap& operator^=(const bitmap& other)
+    {
+        if (size_ != other.size_)
+        {
+            throw std::invalid_argument("Bitmaps must have same size");
+        }
+        for (size_t i = 0; i < bits_.size(); i++)
+        {
+            bits_[i] = bits_[i] ^ other.bits_[i];
+        }
+        return *this;
     }
 };
 
@@ -367,6 +433,12 @@ public:
 
     bool operator==(const roaring_bitmap& other) const { return equals(other); }
     bool operator!=(const roaring_bitmap& other) const { return !equals(other); }
+
+    // // 按位取反
+    // roaring_bitmap operator~(const roaring_bitmap& other) const
+    // {
+    //     // TODO
+    // }
 
     /**
      * 与另一个 bitmap 进行 AND 操作
