@@ -1,6 +1,7 @@
-﻿#include <cmath>
+﻿#include <algorithm>
+#include <cmath>
 #include <cstdint>
-#include <memory>
+// #include <memory>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -17,27 +18,17 @@ public:
     virtual void set(size_t position) = 0;
     virtual bool get(size_t position) const = 0;
     virtual void reset(size_t position) = 0;
+    virtual void reset() = 0;
     virtual size_t count() const = 0;
     virtual size_t size() const = 0;
+    virtual std::string to_string() const = 0;
+    virtual void from_string() = 0;
+    virtual std::vector<size_t> valuelist() const = 0;
 
     // 操作符重载
     virtual bool operator[](size_t position) const = 0;
     // 比较操作
     virtual bool equals(const ibitmap& other) const = 0;
-
-    // // 工具方法
-    // virtual void clear()
-    // {
-    //     for (size_t i = 0; i < size(); ++i)
-    //     {
-    //         if (get(i))
-    //         {
-    //             reset(i);
-    //         }
-    //     }
-    // }
-
-    virtual bool empty() const { return count() == 0; }
 };
 
 class bitmap : public ibitmap
@@ -104,6 +95,9 @@ public:
         bits_[byteIndex] &= ~(1 << bitIndex); // 对应的bit设置为0
     }
 
+    // 将所有元素重置为0
+    void reset() override { std::fill(bits_.begin(), bits_.end(), 0); }
+
     /**
      * @brief 获取数值为1的位数
      *
@@ -136,6 +130,40 @@ public:
      * 获取 bitmap 的大小（bit 数）
      */
     size_t size() const override { return size_; }
+
+    std::string to_string() const
+    {
+        // todo
+        return std::string();
+    }
+
+    void from_string()
+    {
+        // todo
+    }
+
+    std::vector<size_t> valuelist() const
+    {
+        std::vector<size_t> result;
+        for (size_t i = 0; i < bits_.size(); i++)
+        {
+            uint8_t byte = bits_[i];
+            if (byte == 0)
+            {
+                continue;
+            }
+
+            size_t base = i << 3; // i * 8
+            for (size_t j = 0; j < 8; j++)
+            {
+                if ((byte & (1 << j)) != 0)
+                {
+                    result.emplace_back(base + j);
+                }
+            }
+        }
+        return result;
+    }
 
     bool equals(const ibitmap& other) const override
     {
@@ -210,7 +238,7 @@ public:
     }
 
     // 按位异或
-    bitmap operator^(const bitmap& other)
+    bitmap operator^(const bitmap& other) const
     {
         if (size_ != other.size_)
         {
@@ -372,6 +400,15 @@ public:
         itr->second.reset(position);
     }
 
+    // 将所有元素重置为0
+    void reset() override
+    {
+        for (auto itr = container_.begin(); itr != container_.end(); itr++)
+        {
+            itr->second.reset();
+        }
+    }
+
     /**
      * @brief 获取数值为1的位数
      *
@@ -398,6 +435,35 @@ public:
             size += itr->second.size();
         }
         return size;
+    }
+
+    std::string to_string() const
+    {
+        // todo
+        return std::string();
+    }
+
+    void from_string()
+    {
+        // todo
+    }
+
+    std::vector<size_t> valuelist() const
+    {
+        std::vector<size_t> keys;
+        for (const auto& pair : container_)
+        {
+            keys.emplace_back(pair.first);
+        }
+        std::sort(keys.begin(), keys.end());
+
+        std::vector<size_t> result;
+        for (const auto& key : keys)
+        {
+            auto vec = container_.at(key).valuelist();
+            result.insert(result.end(), vec.begin(), vec.end());
+        }
+        return result;
     }
 
     /**
@@ -478,10 +544,7 @@ public:
         {
             throw std::invalid_argument("RoaringBitmap must have same block_size");
         }
-        if (container_.size() != other.container_.size())
-        {
-            throw std::invalid_argument("RoaringBitmap must have same size");
-        }
+
         roaring_bitmap rBitmap(block_size_);
         for (auto itr = container_.begin(); itr != container_.end(); itr++)
         {
@@ -510,6 +573,150 @@ public:
         }
 
         return rBitmap;
+    }
+
+    /**
+     * 与另一个 bitmap 进行 Not 操作(按位取反)
+     */
+    roaring_bitmap operator~() const
+    {
+        roaring_bitmap rBitmap(block_size_);
+        for (auto itr = container_.begin(); itr != container_.end(); itr++)
+        {
+            auto& key = itr->first;
+            auto& val = itr->second;
+
+            rBitmap.container_.emplace(key, ~val);
+        }
+        return rBitmap;
+    }
+
+    /**
+     * 与另一个 bitmap 进行 异或 操作
+     */
+    roaring_bitmap operator^(const roaring_bitmap& other) const
+    {
+        if (block_size() != other.block_size())
+        {
+            throw std::invalid_argument("RoaringBitmap must have same block_size");
+        }
+        if (container_.size() != other.container_.size())
+        {
+            throw std::invalid_argument("RoaringBitmap must have same size");
+        }
+        roaring_bitmap rBitmap(block_size_);
+        for (auto itr = container_.begin(); itr != container_.end(); itr++)
+        {
+            auto& key = itr->first;
+            auto& val = itr->second;
+
+            if (other.container_.count(key))
+            {
+                bitmap result = val ^ other.container_.at(key);
+                rBitmap.container_.emplace(key, result);
+            }
+            else
+            {
+                throw std::invalid_argument("Key " + std::to_string(key) +
+                                            " not in other container");
+            }
+        }
+
+        return rBitmap;
+    }
+
+    // 与
+    roaring_bitmap& operator&=(const roaring_bitmap& other)
+    {
+        // todo
+        if (block_size() != other.block_size())
+        {
+            throw std::invalid_argument("RoaringBitmap must have same block_size");
+        }
+        if (container_.size() != other.container_.size())
+        {
+            throw std::invalid_argument("RoaringBitmap must have same size");
+        }
+
+        for (auto itr = container_.begin(); itr != container_.end(); itr++)
+        {
+            auto& key = itr->first;
+            auto& val = itr->second;
+
+            if (other.container_.count(key))
+            {
+                val &= other.container_.at(key);
+            }
+            else
+            {
+                std::string errMsg = "Key " + std::to_string(key) + " not in other container.";
+                throw std::invalid_argument(errMsg);
+            }
+        }
+
+        return *this;
+    }
+
+    // 或
+    roaring_bitmap& operator|=(const roaring_bitmap& other)
+    {
+        if (block_size() != other.block_size())
+        {
+            throw std::invalid_argument("RoaringBitmap must have same block_size");
+        }
+        if (container_.size() != other.container_.size())
+        {
+            throw std::invalid_argument("RoaringBitmap must have same size");
+        }
+
+        for (auto itr = container_.begin(); itr != container_.end(); itr++)
+        {
+            auto& key = itr->first;
+            auto& val = itr->second;
+
+            if (other.container_.count(key))
+            {
+                val |= other.container_.at(key);
+            }
+            else
+            {
+                std::string errMsg = "Key " + std::to_string(key) + " not in other container.";
+                throw std::invalid_argument(errMsg);
+            }
+        }
+
+        return *this;
+    }
+
+    // 异或
+    roaring_bitmap& operator^=(const roaring_bitmap& other)
+    {
+        if (block_size() != other.block_size())
+        {
+            throw std::invalid_argument("RoaringBitmap must have same block_size");
+        }
+        if (container_.size() != other.container_.size())
+        {
+            throw std::invalid_argument("RoaringBitmap must have same size");
+        }
+
+        for (auto itr = container_.begin(); itr != container_.end(); itr++)
+        {
+            auto& key = itr->first;
+            auto& val = itr->second;
+
+            if (other.container_.count(key))
+            {
+                val ^= other.container_.at(key);
+            }
+            else
+            {
+                std::string errMsg = "Key " + std::to_string(key) + " not in other container.";
+                throw std::invalid_argument(errMsg);
+            }
+        }
+
+        return *this;
     }
 };
 
