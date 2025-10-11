@@ -26,7 +26,7 @@ public:
     virtual size_t count() const = 0;
     virtual size_t size() const = 0;
     virtual std::string to_string() const = 0;
-    virtual void from_string() = 0;
+    virtual void from_string(const std::string text) = 0;
     virtual std::vector<size_t> valuelist() const = 0;
 
     // 操作符重载
@@ -83,7 +83,7 @@ public:
 
     std::string to_string() const;
 
-    void from_string();
+    void from_string(const std::string text);
 
     std::vector<size_t> valuelist() const;
 
@@ -120,6 +120,13 @@ public:
     bitmap& operator|=(const bitmap& other);
 
     bitmap& operator^=(const bitmap& other);
+
+private:
+    /**
+     * 转换成 十六进制的字符串
+     * @param compress 0: 不压缩，1: 压缩
+     */
+    std::string to_hex(int compress = 1) const;
 };
 
 class dynamic_bitmap : public bitmap
@@ -191,7 +198,7 @@ public:
 
     std::string to_string() const;
 
-    void from_string();
+    void from_string(const std::string text);
 
     std::vector<size_t> valuelist() const;
 

@@ -1,12 +1,9 @@
-﻿#include <algorithm>
+﻿#include "bitmap.h"
+#include "inner/logger.h"
+#include "strfmt.h"
+#include <algorithm>
 #include <cmath>
-// #include <cstdint>
-// #include <memory>
 #include <stdexcept>
-// #include <string>
-// #include <unordered_map>
-// #include <vector>
-#include "bitmap.h"
 
 namespace cutl
 {
@@ -96,15 +93,63 @@ size_t bitmap::count() const
     return count;
 }
 
-std::string bitmap::to_string() const
+std::string bitmap::to_hex(int compress) const
 {
-    // todo
-    return std::string();
+    if (compress == 0)
+    {
+        return cutl::to_hex(bits_.data(), size_, true, 0);
+    }
+    else
+    {
+        // 找到最后一个非零字节的索引
+        int lastNonZeroIndex = -1;
+        for (size_t i = bits_.size() - 1; i >= 0; i--)
+        {
+            if (bits_[i] != 0)
+            {
+                lastNonZeroIndex = i;
+                break;
+            }
+        }
+
+        // 如果所有字节都是零，返回空字符串
+        if (lastNonZeroIndex == -1)
+        {
+            return "";
+        }
+
+        // 只序列化到最后一个非零字节
+        return cutl::to_hex(bits_.data(), lastNonZeroIndex + 1, true, 0);
+    }
 }
 
-void bitmap::from_string()
+std::string bitmap::to_string() const
 {
-    // todo
+    return this->to_hex(1);
+}
+
+void bitmap::from_string(const std::string text)
+{
+    for (char c : text)
+    {
+        if (!isxdigit(c))
+        {
+            throw std::runtime_error("Invalid hexadecimal string");
+        }
+    }
+
+    // 先将bitmap所有数据重置成0
+    this->reset();
+
+    // 每两个字符表示一个字节
+    const size_t expectedLength = bits_.size() * 2;
+    size_t strLen = std::min(expectedLength, text.length());
+    // 将十六进制字符串转换为字节数组
+    for (size_t i = 0; i < strLen; i++)
+    {
+        std::string hexByte = text.substr(i * 2, 2);
+        bits_[i] = std::stoi(hexByte, nullptr, 16);
+    }
 }
 
 std::vector<size_t> bitmap::valuelist() const
@@ -160,23 +205,31 @@ bitmap bitmap::operator&(const bitmap& other) const
     return result;
 }
 
+// #include <iostream>
+
 /**
  * 与另一个 bitmap 进行 OR 操作
  */
 bitmap bitmap::operator|(const bitmap& other) const
 {
+    CUTL_INFO("00");
     auto minSize = std::min(size_, other.size_);
     auto maxSize = std::max(size_, other.size_);
+
+    CUTL_INFO("11");
+    // std::cout << "minSize: " << minSize << ", maxSize: " << maxSize << std::endl;
 
     bitmap result(maxSize);
     for (size_t i = 0; i < minSize; i++)
     {
         result.bits_[i] = bits_[i] | other.bits_[i];
     }
+    CUTL_INFO("22");
     for (size_t i = minSize; i < maxSize; i++)
     {
         result.bits_[i] = size_ > other.size_ ? bits_[i] : other.bits_[i];
     }
+    CUTL_INFO("33");
     return result;
 }
 
@@ -368,11 +421,29 @@ size_t roaring_bitmap::size() const
 
 std::string roaring_bitmap::to_string() const
 {
-    // todo
-    return std::string();
+    std::vector<size_t> keys;
+    for (const auto& pair : container_)
+    {
+        keys.emplace_back(pair.first);
+    }
+    std::sort(keys.begin(), keys.end());
+
+    std::string result("{");
+    for (size_t i = 0; i < keys.size(); i++)
+    {
+        auto& key = keys[i];
+        auto& val = container_.at(key);
+        result += "\"" + std::to_string(key) + "\":\"" + val.to_string() + "\"";
+        if (i != keys.size() - 1)
+        {
+            result += ",";
+        }
+    }
+    result += "}";
+    return result;
 }
 
-void roaring_bitmap::from_string()
+void roaring_bitmap::from_string(const std::string text)
 {
     // todo
 }
@@ -546,7 +617,6 @@ roaring_bitmap roaring_bitmap::operator^(const roaring_bitmap& other) const
 // 与
 roaring_bitmap& roaring_bitmap::operator&=(const roaring_bitmap& other)
 {
-    // todo
     if (block_size() != other.block_size())
     {
         throw std::invalid_argument("RoaringBitmap must have same block_size");

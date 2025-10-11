@@ -206,7 +206,14 @@ namespace cutl
             const char temp = data[i];
             output.push_back(hex_chars[temp / 16]);
             output.push_back(hex_chars[temp % 16]);
-            output.push_back(separator);
+            if (!separator)
+            {
+                output.push_back(separator);
+            }
+            else
+            {
+                // separator为0或nullptr时，不添加分隔符
+            }
         }
 
         return output;
