@@ -1,18 +1,53 @@
 ﻿#include <cmath>
 #include <cstdint>
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-class Bitmap
+// ibitmap 统一接口类
+class ibitmap
+{
+public:
+    virtual ~ibitmap() = default;
+
+public:
+    // 基本操作
+    virtual void set(size_t position) = 0;
+    virtual bool get(size_t position) const = 0;
+    virtual void reset(size_t position) = 0;
+    virtual size_t count() const = 0;
+    virtual size_t size() const = 0;
+
+    // 操作符重载
+    virtual bool operator[](size_t position) const = 0;
+    // 比较操作
+    virtual bool equals(const ibitmap& other) const = 0;
+
+    // // 工具方法
+    // virtual void clear()
+    // {
+    //     for (size_t i = 0; i < size(); ++i)
+    //     {
+    //         if (get(i))
+    //         {
+    //             reset(i);
+    //         }
+    //     }
+    // }
+
+    virtual bool empty() const { return count() == 0; }
+};
+
+class bitmap : public ibitmap
 {
 protected:
     std::vector<uint8_t> bits_;
     size_t size_;
 
 public:
-    Bitmap(size_t size)
+    bitmap(size_t size)
       : size_(size)
     {
         // 计算需要的字节数，向上取整: size/8
@@ -20,12 +55,11 @@ public:
         bits_.resize(std::ceil(size / 8.0), 0);
     }
 
-    ~Bitmap() = default;
-
+public:
     /**
      * 设置指定位置为 1
      */
-    void set(size_t position)
+    void set(size_t position) override
     {
         if (position >= size_)
         {
@@ -40,7 +74,7 @@ public:
     /**
      * 获取指定位置的值
      */
-    bool get(size_t position) const
+    bool get(size_t position) const override
     {
         if (position >= size_)
         {
@@ -54,12 +88,12 @@ public:
     /**
      * 重载 [] 操作符
      */
-    bool operator[](size_t position) const { return get(position); }
+    bool operator[](size_t position) const override { return get(position); }
 
     /**
      * 设置指定位置为 0
      */
-    void reset(size_t position)
+    void reset(size_t position) override
     {
         if (position >= size_)
         {
@@ -75,7 +109,7 @@ public:
      *
      * @return size_t
      */
-    size_t count()
+    size_t count() const override
     {
         size_t count = 0;
         for (size_t i = 0; i < bits_.size(); i++)
@@ -99,44 +133,46 @@ public:
     }
 
     /**
-     * 获取 Bitmap 的大小（bit 数）
+     * 获取 bitmap 的大小（bit 数）
      */
-    size_t size() const { return size_; }
+    size_t size() const override { return size_; }
 
-    /**
-     * 判断是否相等
-     */
-    bool operator==(const Bitmap& other) const
+    bool equals(const ibitmap& other) const override
     {
-        if (size_ != other.size_)
+        const bitmap* other_bitmap = dynamic_cast<const bitmap*>(&other);
+        if (!other_bitmap || size_ != other_bitmap->size_)
+        {
             return false;
+        }
+
         for (size_t i = 0; i < bits_.size(); i++)
         {
-            if (bits_[i] != other.bits_[i])
+            if (bits_[i] != other_bitmap->bits_[i])
                 return false;
         }
         return true;
     }
 
     /**
-     * 判断是否不相等
+     * 判断是否相等
      */
-    bool operator!=(const Bitmap& other) const
-    {
-        bool equal = (*this == other);
-        return !equal;
-    }
+    bool operator==(const bitmap& other) const { return equals(other); }
 
     /**
-     * 与另一个 Bitmap 进行 AND 操作
+     * 判断是否不相等
      */
-    Bitmap operator&(const Bitmap& other) const
+    bool operator!=(const bitmap& other) const { return !equals(other); }
+
+    /**
+     * 与另一个 bitmap 进行 AND 操作
+     */
+    bitmap operator&(const bitmap& other) const
     {
         if (this->size_ != other.size_)
         {
             throw std::invalid_argument("Bitmaps must have same size");
         }
-        Bitmap result(size_);
+        bitmap result(size_);
         for (size_t i = 0; i < bits_.size(); i++)
         {
             result.bits_[i] = bits_[i] & other.bits_[i];
@@ -145,15 +181,15 @@ public:
     }
 
     /**
-     * 与另一个 Bitmap 进行 OR 操作
+     * 与另一个 bitmap 进行 OR 操作
      */
-    Bitmap operator|(const Bitmap& other) const
+    bitmap operator|(const bitmap& other) const
     {
         if (this->size_ != other.size_)
         {
             throw std::invalid_argument("Bitmaps must have same size");
         }
-        Bitmap result(size_);
+        bitmap result(size_);
         for (size_t i = 0; i < bits_.size(); i++)
         {
             result.bits_[i] = bits_[i] | other.bits_[i];
@@ -162,21 +198,21 @@ public:
     }
 };
 
-class DynamicBitmap : public Bitmap
+class dynamic_bitmap : public bitmap
 {
 public:
-    DynamicBitmap(size_t init_size = 64)
-      : Bitmap(init_size)
+    dynamic_bitmap(size_t init_size = 64)
+      : bitmap(init_size)
     {
     }
 
-    ~DynamicBitmap() = default;
+    ~dynamic_bitmap() = default;
 
 public:
     /**
      * 设置指定位置为 1
      */
-    void set(size_t position)
+    void set(size_t position) override
     {
         ensureCapacity(position + 1);
 
@@ -199,19 +235,19 @@ private:
     }
 };
 
-class RoaringBitmap
+class roaring_bitmap : public ibitmap
 {
 private:
     size_t block_size_{ 0 };
-    std::unordered_map<size_t, Bitmap> container_;
+    std::unordered_map<size_t, bitmap> container_;
 
 public:
-    RoaringBitmap(size_t blockSize)
+    roaring_bitmap(size_t blockSize)
       : block_size_(blockSize)
     {
     }
 
-    ~RoaringBitmap() = default;
+    // ~roaring_bitmap() = default;
 
 public:
     size_t block_size() const { return block_size_; }
@@ -219,7 +255,7 @@ public:
     /**
      * 设置指定位置为 1
      */
-    void set(size_t position)
+    void set(size_t position) override
     {
         size_t key = position / block_size_;
         size_t bitPosition = position % block_size_;
@@ -227,7 +263,7 @@ public:
         if (!container_.count(key))
         {
             // block不存在则添加新的block
-            container_.emplace(key, Bitmap(block_size_));
+            container_.emplace(key, bitmap(block_size_));
         }
         container_.at(key).set(bitPosition);
     }
@@ -235,7 +271,7 @@ public:
     /**
      * 获取指定位置的值
      */
-    bool get(size_t position) const
+    bool get(size_t position) const override
     {
         size_t key = position / block_size_;
         size_t bitPosition = position % block_size_;
@@ -251,12 +287,12 @@ public:
     /**
      * 重载 [] 操作符
      */
-    bool operator[](size_t position) const { return get(position); }
+    bool operator[](size_t position) const override { return get(position); }
 
     /**
      * 设置指定位置为 0
      */
-    void reset(size_t position)
+    void reset(size_t position) override
     {
         size_t key = position / block_size_;
         size_t bitPosition = position % block_size_;
@@ -275,7 +311,7 @@ public:
      *
      * @return size_t
      */
-    size_t count()
+    size_t count() const override
     {
         size_t count = 0;
         for (auto itr = container_.begin(); itr != container_.end(); itr++)
@@ -286,9 +322,9 @@ public:
     }
 
     /**
-     * 获取 Bitmap 的大小（bit 数）
+     * 获取 bitmap 的大小（bit 数）
      */
-    size_t size() const
+    size_t size() const override
     {
         size_t size = 0;
         for (auto itr = container_.begin(); itr != container_.end(); itr++)
@@ -299,9 +335,43 @@ public:
     }
 
     /**
-     * 与另一个 Bitmap 进行 AND 操作
+     * 判断是否相等
      */
-    RoaringBitmap operator&(const RoaringBitmap& other) const
+    // bool operator==(const roaring_bitmap& other) const
+    bool equals(const ibitmap& other) const override
+    {
+        auto otherPtr = dynamic_cast<const roaring_bitmap*>(&other);
+        if (block_size() != otherPtr->block_size())
+        {
+            return false;
+        }
+        if (container_.size() != otherPtr->container_.size())
+        {
+            return false;
+        }
+        for (auto itr = container_.begin(); itr != container_.end(); itr++)
+        {
+            auto& key = itr->first;
+            auto& val = itr->second;
+            if (!otherPtr->container_.count(key))
+            {
+                return false;
+            }
+            if (val != otherPtr->container_.at(key))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool operator==(const roaring_bitmap& other) const { return equals(other); }
+    bool operator!=(const roaring_bitmap& other) const { return !equals(other); }
+
+    /**
+     * 与另一个 bitmap 进行 AND 操作
+     */
+    roaring_bitmap operator&(const roaring_bitmap& other) const
     {
         if (block_size() != other.block_size())
         {
@@ -311,7 +381,7 @@ public:
         {
             throw std::invalid_argument("RoaringBitmap must have same size");
         }
-        RoaringBitmap rBitmap(block_size_);
+        roaring_bitmap rBitmap(block_size_);
         for (auto itr = container_.begin(); itr != container_.end(); itr++)
         {
             auto& key = itr->first;
@@ -319,7 +389,7 @@ public:
 
             if (other.container_.count(key))
             {
-                Bitmap result = val & other.container_.at(key);
+                bitmap result = val & other.container_.at(key);
                 rBitmap.container_.emplace(key, result);
             }
         }
@@ -328,9 +398,9 @@ public:
     }
 
     /**
-     * 与另一个 Bitmap 进行 OR 操作
+     * 与另一个 bitmap 进行 OR 操作
      */
-    RoaringBitmap operator|(const RoaringBitmap& other) const
+    roaring_bitmap operator|(const roaring_bitmap& other) const
     {
         if (block_size() != other.block_size())
         {
@@ -340,7 +410,7 @@ public:
         {
             throw std::invalid_argument("RoaringBitmap must have same size");
         }
-        RoaringBitmap rBitmap(block_size_);
+        roaring_bitmap rBitmap(block_size_);
         for (auto itr = container_.begin(); itr != container_.end(); itr++)
         {
             auto& key = itr->first;
@@ -348,7 +418,7 @@ public:
 
             if (other.container_.count(key))
             {
-                Bitmap result = val | other.container_.at(key);
+                bitmap result = val | other.container_.at(key);
                 rBitmap.container_.emplace(key, result);
             }
             else
@@ -369,43 +439,14 @@ public:
 
         return rBitmap;
     }
-
-    /**
-     * 判断是否相等
-     */
-    bool operator==(const RoaringBitmap& other) const
-    {
-        if (block_size() != other.block_size())
-        {
-            return false;
-        }
-        if (container_.size() != other.container_.size())
-        {
-            return false;
-        }
-        for (auto itr = container_.begin(); itr != container_.end(); itr++)
-        {
-            auto& key = itr->first;
-            auto& val = itr->second;
-            if (!other.container_.count(key))
-            {
-                return false;
-            }
-            if (val != other.container_.at(key))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
 };
 
 #include <iostream>
 
 void test_bitmap()
 {
-    std::cout << "=== 基础 Bitmap 示例 ===" << std::endl;
-    Bitmap bitmap1(100);
+    std::cout << "=== 基础 bitmap 示例 ===" << std::endl;
+    bitmap bitmap1(100);
     bitmap1.set(10);
     bitmap1.set(20);
     bitmap1.set(99);
@@ -420,7 +461,7 @@ void test_bitmap()
     std::cout << "元素数量: " << bitmap1.count() << std::endl;
 
     // 逻辑位运算
-    Bitmap bitmap2(100);
+    bitmap bitmap2(100);
     bitmap2.set(20);
     bitmap2.set(30);
     bitmap2.set(40);
@@ -435,8 +476,8 @@ void test_bitmap()
 
 void test_dynamic_bitmap()
 {
-    std::cout << "\n=== 动态 Bitmap 示例 ===" << std::endl;
-    DynamicBitmap dynamicBitmap;
+    std::cout << "\n=== 动态 bitmap 示例 ===" << std::endl;
+    dynamic_bitmap dynamicBitmap;
     dynamicBitmap.set(20);
     dynamicBitmap.set(30);
     std::cout << "size: " << dynamicBitmap.size() << ", count: " << dynamicBitmap.count()
@@ -449,24 +490,24 @@ void test_dynamic_bitmap()
 void test_roaring_bitmap()
 {
     std::cout << "\n=== RoaringBitmap 示例 ===" << std::endl;
-    RoaringBitmap bitmap1(64);
+    roaring_bitmap bitmap1(64);
     bitmap1.set(10);
     bitmap1.set(20);
     std::cout << "bitmap1 size: " << bitmap1.size() << ", count: " << bitmap1.count() << std::endl;
     bitmap1.set(80);
     std::cout << "bitmap1 size: " << bitmap1.size() << ", count: " << bitmap1.count() << std::endl;
 
-    RoaringBitmap bitmap2(64);
+    roaring_bitmap bitmap2(64);
     bitmap2.set(20);
     bitmap2.set(40);
     bitmap2.set(130);
     std::cout << "bitmap2 size: " << bitmap2.size() << ", count: " << bitmap2.count() << std::endl;
     std::cout << "bitmap1 == bitmap2: " << (bitmap1 == bitmap2) << std::endl;
 
-    RoaringBitmap andBitmap = bitmap1 & bitmap2;
+    roaring_bitmap andBitmap = bitmap1 & bitmap2;
     std::cout << "andBitmap size: " << andBitmap.size() << ", count: " << andBitmap.count()
               << std::endl;
-    RoaringBitmap orBitmap = bitmap1 | bitmap2;
+    roaring_bitmap orBitmap = bitmap1 | bitmap2;
     std::cout << "orBitmap size: " << orBitmap.size() << ", count: " << orBitmap.count()
               << std::endl;
 }
