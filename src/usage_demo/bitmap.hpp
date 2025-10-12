@@ -26,7 +26,7 @@ void test_bitmap()
 
     // 字符串转换测试
     std::string hexStr = bitmap1.to_string();
-    std::cout << "hexStr: " << hexStr << std::endl;
+    std::cout << "bitmap1 str: " << hexStr << std::endl;
     cutl::bitmap bitmap2(100);
     bitmap2.from_string(hexStr);
     assert(bitmap2.equals(bitmap1));
@@ -36,6 +36,7 @@ void test_bitmap()
     bitmap3.set(20);
     bitmap3.set(30);
 
+    // bitmap1: 10,20
     auto andResult = bitmap1 & bitmap3;
     assert(andResult.count() == 1); // 仅20位置为1
 
@@ -43,10 +44,11 @@ void test_bitmap()
     assert(orResult.count() == 3); // 10,20,30
 
     auto xorResult = bitmap1 ^ bitmap3;
-    // std::cout << "xorResult.count: " << xorResult.count() << std::endl;
     assert(xorResult.count() == 2); // 10,30
 
     auto notResult = ~bitmap1;
+    // std::cout << "notResult count:" << notResult.count() << std::endl;
+    assert(notResult.count() == 102);
     assert(notResult.get(10) == false);
     assert(notResult.get(0) == true);
 
@@ -85,11 +87,13 @@ void test_roaring_bitmap()
     // 基础功能测试
     assert(bitmap1.count() == 3);
     assert(bitmap1.get(20) == true);
+    assert(bitmap1.get(25) == false);
     assert(bitmap1.get(80) == true);
     assert(bitmap1.size() == 128); // 2个block（0和1）
 
     // 字符串转换测试
     std::string str = bitmap1.to_string();
+    std::cout << "bitmap1 str: " << str << std::endl;
     cutl::roaring_bitmap bitmap2(64);
     bitmap2.from_string(str);
     assert(bitmap2.equals(bitmap1));
@@ -100,6 +104,7 @@ void test_roaring_bitmap()
     bitmap3.set(40);
     bitmap3.set(130); // 130/64=2（第三个block）
 
+    // bitmap1: 10,20,80
     auto andBitmap = bitmap1 & bitmap3;
     assert(andBitmap.count() == 1); // 仅20
 
@@ -116,7 +121,7 @@ void test_roaring_bitmap()
 
     // 重置测试
     bitmap1.reset(20);
-    assert(bitmap1.count() == 2);
+    assert(bitmap1.count() == 2); // 10, 80
 
     std::cout << "roaring_bitmap tests passed" << std::endl;
 }
