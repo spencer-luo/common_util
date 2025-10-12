@@ -1,4 +1,5 @@
 #include "algoutil.hpp"
+#include "bitmap.hpp"
 #include "common.hpp"
 #include "config.hpp"
 #include "datetime.hpp"
@@ -39,20 +40,21 @@ int main(int argc, char* argv[])
     // TestSysutil();
     // TestStrfmt();
     // TestTimeutil();
-    TestTimecount();
+    // TestTimecount();
     // TestDatetime();
     // TestVerUtil();
     // TestStrUtil();
     // TestFilePath();
     // TestFileUtil();
     // TestDlLoader();
-    TestPrint();
+    // TestPrint();
     // TestTimer();
     // TestLRUCache();
     // TestThreadUtil();
     // TestEventLoop();
     // TestThreadPool();
     // TestAlgorithmUtil();
+    BitmapTest();
 
     // usage_demo();
 
