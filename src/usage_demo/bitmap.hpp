@@ -1,5 +1,6 @@
 ﻿#include "common.hpp"
 #include "common_util/bitmap.h"
+#include <algorithm> // 用于测试valuelist排序
 #include <cassert>
 
 void test_bitmap()
@@ -47,10 +48,38 @@ void test_bitmap()
     assert(xorResult.count() == 2); // 10,30
 
     auto notResult = ~bitmap1;
-    // std::cout << "notResult count:" << notResult.count() << std::endl;
     assert(notResult.count() == 102);
     assert(notResult.get(10) == false);
     assert(notResult.get(0) == true);
+
+    // 新增：测试operator&=
+    cutl::bitmap andAssign(100);
+    andAssign.set(10);
+    andAssign.set(20);
+    andAssign.set(30);
+    andAssign &= bitmap3; // bitmap3:20,30
+    assert(andAssign.count() == 2);
+    assert(andAssign.get(20) && andAssign.get(30) && !andAssign.get(10));
+
+    // 新增：测试operator|=
+    cutl::bitmap orAssign(100);
+    orAssign.set(10);
+    orAssign |= bitmap3; // bitmap3:20,30
+    assert(orAssign.count() == 3);
+    assert(orAssign.get(10) && orAssign.get(20) && orAssign.get(30));
+
+    // 新增：测试operator^=
+    cutl::bitmap xorAssign(100);
+    xorAssign.set(10);
+    xorAssign.set(20);
+    xorAssign ^= bitmap3; // bitmap3:20,30
+    assert(xorAssign.count() == 2);
+    assert(xorAssign.get(10) && xorAssign.get(30) && !xorAssign.get(20));
+
+    // 新增：测试valuelist()
+    std::vector<size_t> expected = { 10, 20 };
+    std::vector<size_t> actual = bitmap1.valuelist();
+    assert(actual == expected);
 
     std::cout << "bitmap tests passed" << std::endl;
 }
@@ -71,6 +100,56 @@ void test_dynamic_bitmap()
     dynamicBitmap.set(100);
     assert(dynamicBitmap.size() >= 101);
     assert(dynamicBitmap.get(100) == true);
+
+    // 新增：测试operator&=
+    cutl::dynamic_bitmap dbAnd1(20);
+    dbAnd1.set(5);
+    dbAnd1.set(10);
+    dbAnd1.set(15);
+
+    cutl::dynamic_bitmap dbAnd2(20);
+    dbAnd2.set(10);
+    dbAnd2.set(15);
+    dbAnd2.set(20);
+
+    dbAnd1 &= dbAnd2;
+    assert(dbAnd1.count() == 2);
+    assert(dbAnd1.get(10) && dbAnd1.get(15) && !dbAnd1.get(5));
+    assert(dbAnd1.size() != dbAnd2.size());
+
+    // 新增：测试operator|=
+    cutl::dynamic_bitmap dbOr1(10);
+    dbOr1.set(3);
+    dbOr1.set(7);
+
+    cutl::dynamic_bitmap dbOr2(15);
+    dbOr2.set(7);
+    dbOr2.set(12);
+
+    dbOr1 |= dbOr2;
+    assert(dbOr1.count() == 3);
+    assert(dbOr1.get(3) && dbOr1.get(7) && dbOr1.get(12));
+    assert(dbOr1.size() >= 15);
+
+    // 新增：测试operator^=
+    cutl::dynamic_bitmap dbXor1(20);
+    dbXor1.set(4);
+    dbXor1.set(8);
+    dbXor1.set(12);
+
+    cutl::dynamic_bitmap dbXor2(20);
+    dbXor2.set(8);
+    dbXor2.set(16);
+
+    dbXor1 ^= dbXor2;
+    assert(dbXor1.count() == 3);
+    assert(dbXor1.get(4) && dbXor1.get(12) && dbXor1.get(16) && !dbXor1.get(8));
+
+    // 新增：测试valuelist()
+    dbXor1.set(20);
+    std::vector<size_t> expected = { 4, 12, 16, 20 };
+    std::vector<size_t> actual = dbXor1.valuelist();
+    assert(actual == expected);
 
     std::cout << "dynamic_bitmap tests passed" << std::endl;
 }
@@ -122,6 +201,56 @@ void test_roaring_bitmap()
     // 重置测试
     bitmap1.reset(20);
     assert(bitmap1.count() == 2); // 10, 80
+
+    // 新增：测试operator&=
+    cutl::roaring_bitmap rbAnd1(64);
+    rbAnd1.set(10);
+    rbAnd1.set(80);
+    rbAnd1.set(130);
+
+    cutl::roaring_bitmap rbAnd2(64);
+    rbAnd2.set(80);
+    rbAnd2.set(130);
+    rbAnd2.set(150);
+
+    rbAnd1 &= rbAnd2;
+    assert(rbAnd1.count() == 2);
+    assert(rbAnd1.get(80) && rbAnd1.get(130) && !rbAnd1.get(10));
+
+    // 新增：测试operator|=
+    cutl::roaring_bitmap rbOr1(64);
+    rbOr1.set(10);
+    rbOr1.set(80);
+
+    cutl::roaring_bitmap rbOr2(64);
+    rbOr2.set(80);
+    rbOr2.set(130);
+
+    rbOr1 |= rbOr2;
+    assert(rbOr1.count() == 3);
+    assert(rbOr1.get(10) && rbOr1.get(80) && rbOr1.get(130));
+
+    // 新增：测试operator^=
+    cutl::roaring_bitmap rbXor1(64);
+    rbXor1.set(10);
+    rbXor1.set(80);
+    rbXor1.set(130);
+
+    cutl::roaring_bitmap rbXor2(64);
+    rbXor2.set(80);
+    rbXor2.set(150);
+
+    rbXor1 ^= rbXor2;
+    assert(rbXor1.count() == 3);
+    // 10, 130, 150
+    assert(rbXor1.get(10) && rbXor1.get(130) && rbXor1.get(150) && !rbXor1.get(80));
+
+    // 新增：测试valuelist()
+    std::vector<size_t> expected = { 10, 130, 150 };
+    std::vector<size_t> actual = rbXor1.valuelist();
+    std::cout << "rbXor1 valuelist: " << cutl::fmt_vec(actual) << std::endl;
+    std::sort(actual.begin(), actual.end()); // 排序后比较
+    assert(actual == expected);
 
     std::cout << "roaring_bitmap tests passed" << std::endl;
 }

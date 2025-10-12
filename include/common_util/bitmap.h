@@ -349,6 +349,33 @@ public:
      */
     void set(size_t position) override;
 
+        /**
+     * @brief Perform bitwise AND with another dynamic_bitmap and assign result
+     *
+     * @param other The dynamic_bitmap to AND with
+     * @return bitmap& Reference to this bitmap after operation
+     * @throw std::invalid_argument If dynamic_bitmap have different block_size
+     */
+    dynamic_bitmap& operator&=(const dynamic_bitmap& other);
+
+    /**
+     * @brief Perform bitwise OR with another dynamic_bitmap and assign result
+     *
+     * @param other The dynamic_bitmap to OR with
+     * @return bitmap& Reference to this bitmap after operation
+     * @throw std::invalid_argument If dynamic_bitmap have different block_size
+     */
+    dynamic_bitmap& operator|=(const dynamic_bitmap& other);
+
+    /**
+     * @brief Perform bitwise XOR with another dynamic_bitmap and assign result
+     *
+     * @param other The dynamic_bitmap to XOR with
+     * @return bitmap& Reference to this bitmap after operation
+     * @throw std::invalid_argument If dynamic_bitmap have different block_size
+     */
+    dynamic_bitmap& operator^=(const dynamic_bitmap& other);
+
 private:
     /**
      * @brief Ensure the bitmap can hold at least the specified number of bits

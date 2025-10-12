@@ -2,10 +2,10 @@
 #include "inner/logger.h"
 #include "strfmt.h"
 #include <algorithm>
-#include <cmath>
-#include <stdexcept>
 // #include <bitset>
+#include <cmath>
 // #include <iostream>
+#include <stdexcept>
 
 namespace cutl
 {
@@ -38,6 +38,7 @@ void bitmap::set(size_t position)
  */
 bool bitmap::get(size_t position) const
 {
+    // printf("position:%d, size_:%d\n", position, size_);
     if (position >= size_)
     {
         throw std::out_of_range("Position " + std::to_string(position) + " out of range");
@@ -208,8 +209,6 @@ bitmap bitmap::operator&(const bitmap& other) const
     return result;
 }
 
-// #include <iostream>
-
 /**
  * 与另一个 bitmap 进行 OR 操作
  */
@@ -242,17 +241,20 @@ bitmap bitmap::operator~() const
     return result;
 }
 
-// 按位异或
+// 按位异或，“异或”对应于集合中的“对称差”， A异或B = (A\B) U (B\A).
 bitmap bitmap::operator^(const bitmap& other) const
 {
-    if (size_ != other.size_)
-    {
-        throw std::invalid_argument("Bitmaps must have same size");
-    }
-    bitmap result(size_);
-    for (size_t i = 0; i < bits_.size(); i++)
+    auto minSize = std::min(bits_.size(), other.bits_.size());
+    auto maxSize = std::max(bits_.size(), other.bits_.size());
+
+    bitmap result(maxSize << 3); // maxSize * 8
+    for (size_t i = 0; i < minSize; i++)
     {
         result.bits_[i] = bits_[i] ^ other.bits_[i];
+    }
+    for (size_t i = minSize; i < maxSize; i++)
+    {
+        result.bits_[i] = bits_.size() > other.bits_.size() ? bits_[i] : other.bits_[i];
     }
     return result;
 }
@@ -323,6 +325,79 @@ void dynamic_bitmap::ensureCapacity(size_t minSize)
 
     size_ = std::max(size_ * 2, minSize);
     bits_.resize(size_);
+}
+
+dynamic_bitmap& dynamic_bitmap::operator&=(const dynamic_bitmap& other)
+{
+    auto minSize = std::min(bits_.size(), other.bits_.size());
+    auto maxSize = std::max(bits_.size(), other.bits_.size());
+
+    bitmap result(maxSize << 3); // maxSize * 8
+    for (size_t i = 0; i < minSize; i++)
+    {
+        bits_[i] &= other.bits_[i];
+    }
+    if (bits_.size() > other.bits_.size())
+    {
+        // 将剩余的元素填充为0
+        std::fill(bits_.begin() + minSize, bits_.end(), 0);
+    }
+
+    return *this;
+}
+
+dynamic_bitmap& dynamic_bitmap::operator|=(const dynamic_bitmap& other)
+{
+    auto minSize = std::min(bits_.size(), other.bits_.size());
+    auto maxSize = std::max(bits_.size(), other.bits_.size());
+
+    for (size_t i = 0; i < minSize; i++)
+    {
+        bits_[i] |= other.bits_[i];
+    }
+    if (bits_.size() < other.bits_.size())
+    {
+        ensureCapacity(maxSize);
+        for (size_t i = minSize; i < maxSize; i++)
+        {
+            bits_[i] = other.bits_[i];
+        }
+    }
+    else if (size_ < bits_.size() << 3)
+    {
+        // bits_.size()相同时，size_可能不相同
+        // bits_.size() * 8
+        size_ = bits_.size() << 3;
+    }
+
+    return *this;
+}
+
+dynamic_bitmap& dynamic_bitmap::operator^=(const dynamic_bitmap& other)
+{
+    auto minSize = std::min(bits_.size(), other.bits_.size());
+    auto maxSize = std::max(bits_.size(), other.bits_.size());
+
+    for (size_t i = 0; i < minSize; i++)
+    {
+        bits_[i] ^= other.bits_[i];
+    }
+    if (bits_.size() < other.bits_.size())
+    {
+        ensureCapacity(maxSize);
+        for (size_t i = minSize; i < maxSize; i++)
+        {
+            bits_[i] = other.bits_[i];
+        }
+    }
+    else if (size_ < bits_.size() << 3)
+    {
+        // bits_.size()相同时，size_可能不相同
+        // bits_.size() * 8
+        size_ = bits_.size() << 3;
+    }
+
+    return *this;
 }
 
 roaring_bitmap::roaring_bitmap(size_t blockSize)
@@ -514,6 +589,11 @@ std::vector<size_t> roaring_bitmap::valuelist() const
     for (const auto& key : keys)
     {
         auto vec = container_.at(key).valuelist();
+        // 根据分块的大小，计算原始值的大小
+        for (int i = 0; i < vec.size(); i++)
+        {
+            vec[i] = key * block_size_ + vec[i];
+        }
         result.insert(result.end(), vec.begin(), vec.end());
     }
     return result;
@@ -653,7 +733,17 @@ roaring_bitmap roaring_bitmap::operator^(const roaring_bitmap& other) const
         }
         else
         {
-            throw std::invalid_argument("Key " + std::to_string(key) + " not in other container");
+            // 属于this，但是不属于other的，也添加到result里
+            rBitmap.container_.emplace(key, val);
+        }
+    }
+    for (auto itr = other.container_.begin(); itr != other.container_.end(); itr++)
+    {
+        auto& key = itr->first;
+        auto& val = itr->second;
+        if (!rBitmap.container_.count(key))
+        {
+            rBitmap.container_.emplace(key, val);
         }
     }
 
@@ -668,19 +758,31 @@ roaring_bitmap& roaring_bitmap::operator&=(const roaring_bitmap& other)
         throw std::invalid_argument("RoaringBitmap must have same block_size");
     }
 
-    for (auto itr = container_.begin(); itr != container_.end(); itr++)
+    // 使用迭代器遍历，通过 erase 的返回值更新迭代器
+    auto itr = container_.begin();
+    while (itr != container_.end())
     {
         auto& key = itr->first;
         auto& val = itr->second;
 
         if (other.container_.count(key))
         {
+            // 两个 bitmap 都有该块，执行 AND 操作
             val &= other.container_.at(key);
+            // 如果 AND 后块中没有置位，删除该块
+            if (val.count() == 0)
+            {
+                itr = container_.erase(itr); // 安全删除，获取下一个迭代器
+            }
+            else
+            {
+                ++itr; // 继续下一个元素
+            }
         }
         else
         {
-            std::string errMsg = "Key " + std::to_string(key) + " not in other container.";
-            throw std::invalid_argument(errMsg);
+            // 另一个 bitmap 没有该块，直接删除
+            itr = container_.erase(itr); // 安全删除，获取下一个迭代器
         }
     }
 
@@ -704,10 +806,15 @@ roaring_bitmap& roaring_bitmap::operator|=(const roaring_bitmap& other)
         {
             val |= other.container_.at(key);
         }
-        else
+    }
+
+    for (auto itr = other.container_.begin(); itr != other.container_.end(); itr++)
+    {
+        auto& key = itr->first;
+        auto& val = itr->second;
+        if (!container_.count(key))
         {
-            std::string errMsg = "Key " + std::to_string(key) + " not in other container.";
-            throw std::invalid_argument(errMsg);
+            container_.emplace(key, val);
         }
     }
 
@@ -731,10 +838,15 @@ roaring_bitmap& roaring_bitmap::operator^=(const roaring_bitmap& other)
         {
             val ^= other.container_.at(key);
         }
-        else
+    }
+
+    for (auto itr = other.container_.begin(); itr != other.container_.end(); itr++)
+    {
+        auto& key = itr->first;
+        auto& val = itr->second;
+        if (!container_.count(key))
         {
-            std::string errMsg = "Key " + std::to_string(key) + " not in other container.";
-            throw std::invalid_argument(errMsg);
+            container_.emplace(key, val);
         }
     }
 
