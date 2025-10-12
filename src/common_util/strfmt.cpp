@@ -206,7 +206,7 @@ namespace cutl
             const char temp = data[i];
             output.push_back(hex_chars[temp / 16]);
             output.push_back(hex_chars[temp % 16]);
-            if (!separator)
+            if (separator)
             {
                 output.push_back(separator);
             }

@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
+// #include <bitset>
+// #include <iostream>
 
 namespace cutl
 {
@@ -102,8 +104,8 @@ std::string bitmap::to_hex(int compress) const
     else
     {
         // 找到最后一个非零字节的索引
-        int lastNonZeroIndex = -1;
-        for (size_t i = bits_.size() - 1; i >= 0; i--)
+        int lastNonZeroIndex = 0;
+        for (int i = bits_.size() - 1; i >= 0; i--)
         {
             if (bits_[i] != 0)
             {
@@ -113,7 +115,7 @@ std::string bitmap::to_hex(int compress) const
         }
 
         // 如果所有字节都是零，返回空字符串
-        if (lastNonZeroIndex == -1)
+        if (lastNonZeroIndex == 0)
         {
             return "";
         }
@@ -128,7 +130,7 @@ std::string bitmap::to_string() const
     return this->to_hex(1);
 }
 
-void bitmap::from_string(const std::string text)
+void bitmap::from_string(const std::string& text)
 {
     for (char c : text)
     {
@@ -144,8 +146,9 @@ void bitmap::from_string(const std::string text)
     // 每两个字符表示一个字节
     const size_t expectedLength = bits_.size() * 2;
     size_t strLen = std::min(expectedLength, text.length());
+    size_t byteSize = strLen >> 1; // strLen / 2
     // 将十六进制字符串转换为字节数组
-    for (size_t i = 0; i < strLen; i++)
+    for (size_t i = 0; i < byteSize; i++)
     {
         std::string hexByte = text.substr(i * 2, 2);
         bits_[i] = std::stoi(hexByte, nullptr, 16);
@@ -196,8 +199,8 @@ bool bitmap::equals(const ibitmap& other) const
  */
 bitmap bitmap::operator&(const bitmap& other) const
 {
-    auto minSize = std::min(size_, other.size_);
-    bitmap result(minSize);
+    auto minSize = std::min(bits_.size(), other.bits_.size());
+    bitmap result(minSize << 3); // minSize * 8
     for (size_t i = 0; i < minSize; i++)
     {
         result.bits_[i] = bits_[i] & other.bits_[i];
@@ -212,24 +215,18 @@ bitmap bitmap::operator&(const bitmap& other) const
  */
 bitmap bitmap::operator|(const bitmap& other) const
 {
-    CUTL_INFO("00");
-    auto minSize = std::min(size_, other.size_);
-    auto maxSize = std::max(size_, other.size_);
+    auto minSize = std::min(bits_.size(), other.bits_.size());
+    auto maxSize = std::max(bits_.size(), other.bits_.size());
 
-    CUTL_INFO("11");
-    // std::cout << "minSize: " << minSize << ", maxSize: " << maxSize << std::endl;
-
-    bitmap result(maxSize);
+    bitmap result(maxSize << 3); // maxSize * 8
     for (size_t i = 0; i < minSize; i++)
     {
         result.bits_[i] = bits_[i] | other.bits_[i];
     }
-    CUTL_INFO("22");
     for (size_t i = minSize; i < maxSize; i++)
     {
-        result.bits_[i] = size_ > other.size_ ? bits_[i] : other.bits_[i];
+        result.bits_[i] = bits_.size() > other.bits_.size() ? bits_[i] : other.bits_[i];
     }
-    CUTL_INFO("33");
     return result;
 }
 
@@ -358,7 +355,7 @@ bool roaring_bitmap::get(size_t position) const
     size_t bitPosition = position % block_size_;
 
     auto itr = container_.find(key);
-    if (itr != container_.end())
+    if (itr == container_.end())
     {
         return false;
     }
@@ -374,12 +371,12 @@ void roaring_bitmap::reset(size_t position)
     size_t bitPosition = position % block_size_;
 
     auto itr = container_.find(key);
-    if (itr != container_.end())
+    if (itr == container_.end())
     {
         throw std::out_of_range("Position " + std::to_string(position) + " not in container");
     }
 
-    itr->second.reset(position);
+    itr->second.reset(bitPosition);
 }
 
 // 将所有元素重置为0
@@ -443,9 +440,65 @@ std::string roaring_bitmap::to_string() const
     return result;
 }
 
-void roaring_bitmap::from_string(const std::string text)
+void roaring_bitmap::from_string(const std::string& text)
 {
-    // todo
+    // 清空现有数据
+    container_.clear();
+
+    // 简单校验格式（{...}结构）
+    if (text.empty() || text.front() != '{' || text.back() != '}')
+    {
+        throw std::runtime_error("Invalid roaring bitmap string format");
+    }
+
+    // 提取中间内容
+    std::string content = text.substr(1, text.size() - 2);
+    if (content.empty())
+    {
+        return; // 空 bitmap
+    }
+
+    // 分割键值对
+    size_t pos = 0;
+    while (pos < content.size())
+    {
+        // 查找键的引号
+        size_t keyStart = content.find('"', pos);
+        if (keyStart == std::string::npos)
+            break;
+
+        size_t keyEnd = content.find('"', keyStart + 1);
+        if (keyEnd == std::string::npos)
+            break;
+
+        // 解析键（block索引）
+        std::string keyStr = content.substr(keyStart + 1, keyEnd - keyStart - 1);
+        size_t key = std::stoull(keyStr);
+
+        // 查找值的引号
+        size_t valStart = content.find('"', keyEnd + 1);
+        if (valStart == std::string::npos)
+            break;
+
+        size_t valEnd = content.find('"', valStart + 1);
+        if (valEnd == std::string::npos)
+            break;
+
+        // 解析值（bitmap的十六进制字符串）
+        std::string valStr = content.substr(valStart + 1, valEnd - valStart - 1);
+
+        // 创建对应block并从字符串加载数据
+        bitmap block(block_size_);
+        block.from_string(valStr);
+        container_.emplace(key, block);
+
+        // 移动到下一个键值对
+        pos = valEnd + 1;
+        if (pos < content.size() && content[pos] == ',')
+        {
+            pos++;
+        }
+    }
 }
 
 std::vector<size_t> roaring_bitmap::valuelist() const
@@ -504,10 +557,6 @@ roaring_bitmap roaring_bitmap::operator&(const roaring_bitmap& other) const
     if (block_size() != other.block_size())
     {
         throw std::invalid_argument("RoaringBitmap must have same block_size");
-    }
-    if (container_.size() != other.container_.size())
-    {
-        throw std::invalid_argument("RoaringBitmap must have same size");
     }
     roaring_bitmap rBitmap(block_size_);
     for (auto itr = container_.begin(); itr != container_.end(); itr++)
@@ -590,10 +639,6 @@ roaring_bitmap roaring_bitmap::operator^(const roaring_bitmap& other) const
     {
         throw std::invalid_argument("RoaringBitmap must have same block_size");
     }
-    if (container_.size() != other.container_.size())
-    {
-        throw std::invalid_argument("RoaringBitmap must have same size");
-    }
     roaring_bitmap rBitmap(block_size_);
     for (auto itr = container_.begin(); itr != container_.end(); itr++)
     {
@@ -603,6 +648,7 @@ roaring_bitmap roaring_bitmap::operator^(const roaring_bitmap& other) const
         if (other.container_.count(key))
         {
             bitmap result = val ^ other.container_.at(key);
+            // std::cout << "key:" << key << ", result: " << result.to_string() << std::endl;
             rBitmap.container_.emplace(key, result);
         }
         else
@@ -620,10 +666,6 @@ roaring_bitmap& roaring_bitmap::operator&=(const roaring_bitmap& other)
     if (block_size() != other.block_size())
     {
         throw std::invalid_argument("RoaringBitmap must have same block_size");
-    }
-    if (container_.size() != other.container_.size())
-    {
-        throw std::invalid_argument("RoaringBitmap must have same size");
     }
 
     for (auto itr = container_.begin(); itr != container_.end(); itr++)
@@ -652,10 +694,6 @@ roaring_bitmap& roaring_bitmap::operator|=(const roaring_bitmap& other)
     {
         throw std::invalid_argument("RoaringBitmap must have same block_size");
     }
-    if (container_.size() != other.container_.size())
-    {
-        throw std::invalid_argument("RoaringBitmap must have same size");
-    }
 
     for (auto itr = container_.begin(); itr != container_.end(); itr++)
     {
@@ -682,10 +720,6 @@ roaring_bitmap& roaring_bitmap::operator^=(const roaring_bitmap& other)
     if (block_size() != other.block_size())
     {
         throw std::invalid_argument("RoaringBitmap must have same block_size");
-    }
-    if (container_.size() != other.container_.size())
-    {
-        throw std::invalid_argument("RoaringBitmap must have same size");
     }
 
     for (auto itr = container_.begin(); itr != container_.end(); itr++)
