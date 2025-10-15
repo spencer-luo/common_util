@@ -348,6 +348,17 @@ void TestIntHash()
     std::cout << b << " --> " << division_hash(b, 20) << std::endl;
 }
 
+void TestStdHash()
+{
+    std::string str1("Hello World!");
+    std::string str2("我爱中国！");
+
+    std::cout << "std::hash():" << std::endl;
+    std::hash<std::string> hasher;
+    std::cout << str1 << " --> " << hasher(str1.c_str()) << std::endl;
+    std::cout << str2 << " --> " << hasher(str2.c_str()) << std::endl;
+}
+
 int main()
 {
     TestPolynomialRolling();
@@ -356,6 +367,7 @@ int main()
     TestJenkins();
     TestMurmurHash();
     TestIntHash();
+    TestStdHash();
 
     return 0;
 }
