@@ -371,3 +371,8 @@ int main()
 
     return 0;
 }
+
+// macOS clang version 16.0.0
+// std::hash():
+// Hello World! --> 18476351241006313
+// 我爱中国！ --> 16995802077979883537
