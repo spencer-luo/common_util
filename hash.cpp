@@ -2,6 +2,17 @@
 #include <iostream>
 #include <string>
 
+// 多项式滚动哈希: Polynomial rolling_hash
+uint32_t polynomial_rolling(const std::string& str)
+{
+    int h = 0;
+    for (int i = 0; i < str.length(); i++)
+    {
+        h = 31 * h + str[i];
+    }
+    return h;
+}
+
 // DJB2哈希算法
 uint32_t DJB2(const std::string& str)
 {
@@ -234,18 +245,53 @@ uint32_t murmur3_32(const void* key, size_t len, uint32_t seed = 0)
     return h1;
 }
 
+// Thomas Wang的整数哈希函数
+uint32_t thomas_wang(uint32_t key)
+{
+    key = ~key + (key << 15);
+    key = key ^ (key >> 12);
+    key = key + (key << 2);
+    key = key ^ (key >> 4);
+    key = key * 2057;
+    key = key ^ (key >> 16);
+    return key;
+}
+
+// 乘法哈希（适用于哈希表）
+uint32_t multiplicative_hash(uint32_t key, uint32_t table_size)
+{
+    const double A = 0.6180339887; // 黄金比例的分数部分
+    double product = key * A;
+    double fractional = product - static_cast<uint32_t>(product);
+    return static_cast<uint32_t>(table_size * fractional);
+}
+
+// 除法哈希
+uint32_t division_hash(uint32_t key, uint32_t table_size)
+{
+    return key % table_size;
+}
+
+void TestPolynomialRolling()
+{
+    std::string str1("Hello World!");
+    std::string str2("我爱中国！");
+    std::cout << str1 << " --> " << polynomial_rolling(str1) << std::endl;
+    std::cout << str2 << " --> " << polynomial_rolling(str2) << std::endl;
+}
+
 void TestDJB2()
 {
-    std::string str1("Hello World");
-    std::string str2("我爱中国");
+    std::string str1("Hello World!");
+    std::string str2("我爱中国！");
     std::cout << str1 << " --> " << DJB2(str1) << std::endl;
     std::cout << str2 << " --> " << DJB2(str2) << std::endl;
 }
 
 void TestFNV1()
 {
-    std::string str1("Hello World");
-    std::string str2("我爱中国");
+    std::string str1("Hello World!");
+    std::string str2("我爱中国！");
 
     std::cout << "fnv1_32:" << std::endl;
     std::cout << str1 << " --> " << fnv1_32(str1) << std::endl;
@@ -262,8 +308,8 @@ void TestFNV1()
 
 void TestJenkins()
 {
-    std::string str1("Hello World");
-    std::string str2("我爱中国");
+    std::string str1("Hello World!");
+    std::string str2("我爱中国！");
 
     std::cout << "one_at_a_time:" << std::endl;
     std::cout << str1 << " --> " << one_at_a_time(str1) << std::endl;
@@ -276,19 +322,40 @@ void TestJenkins()
 
 void TestMurmurHash()
 {
-    std::string str1("Hello World");
-    std::string str2("我爱中国");
+    std::string str1("Hello World!");
+    std::string str2("我爱中国！");
 
     std::cout << "murmur3_32:" << std::endl;
     std::cout << str1 << " --> " << murmur3_32(str1.c_str(), str1.length()) << std::endl;
     std::cout << str2 << " --> " << murmur3_32(str2.c_str(), str2.length()) << std::endl;
 }
 
+void TestIntHash()
+{
+    uint32_t a = 6;
+    uint32_t b = 127;
+
+    std::cout << "thomas_wang:" << std::endl;
+    std::cout << a << " --> " << thomas_wang(a) << std::endl;
+    std::cout << b << " --> " << thomas_wang(b) << std::endl;
+
+    std::cout << "multiplicative_hash:" << std::endl;
+    std::cout << a << " --> " << multiplicative_hash(a, 20) << std::endl;
+    std::cout << b << " --> " << multiplicative_hash(b, 20) << std::endl;
+
+    std::cout << "division_hash:" << std::endl;
+    std::cout << a << " --> " << division_hash(a, 20) << std::endl;
+    std::cout << b << " --> " << division_hash(b, 20) << std::endl;
+}
+
 int main()
 {
+    TestPolynomialRolling();
     TestDJB2();
     TestFNV1();
     TestJenkins();
     TestMurmurHash();
+    TestIntHash();
+
     return 0;
 }
