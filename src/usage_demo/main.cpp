@@ -7,6 +7,7 @@
 #include "eventloop.hpp"
 #include "filepath.hpp"
 #include "fileutil.hpp"
+#include "hash.hpp"
 #include "lrucache.hpp"
 #include "print.hpp"
 #include "singleton.hpp"
@@ -55,6 +56,7 @@ int main(int argc, char* argv[])
     // TestThreadPool();
     // TestAlgorithmUtil();
     BitmapTest();
+    TestHash();
 
     // usage_demo();
 
