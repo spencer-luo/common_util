@@ -1,4 +1,5 @@
 ﻿#include <cstdint>
+#include <cstring>
 #include <iostream>
 #include <string>
 
@@ -245,6 +246,70 @@ uint32_t murmur3_32(const void* key, size_t len, uint32_t seed = 0)
     return h1;
 }
 
+uint64_t murmur3_64(const void* key, size_t len, uint64_t seed)
+{
+    const uint64_t m = 0xc6a4a7935bd1e995ULL;
+    const int r = 47;
+
+    const uint8_t* data = static_cast<const uint8_t*>(key);
+    const uint8_t* end = data + (len / 8) * 8;
+
+    uint64_t h = seed ^ (len * m);
+
+    // 处理8字节块
+    while (data != end)
+    {
+        uint64_t k;
+        std::memcpy(&k, data, sizeof(k));
+        data += sizeof(k);
+
+        k *= m;
+        k ^= k >> r;
+        k *= m;
+
+        h ^= k;
+        h *= m;
+    }
+
+    // 处理尾部字节 (0-7字节)
+    switch (len & 7)
+    {
+        case 7:
+            h ^= static_cast<uint64_t>(data[6]) << 48;
+            [[fallthrough]];
+        case 6:
+            h ^= static_cast<uint64_t>(data[5]) << 40;
+            [[fallthrough]];
+        case 5:
+            h ^= static_cast<uint64_t>(data[4]) << 32;
+            [[fallthrough]];
+        case 4:
+            h ^= static_cast<uint64_t>(data[3]) << 24;
+            [[fallthrough]];
+        case 3:
+            h ^= static_cast<uint64_t>(data[2]) << 16;
+            [[fallthrough]];
+        case 2:
+            h ^= static_cast<uint64_t>(data[1]) << 8;
+            [[fallthrough]];
+        case 1:
+            h ^= static_cast<uint64_t>(data[0]);
+            h *= m;
+    }
+
+    // 最终混合
+    h ^= h >> r;
+    h *= m;
+    h ^= h >> r;
+
+    return h;
+}
+
+uint64_t murmur3_64(const std::string& str, uint64_t seed = 0)
+{
+    return murmur3_64(str.data(), str.length(), seed);
+}
+
 // Thomas Wang的整数哈希函数
 uint32_t thomas_wang(uint32_t key)
 {
@@ -328,6 +393,10 @@ void TestMurmurHash()
     std::cout << "murmur3_32:" << std::endl;
     std::cout << str1 << " --> " << murmur3_32(str1.c_str(), str1.length()) << std::endl;
     std::cout << str2 << " --> " << murmur3_32(str2.c_str(), str2.length()) << std::endl;
+
+    std::cout << "murmur3_64:" << std::endl;
+    std::cout << str1 << " --> " << murmur3_64(str1.c_str(), str1.length()) << std::endl;
+    std::cout << str2 << " --> " << murmur3_64(str2.c_str(), str2.length()) << std::endl;
 }
 
 void TestIntHash()
