@@ -68,24 +68,36 @@ bool bloom_filter::contains(const std::string& value) const
     return true;
 }
 
-// 估算元素数量(测试函数，实际业务中不建议使用)
-size_t bloom_filter::test_estimateCount() const
-{
-    // double m = size_;
-    // double k = hash_size_;
-    // double x = getSetBitCount();
-    // return std::round(-(m / k) * std::log(1 - x / m));
+// // 获取位图中设置位的数量(测试函数，实际业务中不建议使用)
+// size_t bloom_filter::test_getSetBitCount() const
+// {
+//     return bitmap_->count();
+// }
 
-    size_t set_bits = test_getSetBitCount();
-    if (set_bits == size_)
-    {
-        // 所有位都被设置，估算不可靠
-        return std::numeric_limits<size_t>::max();
-    }
+// // 估算元素数量(测试函数，实际业务中不建议使用)
+// size_t bloom_filter::test_estimateCount() const
+// {
+//     // double m = size_;
+//     // double k = hash_size_;
+//     // double x = getSetBitCount();
+//     // return std::round(-(m / k) * std::log(1 - x / m));
 
-    double x = static_cast<double>(set_bits) / size_;
-    return std::round(-static_cast<double>(size_) / hash_size_ * std::log(1 - x));
-}
+//     size_t set_bits = test_getSetBitCount();
+//     if (set_bits == size_)
+//     {
+//         // 所有位都被设置，估算不可靠
+//         return std::numeric_limits<size_t>::max();
+//     }
+
+//     double x = static_cast<double>(set_bits) / size_;
+//     return std::round(-static_cast<double>(size_) / hash_size_ * std::log(1 - x));
+// }
+
+// // 获取相对误差(测试函数，实际业务中不建议使用)
+// double bloom_filter::test_getRelativeError()
+// {
+//     return 1.04 / std::sqrt(size_);
+// }
 
 // 双重哈希函数，生成k个哈希值
 std::pair<size_t, size_t> bloom_filter::hash(const std::string& str) const

@@ -46,16 +46,16 @@ public:
      */
     void clear() { bitmap_->reset(); }
 
-    /**
-     * 获取位图中设置位的数量(测试函数，实际业务中不建议使用)
-     */
-    size_t test_getSetBitCount() const { return bitmap_->count(); }
+    // /**
+    //  * 获取位图中设置位的数量(测试函数，实际业务中不建议使用)
+    //  */
+    // size_t test_getSetBitCount() const;
 
-    // 估算元素数量(测试函数，实际业务中不建议使用)
-    size_t test_estimateCount() const;
+    // // 估算元素数量(测试函数，实际业务中不建议使用)
+    // size_t test_estimateCount() const;
 
-    // 获取相对误差(测试函数，实际业务中不建议使用)
-    double test_getRelativeError() { return 1.04 / std::sqrt(size_); }
+    // // 获取相对误差(测试函数，实际业务中不建议使用)
+    // double test_getRelativeError();
 
 private:
     // 双重哈希函数，生成k个哈希值
