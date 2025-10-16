@@ -135,10 +135,6 @@ public:
  */
 class bitmap : public ibitmap
 {
-protected:
-    std::vector<uint8_t> bits_; ///< Underlying storage for bits
-    size_t size_;               ///< Total number of bits the bitmap can hold
-
 public:
     /**
      * @brief Construct a new bitmap object with specified size
@@ -318,6 +314,10 @@ private:
      * @return std::string Hexadecimal string representation
      */
     std::string to_hex(int compress = 1) const;
+
+protected:
+    std::vector<uint8_t> bits_; ///< Underlying storage for bits
+    size_t size_;               ///< Total number of bits the bitmap can hold
 };
 
 /**
@@ -394,11 +394,6 @@ private:
  */
 class roaring_bitmap : public ibitmap
 {
-private:
-    size_t block_size_; ///< Size of each block in bits
-    std::unordered_map<size_t, bitmap>
-      container_; ///< Storage for blocks (key: block index, value: bitmap block)
-
 public:
     /**
      * @brief Construct a new roaring_bitmap object
@@ -578,6 +573,11 @@ public:
      * @throw std::invalid_argument If block sizes differ or blocks are missing
      */
     roaring_bitmap& operator^=(const roaring_bitmap& other);
+
+private:
+    size_t block_size_; ///< Size of each block in bits
+    std::unordered_map<size_t, bitmap>
+      container_; ///< Storage for blocks (key: block index, value: bitmap block)
 };
 
 } // namespace cutl

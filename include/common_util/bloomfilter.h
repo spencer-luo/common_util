@@ -23,11 +23,6 @@ enum bloom_error_rate
 
 class bloom_filter
 {
-private:
-    size_t size_;
-    std::shared_ptr<bitmap> bitmap_;
-    size_t hash_size_;
-
 public:
     bloom_filter(size_t size, size_t hash_size);
 
@@ -65,6 +60,11 @@ public:
 private:
     // 双重哈希函数，生成k个哈希值
     std::pair<size_t, size_t> hash(const std::string& str) const;
+
+private:
+    size_t size_;
+    std::shared_ptr<bitmap> bitmap_;
+    size_t hash_size_;
 };
 
 /**
