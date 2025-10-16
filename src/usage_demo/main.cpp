@@ -1,5 +1,6 @@
 #include "algoutil.hpp"
 #include "bitmap.hpp"
+#include "bloomfilter.hpp"
 #include "common.hpp"
 #include "config.hpp"
 #include "datetime.hpp"
@@ -55,8 +56,9 @@ int main(int argc, char* argv[])
     // TestEventLoop();
     // TestThreadPool();
     // TestAlgorithmUtil();
-    BitmapTest();
-    TestHash();
+    // BitmapTest();
+    // TestHash();
+    TestBloomFilter();
 
     // usage_demo();
 
