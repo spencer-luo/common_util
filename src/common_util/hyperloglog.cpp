@@ -1,5 +1,6 @@
 ﻿#include "hyperloglog.h"
 #include "hash.h"
+#include "inner/logger.h"
 #include "strfmt.h"
 #include <algorithm>
 #include <stdexcept>
@@ -15,7 +16,9 @@ HyperLogLog::HyperLogLog(int precision)
 {
     if (p_ < 4 || p_ > 20)
     {
-        throw std::invalid_argument("Precision must be between 4 and 20");
+        std::string errMsg = "Precision must be between 4 and 20";
+        CUTL_ERROR(errMsg);
+        throw std::invalid_argument(errMsg);
     }
     alpha_ = compute_alpha();
 }
@@ -87,7 +90,9 @@ void HyperLogLog::merge(const HyperLogLog& other)
 {
     if (m_ != other.m_)
     {
-        throw std::invalid_argument("Precision mismatch");
+        std::string errMsg("Precision mismatch");
+        CUTL_ERROR(errMsg);
+        throw std::invalid_argument(errMsg);
     }
 
     for (int i = 0; i < m_; i++)
@@ -105,7 +110,9 @@ void HyperLogLog::from_string(const std::string& text)
     {
         if (!isxdigit(c))
         {
-            throw std::runtime_error("Invalid hexadecimal string");
+            std::string errMsg("Invalid hexadecimal string");
+            CUTL_ERROR(errMsg);
+            throw std::runtime_error(errMsg);
         }
     }
 

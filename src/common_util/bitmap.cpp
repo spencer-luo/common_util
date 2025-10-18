@@ -2,9 +2,7 @@
 #include "inner/logger.h"
 #include "strfmt.h"
 #include <algorithm>
-// #include <bitset>
 #include <cmath>
-// #include <iostream>
 #include <stdexcept>
 
 namespace cutl
@@ -25,7 +23,9 @@ void bitmap::set(size_t position)
 {
     if (position >= size_)
     {
-        throw std::out_of_range("Position " + std::to_string(position) + " out of range");
+        auto errMsg = "Position " + std::to_string(position) + " out of range";
+        CUTL_ERROR(errMsg);
+        throw std::out_of_range(errMsg);
     }
 
     size_t byteIndex = position >> 3; // 等价于 position / 8
@@ -41,7 +41,9 @@ bool bitmap::get(size_t position) const
     // printf("position:%d, size_:%d\n", position, size_);
     if (position >= size_)
     {
-        throw std::out_of_range("Position " + std::to_string(position) + " out of range");
+        auto errMsg = "Position " + std::to_string(position) + " out of range";
+        CUTL_ERROR(errMsg);
+        throw std::out_of_range(errMsg);
     }
     size_t byteIndex = position >> 3; // 等价于 position / 8
     size_t bitIndex = position & 0x7; // 等价于 position % 8
@@ -55,7 +57,9 @@ void bitmap::reset(size_t position)
 {
     if (position >= size_)
     {
-        throw std::out_of_range("Position " + std::to_string(position) + " out of range");
+        auto errMsg = "Position " + std::to_string(position) + " out of range";
+        CUTL_ERROR(errMsg);
+        throw std::out_of_range(errMsg);
     }
     size_t byteIndex = position >> 3;     // 等价于 position / 8
     size_t bitIndex = position & 0x7;     // 等价于 position % 8
@@ -137,7 +141,9 @@ void bitmap::from_string(const std::string& text)
     {
         if (!isxdigit(c))
         {
-            throw std::runtime_error("Invalid hexadecimal string");
+            std::string errMsg("Invalid hexadecimal string");
+            CUTL_ERROR(errMsg);
+            throw std::runtime_error(errMsg);
         }
     }
 
@@ -263,7 +269,9 @@ bitmap& bitmap::operator&=(const bitmap& other)
 {
     if (size_ != other.size_)
     {
-        throw std::invalid_argument("Bitmaps must have same size");
+        std::string errMsg("Bitmaps must have same size");
+        CUTL_ERROR(errMsg);
+        throw std::invalid_argument(errMsg);
     }
     for (size_t i = 0; i < bits_.size(); i++)
     {
@@ -276,7 +284,9 @@ bitmap& bitmap::operator|=(const bitmap& other)
 {
     if (size_ != other.size_)
     {
-        throw std::invalid_argument("Bitmaps must have same size");
+        std::string errMsg("Bitmaps must have same size");
+        CUTL_ERROR(errMsg);
+        throw std::invalid_argument(errMsg);
     }
     for (size_t i = 0; i < bits_.size(); i++)
     {
@@ -289,7 +299,9 @@ bitmap& bitmap::operator^=(const bitmap& other)
 {
     if (size_ != other.size_)
     {
-        throw std::invalid_argument("Bitmaps must have same size");
+        std::string errMsg("Bitmaps must have same size");
+        CUTL_ERROR(errMsg);
+        throw std::invalid_argument(errMsg);
     }
     for (size_t i = 0; i < bits_.size(); i++)
     {
@@ -448,7 +460,9 @@ void roaring_bitmap::reset(size_t position)
     auto itr = container_.find(key);
     if (itr == container_.end())
     {
-        throw std::out_of_range("Position " + std::to_string(position) + " not in container");
+        auto errMsg = "Position " + std::to_string(position) + " not in container";
+        CUTL_ERROR(errMsg);
+        throw std::out_of_range(errMsg);
     }
 
     itr->second.reset(bitPosition);
@@ -523,7 +537,9 @@ void roaring_bitmap::from_string(const std::string& text)
     // 简单校验格式（{...}结构）
     if (text.empty() || text.front() != '{' || text.back() != '}')
     {
-        throw std::runtime_error("Invalid roaring bitmap string format");
+        std::string errMsg("Invalid roaring bitmap string format");
+        CUTL_ERROR(errMsg);
+        throw std::runtime_error(errMsg);
     }
 
     // 提取中间内容
@@ -636,7 +652,9 @@ roaring_bitmap roaring_bitmap::operator&(const roaring_bitmap& other) const
 {
     if (block_size() != other.block_size())
     {
-        throw std::invalid_argument("RoaringBitmap must have same block_size");
+        std::string errMsg("RoaringBitmap must have same block_size");
+        CUTL_ERROR(errMsg);
+        throw std::invalid_argument(errMsg);
     }
     roaring_bitmap rBitmap(block_size_);
     for (auto itr = container_.begin(); itr != container_.end(); itr++)
@@ -661,7 +679,9 @@ roaring_bitmap roaring_bitmap::operator|(const roaring_bitmap& other) const
 {
     if (block_size() != other.block_size())
     {
-        throw std::invalid_argument("RoaringBitmap must have same block_size");
+        std::string errMsg("RoaringBitmap must have same block_size");
+        CUTL_ERROR(errMsg);
+        throw std::invalid_argument(errMsg);
     }
 
     roaring_bitmap rBitmap(block_size_);
@@ -717,7 +737,9 @@ roaring_bitmap roaring_bitmap::operator^(const roaring_bitmap& other) const
 {
     if (block_size() != other.block_size())
     {
-        throw std::invalid_argument("RoaringBitmap must have same block_size");
+        std::string errMsg("RoaringBitmap must have same block_size");
+        CUTL_ERROR(errMsg);
+        throw std::invalid_argument(errMsg);
     }
     roaring_bitmap rBitmap(block_size_);
     for (auto itr = container_.begin(); itr != container_.end(); itr++)
@@ -755,7 +777,9 @@ roaring_bitmap& roaring_bitmap::operator&=(const roaring_bitmap& other)
 {
     if (block_size() != other.block_size())
     {
-        throw std::invalid_argument("RoaringBitmap must have same block_size");
+        std::string errMsg("RoaringBitmap must have same block_size");
+        CUTL_ERROR(errMsg);
+        throw std::invalid_argument(errMsg);
     }
 
     // 使用迭代器遍历，通过 erase 的返回值更新迭代器
@@ -794,7 +818,9 @@ roaring_bitmap& roaring_bitmap::operator|=(const roaring_bitmap& other)
 {
     if (block_size() != other.block_size())
     {
-        throw std::invalid_argument("RoaringBitmap must have same block_size");
+        std::string errMsg("RoaringBitmap must have same block_size");
+        CUTL_ERROR(errMsg);
+        throw std::invalid_argument(errMsg);
     }
 
     for (auto itr = container_.begin(); itr != container_.end(); itr++)
@@ -826,7 +852,9 @@ roaring_bitmap& roaring_bitmap::operator^=(const roaring_bitmap& other)
 {
     if (block_size() != other.block_size())
     {
-        throw std::invalid_argument("RoaringBitmap must have same block_size");
+        std::string errMsg("RoaringBitmap must have same block_size");
+        CUTL_ERROR(errMsg);
+        throw std::invalid_argument(errMsg);
     }
 
     for (auto itr = container_.begin(); itr != container_.end(); itr++)
