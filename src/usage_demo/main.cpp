@@ -9,6 +9,7 @@
 #include "filepath.hpp"
 #include "fileutil.hpp"
 #include "hash.hpp"
+#include "hyperloglog.hpp"
 #include "lrucache.hpp"
 #include "print.hpp"
 #include "singleton.hpp"
@@ -58,7 +59,8 @@ int main(int argc, char* argv[])
     // TestAlgorithmUtil();
     // BitmapTest();
     // TestHash();
-    TestBloomFilter();
+    // TestBloomFilter();
+    TestHyperLogLog();
 
     // usage_demo();
 
