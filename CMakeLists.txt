@@ -6,7 +6,7 @@ message(STATUS "--------- begin cmake ---------")
 # cmake version
 cmake_minimum_required(VERSION 3.28.3)
 # project name
-project(common_util VERSION 1.3.0 LANGUAGES CXX)
+project(common_util VERSION 1.4.0 LANGUAGES CXX)
 # 构建时间
 # build time
 string(TIMESTAMP BUILD_TIME "%y-%m-%d %H:%M:%S")
