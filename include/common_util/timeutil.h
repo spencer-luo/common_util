@@ -45,12 +45,20 @@ namespace cutl
      */
     uint64_t timestamp(timeunit unit);
     /**
-     * @brief Get current clock time for monotone increment time.
+     * @brief Get the current time of the steady clock
      *
      * @param unit time unit
      * @return uint64_t clock time
      */
     uint64_t clocktime(timeunit unit);
+
+    /**
+     * @brief Get the CPU time of the current process
+     * 
+     * @param unit time unit
+     * @return uint64_t CPU time
+     */
+    uint64_t cpu_clocktime(timeunit unit);
 
     /**
      * @brief Convert time from milliseconds to seconds.

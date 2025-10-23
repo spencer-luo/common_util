@@ -6,7 +6,7 @@ message(STATUS "--------- begin cmake ---------")
 # cmake version
 cmake_minimum_required(VERSION 3.28.3)
 # project name
-project(common_util VERSION 1.3.0 LANGUAGES CXX)
+project(common_util VERSION 1.4.0 LANGUAGES CXX)
 # 构建时间
 # build time
 string(TIMESTAMP BUILD_TIME "%y-%m-%d %H:%M:%S")
@@ -53,7 +53,7 @@ target_include_directories(${PROJECT_NAME}
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>        # 安装后使用安装目录的 include
     PRIVATE # 仅 当前项目 可见(可以使用)
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/common_util>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src/common_util
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/common_util>
 )
 
 # 如果是windows，设置 管理员权限 和 UAC绕过UI保护
@@ -106,9 +106,13 @@ elseif()
     message("current build is debug")
 endif()
 
+# 默认不编译usage_demo，cmake命令行参数传递BUILD_DEMO=on时才会编译
+option(BUILD_DEMO "Need to build usage_demo" OFF)
 
-# add sub moudle for usage_demo
-add_subdirectory(src/usage_demo)
+if (BUILD_DEMO)
+    # add sub moudle for usage_demo
+    add_subdirectory(src/usage_demo)
+endif()
 
 # # 打包安装
 # # pack and install

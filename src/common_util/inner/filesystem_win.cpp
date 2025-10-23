@@ -1,4 +1,4 @@
-#if defined(_WIN32)
+﻿#if defined(_WIN32)
 
 #include "filesystem.h"
 #include "logger.h"
@@ -445,9 +445,6 @@ namespace cutl
     uint64_t get_last_modified_time_s(const std::string& filepath)
     {
         std::wstring wide_path = s2ws(filepath);
-
-        // Windows实现
-        std::wstring wide_path = utf8_to_wide(path);
         WIN32_FILE_ATTRIBUTE_DATA fileData;
 
         if (!GetFileAttributesExW(wide_path.c_str(), GetFileExInfoStandard, &fileData))

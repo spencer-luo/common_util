@@ -1,4 +1,4 @@
-#if defined(_WIN32)
+﻿#if defined(_WIN32)
 // do nothing
 #else
 

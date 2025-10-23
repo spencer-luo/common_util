@@ -28,7 +28,7 @@ if [ $1 == "build" ]; then
     fi
     echo "Building..."
     # cmake -B ./build -DCPACK_OUTPUT_FILE_PREFIX=`pwd`/dest
-    cmake -B ./build -DCMAKE_BUILD_TYPE:STRING=${build_type}
+    cmake -B ./build -DCMAKE_BUILD_TYPE:STRING=${build_type} -DBUILD_DEMO=ON
     cd build
     make
     echo "Build Done."

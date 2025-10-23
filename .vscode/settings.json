@@ -5,6 +5,10 @@
     "editor.minimap.enabled": true,
     // 开启|禁用缩进(Tab)字符字符检测，可选值: true, false
     "editor.detectIndentation": true,
+    // 将文件的默认保存格式设置'UTF-8 BOM'
+    "files.encoding": "utf8bom",
+    // 在保存新文件时插入 BOM
+    "files.insertBOM": true,
     // 将文件(或拓展名)与某种编程语言关联
     "files.associations": {
         "*.in": "c",

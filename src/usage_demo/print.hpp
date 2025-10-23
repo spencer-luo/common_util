@@ -1,12 +1,15 @@
-#include "common.hpp"
+﻿#include "common.hpp"
 #include "common_util/print.h"
 
 void PrintArr()
 {
     PrintSubTitle("print_arr");
 
-    int8_t arr[] = { 1, -2, 3 };
-    cutl::print_arr(arr, 3);
+    int8_t arr1[] = { 65, -2, 98 };
+    cutl::print_arr(arr1, 3);
+
+    std::array<float, 5> arr2 = { 1.21, 3.14, 5.22, 6.33 };
+    cutl::print_arr(arr2);
 }
 
 void PrintVec()
@@ -41,6 +44,22 @@ void PrintUnorderedMap()
     cutl::print_unordered_map(map1, true);
 }
 
+void PrintSet()
+{
+    PrintSubTitle("print_set");
+
+    std::set<int> s = { 5, 2, 8, 1, 9, 3 };
+    cutl::print_set(s);
+}
+
+void PrintUnorderedSet()
+{
+    PrintSubTitle("print_unordered_set");
+
+    std::unordered_set<int> s = { 5, 2, 8, 1, 9, 3 };
+    cutl::print_unordered_set(s);
+}
+
 void PrintColor()
 {
     PrintSubTitle("print_clr");
@@ -70,6 +89,58 @@ void PrintColor()
     std::cout << "norman: Hello World" << std::endl;
 }
 
+// (用随机数)初始化矩阵
+void initializeMatrix(float* matrix, int rows, int cols)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            matrix[i * cols + j] = (static_cast<float>(rand()) / RAND_MAX) * 10;
+        }
+    }
+}
+
+// (用随机数)初始化矩阵
+void initializeMatrix(int8_t* matrix, int rows, int cols)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            matrix[i * cols + j] = i * cols + j;
+        }
+    }
+}
+
+void PrintIntMatrix()
+{
+    PrintSubTitle("print_int_matrix");
+
+    constexpr int M = 10;
+    constexpr int N = 12;
+    int8_t matrix[M * N] = { 0 };
+    // 初始化矩阵
+    initializeMatrix(matrix, M, N);
+    // 打印矩阵
+    cutl::print_matrix(matrix, M, N, "int matrix", 0);
+    cutl::print_matrix(matrix, M, N, "int matrix", 0, 5, 5, M - 5, N - 5);
+}
+
+void PrintFloatMatrix()
+{
+    PrintSubTitle("print_float_matrix");
+
+    constexpr int M = 10;
+    constexpr int N = 12;
+    float matrix[M * N] = { 0 };
+    // 初始化矩阵
+    initializeMatrix(matrix, M, N);
+    // 打印矩阵
+    cutl::print_matrix(matrix, M, N, "float matrix");
+    cutl::print_matrix(matrix, M, N, "float matrix", 1, 6, 8, M - 6, N - 8);
+}
+
 void TestPrint()
 {
     PrintTitle("print");
@@ -79,4 +150,8 @@ void TestPrint()
     PrintVec();
     PrintMap();
     PrintUnorderedMap();
+    PrintSet();
+    PrintUnorderedSet();
+    PrintIntMatrix();
+    PrintFloatMatrix();
 }

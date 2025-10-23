@@ -1,4 +1,4 @@
-#if defined(_WIN32)
+﻿#if defined(_WIN32)
 // do nothing
 #else
 
@@ -440,7 +440,7 @@ namespace cutl
         }
 
         // 时间精确到秒
-        return static_cast<uint64_t>(st.st_mtim.tv_sec);
+        return static_cast<uint64_t>(st.st_mtime);
     }
 
 } // namespace cutl

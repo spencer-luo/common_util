@@ -19,12 +19,10 @@
  */
 #pragma once
 
+#include "strfmt.h"
 #include <cstdint>
 #include <iostream>
-#include <map>
 #include <string>
-#include <unordered_map>
-#include <vector>
 
 namespace cutl
 {
@@ -90,18 +88,22 @@ void print_success(const std::string& str);
 template<typename T>
 void print_arr(T* arr, uint32_t size)
 {
-    if (size <= 0 || arr == nullptr)
-    {
-        std::cout << "[]" << std::endl;
-        return;
-    }
-    std::cout << "[" << std::to_string(arr[0]);
-    for (uint32_t i = 1; i < size; i++)
-    {
-        std::cout << ", " << std::to_string(arr[i]);
-    }
+    std::cout << fmt_arr(arr, size) << std::endl;
+}
 
-    std::cout << "]" << std::endl;
+/**
+ * @brief Print array to string. support basic data type, such as int, float, double, char,
+ * etc.
+ *
+ * @tparam T the data type of array's element
+ * @tparam _Nm
+ * @param arr array
+ * @return std::string
+ */
+template<typename T, std::size_t _Nm>
+void print_arr(const std::array<T, _Nm>& arr)
+{
+    std::cout << fmt_arr(arr) << std::endl;
 }
 
 /**
@@ -113,18 +115,7 @@ void print_arr(T* arr, uint32_t size)
 template<typename T>
 void print_vec(const std::vector<T>& vec)
 {
-    if (vec.empty())
-    {
-        std::cout << "[]" << std::endl;
-        return;
-    }
-    std::cout << "[" << std::to_string(vec[0]);
-    for (int i = 1; i < vec.size(); i++)
-    {
-        std::cout << ", " << std::to_string(vec[i]);
-    }
-
-    std::cout << "]" << std::endl;
+    std::cout << fmt_vec(vec) << std::endl;
 }
 
 /**
@@ -139,32 +130,7 @@ void print_vec(const std::vector<T>& vec)
 template<typename K, typename V>
 void print_map(const std::map<K, V>& mp, bool format = false)
 {
-    if (mp.empty())
-    {
-        std::cout << "{}" << std::endl;
-        return;
-    }
-    if (format)
-    {
-        std::cout << "{" << std::endl;
-        for (auto it = mp.begin(); it != mp.end(); it++)
-        {
-            std::cout << "    " << it->first << ": " << it->second << "," << std::endl;
-        }
-        std::cout << "}" << std::endl;
-    }
-    else
-    {
-        std::cout << "{";
-        auto it_begin = mp.begin();
-        std::cout << it_begin->first << ": " << it_begin->second;
-        it_begin++;
-        for (auto it = it_begin; it != mp.end(); it++)
-        {
-            std::cout << ",  " << it->first << ": " << it->second;
-        }
-        std::cout << "}" << std::endl;
-    }
+    std::cout << fmt_map(mp, format) << std::endl;
 }
 
 /**
@@ -179,32 +145,64 @@ void print_map(const std::map<K, V>& mp, bool format = false)
 template<typename K, typename V>
 void print_unordered_map(const std::unordered_map<K, V>& mp, bool format = false)
 {
-    if (mp.empty())
-    {
-        std::cout << "{}" << std::endl;
-        return;
-    }
-    if (format)
-    {
-        std::cout << "{" << std::endl;
-        for (auto it = mp.begin(); it != mp.end(); it++)
-        {
-            std::cout << "    " << it->first << ": " << it->second << "," << std::endl;
-        }
-        std::cout << "}" << std::endl;
-    }
-    else
-    {
-        std::cout << "{";
-        auto it_begin = mp.begin();
-        std::cout << it_begin->first << ": " << it_begin->second;
-        it_begin++;
-        for (auto it = it_begin; it != mp.end(); it++)
-        {
-            std::cout << ",  " << it->first << ": " << it->second;
-        }
-        std::cout << "}" << std::endl;
-    }
+
+    std::cout << fmt_unordered_map(mp, format) << std::endl;
+}
+
+/**
+ * @brief Print simple set with basic data type, such as int, float, double, char, string etc.
+ *
+ * @tparam T the data type of set's element
+ * @param s std::set's object
+ */
+template<typename T>
+void print_set(const std::set<T>& s)
+{
+    std::cout << fmt_set(s) << std::endl;
+}
+
+/**
+ * @brief Print simple unordered_set with basic data type, such as int, float, double, char, string
+ * etc.
+ *
+ * @tparam T the data type of set's element
+ * @param s std::set's object
+ */
+template<typename T>
+void print_unordered_set(const std::unordered_set<T>& s)
+{
+    std::cout << fmt_unordered_set(s) << std::endl;
+}
+
+/**
+ * @brief Print a matrix, Matrices supporting the following parameters: float, double, int8_t,
+ * int16_t, int32_t, int64_t.
+ *
+ * @tparam T data type
+ * @param matrix matrix pointer
+ * @param rows
+ * @param cols
+ * @param name the name of matrix
+ * @param precision The number of decimal places to be retained. When printing an integer matrix,
+ * set this parameter to 0.
+ * @param startY
+ * @param startX
+ * @param h
+ * @param w
+ */
+template<typename T>
+void print_matrix(const T* matrix,
+                  uint32_t rows,
+                  uint32_t cols,
+                  const std::string& name,
+                  uint32_t precision = 2,
+                  uint32_t startY = 0,
+                  uint32_t startX = 0,
+                  uint32_t h = 5,
+                  uint32_t w = 5)
+{
+    std::cout << fmt_matrix(matrix, rows, cols, name, precision, startY, startX, h, w)
+              << std::endl;
 }
 
 } // namespace cutl

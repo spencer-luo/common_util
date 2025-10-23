@@ -1,4 +1,6 @@
 #include "algoutil.hpp"
+#include "bitmap.hpp"
+#include "bloomfilter.hpp"
 #include "common.hpp"
 #include "config.hpp"
 #include "datetime.hpp"
@@ -6,6 +8,8 @@
 #include "eventloop.hpp"
 #include "filepath.hpp"
 #include "fileutil.hpp"
+#include "hash.hpp"
+#include "hyperloglog.hpp"
 #include "lrucache.hpp"
 #include "print.hpp"
 #include "singleton.hpp"
@@ -50,9 +54,13 @@ int main(int argc, char* argv[])
     // TestTimer();
     // TestLRUCache();
     // TestThreadUtil();
-    TestEventLoop();
+    // TestEventLoop();
     // TestThreadPool();
     // TestAlgorithmUtil();
+    // BitmapTest();
+    // TestHash();
+    // TestBloomFilter();
+    TestHyperLogLog();
 
     // usage_demo();
 
