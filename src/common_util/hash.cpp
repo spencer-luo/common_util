@@ -130,42 +130,42 @@ uint32_t hash_lookup3(const void* key, size_t length, uint32_t initval)
         length -= 12;
     }
 
-    // 处理最后1-12个字节
+    // 处理最后1-12个字节 - 使用注释代替fallthrough属性
     switch (length)
     {
         case 12:
             c += (static_cast<uint32_t>(k[11]) << 24);
-            [[fallthrough]];
+            // fall through
         case 11:
             c += (static_cast<uint32_t>(k[10]) << 16);
-            [[fallthrough]];
+            // fall through
         case 10:
             c += (static_cast<uint32_t>(k[9]) << 8);
-            [[fallthrough]];
+            // fall through
         case 9:
             c += k[8];
-            [[fallthrough]];
+            // fall through
         case 8:
             b += (static_cast<uint32_t>(k[7]) << 24);
-            [[fallthrough]];
+            // fall through
         case 7:
             b += (static_cast<uint32_t>(k[6]) << 16);
-            [[fallthrough]];
+            // fall through
         case 6:
             b += (static_cast<uint32_t>(k[5]) << 8);
-            [[fallthrough]];
+            // fall through
         case 5:
             b += k[4];
-            [[fallthrough]];
+            // fall through
         case 4:
             a += (static_cast<uint32_t>(k[3]) << 24);
-            [[fallthrough]];
+            // fall through
         case 3:
             a += (static_cast<uint32_t>(k[2]) << 16);
-            [[fallthrough]];
+            // fall through
         case 2:
             a += (static_cast<uint32_t>(k[1]) << 8);
-            [[fallthrough]];
+            // fall through
         case 1:
             a += k[0];
             break;
@@ -226,10 +226,10 @@ uint32_t hash_murmur3_32(const void* key, size_t len, uint32_t seed)
     {
         case 3:
             k1 ^= tail[2] << 16;
-            [[fallthrough]];
+            // fall through
         case 2:
             k1 ^= tail[1] << 8;
-            [[fallthrough]];
+            // fall through
         case 1:
             k1 ^= tail[0];
             k1 *= c1;
@@ -279,22 +279,22 @@ uint64_t hash_murmur3_64(const void* key, size_t len, uint64_t seed)
     {
         case 7:
             h ^= static_cast<uint64_t>(data[6]) << 48;
-            [[fallthrough]];
+            // fall through
         case 6:
             h ^= static_cast<uint64_t>(data[5]) << 40;
-            [[fallthrough]];
+            // fall through
         case 5:
             h ^= static_cast<uint64_t>(data[4]) << 32;
-            [[fallthrough]];
+            // fall through
         case 4:
             h ^= static_cast<uint64_t>(data[3]) << 24;
-            [[fallthrough]];
+            // fall through
         case 3:
             h ^= static_cast<uint64_t>(data[2]) << 16;
-            [[fallthrough]];
+            // fall through
         case 2:
             h ^= static_cast<uint64_t>(data[1]) << 8;
-            [[fallthrough]];
+            // fall through
         case 1:
             h ^= static_cast<uint64_t>(data[0]);
             h *= m;
