@@ -1,5 +1,7 @@
 @mainpage
 
+[![zread](https://img.shields.io/badge/Ask_Zread-_.svg?style=flat&color=00b0aa&labelColor=000000&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTYxNTYgMS42MDAxSDIuMjQxNTZDMS44ODgxIDEuNjAwMSAxLjYwMTU2IDEuODg2NjQgMS42MDE1NiAyLjI0MDFWNC45NjAxQzEuNjAxNTYgNS4zMTM1NiAxLjg4ODEgNS42MDAxIDIuMjQxNTYgNS42MDAxSDQuOTYxNTZDNS4zMTUwMiA1LjYwMDEgNS42MDE1NiA1LjMxMzU2IDUuNjAxNTYgNC45NjAxVjIuMjQwMUM1LjYwMTU2IDEuODg2NjQgNS4zMTUwMiAxLjYwMDEgNC45NjE1NiAxLjYwMDFaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00Ljk2MTU2IDEwLjM5OTlIMi4yNDE1NkMxLjg4ODEgMTAuMzk5OSAxLjYwMTU2IDEwLjY4NjQgMS42MDE1NiAxMS4wMzk5VjEzLjc1OTlDMS42MDE1NiAxNC4xMTM0IDEuODg4MSAxNC4zOTk5IDIuMjQxNTYgMTQuMzk5OUg0Ljk2MTU2QzUuMzE1MDIgMTQuMzk5OSA1LjYwMTU2IDE0LjExMzQgNS42MDE1NiAxMy43NTk5VjExLjAzOTlDNS42MDE1NiAxMC42ODY0IDUuMzE1MDIgMTAuMzk5OSA0Ljk2MTU2IDEwLjM5OTlaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik0xMy43NTg0IDEuNjAwMUgxMS4wMzg0QzEwLjY4NSAxLjYwMDEgMTAuMzk4NCAxLjg4NjY0IDEwLjM5ODQgMi4yNDAxVjQuOTYwMUMxMC4zOTg0IDUuMzEzNTYgMTAuNjg1IDUuNjAwMSAxMS4wMzg0IDUuNjAwMUgxMy43NTg0QzE0LjExMTkgNS42MDAxIDE0LjM5ODQgNS4zMTM1NiAxNC4zOTg0IDQuOTYwMVYyLjI0MDFDMTQuMzk4NCAxLjg4NjY0IDE0LjExMTkgMS42MDAxIDEzLjc1ODQgMS42MDAxWiIgZmlsbD0iI2ZmZiIvPgo8cGF0aCBkPSJNNCAxMkwxMiA0TDQgMTJaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00IDEyTDEyIDQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K&logoColor=ffffff)](https://zread.ai/spencer-luo/common_util)
+
 # 1. English
 
 ## 1.1. Source code
@@ -13,7 +15,7 @@
 
 common_util is a general - purpose utility library for C++. It is lightweight and easy to operate.
 
-common_util is implemented using modern C++ syntax (C++11 and above), with "cutl" as the namespace. The naming convention of all its interfaces is consistent with that of the STL, and it can be used as an extensions of C++ STL. You can use common_util just like using the STL, For example:
+common_util is implemented using modern C++ syntax (C++11), with "cutl" as the namespace. The naming convention of all its interfaces is consistent with that of the STL, and it can be used as an extensions of C++ STL. You can use common_util just like using the STL, For example:
 
 **Usage demo:**
 
@@ -44,35 +46,40 @@ current time(local time): 2025-05-02 18:29:10.785
 - **Multi-platform support**: Supports multiple platforms such as Linux/macOS/Windows, it can be compiled and run on multiple platforms.
 - **Clean code**: The code style is clean, and the naming convention is consistent with the STL, you can use this library just like use the C++ standard library.
 - **Comprehensive documentation**: All exported header files have detail comments, it has complete API reference and usage demos.
-- **C++ version requirement**: C++11 and above versions.
+- **C++ version requirement**: This repository is implemented using C++11, It is support the projects with C++11 or higher versions.
 
 ## 1.4. Module Description
 
-| Header File | Main Function |
-| :-- | :-- |
-| `algoutil.h` | A supplement to `<algorithm>`, providing some commonly used algorithm functions, such as those that were not available in C++11 but have been added in later versions. |
-| `color.h` | A class for encapsulating ARGB color values. |
-| `common_util.h` | The import header file of common_util contains all other header files. |
-| `config.h` | Provides the library initialization function, as well as functions to obtain the library version and name. |
-| `datetime.h` | A simple date and time class based on the system clock. |
-| `dlloader.h` | A dynamic loader for dynamic libraries (shared libraries). |
-| `eventloop.h` | An event loop that supports ordinary tasks and timer tasks (timer tasks support specifying the number of executions and cancellation). The execution of tasks comes in single-thread(`eventloop`) and multi-thread(`multithread_eventloop`) versions. |
-| `filepath.h` | Operations on file paths, such as file path concatenation and file type judgment. |
-| `filetype.h` | Definitions of file types. |
-| `fileutil.h` | Operations on the file system, such as file creation/deletion, file reading/writing, etc. |
-| `logtype.h` | Type definitions related to log recording. |
-| `print.h` | Helper functions for console printing, including printing arrays、vectors、maps of basic types, and printing colored strings. |
-| `singleton.h` | Template classes and macro definitions for the singleton pattern. |
-| `strfmt.h` | String formatting, such as time formatting, file size formatting, converting int to hexadecimal, etc. |
-| `strutil.h` | Utility functions for string operations, such as case conversion, string split, string join, etc. |
-| `sysutil.h` | System utility functions, such as system calls, obtaining the CPU architecture/endianness, etc. |
-| `threadpool.h` | A thread pool, a lightweight and simple implementation of a thread pool. |
-| `threadutil.h` | Thread - related utility functions, such as setting the thread name, obtaining the thread ID, etc. |
-| `timecount.h` | A time counter for measuring the running time of functions. |
-| `timer.h` | A timer that supports single-task timer (delayed execution) and repeating-task timer (periodic execution). |
-| `timeutil.h` | Utility functions for time processing, such as time unit conversion, obtaining timestamps, etc. |
-| `version.h` | Definition of the version number of the common_util library. |
-| `verutil.h` | Version number processing, such as parsing version number substrings from strings, version number comparison, etc. |
+| Functional Category | Header File | Main Functions |
+| :------------ | :-------------- | :----------------------------------------------------------------------------------------------------- |
+| File Operations | `filepath.h` | Operations on file paths, such as path concatenation and file type determination. |
+| File Operations | `filetype.h` | Definition of file types. |
+| File Operations | `fileutil.h` | Operations on the file system, such as file creation/deletion, file reading/writing, etc. |
+| String Processing | `strfmt.h` | String formatting, such as time formatting, file size formatting, conversion of int to hexadecimal, etc. |
+| String Processing | `strutil.h` | Utility functions for string operations, such as case conversion, string splitting, string concatenation, etc. |
+| String Processing | `verutil.h` | Version number handling, such as parsing version number substrings from strings and version number comparison. |
+| Date and Time | `datetime.h` | A simple date and time class based on the system clock. |
+| Date and Time | `timecount.h` | A timer for measuring the running time of functions. |
+| Date and Time | `timer.h` | Timers, supporting single - task timers (delayed execution) and repeating - task timers (periodic execution). |
+| Date and Time | `timeutil.h` | Utility functions for time processing, such as time unit conversion and obtaining timestamps. |
+| Concurrent Programming | `threadpool.h` | Thread pool, a lightweight and simple implementation of a thread pool. |
+| Concurrent Programming | `threadutil.h` | Utility functions related to threads, such as setting thread names and obtaining thread IDs. |
+| Concurrent Programming | `eventloop.h` | Event loop, supporting normal tasks and timed tasks (timed tasks support specifying the number of executions and cancellation). Task execution comes in two versions: single - thread (`eventloop`) and multi - thread (`multithread_eventloop`). |
+| System Utilities | `sysutil.h` | System utility functions, such as system calls, obtaining CPU architecture/endianness, etc. |
+| System Utilities | `dlloader.h` | Dynamic loader for dynamic libraries (shared libraries). |
+| Common Algorithms | `algoutil.h` | Supplementary to `<algorithm>`, providing some commonly used algorithm functions, such as those not available in C++11 but added in later versions. |
+| Common Algorithms | `lrucache.h` | High - performance LRU algorithm template class with an average time complexity of `O(1)` for both `get` and `put`. |
+| Common Algorithms | `hash.h` | Provides common hash function algorithms |
+| Common Algorithms | `bitmap.h` | An efficient Bitmap data structure class, and provides multiple variant subtypes: `dynamic_bitmap`, `roaring_bitmap`, etc. |
+| Common Algorithms | `bloomfilter.h` | Bloom filter algorithm |
+| Common Algorithms | `hyperloglog.h` | HyperLogLog algorithm |
+| Logging and Printing | `print.h` | Helper functions for console printing, including printing arrays, vectors, maps of basic types, and printing strings with colors. |
+| Type Wrappers | `color.h` | Encapsulation class for ARGB color values. |
+| Auxiliary Programming | `singleton.h` | Template class and macro definitions for the singleton pattern. |
+| Others | `logtype.h` | Type definitions related to log records. |
+| Others | `config.h` | Provides library initialization functions, and functions to obtain the library's version and name. |
+| Others | `version.h` | Definition of the version number of the `common_util` library. |
+| Others | `common_util.h` | The import header file for `common_util`, including all other header files. |
 
 ## 1.5. Testing Platforms
 
@@ -156,7 +163,7 @@ Looking forward to your participation!
 
 common_util是C++的一个通用工具库，轻量级、操作简便。
 
-common_util采用现代C++语法（C++11及以上）实现，使用cutl作为命名空间，所有接口的命名方式与STL保持一致，可以作为STL库的一个补充。你可以像使用STL一样使用common_util，如：
+common_util采用现代C++语法（C++11）实现，使用cutl作为命名空间，所有接口的命名方式与STL保持一致，可以作为STL库的一个补充。你可以像使用STL一样使用common_util，如：
 
 **用法示例：**
 
@@ -187,35 +194,40 @@ current time(local time): 2025-05-02 18:29:10.785
 - **多平台支持**： 支持Linux/macOS/Windows等多个平台，一套代码多平台编译。
 - **代码整洁**： 代码风格整洁，命名方式与STL保持一致，你可以像使用STL一样使用本库。
 - **文档规范全面**： 所有对外接口的头文件都有详细的代码注释，且有完整的API文档和使用Demo，可供查阅。
-- **C++版本要求**： C++11及以上版本。
+- **C++版本要求**： 本仓库采用C++11实现，C++11及以上的项目均支持。
 
 ## 2.4. 模块说明
 
-| 头文件          | 主要功能                                                                                               |
-| :-------------- | :----------------------------------------------------------------------------------------------------- |
-| `algoutil.h`    | `<algorithm>`的补充，提供一些常用的算法函数，如：C++11没有，但是后面版本已加入的算法函数。             |
-| `color.h`       | ARGB颜色值的封装类。                                                                                   |
-| `common_util.h` | common_util的导入头文件，包含所有其他头文件。                                                          |
-| `config.h`      | 提供库的初始化函数，提供库的版本和名称获取函数。                                                       |
-| `datetime.h`    | 基于系统时钟的简易的日期时间类。                                                                       |
-| `dlloader.h`    | 动态库(共享库)的动态加载器。                                                                           |
-| `eventloop.h`   | 事件循环，支持：普通任务、定时任务(定时任务支持指定次数和取消)，任务的执行分为单线程(`eventloop`)和多线程(`multithread_eventloop`)两个版本。 |
-| `filepath.h`    | 文件路径的操作，如路径拼接、文件类型判断等。                                                           |
-| `filetype.h`    | 文件类型的定义。                                                                                       |
-| `fileutil.h`    | 文件系统的操作，如：文件的创建/删除、文件的读/写等。                                                   |
-| `logtype.h`     | Log记录相关的类型定义。                                                                                |
-| `print.h`       | 控制台打印的辅助函数，包括：打印基础类型的数组、vector、map等，带颜色的字符串打印。                    |
-| `singleton.h`   | 单例模式的模板类和宏定义。                                                                             |
-| `strfmt.h`      | 字符串格式化，如时间格式化、文件大小格式化、int转十六进制等。                                          |
-| `strutil.h`     | 字符串操作的工具函数，如大小写转换、字符串拆分、字符串拼接等。                                         |
-| `sysutil.h`     | 系统工具函数，如系统调用、获取CPU的架构/大小端等。                                                     |
-| `threadpool.h`  | 线程池，轻量级简单版本的线程池实现。                                                                   |
-| `threadutil.h`  | 线程相关的工具函数，如设置线程名称、获取线程ID等。                                                     |
-| `timecount.h`   | 函数运行的使用时间计时器。                                                                             |
-| `timer.h`       | 定时器，支持：单次任务的定时器(延迟执行)、重复任务的定时器(周期执行)。                                 |
-| `timeutil.h`    | 时间处理的工具函数，如时间单位的转换、时间戳的获取等。                                                 |
-| `version.h`     | common_util库的版本号定义。                                                                            |
-| `verutil.h`     | 版本号处理，如：从字符串中解析版本号子串、版本号比较等。                                               |
+| 功能分类 | 头文件          | 主要功能                                                                                               |
+| :------------ | :-------------- | :----------------------------------------------------------------------------------------------------- |
+| 文件操作 | `filepath.h`    | 文件路径的操作，如路径拼接、文件类型判断等。                                                           |
+| 文件操作 | `filetype.h`    | 文件类型的定义。                                                                                       |
+| 文件操作 | `fileutil.h`    | 文件系统的操作，如：文件的创建/删除、文件的读/写等。                                                   |
+| 字符串处理 | `strfmt.h`      | 字符串格式化，如时间格式化、文件大小格式化、int转十六进制等。                                          |
+| 字符串处理 | `strutil.h`     | 字符串操作的工具函数，如大小写转换、字符串拆分、字符串拼接等。                                         |
+| 字符串处理 | `verutil.h`     | 版本号处理，如：从字符串中解析版本号子串、版本号比较等。                                               |
+| 时间日期 | `datetime.h`    | 基于系统时钟的简易的日期时间类。                                                                       |
+| 时间日期 | `timecount.h`   | 函数运行的使用时间计时器。                                                                             |
+| 时间日期 | `timer.h`       | 定时器，支持：单次任务的定时器(延迟执行)、重复任务的定时器(周期执行)。                                 |
+| 时间日期 | `timeutil.h`    | 时间处理的工具函数，如时间单位的转换、时间戳的获取等。                                                 |
+| 并发编程 | `threadpool.h`  | 线程池，轻量级简单版本的线程池实现。                                                                   |
+| 并发编程 | `threadutil.h`  | 线程相关的工具函数，如设置线程名称、获取线程ID等。                                                     |
+| 并发编程 | `eventloop.h`   | 事件循环，支持：普通任务、定时任务(定时任务支持指定次数和取消)，任务的执行分为单线程(`eventloop`)和多线程(`multithread_eventloop`)两个版本。 |
+| 系统工具 | `sysutil.h`     | 系统工具函数，如系统调用、获取CPU的架构/大小端等。                                                     |
+| 系统工具 | `dlloader.h`    | 动态库(共享库)的动态加载器。                                                                           |
+| 常用算法 | `algoutil.h`    | `<algorithm>`的补充，提供一些常用的算法函数，如：C++11没有，但是后面版本已加入的算法函数。             |
+| 常用算法 | `lrucache.h` | 高性能LRU算法模板类，`get`和`put`的平均时间复杂度都是`O(1)`。 |
+| 常用算法 | `hash.h` | 提供常用的哈希函数算法 |
+| 常用算法 | `bitmap.h` | 高效的位图(Bitmap)数据结构类，并提供多个变种的子类型：dynamic_bitmap、roaring_bitmap等。 |
+| 常用算法 | `bloomfilter.h` | 布隆过滤器算法 |
+| 常用算法 | `hyperloglog.h` | HyperLogLog算法 |
+| 日志与打印 | `print.h`       | 控制台打印的辅助函数，包括：打印基础类型的数组、vector、map等，带颜色的字符串打印。                    |
+| 类型包装器 | `color.h`       | ARGB颜色值的封装类。                                                                                   |
+| 辅助编程 | `singleton.h`   | 单例模式的模板类和宏定义。                                                                             |
+| 其他 | `logtype.h`     | Log记录相关的类型定义。                                                                                |
+| 其他 | `config.h`      | 提供库的初始化函数，提供库的版本和名称获取函数。                                                       |
+| 其他 | `version.h`     | common_util库的版本号定义。                                                                            |
+| 其他 | `common_util.h` | common_util的导入头文件，包含所有其他头文件。                                                          |
 
 ## 2.5. 已验证的平台
 
