@@ -76,6 +76,7 @@ current time(local time): 2025-05-02 18:29:10.785
 | Logging and Printing | `print.h` | Helper functions for console printing, including printing arrays, vectors, maps of basic types, and printing strings with colors. |
 | Type Wrappers | `color.h` | Encapsulation class for ARGB color values. |
 | Auxiliary Programming | `singleton.h` | Template class and macro definitions for the singleton pattern. |
+| Auxiliary Programming | `statemachine.h` |  State machine, which can pre-define the state transition roadmap and perform checks during state transitions. |
 | Others | `logtype.h` | Type definitions related to log records. |
 | Others | `config.h` | Provides library initialization functions, and functions to obtain the library's version and name. |
 | Others | `version.h` | Definition of the version number of the `common_util` library. |
@@ -224,6 +225,7 @@ current time(local time): 2025-05-02 18:29:10.785
 | 日志与打印 | `print.h`       | 控制台打印的辅助函数，包括：打印基础类型的数组、vector、map等，带颜色的字符串打印。                    |
 | 类型包装器 | `color.h`       | ARGB颜色值的封装类。                                                                                   |
 | 辅助编程 | `singleton.h`   | 单例模式的模板类和宏定义。                                                                             |
+| 辅助编程 | `statemachine.h` | 状态机，可预定义状态转换路径，并在在状态转换时进行检查。 |
 | 其他 | `logtype.h`     | Log记录相关的类型定义。                                                                                |
 | 其他 | `config.h`      | 提供库的初始化函数，提供库的版本和名称获取函数。                                                       |
 | 其他 | `version.h`     | common_util库的版本号定义。                                                                            |
