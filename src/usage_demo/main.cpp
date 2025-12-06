@@ -13,6 +13,7 @@
 #include "lrucache.hpp"
 #include "print.hpp"
 #include "singleton.hpp"
+#include "statemachine.hpp"
 #include "strfmt.hpp"
 #include "strutil.hpp"
 #include "sysutil.hpp"
@@ -60,7 +61,8 @@ int main(int argc, char* argv[])
     // BitmapTest();
     // TestHash();
     // TestBloomFilter();
-    TestHyperLogLog();
+    // TestHyperLogLog();
+    TestStateMachine();
 
     // usage_demo();
 
