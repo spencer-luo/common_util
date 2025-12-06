@@ -40,7 +40,6 @@ int main(int argc, char* argv[])
 {
     LibraryInit();
     // TestSingleton();
-    // std::cout << "test done" << std::endl;
     // TestSysutil();
     // TestStrfmt();
     // TestTimeutil();
