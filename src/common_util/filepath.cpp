@@ -191,15 +191,38 @@ namespace cutl
         return absolute_path(filepath);
     }
 
-    std::string filepath::extension() const
+    std::string filepath::extension(uint8_t dot_number) const
     {
-        auto pos = filepath_.find_last_of('.');
+        auto filename = basename();
+        // std::cout << "filename: " << filename << std::endl;
+
+        auto pos = std::string::npos;
+        for (int i = 0; i < dot_number; ++i)
+        {
+            pos = filename.find_last_of('.', pos);
+            if (pos == std::string::npos)
+            {
+                break;
+            }
+            pos--;
+        }
+
         if (pos == std::string::npos)
         {
             return "";
         }
 
-        return filepath_.substr(pos);
+        pos++;
+        return filename.substr(pos);
+    }
+
+    std::string filepath::replace_extension(const std::string& new_extension,
+                                            uint8_t dot_number) const
+    {
+        auto ext = extension(dot_number);
+        auto extLen = ext.length();
+        // std::cout << "ext: " << ext << ", extLen: " << extLen << std::endl;
+        return filepath_.substr(0, filepath_.length() - extLen) + new_extension;
     }
 
     std::ostream &operator<<(std::ostream &os, const filepath &fp)

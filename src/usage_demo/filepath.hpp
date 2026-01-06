@@ -147,11 +147,33 @@ void TestPermission()
     std::cout << "path2: " << path2 << ", executable: " << path2.executable() << std::endl;
 }
 
+void TestExtension()
+{
+    PrintSubTitle("TestExtension");
+
+    auto path1 = cutl::path("/home/spencer/workspace/common_util/README.md");
+    std::cout << "path1 extention 1: " << path1.extension() << std::endl;
+    std::cout << "path1 extention 2: " << path1.extension(2) << std::endl;
+    auto path2 = cutl::path("/home/spencer/workspace/common_util/cmake-4.2.1-linux-x86_64.tar.gz");
+    std::cout << "path2 extention 1: " << path2.extension() << std::endl;
+    std::cout << "path2 extention 2: " << path2.extension(2) << std::endl;
+    std::cout << "path2 extention 3: " << path2.extension(3) << std::endl;
+    auto path3 = cutl::path("/home/spencer//websizte.min.js.gz");
+    std::cout << "path3 extention 1: " << path3.extension() << std::endl;
+    std::cout << "path3 extention 2: " << path3.extension(2) << std::endl;
+    std::cout << "path3 extention 3: " << path3.extension(3) << std::endl;
+    std::cout << "path3 extention 4: " << path3.extension(4) << std::endl;
+
+    auto newpath = path2.replace_extension(".zip", 2);
+    std::cout << "path2: " << path2 << std::endl;
+    std::cout << "newpath: " << newpath << std::endl;
+}
+
 void TestFilePath()
 {
     // PrintTitle("filepath");
 
-    test_filepath();
+    // test_filepath();
 
     // TestConstructor();
     // TestJoin();
@@ -161,4 +183,5 @@ void TestFilePath()
     // TestExtenstion();
     // TestExist();
     // TestPermission();
+    TestExtension();
 }

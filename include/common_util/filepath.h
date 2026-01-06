@@ -18,10 +18,11 @@
 
 #pragma once
 
-#include <string>
-#include <iostream>
-#include <cstdio>
 #include "filetype.h"
+#include <cstdint>
+#include <cstdio>
+#include <iostream>
+#include <string>
 
 namespace cutl
 {
@@ -171,9 +172,22 @@ namespace cutl
         /**
          * @brief Get the extension of the filepath.
          *
+         * @param dot_number: It represents the number of dots in the file extension. For example,
+         * for '.md', it is 1; for '.tar.gz', it is 2; and for '.min.js.gz', it is 3.
          * @return extension with dot
          */
-        std::string extension() const;
+        std::string extension(uint8_t dot_number = 1) const;
+
+        /**
+         * @brief Replace the file extension with the new one and return the new path
+         *
+         * @param new_extension: The new string of the file extension to be replaced.
+         * @param dot_number: The number of dots in the original file extension. For example, it is
+         * 1 for '.md', 2 for '.tar.gz', and 3 for '.min.js.gz'.
+         * @return std::string The new path
+         */
+        std::string replace_extension(const std::string& new_extension,
+                                      uint8_t dot_number = 1) const;
 
     private:
         std::string filepath_;

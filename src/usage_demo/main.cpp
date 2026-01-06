@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
     // TestDatetime();
     // TestVerUtil();
     // TestStrUtil();
-    // TestFilePath();
+    TestFilePath();
     // TestFileUtil();
     // TestDlLoader();
     // TestPrint();
@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
     // TestHyperLogLog();
 
     // usage_demo();
-    TestStateMachine();
+    // TestStateMachine();
 
     return 0;
 }
