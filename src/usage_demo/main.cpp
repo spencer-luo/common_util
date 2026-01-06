@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
     // TestDatetime();
     // TestVerUtil();
     // TestStrUtil();
-    // TestFilePath();
+    TestFilePath();
     // TestFileUtil();
     // TestDlLoader();
     // TestPrint();
