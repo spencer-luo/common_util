@@ -10,8 +10,7 @@ class state_machine
 public:
     using callback_type = std::function<void(const T& from, const T& to, bool changed)>;
     explicit state_machine(const T& init_state, callback_type onchange = nullptr)
-      : init_state_(init_state)
-      , current_state_(init_state)
+      : current_state_(init_state)
       , on_change_(onchange)
     {
     }
@@ -45,7 +44,7 @@ public:
         return res;
     }
 
-    void reset() { current_state_ = init_state_; }
+    void reset(const T& state) { current_state_ = state; }
 
 private:
     bool check_road(const T& from, const T& to)
@@ -63,7 +62,6 @@ private:
 
 private:
     T current_state_;
-    T init_state_;
     callback_type on_change_;
     std::unordered_multimap<T, T> roadmap_;
 };

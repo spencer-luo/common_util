@@ -57,10 +57,14 @@ void TestStateMachine()
     state.add_roadmap(DownloadState::Canceling, DownloadState::Canceled);
 
     std::cout << "init: " << state.get_state() << std::endl;
-    std::cout << state.set_state(DownloadState::Accepted) << std::endl;
+    std::cout << "executed: " << state.set_state(DownloadState::Accepted) << std::endl;
     std::cout << "cur: " << state.get_state() << std::endl;
-    std::cout << state.set_state(DownloadState::Succeed) << std::endl;
+    std::cout << "executed: " << state.set_state(DownloadState::Succeed) << std::endl;
     std::cout << "cur: " << state.get_state() << std::endl;
     state.set_state(DownloadState::Downloading);
+    std::cout << "cur: " << state.get_state() << std::endl;
     state.set_state(DownloadState::Accepted);
+    std::cout << "cur: " << state.get_state() << std::endl;
+    state.reset(DownloadState::Idel);
+    std::cout << "cur: " << state.get_state() << std::endl;
 }
