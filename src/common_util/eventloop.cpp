@@ -301,6 +301,17 @@ size_t eventloop::handle_timer_task()
     return done;
 }
 
+void eventloop::start_loop()
+{
+    is_running_.store(true);
+    loop_thread_id_ = std::this_thread::get_id();
+
+    while (is_running_.load())
+    {
+        loop_once(std::chrono::milliseconds(500));
+    }
+}
+
 eventloop::TimerTaskVec eventloop::get_expired_timer_tasks(EventloopTimePoint now)
 {
     std::vector<TimerTaskPtr> ready_tasks;
@@ -323,17 +334,6 @@ eventloop::TimerTaskVec eventloop::get_expired_timer_tasks(EventloopTimePoint no
         ready_tasks.emplace_back(std::move(timerTask));
     }
     return ready_tasks;
-}
-
-void eventloop::start_loop()
-{
-    is_running_.store(true);
-    loop_thread_id_ = std::this_thread::get_id();
-
-    while (is_running_.load())
-    {
-        loop_once(std::chrono::milliseconds(500));
-    }
 }
 
 timer_task_handler eventloop::post_to_priorityqueue(const std::string& name,

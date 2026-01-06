@@ -40,7 +40,6 @@ int main(int argc, char* argv[])
 {
     LibraryInit();
     // TestSingleton();
-    // std::cout << "test done" << std::endl;
     // TestSysutil();
     // TestStrfmt();
     // TestTimeutil();
@@ -62,9 +61,9 @@ int main(int argc, char* argv[])
     // TestHash();
     // TestBloomFilter();
     // TestHyperLogLog();
+    TestStateMachine();
 
     // usage_demo();
-    // TestStateMachine();
 
     return 0;
 }

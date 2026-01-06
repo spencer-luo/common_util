@@ -132,7 +132,6 @@ docs/quick_start/Chinese/03.getting_start.md   # Quick guide
 
 ## 1.7. Related Documents
 
-
 - off-line: [docs/reference/html/index.html](./docs/reference/html/index.html)
 - on line : [http://sunlogging.com/docs/common_util/](http://sunlogging.com/docs/common_util/)
 
