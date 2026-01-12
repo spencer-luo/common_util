@@ -191,38 +191,43 @@ namespace cutl
         return absolute_path(filepath);
     }
 
-    std::string filepath::extension(uint8_t dot_number) const
+    size_t find_extension_pos(const std::string& filename, uint8_t max_dot_number)
     {
-        auto filename = basename();
-        // std::cout << "filename: " << filename << std::endl;
-
-        auto pos = std::string::npos;
-        for (int i = 0; i < dot_number; ++i)
+        auto end_pos = std::string::npos;
+        auto find_pos = std::string::npos;
+        for (int i = 0; i < max_dot_number; ++i)
         {
-            pos = filename.find_last_of('.', pos);
-            if (pos == std::string::npos)
+            auto temp = filename.find_last_of('.', end_pos);
+            if (temp == std::string::npos)
             {
                 break;
             }
-            pos--;
+            end_pos = temp - 1;
+            find_pos = temp;
         }
+        return find_pos;
+    }
 
-        if (pos == std::string::npos)
+    std::string filepath::extension(uint8_t max_dot_number) const
+    {
+        auto filename = basename();
+        // std::cout << "filename: " << filename << std::endl;
+        auto find_pos = find_extension_pos(filename, max_dot_number);
+        if (find_pos == std::string::npos)
         {
             return "";
         }
 
-        pos++;
-        return filename.substr(pos);
+        return filename.substr(find_pos);
     }
 
     std::string filepath::replace_extension(const std::string& new_extension,
-                                            uint8_t dot_number) const
+                                            uint8_t max_dot_number) const
     {
-        auto ext = extension(dot_number);
-        auto extLen = ext.length();
-        // std::cout << "ext: " << ext << ", extLen: " << extLen << std::endl;
-        return filepath_.substr(0, filepath_.length() - extLen) + new_extension;
+        auto find_pos = find_extension_pos(filepath_, max_dot_number);
+        // std::cout << "find_pos: " << find_pos << ", max_dot_number: " << max_dot_number <<
+        // std::endl;
+        return filepath_.substr(0, find_pos) + new_extension;
     }
 
     std::ostream &operator<<(std::ostream &os, const filepath &fp)
