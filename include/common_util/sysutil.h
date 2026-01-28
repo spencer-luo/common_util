@@ -133,6 +133,15 @@ namespace cutl
      * @return true if the command is executed successfully, false otherwise.
      */
     bool system(const std::string &cmd);
+
+    /**
+     * @brief Execute a system command and return error code.
+     *
+     * @param cmd the command to be executed.
+     * @return int the error code of the command calling.
+     */
+    int system2(const std::string& cmd);
+
     /**
      * @brief Execute a system command and get the output.
      *
@@ -141,6 +150,7 @@ namespace cutl
      * @return true if the command is executed successfully, false otherwise.
      */
     bool callcmd(const std::string &cmd, std::string &result);
+
     /**
      * @brief Get an environment variable.
      *

@@ -61,12 +61,49 @@ void TestSystemCall()
 {
     PrintSubTitle("TestSystemCall");
 
-    bool ret = cutl::system("echo hello");
-    std::cout << "system call 'echo hello', return: " << ret << std::endl;
+    // Test cases for SystemCall function
+    std::vector<std::string> testCommands = {
+        "echo 'Hello, World!'", // Successful command
+        "false",                // Command that exits with code 1
+        "nonexistentcommand",   // Command not found
+        "sleep 1",              // Another successful command
+    };
+
+    for (const auto& cmd : testCommands)
+    {
+        std::cout << "\n--- Testing command: " << cmd << " ---" << std::endl;
+        auto ret = cutl::system(cmd);
+        std::cout << "Return value: " << ret << std::endl;
+    }
+}
+
+void TestSystemCall_v2()
+{
+    PrintSubTitle("TestSystemCall_v2");
+
+    // Test cases for SystemCall function
+    std::vector<std::string> testCommands = {
+        "echo 'Hello, World!'", // Successful command
+        "false",                // Command that exits with code 1
+        "nonexistentcommand",   // Command not found
+        "sleep 1",              // Another successful command
+    };
+
+    for (const auto& cmd : testCommands)
+    {
+        std::cout << "\n--- Testing command: " << cmd << " ---" << std::endl;
+        auto ret = cutl::system2(cmd);
+        std::cout << "Return value: " << ret << std::endl;
+    }
+}
+
+void TestCallcmd()
+{
+    PrintSubTitle("TestCallcmd");
 
     auto cmd = "cmake --version";
     std::string result_text;
-    ret = cutl::callcmd(cmd, result_text);
+    bool ret = cutl::callcmd(cmd, result_text);
     std::cout << "callcmd " << cmd << ", return: " << ret << std::endl;
     std::cout << "callcmd " << cmd << ", result text: " << result_text << std::endl;
 }
@@ -98,12 +135,14 @@ void TestSysutil()
 {
     PrintTitle("sysutil");
 
-    TestPlatformName();
-    TestArchitecture();
-    TestCppStlVersion();
-    TestProgramBit();
-    TestEndian();
+    // TestPlatformName();
+    // TestArchitecture();
+    // TestCppStlVersion();
+    // TestProgramBit();
+    // TestEndian();
     TestSystemCall();
-    TestGetEnv();
-    TestGetcwdAndHomedir();
+    TestSystemCall_v2();
+    TestCallcmd();
+    // TestGetEnv();
+    // TestGetcwdAndHomedir();
 }

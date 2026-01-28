@@ -26,6 +26,11 @@ namespace cutl
         return true;
     }
 
+    bool call_system_v2(const std::string& cmd)
+    {
+        return system(cmd.c_str());
+    }
+
     // https://learn.microsoft.com/zh-cn/cpp/c-runtime-library/reference/popen-wpopen?view=msvc-170
     FILE *pipline_open(const std::string &cmd)
     {

@@ -40,14 +40,14 @@ int main(int argc, char* argv[])
 {
     LibraryInit();
     // TestSingleton();
-    // TestSysutil();
+    TestSysutil();
     // TestStrfmt();
     // TestTimeutil();
     // TestTimecount();
     // TestDatetime();
     // TestVerUtil();
     // TestStrUtil();
-    TestFilePath();
+    // TestFilePath();
     // TestFileUtil();
     // TestDlLoader();
     // TestPrint();
@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
     // TestHash();
     // TestBloomFilter();
     // TestHyperLogLog();
-    TestStateMachine();
+    // TestStateMachine();
 
     // usage_demo();
 

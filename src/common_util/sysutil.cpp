@@ -164,6 +164,11 @@ namespace cutl
         return call_system(cmd);
     }
 
+    int system2(const std::string& cmd)
+    {
+        return call_system_v2(cmd);
+    }
+
     bool callcmd(const std::string &cmd, std::string &result)
     {
         // 读取命令执行结果的最大Buffer长度
