@@ -86,8 +86,8 @@ bool call_system(const std::string& cmd)
         }
         else
         {
-            CUTL_ERROR("The child process exited normally, exit status:" +
-                       std::to_string(exit_code) + ", exit msg: " + parse_exitcode(exit_code));
+            CUTL_WARN("The child process exited normally, exit status:" +
+                      std::to_string(exit_code) + ", exit msg: " + parse_exitcode(exit_code));
             return false;
         }
     }
@@ -130,8 +130,11 @@ int call_system_v2(const std::string& cmd)
     {
         // ((status) & 0xff00) >> 8
         int exit_code = WEXITSTATUS(status);
-        CUTL_ERROR("The child process exited normally, exit status:" + std::to_string(exit_code) +
-                   ", exit msg: " + parse_exitcode(exit_code));
+        if (exit_code != 0)
+        {
+            CUTL_INFO("The child process exited normally, exit status:" +
+                      std::to_string(exit_code) + ", exit msg: " + parse_exitcode(exit_code));
+        }
         return exit_code;
     }
 
