@@ -106,6 +106,11 @@ void TestCallcmd()
     bool ret = cutl::callcmd(cmd, result_text);
     std::cout << "callcmd " << cmd << ", return: " << ret << std::endl;
     std::cout << "callcmd " << cmd << ", result text: " << result_text << std::endl;
+
+    cmd = "/stark/module/ota_engine/bin/ota_engine -v";
+    ret = cutl::callcmd(cmd, result_text);
+    std::cout << "callcmd " << cmd << ", return: " << ret << std::endl;
+    std::cout << "callcmd " << cmd << ", result text: " << result_text << std::endl;
 }
 
 void TestGetEnv()

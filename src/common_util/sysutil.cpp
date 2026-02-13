@@ -193,12 +193,17 @@ namespace cutl
             return false;
         }
 
-        if (pipline_close(fp) != 0)
-        {
-            CUTL_ERROR("pipline_close error for cmd:" + cmd);
-        }
-
         result = strip(std::string(buffer));
+        CUTL_DEBUG("cmd: " + cmd + ", result: " + result);
+
+        // pclose() 返回子进程退出状态。部分命令（如 ota_engine -v）会正常输出到 stdout
+        // 但以非零退出， 此时已成功拿到输出，仅记录警告，不视为失败。
+        int close_ret = pipline_close(fp);
+        if (close_ret != 0)
+        {
+            CUTL_WARN("pipline_close returned " + std::to_string(close_ret) + " for cmd:" + cmd +
+                      " (child exit status), result already read.");
+        }
 
         return true;
     }
