@@ -303,6 +303,11 @@ void test_rename_and_property()
 
     modified_time = cutl::last_modified_time(file_02);
     std::cout << "modified time 3(rename): " << cutl::fmt_timestamp_s(modified_time) << std::endl;
+
+    //  rename dir
+    auto basedir2 = cutl::path("./test_dir2");
+    cutl::renamefile(basedir, basedir2);
+    std::cout << "rename dir from " << basedir << " to " << basedir2 << std::endl;
 }
 
 void TestFileUtil()
