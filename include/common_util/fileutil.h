@@ -71,7 +71,7 @@ namespace cutl
          *
          * @param flag_file the filepath of the flag file
          */
-        flagfile(const std::string& flag_file);
+        flagfile(const filepath& flag_file);
 
         /**
          * @brief Destroy the flagfile object
@@ -94,7 +94,7 @@ namespace cutl
         bool remove() const;
 
     private:
-        std::string flag_file_;
+        filepath flag_file_;
     };
 
     /**

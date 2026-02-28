@@ -317,7 +317,7 @@ void TestFlagFileGuard()
     std::cout << "start test" << std::endl;
     {
         std::cout << "create flagfile guard" << std::endl;
-        cutl::flagfile guard("/home/spencer/workspace/common_util/flagfile.test");
+        cutl::flagfile guard(cutl::path("/home/spencer/workspace/common_util/flagfile.test"));
         std::cout << "flagfile exists: " << guard.exists() << std::endl;
     }
     std::cout << "stop test" << std::endl;

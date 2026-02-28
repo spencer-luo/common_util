@@ -75,7 +75,7 @@ namespace cutl
          *
          * @return the filepath
          */
-        std::string str() const;
+        const std::string& str() const;
 
         /**
          * @brief Join the current filepath with a new filename.

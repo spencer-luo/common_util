@@ -95,7 +95,7 @@ namespace cutl
 #endif
     }
 
-    std::string filepath::str() const
+    const std::string& filepath::str() const
     {
         return filepath_;
     }
