@@ -59,6 +59,45 @@ namespace cutl
     };
 
     /**
+     * @brief The flag file class to manage the flag file automatically.
+     * flagfile object can create the flag file automatically when his scope is enter,
+     * and remove the flag file automatically when his scope is exit.
+     */
+    class flagfile
+    {
+    public:
+        /**
+         * @brief Construct a new flagfile object
+         *
+         * @param flag_file the filepath of the flag file
+         */
+        flagfile(const std::string& flag_file);
+
+        /**
+         * @brief Destroy the flagfile object
+         *
+         */
+        ~flagfile();
+
+    public:
+        /**
+         * @brief Check whether the flag file exists.
+         *
+         * @return true if the flag file exists, false otherwise.
+         */
+        bool exists() const;
+        /**
+         * @brief Remove the flag file.
+         *
+         * @return true if the flag file is removed successfully, false otherwise.
+         */
+        bool remove() const;
+
+    private:
+        std::string flag_file_;
+    };
+
+    /**
      * @brief Get the file type flag string.
      *
      * @param type file type

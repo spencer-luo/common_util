@@ -72,6 +72,50 @@ namespace cutl
         return file_;
     }
 
+    flagfile::flagfile(const std::string& flag_file)
+      : flag_file_(flag_file)
+    {
+        if (createfile(flag_file_))
+        {
+            CUTL_INFO("Flag file " + flag_file_ + " created");
+        }
+        else
+        {
+            CUTL_ERROR("Flag file " + flag_file_ + " creation failed");
+        }
+    }
+
+    flagfile::~flagfile()
+    {
+        remove();
+    }
+
+    bool flagfile::exists() const
+    {
+        return cutl::path(flag_file_).exists();
+    }
+
+    bool flagfile::remove() const
+    {
+        if (!exists())
+        {
+            CUTL_WARN("Flag file " + flag_file_ + " does not exist, no need to remove");
+            return true;
+        }
+
+        auto result = removefile(flag_file_);
+        if (result)
+        {
+            CUTL_INFO("Flag file " + flag_file_ + " removed");
+        }
+        else
+        {
+            CUTL_ERROR("Flag file " + flag_file_ + " removal failed");
+        }
+
+        return result;
+    }
+
     bool createfile(const filepath &path)
     {
         auto dirPath = path.dirname();

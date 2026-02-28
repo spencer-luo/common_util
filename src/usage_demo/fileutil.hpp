@@ -310,6 +310,19 @@ void test_rename_and_property()
     std::cout << "rename dir from " << basedir << " to " << basedir2 << std::endl;
 }
 
+void TestFlagFileGuard()
+{
+    PrintSubTitle("TestFlagFileGuard");
+
+    std::cout << "start test" << std::endl;
+    {
+        std::cout << "create flagfile guard" << std::endl;
+        cutl::flagfile guard("/home/spencer/workspace/common_util/flagfile.test");
+        std::cout << "flagfile exists: " << guard.exists() << std::endl;
+    }
+    std::cout << "stop test" << std::endl;
+}
+
 void TestFileUtil()
 {
     // PrintTitle("fileutil");
@@ -324,5 +337,6 @@ void TestFileUtil()
     // TestFindfile();
     // TestCopyFileAndDir();
     // TestRemoveFileAndDir();
-    test_rename_and_property();
+    // test_rename_and_property();
+    TestFlagFileGuard();
 }
