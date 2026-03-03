@@ -176,7 +176,7 @@ namespace cutl
         FILE *fp = pipline_open(cmd);
         if (fp == NULL)
         {
-            CUTL_ERROR("pipline_open error for cmd:" + cmd);
+            CUTL_ERROR("pipline_open error for cmd: " + cmd);
             return false;
         }
 
@@ -185,10 +185,10 @@ namespace cutl
         char *res = fgets(buffer, sizeof(buffer), fp);
         if (res == NULL)
         {
-            CUTL_ERROR("read result error for cmd:" + cmd);
+            CUTL_ERROR("read result error for cmd: " + cmd);
             if (pipline_close(fp) != 0)
             {
-                CUTL_ERROR("pipline_close error for cmd:" + cmd);
+                CUTL_ERROR("pipline_close error for cmd: " + cmd);
             }
             return false;
         }
@@ -201,7 +201,7 @@ namespace cutl
         int close_ret = pipline_close(fp);
         if (close_ret != 0)
         {
-            CUTL_WARN("pipline_close returned " + std::to_string(close_ret) + " for cmd:" + cmd +
+            CUTL_WARN("pipline_close returned " + std::to_string(close_ret) + " for cmd: " + cmd +
                       " (child exit status), result already read.");
         }
 

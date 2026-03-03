@@ -254,7 +254,7 @@ namespace cutl
 
         if (newfile.exists())
         {
-            CUTL_ERROR("Already exist target file: " + oldfile.str());
+            CUTL_ERROR("Already exist target file: " + newfile.str());
             return false;
         }
 

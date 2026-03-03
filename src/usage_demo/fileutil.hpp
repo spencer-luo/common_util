@@ -310,14 +310,15 @@ void test_rename_and_property()
     std::cout << "rename dir from " << basedir << " to " << basedir2 << std::endl;
 }
 
-void TestFlagFileGuard()
+void TestFlagFile()
 {
-    PrintSubTitle("TestFlagFileGuard");
+    PrintSubTitle("TestFlagFile");
 
     std::cout << "start test" << std::endl;
     {
         std::cout << "create flagfile guard" << std::endl;
-        cutl::flagfile guard(cutl::path("/home/spencer/workspace/common_util/flagfile.test"));
+        cutl::flagfile guard(cutl::path("/stark/ota/flag/upgrade_master_service"));
+        std::this_thread::sleep_for(std::chrono::seconds(10));
         std::cout << "flagfile exists: " << guard.exists() << std::endl;
     }
     std::cout << "stop test" << std::endl;
@@ -338,5 +339,5 @@ void TestFileUtil()
     // TestCopyFileAndDir();
     // TestRemoveFileAndDir();
     // test_rename_and_property();
-    TestFlagFileGuard();
+    TestFlagFile();
 }
