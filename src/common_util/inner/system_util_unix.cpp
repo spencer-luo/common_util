@@ -132,7 +132,7 @@ int call_system_v2(const std::string& cmd)
         int exit_code = WEXITSTATUS(status);
         if (exit_code != 0)
         {
-            CUTL_INFO("The child process exited normally, exit status:" +
+            CUTL_WARN("The child process exited normally, exit status:" +
                       std::to_string(exit_code) + ", exit msg: " + parse_exitcode(exit_code));
         }
         return exit_code;

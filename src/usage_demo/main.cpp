@@ -11,6 +11,7 @@
 #include "hash.hpp"
 #include "hyperloglog.hpp"
 #include "lrucache.hpp"
+#include "observer.hpp"
 #include "print.hpp"
 #include "singleton.hpp"
 #include "statemachine.hpp"
@@ -48,7 +49,7 @@ int main(int argc, char* argv[])
     // TestVerUtil();
     // TestStrUtil();
     // TestFilePath();
-    TestFileUtil();
+    // TestFileUtil();
     // TestDlLoader();
     // TestPrint();
     // TestTimer();
@@ -62,6 +63,7 @@ int main(int argc, char* argv[])
     // TestBloomFilter();
     // TestHyperLogLog();
     // TestStateMachine();
+    TestObserver();
 
     // usage_demo();
 
