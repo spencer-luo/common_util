@@ -21,13 +21,13 @@ public:
 #if __cplusplus >= 201703L
     void publish_with_data(const std::string& msg)
     {
-        std::cout << "subject notify with data: " << msg << std::endl;
+        std::cout << " [C++dft] subject notify with data: " << msg << std::endl;
         notify_observers(std::string(msg));
     }
 #else
     void publish_with_data(const std::string& msg)
     {
-        std::cout << "subject notify with data: " << msg << std::endl;
+        std::cout << " [C++11] subject notify with data: " << msg << std::endl;
         notify_observers(&msg);
     }
 #endif

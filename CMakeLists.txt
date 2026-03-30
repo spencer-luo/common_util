@@ -7,15 +7,22 @@ message(STATUS "--------- begin cmake ---------")
 cmake_minimum_required(VERSION 3.28.3)
 # project name
 
-project(common_util VERSION 1.6.0 LANGUAGES CXX)
+project(common_util VERSION 1.6.1 LANGUAGES CXX)
 
 # 构建时间
 # build time
 string(TIMESTAMP BUILD_TIME "%y-%m-%d %H:%M:%S")
 
-# C/C++ standard: C99/C++11
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 11)
+# ON: Using C++11 to compile
+# OFF: Using the default C++ version specified by the compiler.
+# Default OFF; override with e.g. cmake -DCXX_STANDARD_11=ON
+option(CXX_STANDARD_11 "Use C++11 standard for compilation" OFF)
+
+if (CXX_STANDARD_11)
+    # C/C++ standard: C99/C++11
+    set(CMAKE_C_STANDARD 11)
+    set(CMAKE_CXX_STANDARD 11)
+endif()
 
 # 根据version.h.in模板生产version.h头文件
 # generate version.h from version.h.in
