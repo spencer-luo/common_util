@@ -24,6 +24,8 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #endif
+#include "inner/time_util.h"
+
 namespace cutl
 {
     uint64_t get_time_by_unit(uint64_t us, timeunit unit)
@@ -92,6 +94,23 @@ namespace cutl
         auto us = static_cast<uint64_t>(run_time_duration);
 
         return get_time_by_unit(us, unit);
+    }
+
+    int get_timezone_offset()
+    {
+        uint64_t second = timestamp(timeunit::s);
+        std::time_t t(second);
+        struct tm local_time = localtime_security(t);
+        struct tm utc_time = gmtime_security(t);
+
+        // std::tm* local = std::localtime(&now);
+        // std::tm* gmt = std::gmtime(&now);
+        int offset_hours = local_time.tm_hour - utc_time.tm_hour;
+        if (offset_hours < -12)
+            offset_hours += 24;
+        if (offset_hours > 12)
+            offset_hours -= 24;
+        return offset_hours;
     }
 
     constexpr static int THOUSAND = 1000;

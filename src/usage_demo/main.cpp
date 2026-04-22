@@ -42,8 +42,8 @@ int main(int argc, char* argv[])
     LibraryInit();
     // TestSingleton();
     // TestSysutil();
-    // TestStrfmt();
-    // TestTimeutil();
+    TestStrfmt();
+    TestTimeutil();
     // TestTimecount();
     // TestDatetime();
     // TestVerUtil();
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
     // TestBloomFilter();
     // TestHyperLogLog();
     // TestStateMachine();
-    TestObserver();
+    // TestObserver();
 
     // usage_demo();
 

@@ -61,6 +61,13 @@ namespace cutl
     uint64_t cpu_clocktime(timeunit unit);
 
     /**
+     * @brief Get the time zone offset in hours.
+     *
+     * @return int time zone offset in hours
+     */
+    int get_timezone_offset();
+
+    /**
      * @brief Convert time from milliseconds to seconds.
      *
      * @param time time in milliseconds

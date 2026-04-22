@@ -26,6 +26,16 @@
 
 namespace cutl
 {
+std::string align_str_left(const std::string& str, int width, char fill)
+{
+    return str + std::string(width - str.size(), fill);
+}
+
+std::string align_str_right(const std::string& str, int width, char fill)
+{
+    return std::string(width - str.size(), fill) + str;
+}
+
     constexpr static int ONE_MIN = 60;
     constexpr static int ONE_HOUR = 60 * ONE_MIN;
     constexpr static int ONE_DAY = 24 * ONE_HOUR;
@@ -190,6 +200,18 @@ namespace cutl
     std::string fmt_timestamp_us(uint64_t t, bool local)
     {
         return fmt_timestamp_by_unit(t, timeunit::us, local);
+    }
+
+    std::string fmt_timezone_offset(int offset)
+    {
+        std::string sign = offset >= 0 ? "+" : "-";
+        int abs_offset = std::abs(offset);
+        return "UTC" + sign + cutl::fmt_uint(abs_offset, 2) + ":00";
+    }
+
+    std::string fmt_system_timezone()
+    {
+        return fmt_timezone_offset(get_timezone_offset());
     }
 
     static const char HEX_CHARS_UPPER[] = "0123456789ABCDEF";

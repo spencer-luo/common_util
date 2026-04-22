@@ -4,6 +4,17 @@
 #include "common_util/strfmt.h"
 #include <iostream>
 
+void TestAlignStr()
+{
+    PrintSubTitle("TestAlignStr");
+    std::cout << "align_str_left: " << cutl::align_str_left("hello", 10, '-') << std::endl;
+    std::cout << "align_str_left: " << cutl::align_str_left("abc", 10, '-') << std::endl;
+    std::cout << "align_str_left: " << cutl::align_str_left("abcefgh", 10, '-') << std::endl;
+    std::cout << "align_str_right: " << cutl::align_str_right("hello", 10, '-') << std::endl;
+    std::cout << "align_str_right: " << cutl::align_str_right("abc", 10, '-') << std::endl;
+    std::cout << "align_str_right: " << cutl::align_str_right("abcefgh", 10, '-') << std::endl;
+}
+
 void TestFormatUintAndDouble()
 {
     PrintSubTitle("TestFormatUintAndDouble");
@@ -48,6 +59,17 @@ void TestFormatTimestamp()
     std::cout << "current datetime us: " << cutl::fmt_timestamp_us(curTimeUS) << std::endl;
 }
 
+void TestFmtTimeZoneOffset()
+{
+    PrintSubTitle("TestFmtTimeZoneOffset");
+
+    auto offset = cutl::get_timezone_offset();
+    std::cout << "current timezone offset: " << offset << " hours" << std::endl;
+    std::cout << "current timezone offset string: " << cutl::fmt_timezone_offset(offset)
+              << std::endl;
+    std::cout << "current system timezone: " << cutl::fmt_system_timezone() << std::endl;
+}
+
 void TestToBin()
 {
     PrintSubTitle("TestToBin");
@@ -85,10 +107,13 @@ void TestToHex()
 void TestStrfmt()
 {
     PrintTitle("strfmt");
+
+    TestAlignStr();
     TestFormatUintAndDouble();
     TestFormatFileSize();
     TestFormatDurationTime();
     TestFormatTimestamp();
+    TestFmtTimeZoneOffset();
     TestToBin();
     TestToHex();
 }

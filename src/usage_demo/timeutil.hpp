@@ -44,6 +44,14 @@ void TestTimeConversion()
     std::cout << "ms2us: " << cutl::ms2us(ms) << std::endl;
 }
 
+void TestTimeZoneOffset()
+{
+    PrintSubTitle("TestTimeZoneOffset");
+
+    auto offset = cutl::get_timezone_offset();
+    std::cout << "current timezone offset: " << offset << " hours" << std::endl;
+}
+
 void TestTimeutil()
 {
     PrintTitle("timeutil");
@@ -51,4 +59,5 @@ void TestTimeutil()
     TestTimestamp();
     TestClocktime();
     TestTimeConversion();
+    TestTimeZoneOffset();
 }
