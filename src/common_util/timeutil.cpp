@@ -103,8 +103,6 @@ namespace cutl
         struct tm local_time = localtime_security(t);
         struct tm utc_time = gmtime_security(t);
 
-        // std::tm* local = std::localtime(&now);
-        // std::tm* gmt = std::gmtime(&now);
         int offset_hours = local_time.tm_hour - utc_time.tm_hour;
         if (offset_hours < -12)
             offset_hours += 24;

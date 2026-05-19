@@ -68,7 +68,7 @@ namespace cutl
             path.pop_back();
         }
     }
-
+        
     // 判断 filename 是否为绝对路径
     // - POSIX：以 '/' 开头
     // - Windows：以 '\\' / '/' 开头，或形如 "C:" 的盘符前缀
@@ -90,6 +90,7 @@ namespace cutl
 #endif
         return false;
     }
+
 
     filepath::filepath(const std::string& path)
       : filepath_(path)

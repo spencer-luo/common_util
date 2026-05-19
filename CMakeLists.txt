@@ -1,4 +1,4 @@
-message(STATUS "--------- begin cmake ---------")
+﻿message(STATUS "--------- begin cmake ---------")
 
 # cmake教程：https://www.zhihu.com/column/c_1369781372333240320
 
@@ -121,6 +121,15 @@ option(BUILD_DEMO "Need to build usage_demo" OFF)
 if (BUILD_DEMO)
     # add sub moudle for usage_demo
     add_subdirectory(src/usage_demo)
+endif()
+
+# 默认不编译单元测试，cmake命令行参数传递BUILD_UNIT_TEST=ON时才会编译
+# Optional unit tests (GoogleTest based). Enable with `-DBUILD_UNIT_TEST=ON`.
+option(BUILD_UNIT_TEST "Build GoogleTest based unit tests" OFF)
+
+if (BUILD_UNIT_TEST)
+    enable_testing()
+    add_subdirectory(unit_test)
 endif()
 
 # # 打包安装

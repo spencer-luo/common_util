@@ -135,6 +135,7 @@ std::string fmt_timestamp_s(uint64_t second, bool local = true);
  * @return std::string the formatted string.
  */
 std::string fmt_timestamp_ms(uint64_t ms, bool local = true);
+
 /**
  * @brief Format a timestamp to a human-readable string.
  *
@@ -145,6 +146,7 @@ std::string fmt_timestamp_ms(uint64_t ms, bool local = true);
  * @return std::string the formatted string.
  */
 std::string fmt_timestamp_us(uint64_t us, bool local = true);
+
 /**
  * @brief
  *

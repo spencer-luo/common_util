@@ -1,4 +1,4 @@
-#include "dlloader.h"
+﻿#include "dlloader.h"
 #include "inner/dynamic_library_util.h"
 #include "inner/logger.h"
 
@@ -16,8 +16,13 @@ dlloader::dlloader(const std::string& lib_path)
 
 dlloader::~dlloader()
 {
-    free_library(library_handle_);
-    library_handle_ = nullptr;
+    // 仅当 load_library 成功时才需要释放，避免在 Unix 下对 nullptr 调用
+    // dlclose 触发未定义行为。
+    if (library_handle_)
+    {
+        free_library(library_handle_);
+        library_handle_ = nullptr;
+    }
 }
 
 dl_handle_t dlloader::get_symbol(const std::string& symbol_name)

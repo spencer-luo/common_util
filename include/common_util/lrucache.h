@@ -21,6 +21,7 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 #include <mutex>
 #include <unordered_map>
 
@@ -62,7 +63,9 @@ public:
      * @param capacity The maximum capacity of the cache
      */
     lru_cache(int capacity)
-      : capacity_(capacity)
+      : head_(nullptr)
+      , tail_(nullptr)
+      , capacity_(capacity)
       , count_(0)
     {
         // std::cout << "lru_cache() called" << std::endl;
@@ -292,7 +295,8 @@ private:
     }
 
 private:
-    std::mutex mutex_;
+    // mutable: 允许 const 成员函数（如 exist()）也能加锁。
+    mutable std::mutex mutex_;
     lru_node* head_;
     lru_node* tail_;
     uint64_t capacity_;
