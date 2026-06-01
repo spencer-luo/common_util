@@ -1,5 +1,6 @@
 # Build and Release Folders
 build/
+build_ut/
 publish/
 # test directories
 fileutil_test/

@@ -23,6 +23,14 @@
 
 namespace cutl
 {
+    // C++14 及更早版本中，static constexpr 成员变量被 odr-use 时仍需要类外定义。
+    // GoogleTest 的 EXPECT_EQ 等宏会按 const& 接受参数，触发 odr-use；
+    // 这里给出标准要求的"再声明"以提供链接符号。
+    constexpr int datetime::second;
+    constexpr int datetime::min;
+    constexpr int datetime::hour;
+    constexpr int datetime::day;
+
     datetime::datetime(const datetime &other)
     {
         timestamp_ms_ = other.timestamp_ms_;

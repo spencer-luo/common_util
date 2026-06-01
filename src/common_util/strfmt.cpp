@@ -225,7 +225,9 @@ std::string align_str_right(const std::string& str, int width, char fill)
         output.reserve(3 * len);
         for (size_t i = 0; i < len; i++)
         {
-            const char temp = data[i];
+            // 必须使用无符号类型，否则字节 >= 0x80 时按 signed char 处理会得到负数，
+            // 进而 temp/16、temp%16 越界访问 hex_chars。
+            const uint8_t temp = data[i];
             output.push_back(hex_chars[temp / 16]);
             output.push_back(hex_chars[temp % 16]);
             if (separator)

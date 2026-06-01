@@ -45,6 +45,10 @@ elif [ $1 == "run" ]; then
 elif [ $1 == "clean" ]; then
     rm -rf ./build
     echo "./build Cleaned."
+elif [ $1 == "test" ]; then
+    cmake -S . -B build_ut -DBUILD_UNIT_TEST=ON
+    cmake --build build_ut -j
+    ctest --test-dir build_ut --output-on-failure
 else
     usage
 fi
