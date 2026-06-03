@@ -4,10 +4,13 @@
  */
 
 #include "common_util/print.h"
+#include <array>
 #include <gtest/gtest.h>
 #include <map>
 #include <set>
 #include <sstream>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 namespace
@@ -63,11 +66,53 @@ TEST(PrintTest, PrintColoredText)
 TEST(PrintTest, LevelHelpersPrintMessage)
 {
     auto out = CaptureStdout([&]() {
+        cutl::print_debug("debug-msg");
         cutl::print_info("info-msg");
         cutl::print_warn("warn-msg");
+        cutl::print_error("error-msg");
         cutl::print_success("ok-msg");
     });
+    EXPECT_NE(out.find("debug-msg"), std::string::npos);
     EXPECT_NE(out.find("info-msg"), std::string::npos);
     EXPECT_NE(out.find("warn-msg"), std::string::npos);
+    EXPECT_NE(out.find("error-msg"), std::string::npos);
     EXPECT_NE(out.find("ok-msg"), std::string::npos);
+}
+
+TEST(PrintTest, PrintArrStdArray)
+{
+    std::array<int, 3> arr{{1, 2, 3}};
+    auto out = CaptureStdout([&]() { cutl::print_arr(arr); });
+    EXPECT_NE(out.find("[1, 2, 3]"), std::string::npos);
+}
+
+TEST(PrintTest, PrintUnorderedMap)
+{
+    std::unordered_map<int, int> m = {{1, 10}, {2, 20}};
+    auto out = CaptureStdout([&]() { cutl::print_unordered_map(m); });
+    EXPECT_NE(out.find("1: 10"), std::string::npos);
+    EXPECT_NE(out.find("2: 20"), std::string::npos);
+}
+
+TEST(PrintTest, PrintUnorderedSet)
+{
+    std::unordered_set<int> s = {1, 2, 3};
+    auto out = CaptureStdout([&]() { cutl::print_unordered_set(s); });
+    // 顺序不固定，但每个元素和大括号都要出现
+    EXPECT_NE(out.find('{'), std::string::npos);
+    EXPECT_NE(out.find('}'), std::string::npos);
+    EXPECT_NE(out.find('1'), std::string::npos);
+    EXPECT_NE(out.find('2'), std::string::npos);
+    EXPECT_NE(out.find('3'), std::string::npos);
+}
+
+TEST(PrintTest, PrintMatrix)
+{
+    int matrix[2 * 2] = {1, 2, 3, 4};
+    auto out = CaptureStdout([&]() {
+        cutl::print_matrix(matrix, 2, 2, "M", 0, 0, 0, 2, 2);
+    });
+    EXPECT_NE(out.find("M"), std::string::npos);
+    EXPECT_NE(out.find("1"), std::string::npos);
+    EXPECT_NE(out.find("4"), std::string::npos);
 }

@@ -44,3 +44,52 @@ TEST(ThreadPoolTest, AddTaskWithArgsAndReturn)
 
     tp.stop();
 }
+
+TEST(ThreadPoolTest, AddTaskWithTimeoutSuccess)
+{
+    cutl::threadpool tp("ut_tp_timeout_ok", 8);
+    tp.start(1);
+    std::atomic<int> counter{0};
+    auto ok = tp.add_task([&counter]() { counter.fetch_add(1); },
+                          std::chrono::milliseconds(200));
+    EXPECT_TRUE(ok);
+    for (int i = 0; i < 100 && counter.load() < 1; ++i)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+    EXPECT_EQ(counter.load(), 1);
+    tp.stop();
+}
+
+TEST(ThreadPoolTest, AddTaskWithTimeoutAfterStopReturnsFalse)
+{
+    // 线程池停止后再投递任务，无论是否带超时，都应返回 false
+    cutl::threadpool tp("ut_tp_timeout_stopped", 8);
+    tp.start(1);
+    tp.stop();
+    auto ok = tp.add_task([]() {}, std::chrono::milliseconds(50));
+    EXPECT_FALSE(ok);
+}
+
+TEST(ThreadPoolTest, AddTaskWithTimeoutTimesOutWhenQueueFull)
+{
+    // 队列容量 1，且线程一直被一个长任务阻塞，再投递一个任务 + 短超时，应返回 false
+    cutl::threadpool tp("ut_tp_timeout_full", /*max_task_size=*/1);
+    tp.start(1);
+
+    std::atomic<bool> release{false};
+    EXPECT_TRUE(tp.add_task([&release]() {
+        while (!release.load())
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+    }));
+    // 此时唯一的线程正在执行长任务，再投递的任务会进入队列
+    EXPECT_TRUE(tp.add_task([]() {}));
+    // 队列已满（容量 1），再投递必定阻塞，配合短超时应返回 false
+    auto ok = tp.add_task([]() {}, std::chrono::milliseconds(50));
+    EXPECT_FALSE(ok);
+
+    release.store(true);
+    tp.stop();
+}

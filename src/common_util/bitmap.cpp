@@ -329,6 +329,7 @@ void dynamic_bitmap::set(size_t position)
 
 /**
  * 动态扩容
+ * @param minSize 期望的最小容量，单位为 bit
  */
 void dynamic_bitmap::ensureCapacity(size_t minSize)
 {
@@ -336,7 +337,8 @@ void dynamic_bitmap::ensureCapacity(size_t minSize)
         return;
 
     size_ = std::max(size_ * 2, minSize);
-    bits_.resize(size_);
+    // bits_ 以字节存储位图，按位向上取整。
+    bits_.resize(static_cast<size_t>(std::ceil(size_ / 8.0)), 0);
 }
 
 dynamic_bitmap& dynamic_bitmap::operator&=(const dynamic_bitmap& other)
@@ -360,26 +362,32 @@ dynamic_bitmap& dynamic_bitmap::operator&=(const dynamic_bitmap& other)
 
 dynamic_bitmap& dynamic_bitmap::operator|=(const dynamic_bitmap& other)
 {
-    auto minSize = std::min(bits_.size(), other.bits_.size());
-    auto maxSize = std::max(bits_.size(), other.bits_.size());
+    const auto otherBytes = other.bits_.size();
+    const auto thisBytes = bits_.size();
+    const auto minBytes = std::min(thisBytes, otherBytes);
 
-    for (size_t i = 0; i < minSize; i++)
+    // 若 other 更长，先扩容。ensureCapacity 入参单位是 bit
+    if (thisBytes < otherBytes)
+    {
+        ensureCapacity(otherBytes << 3);
+        // 同步 size_，使其至少能覆盖 other 的逻辑位数
+        size_ = std::max(size_, other.size_);
+    }
+    else if (other.size_ > size_)
+    {
+        // 字节数已够、但 other 的逻辑位数更大（如 0~7 位的尾巴）
+        size_ = other.size_;
+    }
+
+    // 对低位字节做按位或
+    for (size_t i = 0; i < minBytes; i++)
     {
         bits_[i] |= other.bits_[i];
     }
-    if (bits_.size() < other.bits_.size())
+    // 高位字节直接拷自 other（按 0 进行 OR）
+    for (size_t i = minBytes; i < otherBytes; i++)
     {
-        ensureCapacity(maxSize);
-        for (size_t i = minSize; i < maxSize; i++)
-        {
-            bits_[i] = other.bits_[i];
-        }
-    }
-    else if (size_ < bits_.size() << 3)
-    {
-        // bits_.size()相同时，size_可能不相同
-        // bits_.size() * 8
-        size_ = bits_.size() << 3;
+        bits_[i] = other.bits_[i];
     }
 
     return *this;
@@ -387,26 +395,28 @@ dynamic_bitmap& dynamic_bitmap::operator|=(const dynamic_bitmap& other)
 
 dynamic_bitmap& dynamic_bitmap::operator^=(const dynamic_bitmap& other)
 {
-    auto minSize = std::min(bits_.size(), other.bits_.size());
-    auto maxSize = std::max(bits_.size(), other.bits_.size());
+    const auto otherBytes = other.bits_.size();
+    const auto thisBytes = bits_.size();
+    const auto minBytes = std::min(thisBytes, otherBytes);
 
-    for (size_t i = 0; i < minSize; i++)
+    if (thisBytes < otherBytes)
+    {
+        ensureCapacity(otherBytes << 3);
+        size_ = std::max(size_, other.size_);
+    }
+    else if (other.size_ > size_)
+    {
+        size_ = other.size_;
+    }
+
+    for (size_t i = 0; i < minBytes; i++)
     {
         bits_[i] ^= other.bits_[i];
     }
-    if (bits_.size() < other.bits_.size())
+    // x ^ 0 == x，所以高位直接拷自 other
+    for (size_t i = minBytes; i < otherBytes; i++)
     {
-        ensureCapacity(maxSize);
-        for (size_t i = minSize; i < maxSize; i++)
-        {
-            bits_[i] = other.bits_[i];
-        }
-    }
-    else if (size_ < bits_.size() << 3)
-    {
-        // bits_.size()相同时，size_可能不相同
-        // bits_.size() * 8
-        size_ = bits_.size() << 3;
+        bits_[i] = other.bits_[i];
     }
 
     return *this;

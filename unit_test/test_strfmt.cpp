@@ -9,6 +9,8 @@
 #include <map>
 #include <set>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 TEST(StrFmtTest, AlignStr)
@@ -93,6 +95,75 @@ TEST(StrFmtTest, ToBin)
 {
     EXPECT_EQ(cutl::to_bin(static_cast<uint8_t>(0x0f)), "0000,1111");
     EXPECT_EQ(cutl::to_bin(static_cast<uint16_t>(0x00FC)), "0000,0000 1111,1100");
+
+    // 32 位 / 64 位的二进制格式：每 4 位一组以','分隔，每 8 位一组以分隔符隔开（默认空格）
+    auto u32_bin = cutl::to_bin(static_cast<uint32_t>(0x000000FCu));
+    EXPECT_NE(u32_bin.find("1111,1100"), std::string::npos);
+    auto u64_bin = cutl::to_bin(static_cast<uint64_t>(0x00000000000000FCULL));
+    EXPECT_NE(u64_bin.find("1111,1100"), std::string::npos);
+    // 自定义分隔符
+    auto u32_bin_dash = cutl::to_bin(static_cast<uint32_t>(0x000000FFu), '-');
+    EXPECT_NE(u32_bin_dash.find('-'), std::string::npos);
+}
+
+TEST(StrFmtTest, ToHexPointer)
+{
+    int x = 0;
+    void* p = &x;
+    auto s_lower = cutl::to_hex(p);
+    auto s_upper = cutl::to_hex(p, true);
+    EXPECT_FALSE(s_lower.empty());
+    EXPECT_FALSE(s_upper.empty());
+    // 上行/下行表示同一指针应包含相同位数（不算大小写）
+    EXPECT_EQ(s_lower.size(), s_upper.size());
+    // 自动补 "0" 前缀的形式
+    auto s_filled = cutl::to_hex(p, false, true);
+    EXPECT_FALSE(s_filled.empty());
+}
+
+TEST(StrFmtTest, FmtTimestampVariants)
+{
+    // 一个固定的 UTC 时间戳：2024-05-01 00:00:00 UTC = 1714521600
+    constexpr uint64_t kEpochSec = 1714521600ULL;
+
+    // UTC 模式下日期应当稳定为 2024-05-01
+    auto utc_str = cutl::fmt_timestamp_s(kEpochSec, /*local=*/false);
+    EXPECT_NE(utc_str.find("2024-05-01"), std::string::npos) << utc_str;
+
+    // 自定义格式：仅打印年份 4 位
+    auto only_year = cutl::fmt_timestamp(kEpochSec, /*local=*/false, "%Y");
+    EXPECT_EQ(only_year, "2024");
+    auto ymd = cutl::fmt_timestamp(kEpochSec, /*local=*/false, "%Y/%m/%d");
+    EXPECT_EQ(ymd, "2024/05/01");
+
+    // ms / us 接口：UTC 下日期与 _s 一致
+    auto ms_str = cutl::fmt_timestamp_ms(kEpochSec * 1000ULL, /*local=*/false);
+    EXPECT_NE(ms_str.find("2024-05-01"), std::string::npos) << ms_str;
+    auto us_str = cutl::fmt_timestamp_us(kEpochSec * 1000000ULL, /*local=*/false);
+    EXPECT_NE(us_str.find("2024-05-01"), std::string::npos) << us_str;
+}
+
+TEST(StrFmtTest, FmtUnorderedMapAndSet)
+{
+    std::unordered_map<int, int> m = {{1, 10}, {2, 20}};
+    auto s = cutl::fmt_unordered_map(m);
+    EXPECT_NE(s.find("1: 10"), std::string::npos);
+    EXPECT_NE(s.find("2: 20"), std::string::npos);
+    EXPECT_EQ(cutl::fmt_unordered_map(std::unordered_map<int, int>{}), "{}");
+
+    // 多行格式
+    auto s_multi = cutl::fmt_unordered_map(m, true);
+    EXPECT_NE(s_multi.find("\n"), std::string::npos);
+
+    std::unordered_set<int> us = {1, 2, 3};
+    auto us_str = cutl::fmt_unordered_set(us);
+    // 顺序不固定，但 3 个数字与边框都应出现
+    EXPECT_NE(us_str.find('{'), std::string::npos);
+    EXPECT_NE(us_str.find('}'), std::string::npos);
+    EXPECT_NE(us_str.find('1'), std::string::npos);
+    EXPECT_NE(us_str.find('2'), std::string::npos);
+    EXPECT_NE(us_str.find('3'), std::string::npos);
+    EXPECT_EQ(cutl::fmt_unordered_set(std::unordered_set<int>{}), "{}");
 }
 
 TEST(StrFmtTest, FmtArrVecMapSet)

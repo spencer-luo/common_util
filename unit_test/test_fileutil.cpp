@@ -14,14 +14,24 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <thread>
+#ifndef _WIN32
+#include <unistd.h>
+#else
+#include <process.h>
+#endif
 
 namespace
 {
 
-// 与 ctest 工作目录区分开，避免污染源码目录。
-std::string MakeTestRoot()
+// 用 testcase 名 + pid 拼出唯一目录，确保并行 ctest 时不互相干扰。
+std::string MakeUniqueTestRoot(const std::string& test_name)
 {
-    return "./_unit_test_fileutil_tmp";
+#ifndef _WIN32
+    auto pid = static_cast<long>(::getpid());
+#else
+    auto pid = static_cast<long>(::_getpid());
+#endif
+    return std::string("./_unit_test_fileutil_tmp_") + test_name + "_" + std::to_string(pid);
 }
 
 class FileUtilTest : public ::testing::Test
@@ -29,7 +39,9 @@ class FileUtilTest : public ::testing::Test
 protected:
     void SetUp() override
     {
-        root_ = cutl::path(MakeTestRoot());
+        const auto* info = ::testing::UnitTest::GetInstance()->current_test_info();
+        std::string name = info ? info->name() : std::string("anonymous");
+        root_ = cutl::path(MakeUniqueTestRoot(name));
         // 每个用例都从一个干净的目录开始
         cutl::removedir(root_, true);
         ASSERT_TRUE(cutl::createdir(root_));

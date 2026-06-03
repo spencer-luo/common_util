@@ -104,3 +104,65 @@ TEST(EventLoopTest, MultiThreadEventLoopExecutesEvents)
     }
     EXPECT_EQ(count.load(), 10);
 }
+
+TEST(EventLoopTest, IsLoopThreadDistinguishesCallSite)
+{
+    cutl::singlethread_eventloop loop("ut_isloopthread");
+    std::atomic<bool> on_loop_thread{false};
+    loop.post_event([&loop, &on_loop_thread]() {
+        on_loop_thread = loop.is_loop_thread();
+    });
+
+    loop.start();
+    wait_for_running(loop);
+    // 主线程显然不是事件循环线程
+    EXPECT_FALSE(loop.is_loop_thread());
+
+    auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(1);
+    while (!on_loop_thread.load() && std::chrono::steady_clock::now() < deadline)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+    loop.stop();
+    EXPECT_TRUE(on_loop_thread.load());
+}
+
+TEST(EventLoopTest, TimerTaskHandlerMoveSemantics)
+{
+    cutl::singlethread_eventloop loop("ut_handler_move");
+    std::atomic<int> counter{0};
+
+    auto h1 = loop.post_timer_event(
+      "tick",
+      [&counter]() { counter.fetch_add(1); },
+      std::chrono::milliseconds(40));
+    EXPECT_TRUE(h1.isvalid());
+
+    // 移动构造：原 handler 被搬走后语义上应失效，新 handler 仍能取消
+    cutl::timer_task_handler h2(std::move(h1));
+    EXPECT_TRUE(h2.isvalid());
+
+    loop.start();
+    wait_for_running(loop);
+    std::this_thread::sleep_for(std::chrono::milliseconds(150));
+    h2.cancel();
+    int snapshot = counter.load();
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    loop.stop();
+    EXPECT_LE(counter.load() - snapshot, 1);
+
+    // 移动赋值：把另一个有效 handler 移交过来
+    cutl::singlethread_eventloop loop2("ut_handler_move2");
+    auto a = loop2.post_timer_event(
+      "a", []() {}, std::chrono::milliseconds(50));
+    auto b = loop2.post_timer_event(
+      "b", []() {}, std::chrono::milliseconds(50));
+    EXPECT_TRUE(a.isvalid());
+    EXPECT_TRUE(b.isvalid());
+    a = std::move(b);
+    EXPECT_TRUE(a.isvalid());
+    loop2.start();
+    wait_for_running(loop2);
+    a.cancel();
+    loop2.stop();
+}

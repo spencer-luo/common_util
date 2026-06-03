@@ -73,3 +73,33 @@ TEST(ColorTest, PredefinedColors)
     EXPECT_EQ(cutl::color_argb::red.g(), 0x00);
     EXPECT_EQ(cutl::color_argb::red.b(), 0x00);
 }
+
+TEST(ColorTest, AllPredefinedColorsAccessible)
+{
+    // 烟雾测试：所有预定义颜色都应可访问且 alpha 不为 0（否则就是构造异常）。
+    const cutl::color_argb* preset[] = {
+        &cutl::color_argb::white,    &cutl::color_argb::black,    &cutl::color_argb::aqua,
+        &cutl::color_argb::blue,     &cutl::color_argb::fuschia,  &cutl::color_argb::gray,
+        &cutl::color_argb::green,    &cutl::color_argb::lime,     &cutl::color_argb::maroon,
+        &cutl::color_argb::navy,     &cutl::color_argb::olive,    &cutl::color_argb::purple,
+        &cutl::color_argb::red,      &cutl::color_argb::silver,   &cutl::color_argb::teal,
+        &cutl::color_argb::yellow,
+    };
+    for (auto* c : preset)
+    {
+        EXPECT_NE(c->a(), 0x00);
+    }
+
+    // 个别颜色的具体 RGB 验证
+    EXPECT_EQ(cutl::color_argb::aqua.r(), 0x00);
+    EXPECT_EQ(cutl::color_argb::aqua.g(), 0xFF);
+    EXPECT_EQ(cutl::color_argb::aqua.b(), 0xFF);
+
+    EXPECT_EQ(cutl::color_argb::blue.r(), 0x00);
+    EXPECT_EQ(cutl::color_argb::blue.g(), 0x00);
+    EXPECT_EQ(cutl::color_argb::blue.b(), 0xFF);
+
+    EXPECT_EQ(cutl::color_argb::yellow.r(), 0xFF);
+    EXPECT_EQ(cutl::color_argb::yellow.g(), 0xFF);
+    EXPECT_EQ(cutl::color_argb::yellow.b(), 0x00);
+}

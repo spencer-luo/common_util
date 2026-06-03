@@ -76,3 +76,23 @@ TEST(HyperLogLogTest, TheoreticalErrorIsPositive)
     EXPECT_GT(hll.get_theoretical_error(), 0.0);
     EXPECT_LT(hll.get_theoretical_error(), 1.0);
 }
+
+TEST(HyperLogLogTest, AddUint64Overload)
+{
+    cutl::HyperLogLog hll(14);
+    for (uint64_t i = 0; i < 200; ++i)
+    {
+        hll.add(i);
+    }
+    auto count_after = hll.count();
+    EXPECT_GT(count_after, 0u);
+
+    // 添加重复元素不应该明显增加估计值
+    auto before_dup = count_after;
+    for (uint64_t i = 0; i < 200; ++i)
+    {
+        hll.add(i);
+    }
+    auto after_dup = hll.count();
+    EXPECT_LE(after_dup, before_dup + (before_dup / 5 + 5));
+}

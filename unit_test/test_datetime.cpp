@@ -97,3 +97,29 @@ TEST(DatetimeTest, Constants)
     EXPECT_EQ(cutl::datetime::hour, 60 * 60 * 1000);
     EXPECT_EQ(cutl::datetime::day, 24 * 60 * 60 * 1000);
 }
+
+TEST(DatetimeTest, FormatWithCustomString)
+{
+    auto dt = cutl::datetime::get("2024-03-02 14:18:44");
+    // 自定义格式：%Y/%m/%d
+    EXPECT_EQ(dt.format("%Y/%m/%d", true, false), "2024/03/02");
+    // 仅小时
+    EXPECT_EQ(dt.format("%H", true, false), "14");
+    // %f 是毫秒占位符
+    auto dt_ms = cutl::datetime::get("2024-03-02 14:18:44.025");
+    auto with_ms = dt_ms.format("%H:%M:%S.%f", true, true);
+    // 应当包含 .025
+    EXPECT_NE(with_ms.find(".025"), std::string::npos) << with_ms;
+}
+
+TEST(DatetimeTest, OutputStreamOperator)
+{
+    auto dt = cutl::datetime::get("2024-03-02 14:18:44");
+    std::ostringstream oss;
+    oss << dt;
+    auto s = oss.str();
+    // 默认输出格式包含日期数字
+    EXPECT_NE(s.find("2024"), std::string::npos);
+    EXPECT_NE(s.find("03"), std::string::npos);
+    EXPECT_NE(s.find("14:18:44"), std::string::npos) << s;
+}

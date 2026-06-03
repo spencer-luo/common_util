@@ -61,3 +61,16 @@ TEST(HashTest, ReasonableSpread)
     }
     EXPECT_GE(hashes.size(), 800u);
 }
+
+TEST(HashTest, Murmur3_64VoidPointerOverloadMatchesString)
+{
+    // hash_murmur3_64(const void*, size_t, uint64_t) 与 string 重载在等价输入下应产生相同的结果
+    std::string s = "common_util_murmur3_void_ptr";
+    auto from_str = cutl::hash_murmur3_64(s, 0);
+    auto from_ptr = cutl::hash_murmur3_64(static_cast<const void*>(s.c_str()), s.size(), 0);
+    EXPECT_EQ(from_str, from_ptr);
+
+    // 不同 seed 应产生不同的结果
+    auto from_ptr_seed = cutl::hash_murmur3_64(static_cast<const void*>(s.c_str()), s.size(), 0xDEADBEEF);
+    EXPECT_NE(from_ptr, from_ptr_seed);
+}
