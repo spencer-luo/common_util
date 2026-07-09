@@ -4,6 +4,7 @@ publish/
 # test directories
 fileutil_test/
 fileutil_test_copy/
+build_ut/
 
 # Other files and folders
 .settings/

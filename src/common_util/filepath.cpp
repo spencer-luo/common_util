@@ -69,6 +69,28 @@ namespace cutl
         }
     }
 
+    // 判断 filename 是否为绝对路径
+    // - POSIX：以 '/' 开头
+    // - Windows：以 '\\' / '/' 开头，或形如 "C:" 的盘符前缀
+    static bool is_absolute_path(const std::string& filename)
+    {
+        if (filename.empty())
+        {
+            return false;
+        }
+        if (filename[0] == unix_separator || filename[0] == win_separator)
+        {
+            return true;
+        }
+#if defined(_WIN32)
+        if (filename.size() >= 2 && filename[1] == ':')
+        {
+            return true;
+        }
+#endif
+        return false;
+    }
+
     filepath::filepath(const std::string& path)
       : filepath_(path)
     {
@@ -102,6 +124,14 @@ namespace cutl
 
     filepath filepath::join(const std::string &filename) const
     {
+        // 对齐 Python os.path.join / std::filesystem::path::operator/= 语义：
+        // 当 filename 已经是绝对路径时，丢弃当前 path，直接以 filename 作为最终路径，
+        // 避免拼出形如 "/home/x//stark/..." 的非法路径。
+        if (is_absolute_path(filename))
+        {
+            CUTL_WARN(filename + " is already absolute path");
+            return filepath(filename);
+        }
         std::string path = filepath_ + separator() + filename;
         return filepath(path);
     }
@@ -178,6 +208,11 @@ namespace cutl
 
         CUTL_ERROR("not a symlink, cannot get realpath");
         return "";
+    }
+
+    bool filepath::is_absolute() const
+    {
+        return is_absolute_path(filepath_);
     }
 
     std::string filepath::abspath() const

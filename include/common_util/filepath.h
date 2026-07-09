@@ -164,6 +164,12 @@ namespace cutl
          */
         std::string realpath() const;
         /**
+         * @brief Check if the filepath is an absolute path.
+         *
+         * @return true means absolute path, false means not absolute path.
+         */
+        bool is_absolute() const;
+        /**
          * @brief Get the absolute path of the filepath.
          *
          * @return std::string the absolute path of the filepath.
