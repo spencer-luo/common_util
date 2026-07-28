@@ -19,6 +19,7 @@
 #pragma once
 
 #include <cstdint>
+#include <ctime>
 
 namespace cutl
 {
@@ -109,5 +110,20 @@ namespace cutl
      * @return uint64_t time in microseconds
      */
     uint64_t ms2us(uint64_t time);
+
+    /**
+     * @brief Convert time_t to local time. Thread safe.
+     *
+     * @param second time_t
+     * @return struct tm local time
+     */
+    struct tm localtime_s(const time_t &second);
+    /**
+     * @brief Convert time_t to UTC time. Thread safe.
+     *
+     * @param second time_t
+     * @return struct tm UTC time
+     */
+    struct tm gmtime_s(const time_t &second);
 
 } // namespace

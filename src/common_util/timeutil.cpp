@@ -120,6 +120,16 @@ namespace cutl
     uint64_t s2us(uint64_t time) { return time * MILLION; }
     uint64_t ms2us(uint64_t time) { return time * THOUSAND; }
 
+    struct tm localtime_s(const time_t &second)
+    {
+        return localtime_security(second);
+    }
+
+    struct tm gmtime_s(const time_t &second)
+    {
+        return gmtime_security(second);
+    }
+
 } // namespace
 
 // // for Unix-like system
