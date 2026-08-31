@@ -35,10 +35,13 @@ if [ $1 == "build" ]; then
         usage
     fi
     echo "Building..."
-    # cmake -B ./build -DCPACK_OUTPUT_FILE_PREFIX=`pwd`/dest
-    cmake -B ./build -DCMAKE_BUILD_TYPE:STRING=${build_type} -DBUILD_DEMO=ON -DCXX_STANDARD_11=ON
-    cd build
-    make
+    # 仅 release 包把构建结果拷到 publish/；debug 保持默认 OFF，避免往 /bin 一类路径误拷
+    release_binary=OFF
+    if [ "${build_type}" = "Release" ]; then
+        release_binary=ON
+    fi
+    cmake -B ./build -DCMAKE_BUILD_TYPE:STRING=${build_type} -DBUILD_DEMO=ON -DCXX_STANDARD_11=ON -DRELEASE_BINARY_LIBRARY=${release_binary} || exit 1
+    cmake --build ./build -j${jobs_num} || exit 1
     echo "Build Done."
 elif [ $1 == "pack" ]; then
     echo "Pack package..."
@@ -51,8 +54,8 @@ elif [ $1 == "run" ]; then
     echo ${executable_filepath}
     ${executable_filepath}
 elif [ $1 == "clean" ]; then
-    rm -rf ./build ./build_ut ./build_ut11
-    echo "./build, ./build_ut and ./build_ut11 Cleaned."
+    rm -rf ./build ./publish ./build_ut ./build_ut11
+    echo "./build ./publish ./build_ut ./build_ut11 were Cleaned."
 elif [ $1 == "test" ]; then
     # C++11 与默认标准使用各自独立的构建目录，避免来回切换时反复全量重编
     ut_dir="build_ut"

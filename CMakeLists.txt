@@ -7,7 +7,7 @@
 cmake_minimum_required(VERSION 3.28.3)
 # project name
 
-project(common_util VERSION 1.8.2 LANGUAGES CXX)
+project(common_util VERSION 1.8.3 LANGUAGES CXX)
 
 # 构建时间
 # build time
@@ -17,6 +17,10 @@ string(TIMESTAMP BUILD_TIME "%y-%m-%d %H:%M:%S")
 # OFF: Using the default C++ version specified by the compiler.
 # Default OFF; override with e.g. cmake -DCXX_STANDARD_11=ON
 option(CXX_STANDARD_11 "Use C++11 standard for compilation" OFF)
+
+# ON: copy the built library, headers and demo binary to publish/
+# OFF: build only, do not copy. Override with cmake -DRELEASE_BINARY_LIBRARY=ON
+option(RELEASE_BINARY_LIBRARY "Copy build artifacts to the publish directory" OFF)
 
 if (CXX_STANDARD_11)
     # C/C++ standard: C99/C++11
@@ -96,23 +100,24 @@ endif()
 message("library_name:" ${library_name})
 
 message("CMAKE_BUILD_TYPE:" ${CMAKE_BUILD_TYPE})
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    message("start to copy target files")
+message("RELEASE_BINARY_LIBRARY:" ${RELEASE_BINARY_LIBRARY})
+if (RELEASE_BINARY_LIBRARY)
+    message("start to copy target files to ${publish_dir}")
 
     # 在编译完(POST_BUILD) 构建目标(TARGET) common_util后，执行的命令
     add_custom_command(TARGET ${PROJECT_NAME}
         POST_BUILD
-        # 创建文件夹: dest/common_util/lib
+        # 创建文件夹: publish/lib/<os>/<arch>
         COMMAND ${CMAKE_COMMAND} -E make_directory ${publish_dir}/lib/${CMAKE_SYSTEM_NAME}/${target_arch}
         # 拷贝编译结果文件: libcommon_util.a
         COMMAND ${CMAKE_COMMAND} -E copy ${library_dir}/${library_name} ${publish_dir}/lib/${CMAKE_SYSTEM_NAME}/${target_arch}
-        # 创建文件夹: dest/include/common_util
+        # 创建文件夹: publish/include/common_util
         COMMAND ${CMAKE_COMMAND} -E make_directory ${publish_dir}/include/common_util/
         # 拷贝头文件: include/common_util/*.h
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/include/common_util/* ${publish_dir}/include/common_util/
     )
-elseif()
-    message("current build is debug")
+else()
+    message("skip copying build artifacts (RELEASE_BINARY_LIBRARY=OFF)")
 endif()
 
 # 默认不编译usage_demo，cmake命令行参数传递BUILD_DEMO=on时才会编译

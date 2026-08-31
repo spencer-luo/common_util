@@ -1,4 +1,4 @@
-message(STATUS "--------- begin cmake usage_demo ---------")
+﻿message(STATUS "--------- begin cmake usage_demo ---------")
 
 # cmake工具的最低版本号
 # cmake version
@@ -41,11 +41,14 @@ else()
 endif()
 message("executable_name:" ${executable_name})
 
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    message("start to copy target files")
+if (RELEASE_BINARY_LIBRARY)
+    if (NOT publish_dir)
+        set(publish_dir ${CMAKE_SOURCE_DIR}/publish)
+    endif()
+    message("start to copy demo binary to ${publish_dir}")
     add_custom_command(TARGET ${PROJECT_NAME}
         POST_BUILD
-        # 创建文件夹: dest/
+        # 创建文件夹: publish/bin/<os>/<arch>/
         COMMAND ${CMAKE_COMMAND} -E make_directory ${publish_dir}/bin/${CMAKE_SYSTEM_NAME}/${target_arch}/
         # 拷贝编译结果文件: common_util_demo
         COMMAND ${CMAKE_COMMAND} -E copy ${library_dir}/${executable_name} ${publish_dir}/bin/${CMAKE_SYSTEM_NAME}/${target_arch}
