@@ -96,19 +96,37 @@ namespace cutl
         return get_time_by_unit(us, unit);
     }
 
-    int get_timezone_offset()
+    int get_timezone_offset_min()
     {
-        uint64_t second = timestamp(timeunit::s);
-        std::time_t t(second);
+        std::time_t t(timestamp(timeunit::s));
         struct tm local_time = localtime_security(t);
         struct tm utc_time = gmtime_security(t);
 
-        int offset_hours = local_time.tm_hour - utc_time.tm_hour;
-        if (offset_hours < -12)
-            offset_hours += 24;
-        if (offset_hours > 12)
-            offset_hours -= 24;
-        return offset_hours;
+        // 同一时刻的本地时与 UTC 的日历差，精确到分钟。
+        // 不能只减 tm_hour：会丢掉 +05:30 / +05:45，也会把 UTC+13/+14 错误折进 ±12。
+        const int local_today = local_time.tm_hour * 60 + local_time.tm_min;
+        const int utc_todday = utc_time.tm_hour * 60 + utc_time.tm_min;
+        int diff = local_today - utc_todday;
+
+        if (local_time.tm_year != utc_time.tm_year || local_time.tm_yday != utc_time.tm_yday)
+        {
+            if (local_time.tm_year > utc_time.tm_year ||
+                (local_time.tm_year == utc_time.tm_year && local_time.tm_yday > utc_time.tm_yday))
+            {
+                diff += 24 * 60;
+            }
+            else
+            {
+                diff -= 24 * 60;
+            }
+        }
+
+        return diff;
+    }
+
+    int get_timezone_offset()
+    {
+        return get_timezone_offset_min() / 60;
     }
 
     constexpr static int THOUSAND = 1000;

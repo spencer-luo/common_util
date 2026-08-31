@@ -7,6 +7,7 @@
 #include "timeutil.h"
 #include <cstring>
 #include <dirent.h>
+#include <fcntl.h>
 #include <stack>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -425,6 +426,35 @@ namespace cutl
             return false;
         }
         return true;
+    }
+
+    // fsync(2)只保证文件自身的数据和inode元数据落盘，并不保证父目录中指向该文件的目录项落盘。
+    // 因此新建/删除/重命名文件后还需要对父目录本身调用一次fsync，否则掉电重启后可能出现
+    // "文件内容已写入但文件不存在"的情况。参见 fsync(2) 的 NOTES 一节。
+    bool dir_sync(const std::string &dirpath)
+    {
+        // 目录必须以只读方式打开，O_WRONLY 打开目录会失败(EISDIR)
+        int fd = open(dirpath.c_str(), O_RDONLY);
+        if (fd < 0)
+        {
+            CUTL_ERROR("open directory failure for " + dirpath + ", error:" + strerror(errno));
+            return false;
+        }
+
+        bool success = true;
+        if (fsync(fd) != 0)
+        {
+            CUTL_ERROR("fsync directory failure for " + dirpath + ", error:" + strerror(errno));
+            success = false;
+        }
+
+        if (close(fd) != 0)
+        {
+            CUTL_ERROR("close directory failure for " + dirpath + ", error:" + strerror(errno));
+            success = false;
+        }
+
+        return success;
     }
 
     uint64_t get_last_modified_time_s(const std::string& filepath)

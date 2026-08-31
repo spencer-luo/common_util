@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @file test_fileutil.cpp
  * @brief Unit tests for cutl::fileutil (create / remove / read / write / list / find / copy).
  *
@@ -229,3 +229,166 @@ TEST_F(FileUtilTest, SymlinkAndRealpath)
     EXPECT_EQ(cutl::readtext(link), "link target");
 }
 #endif
+
+// ---------------------------------------------------------------------------
+// fsync / fsyncdir
+//
+// 真正的掉电持久性无法在单元测试里验证，所以这里断言的是可观测的契约：
+// 返回值是否正确、用户态缓冲是否被一并写出、非法入参是否被拒绝。
+// ---------------------------------------------------------------------------
+
+// 成功时必须返回 true。曾经的实现写成 file_sync(handle) == 0，
+// 而 file_sync() 成功时返回 true，于是返回值恰好反了：成功报错、失败报成功。
+TEST_F(FileUtilTest, FsyncHandleReturnsTrueOnSuccess)
+{
+    auto file = root_.join("sync.txt");
+    auto* fd = std::fopen(file.str().c_str(), "w");
+    ASSERT_NE(fd, nullptr);
+    cutl::file_guard guard(fd);
+
+    std::fputs("hello", fd);
+    EXPECT_TRUE(cutl::fsync(fd));
+}
+
+// fsync 之前必须先 fflush，否则还留在 FILE 用户态缓冲里的数据不会被落盘。
+TEST_F(FileUtilTest, FsyncHandleFlushesUserspaceBuffer)
+{
+    auto file = root_.join("buffered.txt");
+    auto* fd = std::fopen(file.str().c_str(), "w");
+    ASSERT_NE(fd, nullptr);
+    cutl::file_guard guard(fd);
+
+    // 只写入 FILE 缓冲，不主动 fflush
+    std::fputs("buffered content", fd);
+    ASSERT_TRUE(cutl::fsync(fd));
+
+    // 此时通过另一个句柄读取应当已经能看到全部内容
+    EXPECT_EQ(cutl::readtext(file), "buffered content");
+}
+
+TEST_F(FileUtilTest, FsyncHandleRejectsNullptr)
+{
+    EXPECT_FALSE(cutl::fsync(static_cast<FILE*>(nullptr)));
+}
+
+// fsync(路径) 在文件内容之外，还会把父目录的目录项落盘。
+TEST_F(FileUtilTest, FsyncPathSyncsFileAndDirectoryEntry)
+{
+    auto file = root_.join("durable.txt");
+    ASSERT_TRUE(cutl::writetext(file, "durable"));
+
+    EXPECT_TRUE(cutl::fsync(file));
+    // 落盘不应改变文件内容
+    EXPECT_EQ(cutl::readtext(file), "durable");
+}
+
+TEST_F(FileUtilTest, FsyncPathRejectsMissingFile)
+{
+    EXPECT_FALSE(cutl::fsync(root_.join("__no_such_file__")));
+}
+
+TEST_F(FileUtilTest, FsyncDirOnDirectory)
+{
+    EXPECT_TRUE(cutl::fsyncdir(root_));
+
+    auto sub = root_.join("subdir");
+    ASSERT_TRUE(cutl::createdir(sub));
+    EXPECT_TRUE(cutl::fsyncdir(sub));
+}
+
+// 传文件或不存在的路径都必须被拒绝，否则会静默地"同步了别的东西"。
+TEST_F(FileUtilTest, FsyncDirRejectsNonDirectory)
+{
+    auto file = root_.join("plain.txt");
+    ASSERT_TRUE(cutl::writetext(file, "x"));
+    EXPECT_FALSE(cutl::fsyncdir(file));
+
+    EXPECT_FALSE(cutl::fsyncdir(root_.join("__no_such_dir__")));
+}
+
+// createfile/writetext/copyfile 在新建目录项后会顺带落盘父目录。
+// 掉电持久性无法在单元测试里验证，因此这里覆盖的是这段新增逻辑涉及的各条分支，
+// 确认它们没有把原本可用的写入路径改坏。
+
+// 首次写入会新建文件(需要落盘父目录)，再次写入是覆盖(不需要)，两条分支都必须正常。
+TEST_F(FileUtilTest, WriteTextCreateThenOverwrite)
+{
+    auto file = root_.join("rewrite.txt");
+    ASSERT_FALSE(file.exists());
+
+    EXPECT_TRUE(cutl::writetext(file, "first"));
+    EXPECT_EQ(cutl::readtext(file), "first");
+
+    // 此时文件已存在，走的是覆盖分支
+    EXPECT_TRUE(cutl::writetext(file, "second"));
+    EXPECT_EQ(cutl::readtext(file), "second");
+
+    // 覆盖成更短的内容，验证截断也正常
+    EXPECT_TRUE(cutl::writetext(file, "x"));
+    EXPECT_EQ(cutl::readtext(file), "x");
+}
+
+// 不带任何目录分隔符的相对路径，父目录退化为当前目录，落盘同样要成功。
+TEST_F(FileUtilTest, WriteTextToBareFilenameInCwd)
+{
+#ifndef _WIN32
+    auto name = "_ut_bare_" + std::to_string(static_cast<long>(::getpid())) + ".txt";
+#else
+    auto name = "_ut_bare_" + std::to_string(static_cast<long>(::_getpid())) + ".txt";
+#endif
+    auto file = cutl::path(name);
+    ASSERT_TRUE(cutl::writetext(file, "bare"));
+    EXPECT_EQ(cutl::readtext(file), "bare");
+    EXPECT_TRUE(cutl::removefile(file));
+}
+
+// 目标已存在时 copyfile 会先删旧的再建新的，两次都动了父目录。
+TEST_F(FileUtilTest, CopyFileOverwritesExistingDestination)
+{
+    auto src = root_.join("src.txt");
+    auto dst = root_.join("dst.txt");
+    ASSERT_TRUE(cutl::writetext(src, "new content"));
+    ASSERT_TRUE(cutl::writetext(dst, "old content that is much longer"));
+
+    EXPECT_TRUE(cutl::copyfile(src, dst));
+    EXPECT_EQ(cutl::readtext(dst), "new content");
+}
+
+#ifndef _WIN32
+// 复制符号链接走的是另一条分支：它没有独立的数据内容，
+// 落盘父目录是唯一能让这个链接持久化的手段。
+TEST_F(FileUtilTest, CopySymlinkSyncsDirectoryEntry)
+{
+    auto target = root_.join("sym_target.txt").abspath();
+    ASSERT_TRUE(cutl::writetext(cutl::filepath(target), "target data"));
+
+    auto link = root_.join("sym_link.txt");
+    if (!cutl::createlink(cutl::filepath(target), link))
+    {
+        GTEST_SKIP() << "Symlink creation not permitted in this environment.";
+    }
+
+    auto copied = root_.join("sym_copy.txt");
+    EXPECT_TRUE(cutl::copyfile(link, copied));
+    EXPECT_TRUE(copied.issymlink());
+    EXPECT_EQ(cutl::readtext(copied), "target data");
+}
+#endif
+
+// 新建文件后先 fsync 文件、再 fsync 父目录，是保证"文件确实存在"的标准做法。
+// 这里验证整套调用链能跑通且文件内容完整。
+TEST_F(FileUtilTest, FsyncFileThenParentDirectory)
+{
+    auto file = root_.join("created.txt");
+    auto* fd = std::fopen(file.str().c_str(), "w");
+    ASSERT_NE(fd, nullptr);
+    {
+        cutl::file_guard guard(fd);
+        std::fputs("content", fd);
+        ASSERT_TRUE(cutl::fsync(fd));
+    }
+    ASSERT_TRUE(cutl::fsyncdir(root_));
+
+    EXPECT_TRUE(file.exists());
+    EXPECT_EQ(cutl::readtext(file), "content");
+}

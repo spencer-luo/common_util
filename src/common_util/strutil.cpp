@@ -17,6 +17,7 @@
  */
 
 #include "strutil.h"
+#include "inner/logger.h"
 #include "inner/string_util.h"
 #include <algorithm>
 #include <cctype>
@@ -154,19 +155,33 @@ namespace cutl
     strvec split(const std::string &str, const std::string &pattern)
     {
         strvec res;
-        if (str == "")
-            return res;
-        // 在字符串末尾也加入分隔符，方便截取最后一段
-        std::string strs = str + pattern;
-        size_t pos = strs.find(pattern);
-        int startIndex = 0;
-
-        while (pos != strs.npos)
+        if (str.empty())
         {
-            std::string temp = strs.substr(startIndex, pos - startIndex);
-            res.emplace_back(temp);
-            startIndex = pos + 1;
-            pos = strs.find(pattern, startIndex);
+            return res;
+        }
+
+        if (pattern.empty())
+        {
+            // 空分隔符无法切分，原样返回，避免调用方拿到一堆空串
+            CUTL_ERROR("the separator is empty, cannot split the string: " + str);
+            res.emplace_back(str);
+            return res;
+        }
+
+        size_t startIndex = 0;
+        while (true)
+        {
+            size_t pos = str.find(pattern, startIndex);
+            if (pos == std::string::npos)
+            {
+                // 最后一段，分隔符结尾时这里会得到一个空串，与 Python str.split() 一致
+                res.emplace_back(str.substr(startIndex));
+                break;
+            }
+
+            res.emplace_back(str.substr(startIndex, pos - startIndex));
+            // 必须跳过整个分隔符的长度，否则多字符分隔符会把剩余部分算进下一段
+            startIndex = pos + pattern.length();
         }
 
         return res;

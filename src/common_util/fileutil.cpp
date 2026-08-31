@@ -116,6 +116,33 @@ namespace cutl
         return result;
     }
 
+    // 取文件所在的目录。dirname() 对 "/a.txt" 这种根目录下的文件和 "a.txt" 这种裸文件名
+    // 都返回空串，前者的父目录是根目录，后者是当前目录。
+    static std::string parent_dir_of(const filepath &path)
+    {
+        auto dir = path.dirname();
+        if (dir.empty())
+        {
+            dir = path.is_absolute() ? std::string(1, filepath::separator()) : ".";
+        }
+        return dir;
+    }
+
+    // 文件名到inode的映射记录在父目录里，新建目录项之后必须把父目录本身也落盘，
+    // 否则掉电后可能出现"内容已写入但文件不存在"的状态。
+    // 必须在 file_sync() 之后调用：反过来的话目录项可能先于数据落盘，
+    // 崩溃后会读到一个存在但内容残缺的文件。
+    static bool sync_parent_dir(const filepath &path)
+    {
+        auto dir = parent_dir_of(path);
+        if (!dir_sync(dir))
+        {
+            CUTL_ERROR("dir_sync failed for " + dir);
+            return false;
+        }
+        return true;
+    }
+
     bool createfile(const filepath &path)
     {
         auto dirPath = path.dirname();
@@ -147,6 +174,12 @@ namespace cutl
         if (!file_sync(fg.getfd()))
         {
             CUTL_ERROR("file_sync failed for " + path.str());
+            return false;
+        }
+
+        // 新建了目录项，父目录也要落盘，文件的存在性才不会因掉电丢失
+        if (!sync_parent_dir(path))
+        {
             return false;
         }
 
@@ -318,6 +351,10 @@ namespace cutl
     // https://en.cppreference.com/w/cpp/header/cstdio
     bool writetext(const filepath &path, const std::string &content)
     {
+        // 覆盖写已存在的文件时，父目录没有任何变化，改变的只是内容和size(属于inode元数据)，
+        // 这些 file_sync() 已经覆盖，无需再为父目录多付一次磁盘屏障的代价。
+        const bool created = !path.exists();
+
         // std::lock_guard
         file_guard fg(fopen(path.str().c_str(), "w"));
         if (fg.getfd() == nullptr)
@@ -343,6 +380,11 @@ namespace cutl
         if (!file_sync(fg.getfd()))
         {
             CUTL_ERROR("file_sync failed for " + path.str());
+            return false;
+        }
+
+        if (created && !sync_parent_dir(path))
+        {
             return false;
         }
 
@@ -484,6 +526,13 @@ namespace cutl
             return false;
         }
 
+        // 上面两条分支都在目标所在目录里新建了目录项(已存在时还先删掉了旧的)，因此都要落盘父目录。
+        // 对符号链接来说这尤其重要：它没有独立的数据内容，dir_sync 是唯一能让它持久化的手段。
+        if (!sync_parent_dir(dstpath))
+        {
+            return false;
+        }
+
         // copy file attributes
         if (attributes && srcpath.isfile())
         {
@@ -543,6 +592,54 @@ namespace cutl
         }
 
         return true;
+    }
+
+    bool fsync(FILE* handle)
+    {
+        if (handle == nullptr)
+        {
+            CUTL_ERROR("invalid file handle: nullptr");
+            return false;
+        }
+
+        // 先把标准库的用户态缓冲写进内核，否则 fsync 落盘的内容并不完整
+        if (fflush(handle) != 0)
+        {
+            CUTL_ERROR("fail to flush file buffer");
+            return false;
+        }
+
+        return file_sync(handle);
+    }
+
+    bool fsyncdir(const filepath& dirpath)
+    {
+        if (!dirpath.isdir())
+        {
+            CUTL_ERROR(dirpath.str() + " is not a directory.");
+            return false;
+        }
+
+        return dir_sync(dirpath.str());
+    }
+
+    bool fsync(const filepath& path)
+    {
+        file_guard fg(fopen(path.str().c_str(), "r"));
+        if (fg.getfd() == nullptr)
+        {
+            CUTL_ERROR("fail to open file:" + path.str());
+            return false;
+        }
+
+        if (!file_sync(fg.getfd()))
+        {
+            CUTL_ERROR("file_sync failed for " + path.str());
+            return false;
+        }
+
+        // 文件内容已落盘，再把父目录的目录项落盘，确保文件的存在性也不会因掉电丢失
+        return sync_parent_dir(path);
     }
 
 } // namespace cutl

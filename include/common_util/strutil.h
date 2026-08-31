@@ -88,11 +88,19 @@ namespace cutl
     /**
      * @brief Split a string into a vector of substrings using a given separator.
      *
+     * The separator may contain more than one character, it is matched as a whole rather than as
+     * a set of characters. For example, split("a<>b", "<>") returns {"a", "b"}.
+     *
+     * An empty separator is invalid, in that case the whole string is returned as the only
+     * element. A separator at the beginning or the end of the string produces an empty substring
+     * at the corresponding side, which is the same as Python's str.split().
+     *
      * @param str the string to be split.
      * @param separator the separator to split the string.
      * @return strvec the vector of substrings.
      */
     strvec split(const std::string &str, const std::string &separator);
+
     /**
      * @brief Join a vector of strings into a single string using a given separator.
      *

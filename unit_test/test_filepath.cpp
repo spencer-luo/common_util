@@ -64,6 +64,71 @@ TEST(FilePathTest, ReplaceExtension)
     EXPECT_EQ(p.replace_extension(".bak", 1), "/tmp/data.tar.bak");
 }
 
+// 期望行为（当前实现尚未满足，故显式禁用）：
+// replace_extension() 应当只替换文件名部分的后缀。它目前在整条路径上查找最后一个点，
+// 当文件名没有后缀而某级目录名里带点时，会把目录名当成后缀切掉：
+//   输入 /home/a.b/README + ".md"
+//   期望 /home/a.b/README.md
+//   实际 /home/a.md            <- 目录名被吃掉
+// 修复方式是改为在 basename() 上定位后缀，再与 dirname() 拼接，与 extension()/stem() 一致。
+TEST(FilePathTest, DISABLED_ReplaceExtensionShouldNotTouchDirectoryName)
+{
+    EXPECT_EQ(cutl::path("/home/a.b/README").replace_extension(".md"), "/home/a.b/README.md");
+    EXPECT_EQ(cutl::path("/a/b.c/d").replace_extension(".txt"), "/a/b.c/d.txt");
+}
+
+TEST(FilePathTest, Stem)
+{
+    EXPECT_EQ(cutl::path("/a/b/c.txt").stem(), "c");
+    // 没有后缀时，整个文件名就是主干
+    EXPECT_EQ(cutl::path("/a/b/c").stem(), "c");
+    EXPECT_EQ(cutl::path("/a/b/README").stem(), "README");
+    // 多重后缀由 max_dot_number 控制，与 extension() 的参数含义一致
+    EXPECT_EQ(cutl::path("/a/b/c.tar.gz").stem(1), "c.tar");
+    EXPECT_EQ(cutl::path("/a/b/c.tar.gz").stem(2), "c");
+    EXPECT_EQ(cutl::path("/a/b/website.min.js.gz").stem(3), "website");
+    // 不带目录的裸文件名
+    EXPECT_EQ(cutl::path("c.txt").stem(), "c");
+    // 目录名里的点不能被误判为文件后缀
+    EXPECT_EQ(cutl::path("/home/a.b/README").stem(), "README");
+    EXPECT_EQ(cutl::path("/home/a.b/c.txt").stem(), "c");
+    // 末尾分隔符会在构造时被去掉，因此取到的是最后一级目录名
+    EXPECT_EQ(cutl::path("/a/b/").stem(), "b");
+}
+
+// 以点开头且没有其他点的文件（如 .bashrc），本库的 extension() 会把整个名字视为后缀，
+// 因此 stem() 返回空串。这与 std::filesystem::path::stem() 不同，
+// 后者会返回 ".bashrc"。此处把本库的取值固定下来，避免无意改动。
+TEST(FilePathTest, StemOfDotFile)
+{
+    EXPECT_EQ(cutl::path("/tmp/.bashrc").extension(), ".bashrc");
+    EXPECT_EQ(cutl::path("/tmp/.bashrc").stem(), "");
+    // 点开头但另有后缀时，前导点属于主干
+    EXPECT_EQ(cutl::path("/tmp/.config.json").stem(), ".config");
+    EXPECT_EQ(cutl::path("/tmp/.config.json").extension(), ".json");
+}
+
+// stem() 与 extension() 必须严格互补：两者拼接后等于 basename()。
+// 这条不变式保证了无论后缀怎么判定，都不会丢字符或多字符。
+TEST(FilePathTest, StemPlusExtensionEqualsBasename)
+{
+    const std::vector<std::string> paths = {
+        "/a/b/c.txt",   "/a/b/c",          "/a/b/c.tar.gz", "/a/b/website.min.js.gz",
+        "/tmp/.bashrc", "/tmp/.config.json", "c.txt",       "/home/a.b/README",
+        "noext",        "/a/b/",
+    };
+
+    for (const auto& p : paths)
+    {
+        auto fp = cutl::path(p);
+        for (uint8_t n = 1; n <= 3; ++n)
+        {
+            EXPECT_EQ(fp.stem(n) + fp.extension(n), fp.basename())
+              << "path=" << p << ", max_dot_number=" << static_cast<int>(n);
+        }
+    }
+}
+
 TEST(FilePathTest, ExistsAndType)
 {
     // /tmp 目录绝大多数 *nix 平台都存在

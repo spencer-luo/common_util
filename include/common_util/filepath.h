@@ -185,6 +185,23 @@ namespace cutl
         std::string extension(uint8_t max_dot_number = 1) const;
 
         /**
+         * @brief Get the filename of the filepath without the extension.
+         *
+         * It always holds that stem(n) + extension(n) == basename(), for any n.
+         *
+         * @note For a dotfile whose name begins with a dot and has no other dot, such as
+         * ".bashrc", the leading dot is treated as the beginning of the extension, so
+         * extension() returns ".bashrc" and stem() returns an empty string. This keeps stem()
+         * consistent with extension() of this library, and differs from
+         * std::filesystem::path::stem(), which would return ".bashrc" here.
+         *
+         * @param max_dot_number: The maximum possible number of dots in the file extension. For
+         * example, it's 1 for .zip, 2 for .tar.gz, and 3 for .min.js.gz.
+         * @return filename without the extension
+         */
+        std::string stem(uint8_t max_dot_number = 1) const;
+
+        /**
          * @brief Replace the file extension with the new one and return the new path
          *
          * @param new_extension: The new string of the file extension to be replaced.

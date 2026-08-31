@@ -442,6 +442,12 @@ namespace cutl
         return true;
     }
 
+    // Windows 下无法像 Unix 那样对目录句柄做 fsync，此处与 file_sync 保持一致，不做任何事
+    bool dir_sync(const std::string &dirpath)
+    {
+        return true;
+    }
+
     uint64_t get_last_modified_time_s(const std::string& filepath)
     {
         std::wstring wide_path = s2ws(filepath);

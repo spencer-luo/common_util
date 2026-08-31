@@ -153,10 +153,6 @@ public:
                                         int64_t repeat = -1);
 
     /**
-     * @brief 运行EventLoopBase，如果满足运行条件该接口会阻塞直到Stop被调用
-     */
-
-    /**
      * @brief Start to run the event loop.
      * @note If the running conditions are satisfied, this interface will block until Stop is
      * called.

@@ -64,9 +64,20 @@ namespace cutl
     /**
      * @brief Get the time zone offset in hours.
      *
+     * The result is truncated toward zero, so UTC+05:30 returns 5 and UTC-03:30
+     * returns -3. Use get_timezone_offset_min() when the minute part is needed.
+     *
      * @return int time zone offset in hours
      */
     int get_timezone_offset();
+
+    /**
+     * @brief Get the time zone offset in minutes.
+     *
+     * @return int time zone offset in minutes. For example, Shanghai is 480,
+     * India is 330, and Nepal is 345.
+     */
+    int get_timezone_offset_min();
 
     /**
      * @brief Convert time from milliseconds to seconds.

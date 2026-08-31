@@ -257,6 +257,19 @@ namespace cutl
         return filename.substr(find_pos);
     }
 
+    std::string filepath::stem(uint8_t max_dot_number) const
+    {
+        auto filename = basename();
+        auto find_pos = find_extension_pos(filename, max_dot_number);
+        if (find_pos == std::string::npos)
+        {
+            // 没有后缀名，整个文件名都是主干部分
+            return filename;
+        }
+
+        return filename.substr(0, find_pos);
+    }
+
     std::string filepath::replace_extension(const std::string& new_extension,
                                             uint8_t max_dot_number) const
     {

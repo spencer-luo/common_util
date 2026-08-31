@@ -6,10 +6,15 @@
 #include "common_util/timeutil.h"
 #include <atomic>
 #include <chrono>
+#include <cstdlib>
 #include <ctime>
 #include <gtest/gtest.h>
+#include <string>
 #include <thread>
 #include <vector>
+#ifndef _WIN32
+#include <unistd.h>
+#endif
 
 TEST(TimeUtilTest, UnitConversions)
 {
@@ -52,6 +57,12 @@ TEST(TimeUtilTest, TimezoneOffsetWithinRange)
     int offset = cutl::get_timezone_offset();
     EXPECT_GE(offset, -12);
     EXPECT_LE(offset, 14);
+
+    int offset_min = cutl::get_timezone_offset_min();
+    EXPECT_GE(offset_min, -12 * 60);
+    EXPECT_LE(offset_min, 14 * 60);
+    // 小时接口由分钟接口向 0 截断得到，两套结果必须一致
+    EXPECT_EQ(offset, offset_min / 60);
 }
 
 TEST(TimeUtilTest, CpuClockTime)
@@ -192,30 +203,95 @@ TEST(TimeUtilTest, LocaltimeRoundTripsThroughMktime)
     }
 }
 
-// 本地时间与 UTC 的差值应当等于时区偏移（含夏令时）。
-// 允许半小时/45 分钟制时区，因此按分钟比较。
+// 本地时间与 UTC 的差值应当等于 get_timezone_offset_min()（含夏令时与半小时时区）。
 TEST(TimeUtilTest, LocaltimeAndGmtimeDifferByTimezoneOffset)
 {
-    const time_t s = 1700000000;
+    const time_t s = static_cast<time_t>(cutl::timestamp(cutl::timeunit::s));
     struct tm local = cutl::localtime_s(s);
     struct tm utc = cutl::gmtime_s(s);
 
-    // 换算成 "从各自年初起的分钟数" 再相减，避免跨日/跨年时的进位问题
     auto minutes_of_year = [](const struct tm& t) {
         return static_cast<long>(t.tm_yday) * 24 * 60 + t.tm_hour * 60 + t.tm_min;
     };
     long diff = minutes_of_year(local) - minutes_of_year(utc);
-    // 跨年时 tm_yday 会从 365 跳回 0，做一次回绕修正
     if (local.tm_year != utc.tm_year)
     {
         diff += (local.tm_year > utc.tm_year ? 1 : -1) * 366 * 24 * 60;
     }
 
-    EXPECT_GE(diff, -12 * 60);
-    EXPECT_LE(diff, 14 * 60);
-    // 秒数不受时区影响
+    EXPECT_EQ(diff, cutl::get_timezone_offset_min());
     EXPECT_EQ(local.tm_sec, utc.tm_sec);
 }
+
+#ifndef _WIN32
+namespace
+{
+    class ScopedTimeZone
+    {
+    public:
+        explicit ScopedTimeZone(const char* tz)
+        {
+            const char* old = std::getenv("TZ");
+            had_tz_ = old != nullptr;
+            if (had_tz_)
+            {
+                old_tz_ = old;
+            }
+            setenv("TZ", tz, 1);
+            tzset();
+        }
+
+        ~ScopedTimeZone()
+        {
+            if (had_tz_)
+            {
+                setenv("TZ", old_tz_.c_str(), 1);
+            }
+            else
+            {
+                unsetenv("TZ");
+            }
+            tzset();
+        }
+
+    private:
+        bool had_tz_;
+        std::string old_tz_;
+    };
+} // namespace
+
+// 用没有夏令时、偏移含分钟或超过 ±12 的时区，钉住旧实现会算错的几类值。
+TEST(TimeUtilTest, TimezoneOffsetMinutesKnownZones)
+{
+    const struct
+    {
+        const char* tz;
+        int offset_min;
+    } cases[] = {
+        { "UTC", 0 },
+        { "Asia/Shanghai", 480 },
+        { "Asia/Kolkata", 330 },
+        { "Asia/Kathmandu", 345 },
+        { "Pacific/Kiritimati", 840 },
+    };
+
+    for (const auto& c : cases)
+    {
+        ScopedTimeZone guard(c.tz);
+        EXPECT_EQ(cutl::get_timezone_offset_min(), c.offset_min) << c.tz;
+        EXPECT_EQ(cutl::get_timezone_offset(), c.offset_min / 60) << c.tz;
+    }
+}
+
+#if defined(__GLIBC__) || defined(__APPLE__) || defined(__FreeBSD__)
+TEST(TimeUtilTest, TimezoneOffsetMinutesMatchesTmGmtoff)
+{
+    const time_t s = static_cast<time_t>(cutl::timestamp(cutl::timeunit::s));
+    struct tm local = cutl::localtime_s(s);
+    EXPECT_EQ(cutl::get_timezone_offset_min(), static_cast<int>(local.tm_gmtoff / 60));
+}
+#endif
+#endif
 
 // 这两个函数带 _s 后缀、文档也承诺 "Thread safe"，因此并发行为必须验证：
 // 若内部误用了不可重入的 localtime/gmtime（返回共享静态缓冲区），

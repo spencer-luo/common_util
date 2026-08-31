@@ -50,6 +50,8 @@ void TestTimeZoneOffset()
 
     auto offset = cutl::get_timezone_offset();
     std::cout << "current timezone offset: " << offset << " hours" << std::endl;
+    std::cout << "current timezone offset: " << cutl::get_timezone_offset_min() << " minutes"
+              << std::endl;
 }
 
 void TestTimeutil()

@@ -67,7 +67,18 @@ void TestFmtTimeZoneOffset()
     std::cout << "current timezone offset: " << offset << " hours" << std::endl;
     std::cout << "current timezone offset string: " << cutl::fmt_timezone_offset(offset)
               << std::endl;
+    std::cout << "current timezone offset string (short): "
+              << cutl::fmt_timezone_offset(offset, true) << std::endl;
     std::cout << "current system timezone: " << cutl::fmt_system_timezone() << std::endl;
+
+    auto offset_min = cutl::get_timezone_offset_min();
+    std::cout << "current timezone offset: " << offset_min << " minutes" << std::endl;
+    std::cout << "current timezone offset string (min): "
+              << cutl::fmt_timezone_offset_min(offset_min) << std::endl;
+    std::cout << "current timezone offset string (min, short): "
+              << cutl::fmt_timezone_offset_min(offset_min, true) << std::endl;
+    std::cout << "current system timezone (min): " << cutl::fmt_system_timezone_min()
+              << std::endl;
 }
 
 void TestToBin()

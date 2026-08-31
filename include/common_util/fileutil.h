@@ -271,4 +271,48 @@ namespace cutl
      */
     bool copydir(const filepath &srcdir, const filepath &dstdir);
 
+    /**
+     * @brief Flush the file to disk, only works on unix system.
+     *
+     * It flushes the userspace buffer of the FILE stream first, then persists the file content
+     * and the inode metadata of the file itself.
+     *
+     * @note This does NOT guarantee that the directory entry pointing to the file is persisted.
+     * After creating, removing or renaming a file, the directory entry lives in the parent
+     * directory, so a power loss may leave a state where the content was written but the file
+     * does not exist. Use fsyncdir() on the parent directory, or the fsync(const filepath&)
+     * overload, to persist the directory entry as well.
+     *
+     * @param handle the FILE pointer to be synced
+     * @return true if the file is flushed to disk successfully, false otherwise.
+     */
+    bool fsync(FILE* handle);
+    
+    /**
+     * @brief Flush a file and the directory entry of it to disk, only works on unix system.
+     *
+     * Compared with fsync(FILE*), it additionally persists the directory entry of the file, so
+     * that both the content and the existence of the file survive a power loss.
+     *
+     * @note It opens the file by the given path, so the userspace buffer of any FILE stream
+     * opened on the same file is not flushed by this function. Call fflush() on that stream, or
+     * close it, before calling this function.
+     *
+     * @param path the filepath of the file to be synced
+     * @return true if both the file and its directory entry are flushed to disk successfully,
+     * false otherwise.
+     */
+     bool fsync(const filepath& path);
+
+    /**
+     * @brief Flush a directory itself to disk, only works on unix system.
+     *
+     * It persists the directory entries of the directory, which makes the creation, removal and
+     * renaming of the files inside it survive a power loss.
+     *
+     * @param dirpath the filepath of the directory to be synced
+     * @return true if the directory is flushed to disk successfully, false otherwise.
+     */
+    bool fsyncdir(const filepath& dirpath);
+
 } // namespace cutl

@@ -46,6 +46,9 @@ namespace cutl
 
     // fsync to disk, only for unix system
     bool file_sync(FILE *handle);
+    // 将目录本身落盘，使目录下条目的新建/删除/重命名(即inode索引)在掉电后依然有效，
+    // only for unix system
+    bool dir_sync(const std::string &dirpath);
 
     // 获取文件最近修改时间，返回以秒为单位的时间戳
     uint64_t get_last_modified_time_s(const std::string& filepath);
