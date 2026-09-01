@@ -63,43 +63,53 @@ TEST(StrFmtTest, FmtTimeDuration)
 
 TEST(StrFmtTest, FmtTimeZone)
 {
-    // 默认完整格式：小时 + 分钟
+    // 默认 show_minutes=true，带 :00
     EXPECT_EQ(cutl::fmt_timezone_offset(0), "UTC+00:00");
     EXPECT_EQ(cutl::fmt_timezone_offset(8), "UTC+08:00");
     EXPECT_EQ(cutl::fmt_timezone_offset(-5), "UTC-05:00");
-    EXPECT_EQ(cutl::fmt_timezone_offset(8, false), "UTC+08:00");
+    EXPECT_EQ(cutl::fmt_timezone_offset(8, true), "UTC+08:00");
 
-    // short_format 只展示小时
-    EXPECT_EQ(cutl::fmt_timezone_offset(0, true), "UTC+00");
-    EXPECT_EQ(cutl::fmt_timezone_offset(8, true), "UTC+08");
-    EXPECT_EQ(cutl::fmt_timezone_offset(-5, true), "UTC-05");
-
-    // 仅断言系统时区字符串以 UTC 开头，并且走的是完整格式
-    auto sys_tz = cutl::fmt_system_timezone();
-    EXPECT_EQ(sys_tz.substr(0, 3), "UTC");
-    EXPECT_NE(sys_tz.find(':'), std::string::npos);
+    // show_minutes=false 只展示小时
+    EXPECT_EQ(cutl::fmt_timezone_offset(0, false), "UTC+00");
+    EXPECT_EQ(cutl::fmt_timezone_offset(8, false), "UTC+08");
+    EXPECT_EQ(cutl::fmt_timezone_offset(-5, false), "UTC-05");
 }
 
 TEST(StrFmtTest, FmtTimeZoneMinutes)
 {
-    // 完整格式始终带分钟
+    // 默认 show_minutes=true，始终带分钟（整点也打出 :00）
     EXPECT_EQ(cutl::fmt_timezone_offset_min(0), "UTC+00:00");
     EXPECT_EQ(cutl::fmt_timezone_offset_min(480), "UTC+08:00");
     EXPECT_EQ(cutl::fmt_timezone_offset_min(330), "UTC+05:30");
     EXPECT_EQ(cutl::fmt_timezone_offset_min(345), "UTC+05:45");
     EXPECT_EQ(cutl::fmt_timezone_offset_min(-210), "UTC-03:30");
     EXPECT_EQ(cutl::fmt_timezone_offset_min(840), "UTC+14:00");
+    EXPECT_EQ(cutl::fmt_timezone_offset_min(480, true), "UTC+08:00");
 
-    // short_format：分钟为 0 时省略 :00，非 0 时必须保留，否则印度会退化成 UTC+05
-    EXPECT_EQ(cutl::fmt_timezone_offset_min(0, true), "UTC+00");
-    EXPECT_EQ(cutl::fmt_timezone_offset_min(480, true), "UTC+08");
-    EXPECT_EQ(cutl::fmt_timezone_offset_min(330, true), "UTC+05:30");
-    EXPECT_EQ(cutl::fmt_timezone_offset_min(345, true), "UTC+05:45");
-    EXPECT_EQ(cutl::fmt_timezone_offset_min(-210, true), "UTC-03:30");
-    EXPECT_EQ(cutl::fmt_timezone_offset_min(840, true), "UTC+14");
+    // show_minutes=false 只展示小时，分钟部分被丢弃（印度 330 → UTC+05）
+    EXPECT_EQ(cutl::fmt_timezone_offset_min(0, false), "UTC+00");
+    EXPECT_EQ(cutl::fmt_timezone_offset_min(480, false), "UTC+08");
+    EXPECT_EQ(cutl::fmt_timezone_offset_min(330, false), "UTC+05");
+    EXPECT_EQ(cutl::fmt_timezone_offset_min(345, false), "UTC+05");
+    EXPECT_EQ(cutl::fmt_timezone_offset_min(-210, false), "UTC-03");
+    EXPECT_EQ(cutl::fmt_timezone_offset_min(840, false), "UTC+14");
+}
 
-    EXPECT_EQ(cutl::fmt_system_timezone_min(),
-              cutl::fmt_timezone_offset_min(cutl::get_timezone_offset_min()));
+TEST(StrFmtTest, FmtSystemTimezone)
+{
+    const int offset_min = cutl::get_timezone_offset_min();
+
+    // 默认带分钟，与 fmt_timezone_offset_min(..., true) 一致
+    auto with_min = cutl::fmt_system_timezone();
+    EXPECT_EQ(with_min, cutl::fmt_timezone_offset_min(offset_min, true));
+    EXPECT_EQ(with_min.substr(0, 3), "UTC");
+    EXPECT_NE(with_min.find(':'), std::string::npos);
+
+    // show_minutes=false 只展示小时，不应出现冒号
+    auto hour_only = cutl::fmt_system_timezone(false);
+    EXPECT_EQ(hour_only, cutl::fmt_timezone_offset_min(offset_min, false));
+    EXPECT_EQ(hour_only.substr(0, 3), "UTC");
+    EXPECT_EQ(hour_only.find(':'), std::string::npos);
 }
 
 TEST(StrFmtTest, ToHex)

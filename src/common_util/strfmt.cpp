@@ -202,36 +202,31 @@ std::string align_str_right(const std::string& str, int width, char fill)
         return fmt_timestamp_by_unit(t, timeunit::us, local);
     }
 
-    std::string fmt_timezone_offset(int offset, bool short_format)
+    std::string fmt_timezone_offset(int offset, bool show_minutes)
     {
         std::string sign = offset >= 0 ? "+" : "-";
         int abs_offset = std::abs(offset);
         auto hours = "UTC" + sign + cutl::fmt_uint(abs_offset, 2);
-        return short_format ? hours : hours + ":00";
+        return show_minutes ? hours + ":00" : hours;
     }
 
-    std::string fmt_timezone_offset_min(int offset_min, bool short_format)
+    std::string fmt_timezone_offset_min(int offset_min, bool show_minutes)
     {
         const std::string sign = offset_min >= 0 ? "+" : "-";
         const int abs_min = std::abs(offset_min);
         const int hours = abs_min / 60;
         const int mins = abs_min % 60;
         auto text = "UTC" + sign + cutl::fmt_uint(hours, 2);
-        if (short_format && mins == 0)
+        if (show_minutes)
         {
-            return text;
+            return text + ":" + cutl::fmt_uint(mins, 2);
         }
-        return text + ":" + cutl::fmt_uint(mins, 2);
+        return text;
     }
 
-    std::string fmt_system_timezone()
+    std::string fmt_system_timezone(bool show_minutes)
     {
-        return fmt_timezone_offset(get_timezone_offset());
-    }
-
-    std::string fmt_system_timezone_min()
-    {
-        return fmt_timezone_offset_min(get_timezone_offset_min());
+        return fmt_timezone_offset_min(get_timezone_offset_min(), show_minutes);
     }
 
     static const char HEX_CHARS_UPPER[] = "0123456789ABCDEF";

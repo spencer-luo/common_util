@@ -148,40 +148,40 @@ std::string fmt_timestamp_ms(uint64_t ms, bool local = true);
 std::string fmt_timestamp_us(uint64_t us, bool local = true);
 
 /**
- * @brief Format a timezone offset to a string.
+ * @brief Format a timezone offset in hours to a string.
  *
  * @param offset the timezone offset in hours.
- * @param short_format whether to omit the minutes. When true, the result is like "UTC+08";
- * when false (the default), the result is like "UTC+08:00".
+ * @param show_minutes whether to append ":00". When true (the default), the
+ *        result is like "UTC+08:00"; when false, the result is like "UTC+08".
  * @return std::string the formatted string.
  */
-std::string fmt_timezone_offset(int offset, bool short_format = false);
+std::string fmt_timezone_offset(int offset, bool show_minutes = true);
 
 /**
  * @brief Format a timezone offset in minutes to a string.
  *
- * @param offset_min the timezone offset in minutes.
- * @param short_format whether to omit ":00" when the minute part is zero.
- * When the minute part is not zero, it is always printed, so 330 becomes
- * "UTC+05:30" in both formats. When short_format is false, 480 is "UTC+08:00";
- * when true, 480 is "UTC+08".
+ * @param offset_min the timezone offset in minutes, such as 480 for UTC+08:00,
+ *        330 for UTC+05:30, and 345 for UTC+05:45.
+ * @param show_minutes whether to append the minute part. When true (the default),
+ *        the minute part is always printed, so 330 becomes "UTC+05:30" and 480
+ *        becomes "UTC+08:00". When false, only the hour is printed and the minute
+ *        part is discarded, so 330 becomes "UTC+05".
  * @return std::string the formatted string.
  */
-std::string fmt_timezone_offset_min(int offset_min, bool short_format = false);
+std::string fmt_timezone_offset_min(int offset_min, bool show_minutes = true);
 
 /**
- * @brief Format the system timezone to a string, hour precision only.
+ * @brief Format the current system timezone to a string.
  *
- * @return std::string the formatted string, such as "UTC+08:00".
- */
-std::string fmt_system_timezone();
-
-/**
- * @brief Format the system timezone to a string, including minutes.
+ * It uses get_timezone_offset_min() internally, so half-hour and 45-minute
+ * zones are preserved when show_minutes is true.
  *
- * @return std::string the formatted string, such as "UTC+05:30".
+ * @param show_minutes whether to append the minute part. When true (the default),
+ *        the result includes minutes, such as "UTC+08:00" or "UTC+05:30". When
+ *        false, the result is hour-only, such as "UTC+08" or "UTC+05".
+ * @return std::string the formatted string.
  */
-std::string fmt_system_timezone_min();
+std::string fmt_system_timezone(bool show_minutes = true);
 
 /**
  * @brief Format data to a hex string.
