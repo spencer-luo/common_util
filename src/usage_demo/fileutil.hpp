@@ -310,6 +310,57 @@ void test_rename_and_property()
     std::cout << "rename dir from " << basedir << " to " << basedir2 << std::endl;
 }
 
+void TestRenameFile()
+{
+    PrintSubTitle("TestRenameFile");
+
+    auto basedir = cutl::path("./rename_demo");
+    cutl::createdir(basedir, true);
+
+    // 普通改名
+    auto src = basedir.join("old.txt");
+    auto dst = basedir.join("new.txt");
+    cutl::writetext(src, "hello");
+    auto ok = cutl::renamefile(src, dst);
+    std::cout << "rename " << src << " -> " << dst << " " << (ok ? "success" : "failed")
+              << ", content: " << cutl::readtext(dst) << std::endl;
+
+    // 目标已存在，默认 overwrite_target=false，改名失败，两边内容不变
+    auto from = basedir.join("from.txt");
+    auto to = basedir.join("to.txt");
+    cutl::writetext(from, "src");
+    cutl::writetext(to, "dst");
+    ok = cutl::renamefile(from, to);
+    std::cout << "rename without overwrite (dest exists): " << (ok ? "success" : "failed")
+              << ", from: " << cutl::readtext(from) << ", to: " << cutl::readtext(to) << std::endl;
+
+    // overwrite_target=true，用源文件替换目标，并打一条 warning
+    ok = cutl::renamefile(from, to, true);
+    std::cout << "rename with overwrite_target=true: " << (ok ? "success" : "failed")
+              << ", to: " << cutl::readtext(to) << ", from exists: " << from.exists() << std::endl;
+
+    // 目标是目录时即使 overwrite_target=true 也不覆盖
+    auto file = basedir.join("file.txt");
+    auto todir = basedir.join("todir");
+    cutl::writetext(file, "file");
+    cutl::createdir(todir);
+    ok = cutl::renamefile(file, todir, true);
+    std::cout << "overwrite a directory: " << (ok ? "success" : "failed")
+              << ", file exists: " << file.exists() << ", todir is dir: " << todir.isdir()
+              << std::endl;
+
+    // 目录改名
+    auto dir_old = basedir.join("dir_old");
+    auto dir_new = basedir.join("dir_new");
+    cutl::createdir(dir_old);
+    cutl::writetext(dir_old.join("inner.txt"), "in");
+    ok = cutl::renamefile(dir_old, dir_new);
+    std::cout << "rename dir " << dir_old << " -> " << dir_new << " " << (ok ? "success" : "failed")
+              << ", inner: " << cutl::readtext(dir_new.join("inner.txt")) << std::endl;
+
+    cutl::removedir(basedir, true);
+}
+
 void TestFlagFile()
 {
     PrintSubTitle("TestFlagFile");
@@ -339,5 +390,6 @@ void TestFileUtil()
     // TestCopyFileAndDir();
     // TestRemoveFileAndDir();
     // test_rename_and_property();
-    TestFlagFile();
+    TestRenameFile();
+    // TestFlagFile();
 }

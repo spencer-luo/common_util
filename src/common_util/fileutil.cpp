@@ -17,6 +17,7 @@
  */
 
 #include <cstdio>
+#include <cerrno>
 #include <map>
 #include <iostream>
 #include <cstring>
@@ -277,26 +278,55 @@ namespace cutl
         }
     }
 
-    bool renamefile(const filepath& oldfile, const filepath& newfile)
+    bool renamefile(const filepath& oldfile, const filepath& newfile, bool overwrite_target)
     {
-        if (!oldfile.exists())
+        if (file_same_path(oldfile.str(), newfile.str()))
         {
-            CUTL_ERROR(oldfile.str() + "is not exist.");
+            return true;
+        }
+
+        // 不跟随符号链接：悬空链接的目录项本身也可以被重命名
+        if (!file_lexists(oldfile.str()))
+        {
+            CUTL_ERROR(oldfile.str() + " does not exist.");
             return false;
         }
 
-        if (newfile.exists())
+        const auto dest_parent = parent_dir_of(newfile);
+        if (!cutl::path(dest_parent).exists())
         {
-            CUTL_ERROR("Already exist target file: " + newfile.str());
+            CUTL_ERROR("directory does not exist: " + dest_parent);
             return false;
         }
 
-        int ret = rename(oldfile.str().c_str(), newfile.str().c_str());
-        if (ret != 0)
+        if (overwrite_target && file_lexists(newfile.str()))
         {
-            CUTL_ERROR("rename " + oldfile.str() + " error, ret:" + std::to_string(ret));
+            if (newfile.isdir())
+            {
+                CUTL_ERROR("cannot overwrite directory: " + newfile.str());
+                return false;
+            }
+            CUTL_WARN("overwrite existing target: " + newfile.str());
+        }
+
+        if (!file_rename(oldfile.str(), newfile.str(), overwrite_target))
+        {
             return false;
         }
+
+        // 同目录改名只动一个目录；跨目录移动要落盘新旧两个父目录
+        const auto src_parent = parent_dir_of(oldfile);
+        if (!dir_sync(src_parent))
+        {
+            CUTL_ERROR("dir_sync failed for " + src_parent);
+            return false;
+        }
+        if (src_parent != dest_parent && !dir_sync(dest_parent))
+        {
+            CUTL_ERROR("dir_sync failed for " + dest_parent);
+            return false;
+        }
+
         return true;
     }
 

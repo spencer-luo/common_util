@@ -15,6 +15,7 @@
 #include <string>
 #include <thread>
 #ifndef _WIN32
+#include <sys/stat.h>
 #include <unistd.h>
 #else
 #include <process.h>
@@ -159,6 +160,358 @@ TEST_F(FileUtilTest, RenameFile)
     EXPECT_TRUE(dst.exists());
     EXPECT_EQ(cutl::readtext(dst), "x");
 }
+
+TEST_F(FileUtilTest, RenameFileSamePathIsSuccess)
+{
+    auto file = root_.join("same.txt");
+    ASSERT_TRUE(cutl::writetext(file, "keep"));
+    EXPECT_TRUE(cutl::renamefile(file, file));
+    EXPECT_TRUE(file.exists());
+    EXPECT_EQ(cutl::readtext(file), "keep");
+}
+
+TEST_F(FileUtilTest, RenameFileRejectsExistingDestination)
+{
+    auto src = root_.join("from.txt");
+    auto dst = root_.join("to.txt");
+    ASSERT_TRUE(cutl::writetext(src, "src"));
+    ASSERT_TRUE(cutl::writetext(dst, "dst"));
+    EXPECT_FALSE(cutl::renamefile(src, dst));
+    EXPECT_FALSE(cutl::renamefile(src, dst, false));
+    EXPECT_TRUE(src.exists());
+    EXPECT_EQ(cutl::readtext(src), "src");
+    EXPECT_EQ(cutl::readtext(dst), "dst");
+}
+
+TEST_F(FileUtilTest, RenameFileOverwritesExistingDestination)
+{
+    auto src = root_.join("from.txt");
+    auto dst = root_.join("to.txt");
+    ASSERT_TRUE(cutl::writetext(src, "src"));
+    ASSERT_TRUE(cutl::writetext(dst, "dst"));
+    EXPECT_TRUE(cutl::renamefile(src, dst, true));
+    EXPECT_FALSE(src.exists());
+    EXPECT_TRUE(dst.exists());
+    EXPECT_EQ(cutl::readtext(dst), "src");
+}
+
+TEST_F(FileUtilTest, RenameFileDoesNotOverwriteDirectory)
+{
+    auto src = root_.join("from.txt");
+    auto dst = root_.join("todir");
+    ASSERT_TRUE(cutl::writetext(src, "src"));
+    ASSERT_TRUE(cutl::createdir(dst));
+    EXPECT_FALSE(cutl::renamefile(src, dst, true));
+    EXPECT_TRUE(src.exists());
+    EXPECT_TRUE(dst.isdir());
+}
+
+TEST_F(FileUtilTest, RenameFileRejectsMissingSource)
+{
+    EXPECT_FALSE(cutl::renamefile(root_.join("no_such.txt"), root_.join("dst.txt")));
+}
+
+TEST_F(FileUtilTest, RenameFileRejectsMissingDestinationDirectory)
+{
+    auto src = root_.join("a.txt");
+    ASSERT_TRUE(cutl::writetext(src, "a"));
+    EXPECT_FALSE(cutl::renamefile(src, root_.join("no_such_dir/b.txt")));
+    EXPECT_TRUE(src.exists());
+}
+
+TEST_F(FileUtilTest, RenameFileMovesAcrossDirectories)
+{
+    auto sub = root_.join("sub");
+    ASSERT_TRUE(cutl::createdir(sub));
+    auto src = root_.join("move.txt");
+    auto dst = sub.join("moved.txt");
+    ASSERT_TRUE(cutl::writetext(src, "moved"));
+    EXPECT_TRUE(cutl::renamefile(src, dst));
+    EXPECT_FALSE(src.exists());
+    EXPECT_EQ(cutl::readtext(dst), "moved");
+}
+
+TEST_F(FileUtilTest, RenameDirectory)
+{
+    auto src = root_.join("dir_old");
+    auto dst = root_.join("dir_new");
+    ASSERT_TRUE(cutl::createdir(src));
+    ASSERT_TRUE(cutl::writetext(src.join("inner.txt"), "in"));
+    EXPECT_TRUE(cutl::renamefile(src, dst));
+    EXPECT_FALSE(src.exists());
+    EXPECT_TRUE(dst.isdir());
+    EXPECT_EQ(cutl::readtext(dst.join("inner.txt")), "in");
+}
+
+#ifndef _WIN32
+TEST_F(FileUtilTest, RenameDanglingSymlink)
+{
+    auto link = root_.join("dangling");
+    auto renamed = root_.join("dangling_renamed");
+    if (!cutl::createlink(root_.join("__no_such_target__"), link))
+    {
+        GTEST_SKIP() << "Symlink creation not permitted in this environment.";
+    }
+    EXPECT_TRUE(link.issymlink());
+    EXPECT_TRUE(cutl::renamefile(link, renamed));
+    EXPECT_FALSE(link.issymlink());
+    EXPECT_TRUE(renamed.issymlink());
+}
+#endif
+
+#ifdef _WIN32
+TEST_F(FileUtilTest, RenameFileSamePathIgnoresCase)
+{
+    auto file = root_.join("Same.txt");
+    ASSERT_TRUE(cutl::writetext(file, "keep"));
+    EXPECT_TRUE(cutl::renamefile(file, root_.join("same.txt")));
+    EXPECT_EQ(cutl::readtext(file), "keep");
+}
+#endif
+
+TEST_F(FileUtilTest, RenameFileOverwriteFlagWhenDestinationMissing)
+{
+    auto src = root_.join("from.txt");
+    auto dst = root_.join("to.txt");
+    ASSERT_TRUE(cutl::writetext(src, "src"));
+    EXPECT_TRUE(cutl::renamefile(src, dst, true));
+    EXPECT_FALSE(src.exists());
+    EXPECT_EQ(cutl::readtext(dst), "src");
+}
+
+TEST_F(FileUtilTest, RenameFileOverwritesEmptyDestination)
+{
+    auto src = root_.join("from.txt");
+    auto dst = root_.join("to.txt");
+    ASSERT_TRUE(cutl::writetext(src, "src"));
+    ASSERT_TRUE(cutl::createfile(dst));
+    EXPECT_TRUE(cutl::renamefile(src, dst, true));
+    EXPECT_FALSE(src.exists());
+    EXPECT_EQ(cutl::readtext(dst), "src");
+}
+
+TEST_F(FileUtilTest, RenameFileRejectsExistingDirectoryWhenOverwriteFalse)
+{
+    auto src = root_.join("from.txt");
+    auto dst = root_.join("todir");
+    ASSERT_TRUE(cutl::writetext(src, "src"));
+    ASSERT_TRUE(cutl::createdir(dst));
+    ASSERT_TRUE(cutl::writetext(dst.join("keep.txt"), "keep"));
+    EXPECT_FALSE(cutl::renamefile(src, dst));
+    EXPECT_TRUE(src.exists());
+    EXPECT_TRUE(dst.isdir());
+    EXPECT_EQ(cutl::readtext(dst.join("keep.txt")), "keep");
+}
+
+TEST_F(FileUtilTest, RenameDirectoryRejectsExistingDirectoryWhenOverwriteFalse)
+{
+    auto src = root_.join("dir_src");
+    auto dst = root_.join("dir_dst");
+    ASSERT_TRUE(cutl::createdir(src));
+    ASSERT_TRUE(cutl::writetext(src.join("a.txt"), "a"));
+    ASSERT_TRUE(cutl::createdir(dst));
+    ASSERT_TRUE(cutl::writetext(dst.join("b.txt"), "b"));
+    EXPECT_FALSE(cutl::renamefile(src, dst));
+    EXPECT_TRUE(src.isdir());
+    EXPECT_TRUE(dst.isdir());
+    EXPECT_EQ(cutl::readtext(src.join("a.txt")), "a");
+    EXPECT_EQ(cutl::readtext(dst.join("b.txt")), "b");
+}
+
+TEST_F(FileUtilTest, RenameDirectoryDoesNotOverwriteExistingDirectory)
+{
+    auto src = root_.join("dir_src");
+    auto dst = root_.join("dir_dst");
+    ASSERT_TRUE(cutl::createdir(src));
+    ASSERT_TRUE(cutl::writetext(src.join("a.txt"), "a"));
+    ASSERT_TRUE(cutl::createdir(dst));
+    ASSERT_TRUE(cutl::writetext(dst.join("b.txt"), "b"));
+    EXPECT_FALSE(cutl::renamefile(src, dst, true));
+    EXPECT_TRUE(src.isdir());
+    EXPECT_TRUE(dst.isdir());
+    EXPECT_EQ(cutl::readtext(src.join("a.txt")), "a");
+    EXPECT_EQ(cutl::readtext(dst.join("b.txt")), "b");
+}
+
+TEST_F(FileUtilTest, RenameDirectoryDoesNotOverwriteExistingFile)
+{
+    auto src = root_.join("dir_src");
+    auto dst = root_.join("file_dst.txt");
+    ASSERT_TRUE(cutl::createdir(src));
+    ASSERT_TRUE(cutl::writetext(src.join("a.txt"), "a"));
+    ASSERT_TRUE(cutl::writetext(dst, "file"));
+    EXPECT_FALSE(cutl::renamefile(src, dst, true));
+    EXPECT_TRUE(src.isdir());
+    EXPECT_TRUE(dst.isfile());
+    EXPECT_EQ(cutl::readtext(dst), "file");
+}
+
+TEST_F(FileUtilTest, RenameFileRejectsMissingSourceEvenWithOverwrite)
+{
+    auto dst = root_.join("dst.txt");
+    ASSERT_TRUE(cutl::writetext(dst, "dst"));
+    EXPECT_FALSE(cutl::renamefile(root_.join("no_such.txt"), dst, true));
+    EXPECT_EQ(cutl::readtext(dst), "dst");
+}
+
+TEST_F(FileUtilTest, RenameFileRejectsMissingDestinationDirectoryEvenWithOverwrite)
+{
+    auto src = root_.join("a.txt");
+    ASSERT_TRUE(cutl::writetext(src, "a"));
+    EXPECT_FALSE(cutl::renamefile(src, root_.join("no_such_dir/b.txt"), true));
+    EXPECT_TRUE(src.exists());
+}
+
+TEST_F(FileUtilTest, RenameFileRejectsWhenDestinationParentIsFile)
+{
+    auto notdir = root_.join("notdir");
+    auto src = root_.join("a.txt");
+    ASSERT_TRUE(cutl::writetext(notdir, "x"));
+    ASSERT_TRUE(cutl::writetext(src, "a"));
+    EXPECT_FALSE(cutl::renamefile(src, notdir.join("b.txt")));
+    EXPECT_TRUE(src.exists());
+    EXPECT_EQ(cutl::readtext(notdir), "x");
+}
+
+#ifndef _WIN32
+TEST_F(FileUtilTest, RenameFileRejectsExistingSymlinkWhenOverwriteFalse)
+{
+    auto src = root_.join("from.txt");
+    auto dst = root_.join("to_link");
+    auto target = root_.join("target.txt");
+    ASSERT_TRUE(cutl::writetext(src, "src"));
+    ASSERT_TRUE(cutl::writetext(target, "target"));
+    if (!cutl::createlink(target, dst))
+    {
+        GTEST_SKIP() << "Symlink creation not permitted in this environment.";
+    }
+    EXPECT_FALSE(cutl::renamefile(src, dst));
+    EXPECT_TRUE(src.exists());
+    EXPECT_TRUE(dst.issymlink());
+    EXPECT_EQ(cutl::readtext(target), "target");
+}
+
+TEST_F(FileUtilTest, RenameFileOverwritesExistingSymlink)
+{
+    auto src = root_.join("from.txt");
+    auto dst = root_.join("to_link");
+    auto target = root_.join("target.txt");
+    ASSERT_TRUE(cutl::writetext(src, "src"));
+    ASSERT_TRUE(cutl::writetext(target, "target"));
+    if (!cutl::createlink(target, dst))
+    {
+        GTEST_SKIP() << "Symlink creation not permitted in this environment.";
+    }
+    EXPECT_TRUE(cutl::renamefile(src, dst, true));
+    EXPECT_FALSE(src.exists());
+    EXPECT_FALSE(dst.issymlink());
+    EXPECT_TRUE(dst.isfile());
+    EXPECT_EQ(cutl::readtext(dst), "src");
+    EXPECT_EQ(cutl::readtext(target), "target");
+}
+
+TEST_F(FileUtilTest, RenameFileOverwritesSymlinkToDirectory)
+{
+    auto src = root_.join("from.txt");
+    auto realdir = root_.join("realdir");
+    auto dst = root_.join("dir_link");
+    ASSERT_TRUE(cutl::writetext(src, "src"));
+    ASSERT_TRUE(cutl::createdir(realdir));
+    ASSERT_TRUE(cutl::writetext(realdir.join("inner.txt"), "in"));
+    if (!cutl::createlink(realdir, dst))
+    {
+        GTEST_SKIP() << "Symlink creation not permitted in this environment.";
+    }
+    EXPECT_TRUE(dst.issymlink());
+    EXPECT_FALSE(dst.isdir());
+    EXPECT_TRUE(cutl::renamefile(src, dst, true));
+    EXPECT_TRUE(dst.isfile());
+    EXPECT_EQ(cutl::readtext(dst), "src");
+    EXPECT_TRUE(realdir.isdir());
+    EXPECT_EQ(cutl::readtext(realdir.join("inner.txt")), "in");
+}
+
+TEST_F(FileUtilTest, RenameDanglingSymlinkRejectsExistingDestination)
+{
+    auto link = root_.join("dangling");
+    auto dst = root_.join("exists.txt");
+    ASSERT_TRUE(cutl::writetext(dst, "keep"));
+    if (!cutl::createlink(root_.join("__no_such_target__"), link))
+    {
+        GTEST_SKIP() << "Symlink creation not permitted in this environment.";
+    }
+    EXPECT_FALSE(cutl::renamefile(link, dst));
+    EXPECT_TRUE(link.issymlink());
+    EXPECT_EQ(cutl::readtext(dst), "keep");
+}
+
+TEST_F(FileUtilTest, RenameDanglingSymlinkOverwritesExistingFile)
+{
+    auto link = root_.join("dangling");
+    auto dst = root_.join("exists.txt");
+    ASSERT_TRUE(cutl::writetext(dst, "old"));
+    if (!cutl::createlink(root_.join("__no_such_target__"), link))
+    {
+        GTEST_SKIP() << "Symlink creation not permitted in this environment.";
+    }
+    EXPECT_TRUE(cutl::renamefile(link, dst, true));
+    EXPECT_FALSE(link.issymlink());
+    EXPECT_TRUE(dst.issymlink());
+}
+
+TEST_F(FileUtilTest, RenameFileAcrossFilesystemsIsRejected)
+{
+    auto src = root_.join("exdev.txt");
+    ASSERT_TRUE(cutl::writetext(src, "x"));
+
+    struct stat src_st
+    {
+    };
+    ASSERT_EQ(::stat(src.str().c_str(), &src_st), 0);
+
+    const char* candidates[] = { "/dev/shm", "/tmp", "/run" };
+    std::string other_fs;
+    for (auto* dir : candidates)
+    {
+        struct stat dst_st
+        {
+        };
+        if (::stat(dir, &dst_st) == 0 && dst_st.st_dev != src_st.st_dev)
+        {
+            other_fs = dir;
+            break;
+        }
+    }
+    if (other_fs.empty())
+    {
+        GTEST_SKIP() << "No different filesystem available to trigger EXDEV.";
+    }
+
+    auto dst = cutl::path(other_fs).join(std::string("_ut_rename_exdev_") +
+                                         std::to_string(static_cast<long>(::getpid())) + ".txt");
+    EXPECT_FALSE(cutl::renamefile(src, dst));
+    EXPECT_FALSE(cutl::renamefile(src, dst, true));
+    EXPECT_TRUE(src.exists());
+    EXPECT_FALSE(dst.exists());
+}
+
+TEST_F(FileUtilTest, RenameFileRejectsReadOnlyDestinationDirectory)
+{
+    if (::geteuid() == 0)
+    {
+        GTEST_SKIP() << "root bypasses directory write permission.";
+    }
+
+    auto locked = root_.join("locked");
+    auto src = root_.join("src.txt");
+    ASSERT_TRUE(cutl::createdir(locked));
+    ASSERT_TRUE(cutl::writetext(src, "x"));
+    ASSERT_EQ(::chmod(locked.str().c_str(), 0555), 0);
+    EXPECT_FALSE(cutl::renamefile(src, locked.join("dst.txt")));
+    EXPECT_TRUE(src.exists());
+    ASSERT_EQ(::chmod(locked.str().c_str(), 0755), 0);
+}
+#endif
 
 TEST_F(FileUtilTest, LastModifiedTimeIsRecent)
 {

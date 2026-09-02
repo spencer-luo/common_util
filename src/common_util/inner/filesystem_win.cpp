@@ -5,7 +5,10 @@
 #include "strutil.h"
 #include "timeutil.h"
 #include <Windows.h>
+#include <cstdio>
+#include <cstring>
 #include <direct.h>
+#include <errno.h>
 #include <io.h>
 #include <stdlib.h>
 
@@ -50,6 +53,11 @@ namespace cutl
     bool file_exists(const std::string &filepath)
     {
         return (_access(filepath.c_str(), 0) == 0);
+    }
+
+    bool file_lexists(const std::string &filepath)
+    {
+        return GetFileAttributesA(filepath.c_str()) != INVALID_FILE_ATTRIBUTES;
     }
 
     // https://learn.microsoft.com/zh-cn/cpp/c-runtime-library/reference/access-waccess?view=msvc-170
@@ -471,6 +479,63 @@ namespace cutl
 
         uint64_t timestamp = uli.QuadPart / WINDOWS_TICK - EPOCH_DIFF;
         return timestamp;
+    }
+
+    bool file_same_path(const std::string& lhs, const std::string& rhs)
+    {
+        return _stricmp(lhs.c_str(), rhs.c_str()) == 0;
+    }
+
+    static void log_rename_error(const std::string& from, const std::string& to)
+    {
+        if (errno == EXDEV)
+        {
+            CUTL_ERROR("rename across filesystems is not supported: " + from + " -> " + to);
+        }
+        else
+        {
+            CUTL_ERROR("rename " + from + " -> " + to + " error: " + strerror(errno));
+        }
+    }
+
+    bool file_rename(const std::string& from, const std::string& to, bool overwrite)
+    {
+        if (!overwrite && file_lexists(to))
+        {
+            CUTL_ERROR("target already exists: " + to);
+            return false;
+        }
+
+        if (!overwrite)
+        {
+            if (std::rename(from.c_str(), to.c_str()) == 0)
+            {
+                return true;
+            }
+            log_rename_error(from, to);
+            return false;
+        }
+
+        if (MoveFileExA(from.c_str(), to.c_str(), MOVEFILE_REPLACE_EXISTING))
+        {
+            return true;
+        }
+
+        const DWORD err = GetLastError();
+        if (err == ERROR_NOT_SAME_DEVICE)
+        {
+            errno = EXDEV;
+        }
+        else if (err == ERROR_ALREADY_EXISTS || err == ERROR_FILE_EXISTS)
+        {
+            errno = EEXIST;
+        }
+        else
+        {
+            errno = EIO;
+        }
+        log_rename_error(from, to);
+        return false;
     }
 
 } // namespace cutl

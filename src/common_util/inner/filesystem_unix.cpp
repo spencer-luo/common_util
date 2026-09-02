@@ -5,6 +5,7 @@
 #include "filesystem.h"
 #include "inner/logger.h"
 #include "timeutil.h"
+#include <cstdio>
 #include <cstring>
 #include <dirent.h>
 #include <fcntl.h>
@@ -55,6 +56,12 @@ namespace cutl
     bool file_exists(const std::string &filepath)
     {
         return (access(filepath.c_str(), 0) == 0);
+    }
+
+    bool file_lexists(const std::string &filepath)
+    {
+        struct stat st;
+        return lstat(filepath.c_str(), &st) == 0;
     }
 
     bool file_readable(const std::string &filepath)
@@ -471,6 +478,34 @@ namespace cutl
 
         // 时间精确到秒
         return static_cast<uint64_t>(st.st_mtime);
+    }
+
+    bool file_same_path(const std::string& lhs, const std::string& rhs)
+    {
+        return lhs == rhs;
+    }
+
+    bool file_rename(const std::string& from, const std::string& to, bool overwrite)
+    {
+        if (!overwrite && file_lexists(to))
+        {
+            CUTL_ERROR("target already exists: " + to);
+            return false;
+        }
+
+        if (std::rename(from.c_str(), to.c_str()) == 0)
+        {
+            return true;
+        }
+        if (errno == EXDEV)
+        {
+            CUTL_ERROR("rename across filesystems is not supported: " + from + " -> " + to);
+        }
+        else
+        {
+            CUTL_ERROR("rename " + from + " -> " + to + " error: " + strerror(errno));
+        }
+        return false;
     }
 
 } // namespace cutl

@@ -152,14 +152,25 @@ namespace cutl
     bool removedir(const filepath &path, bool recursive = false);
 
     /**
-     * @brief Rename a file.
+     * @brief Rename a file, directory or symbolic link.
      *
-     * @param oldfile The file path of the file to be renamed.
-     * @param newfile The file path of the new file.
-     * @return true
-     * @return false
+     * The source and destination must be on the same filesystem; crossing volumes
+     * is not supported (no copy-and-delete fallback). If the destination already
+     * exists and overwrite_target is false, the call fails. If overwrite_target
+     * is true and the destination is an existing file or symbolic link, it is
+     * replaced and a warning is logged. A destination directory is not overwritten.
+     * A dangling symbolic link can be renamed because the directory entry itself
+     * is renamed, not its target. Renaming a path to itself is treated as success.
+     *
+     * After a successful rename the parent directory entries are flushed to disk
+     * on unix (both parents when the move is across directories).
+     *
+     * @param oldfile The path to be renamed.
+     * @param newfile The new path. Its parent directory must already exist.
+     * @param overwrite_target Whether to replace an existing destination file.
+     * @return true if the path is renamed successfully, false otherwise.
      */
-    bool renamefile(const filepath& oldfile, const filepath& newfile);
+    bool renamefile(const filepath& oldfile, const filepath& newfile, bool overwrite_target = false);
 
     /**
      * @brief Get the last modified time of a file.

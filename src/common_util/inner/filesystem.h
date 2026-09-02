@@ -17,6 +17,8 @@ namespace cutl
     bool is_special_dir(const std::string &filePath);
 
     bool file_exists(const std::string &filepath);
+    // 路径是否存在（不跟随符号链接，悬空链接也视为存在）
+    bool file_lexists(const std::string &filepath);
     bool file_readable(const std::string &filepath);
     bool file_writable(const std::string &filepath);
     bool file_executable(const std::string &filepath);
@@ -52,5 +54,11 @@ namespace cutl
 
     // 获取文件最近修改时间，返回以秒为单位的时间戳
     uint64_t get_last_modified_time_s(const std::string& filepath);
+
+    // 路径是否视为同一路径（Windows 不区分大小写）
+    bool file_same_path(const std::string& lhs, const std::string& rhs);
+
+    // 重命名。overwrite 为 false 且目标已存在时失败。失败时在函数内记录日志。
+    bool file_rename(const std::string& from, const std::string& to, bool overwrite);
 
 } // namespace cutl
