@@ -64,19 +64,57 @@ constexpr uint8_t cli_clr_bright_cyan = 96;
 #endif
 
 /**
- * @brief Print text with color in console
+ * @brief Print text with color in console.
  *
  * @param str the text string for print
  * @param fgcolor fore-ground, use constant value from cli_clr_xxx
  * @param bgcolor back-ground, use constant value from cli_clr_xxx
+ * @param end suffix appended after the text, default is a newline. Pass "" for no suffix.
  */
-void print_clr(const std::string& str, uint8_t fgcolor, uint8_t bgcolor = cli_clr_black);
+void print_clr(const std::string& str,
+               uint8_t fgcolor,
+               uint8_t bgcolor = cli_clr_black,
+               const char* end = "\n");
 
-void print_debug(const std::string& str);
-void print_info(const std::string& str);
-void print_warn(const std::string& str);
-void print_error(const std::string& str);
-void print_success(const std::string& str);
+/**
+ * @brief Print a debug message in deep gray.
+ *
+ * @param str the text string for print
+ * @param end suffix appended after the text, default is a newline. Pass "" for no suffix.
+ */
+void print_debug(const std::string& str, const char* end = "\n");
+
+/**
+ * @brief Print an info message in white.
+ *
+ * @param str the text string for print
+ * @param end suffix appended after the text, default is a newline. Pass "" for no suffix.
+ */
+void print_info(const std::string& str, const char* end = "\n");
+
+/**
+ * @brief Print a warning message in bright purple.
+ *
+ * @param str the text string for print
+ * @param end suffix appended after the text, default is a newline. Pass "" for no suffix.
+ */
+void print_warn(const std::string& str, const char* end = "\n");
+
+/**
+ * @brief Print an error message in bright red.
+ *
+ * @param str the text string for print
+ * @param end suffix appended after the text, default is a newline. Pass "" for no suffix.
+ */
+void print_error(const std::string& str, const char* end = "\n");
+
+/**
+ * @brief Print a success message in bright green.
+ *
+ * @param str the text string for print
+ * @param end suffix appended after the text, default is a newline. Pass "" for no suffix.
+ */
+void print_success(const std::string& str, const char* end = "\n");
 
 /**
  * @brief Print array with basic data type, such as int, float, double, char, etc.

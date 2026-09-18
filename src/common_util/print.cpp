@@ -1,4 +1,4 @@
-﻿#include "print.h"
+#include "print.h"
 #include <iostream>
 #if defined(_WIN32)
 #include <windows.h>
@@ -32,37 +32,40 @@ void reset_color()
     set_color(cli_clr_white, cli_clr_black);
 }
 
-void print_clr(const std::string& str, uint8_t fgcolor, uint8_t bgcolor)
+void print_clr(const std::string& str, uint8_t fgcolor, uint8_t bgcolor, const char* end)
 {
     set_color(fgcolor, bgcolor);
     std::cout << str;
     reset_color();
-    std::cout << std::endl;
+    if (end != nullptr)
+    {
+        std::cout << end;
+    }
 }
 
-void print_debug(const std::string& str)
+void print_debug(const std::string& str, const char* end)
 {
-    cutl::print_clr(str, cutl::cli_clr_deep_gray);
+    cutl::print_clr(str, cutl::cli_clr_deep_gray, cutl::cli_clr_black, end);
 }
 
-void print_info(const std::string& str)
+void print_info(const std::string& str, const char* end)
 {
-    cutl::print_clr(str, cutl::cli_clr_white);
+    cutl::print_clr(str, cutl::cli_clr_white, cutl::cli_clr_black, end);
 }
 
-void print_warn(const std::string& str)
+void print_warn(const std::string& str, const char* end)
 {
-    cutl::print_clr(str, cutl::cli_clr_bright_purple);
+    cutl::print_clr(str, cutl::cli_clr_bright_purple, cutl::cli_clr_black, end);
 }
 
-void print_error(const std::string& str)
+void print_error(const std::string& str, const char* end)
 {
-    cutl::print_clr(str, cutl::cli_clr_bright_red);
+    cutl::print_clr(str, cutl::cli_clr_bright_red, cutl::cli_clr_black, end);
 }
 
-void print_success(const std::string& str)
+void print_success(const std::string& str, const char* end)
 {
-    cutl::print_clr(str, cutl::cli_clr_bright_green);
+    cutl::print_clr(str, cutl::cli_clr_bright_green, cutl::cli_clr_black, end);
 }
 
 } // namespace cutl
