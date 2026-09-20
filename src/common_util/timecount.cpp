@@ -36,8 +36,7 @@ steady_timecounter::~steady_timecounter()
 {
     auto end_time = clocktime(timeunit::us);
     auto duration = end_time - start_time_;
-    auto text = "[timecounter] " + func_name_ + " used " + fmt_timeduration_us(duration);
-    CUTL_LOGGER.info("", text);
+    CUTL_INFO("[timecounter] " << func_name_ << " used " << fmt_timeduration_us(duration));
 }
 
 // 构造函数，记录开始时间
@@ -52,8 +51,7 @@ cpu_timecounter::~cpu_timecounter()
     uint64_t end_time = cpu_clocktime(timeunit::us);
     uint64_t duration = end_time - start_time_;
 
-    auto text = "[timecounter] " + func_name_ + " used " + fmt_timeduration_us(duration);
-    CUTL_LOGGER.info("", text);
+    CUTL_INFO("[timecounter] " << func_name_ << " used " << fmt_timeduration_us(duration));
 }
 
 } // namespace

@@ -102,7 +102,7 @@ namespace cutl
     {
         if (_mkdir(dir_path.c_str()) != 0)
         {
-            CUTL_ERROR("mkdir error. dir_path:" + dir_path + ", error:" + strerror(errno));
+            CUTL_ERROR("mkdir error. dir_path:" << dir_path << ", error:" << strerror(errno));
             return false;
         }
         return true;
@@ -114,7 +114,7 @@ namespace cutl
     {
         if (_rmdir(dir_path.c_str()) != 0)
         {
-            CUTL_ERROR("rmdir error. dir_path:" + dir_path + ", error:" + strerror(errno));
+            CUTL_ERROR("rmdir error. dir_path:" << dir_path << ", error:" << strerror(errno));
             return false;
         }
         return true;
@@ -129,7 +129,7 @@ namespace cutl
         bool unicode = true;
         if (hFind == INVALID_HANDLE_VALUE || hFind == NULL)
         {
-            CUTL_ERROR("FindFirstFileA failed for " + findpath + ", errCode: " + std::to_string(GetLastError()));
+            CUTL_ERROR("FindFirstFileA failed for " << findpath << ", errCode: " << GetLastError());
             return false;
         }
 
@@ -158,7 +158,7 @@ namespace cutl
                 int ret = remove(filepath.c_str());
                 if (ret != 0)
                 {
-                    CUTL_ERROR("remove " + filepath + " error, ret:" + std::to_string(ret));
+                    CUTL_ERROR("remove " << filepath << " error, ret:" << ret);
                     return false;
                 }
             }
@@ -169,7 +169,7 @@ namespace cutl
         // 删除当前文件夹
         if (_rmdir(dir_path.c_str()) != 0)
         {
-            CUTL_ERROR("rmdir error. dir_path:" + dir_path + ", error:" + strerror(errno));
+            CUTL_ERROR("rmdir error. dir_path:" << dir_path << ", error:" << strerror(errno));
             return false;
         }
 
@@ -183,7 +183,7 @@ namespace cutl
         int ret = stat(filepath.c_str(), &statbuf);
         if (ret != 0)
         {
-            CUTL_ERROR("stat " + filepath + " error, ret:" + std::to_string(ret));
+            CUTL_ERROR("stat " << filepath << " error, ret:" << ret);
             return 0;
         }
 
@@ -201,7 +201,7 @@ namespace cutl
         bool unicode = true;
         if (hFind == INVALID_HANDLE_VALUE || hFind == NULL)
         {
-            CUTL_ERROR("FindFirstFileA failed for " + findpath + ", errCode: " + std::to_string(GetLastError()));
+            CUTL_ERROR("FindFirstFileA failed for " << findpath << ", errCode: " << GetLastError());
             return totalSize;
         }
 
@@ -240,7 +240,7 @@ namespace cutl
 
         if (attributes == INVALID_FILE_ATTRIBUTES)
         {
-            CUTL_WARN("Failed to get file attributes, error code: " + std::to_string(GetLastError()));
+            CUTL_WARN("Failed to get file attributes, error code: " << GetLastError());
             if (extension == ".lnk")
             {
                 // 注意：测试时发现，有些快捷方式访问会失败，用后缀名判断进行兜底
@@ -287,7 +287,7 @@ namespace cutl
     {
         auto attributes = GetFileAttributesA(filepath.c_str());
         auto extension = get_file_extension(filepath);
-        // CUTL_DEBUG(filepath + ", extension: " + extension + ", attributes: " + std::to_string(attributes));
+        // CUTL_DEBUG(filepath << ", extension: " << extension << ", attributes: " << attributes);
         return get_file_type(attributes, extension);
     }
 
@@ -301,7 +301,7 @@ namespace cutl
         HANDLE hFind = FindFirstFileA(findpath.c_str(), &findData);
         if (hFind == INVALID_HANDLE_VALUE || hFind == NULL)
         {
-            CUTL_ERROR("FindFirstFileA failed for " + findpath + ", errCode: " + std::to_string(GetLastError()));
+            CUTL_ERROR("FindFirstFileA failed for " << findpath << ", errCode: " << GetLastError());
             return file_list;
         }
 
@@ -309,7 +309,7 @@ namespace cutl
         {
             auto dwAttrs = findData.dwFileAttributes;
             auto filename = std::string(findData.cFileName);
-            CUTL_DEBUG(filename + ", attributes: " + std::to_string(dwAttrs));
+            CUTL_DEBUG(filename << ", attributes: " << dwAttrs);
             if (is_special_dir(filename))
             {
                 // “..”和“.”不做处理
@@ -376,13 +376,13 @@ namespace cutl
 
         if (h_src == INVALID_HANDLE_VALUE)
         {
-            CUTL_ERROR("Failed to open file " + srcpath + ", error code: " + std::to_string(GetLastError()));
+            CUTL_ERROR("Failed to open file " << srcpath << ", error code: " << GetLastError());
             CloseHandle(h_src);
             return false;
         }
         if (!GetFileTime(h_src, &t_create, &t_access, &t_write))
         {
-            CUTL_ERROR("Failed to get file times for " + srcpath + ", error code: " + std::to_string(GetLastError()));
+            CUTL_ERROR("Failed to get file times for " << srcpath << ", error code: " << GetLastError());
             CloseHandle(h_src);
             return false;
         }
@@ -417,13 +417,13 @@ namespace cutl
 
         if (h_dst == INVALID_HANDLE_VALUE)
         {
-            CUTL_ERROR("Failed to open file " + dstpath + ", error code: " + std::to_string(GetLastError()));
+            CUTL_ERROR("Failed to open file " << dstpath << ", error code: " << GetLastError());
             CloseHandle(h_dst);
             return false;
         }
         if (!SetFileTime(h_dst, &t_create, &t_access, &t_write))
         {
-            CUTL_ERROR("Failed to set file times for " + dstpath + ", error code: " + std::to_string(GetLastError()));
+            CUTL_ERROR("Failed to set file times for " << dstpath << ", error code: " << GetLastError());
             CloseHandle(h_dst);
             return false;
         }
@@ -434,12 +434,12 @@ namespace cutl
         DWORD attributes = GetFileAttributesA(srcpath.c_str());
         if (attributes == INVALID_FILE_ATTRIBUTES)
         {
-            CUTL_ERROR("Failed to get file attributes for " + srcpath + ", error code: " + std::to_string(GetLastError()));
+            CUTL_ERROR("Failed to get file attributes for " << srcpath << ", error code: " << GetLastError());
             return false;
         }
         if (!SetFileAttributesA(dstpath.c_str(), attributes))
         {
-            CUTL_ERROR("Failed to set file attributes for " + dstpath + ", error code: " + std::to_string(GetLastError()));
+            CUTL_ERROR("Failed to set file attributes for " << dstpath << ", error code: " << GetLastError());
             return false;
         }
         return true;
@@ -463,7 +463,7 @@ namespace cutl
 
         if (!GetFileAttributesExW(wide_path.c_str(), GetFileExInfoStandard, &fileData))
         {
-            CUTL_ERROR("Get last modified time failed for " + filepath);
+            CUTL_ERROR("Get last modified time failed for " << filepath);
             return timestamp(timeunit::s);
         }
 
@@ -490,11 +490,11 @@ namespace cutl
     {
         if (errno == EXDEV)
         {
-            CUTL_ERROR("rename across filesystems is not supported: " + from + " -> " + to);
+            CUTL_ERROR("rename across filesystems is not supported: " << from << " -> " << to);
         }
         else
         {
-            CUTL_ERROR("rename " + from + " -> " + to + " error: " + strerror(errno));
+            CUTL_ERROR("rename " << from << " -> " << to << " error: " << strerror(errno));
         }
     }
 
@@ -502,7 +502,7 @@ namespace cutl
     {
         if (!overwrite && file_lexists(to))
         {
-            CUTL_ERROR("target already exists: " + to);
+            CUTL_ERROR("target already exists: " << to);
             return false;
         }
 

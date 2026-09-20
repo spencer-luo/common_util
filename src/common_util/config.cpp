@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @copyright Copyright (c) 2024, Spencer.Luo. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,10 +33,13 @@ namespace cutl
         return CUTL_VERSION;
     }
 
-    void library_init(LogFuncType log_func)
+    void library_init(LogFuncType log_func, loglevel level)
     {
-        CUTL_LOGGER.set_log_func(log_func);
-        CUTL_INFO(library_name() + " library initialized, version:" + library_version());
+        if (!CUTL_LOGGER.init(log_func, level))
+        {
+            CUTL_WARN("library_init() called more than once, only the log level is updated");
+        }
+        CUTL_INFO(library_name() << " library initialized, version:" << library_version());
     }
 
 } // namespace cutl

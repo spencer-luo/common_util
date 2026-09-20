@@ -85,6 +85,12 @@ void PrintColor()
     cutl::print_warn("Warn: Hello World");
     cutl::print_error("Error: Hello World");
     cutl::print_success("Success: Hello World");
+    
+    // 同一行打印多种颜色
+    cutl::print_success("Paragraph 1", "");
+    cutl::print_warn("Paragraph 2", "");
+    cutl::print_error("Paragraph 3");
+
     // 正常打印
     std::cout << "norman: Hello World" << std::endl;
 }

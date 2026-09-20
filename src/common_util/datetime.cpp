@@ -76,7 +76,7 @@ namespace cutl
             result = std::regex_search(time_text, matchRes, fmt_pattern);
             if (result)
             {
-                CUTL_DEBUG("matched regex: " + fmt_text);
+                CUTL_DEBUG("matched regex: " << fmt_text);
                 break;
             }
         }
@@ -84,11 +84,11 @@ namespace cutl
         if (!result || matchRes.size() < 7)
         {
             auto time_fmts = supported_time_formats(fmt_list);
-            CUTL_ERROR("Only the following time formats are supported:\n" + time_fmts);
+            CUTL_ERROR("Only the following time formats are supported:\n" << time_fmts);
             return datetime();
         }
 
-        CUTL_DEBUG("matchRes size:" + std::to_string(matchRes.size()) + ", res:" + matchRes[0].str());
+        CUTL_DEBUG("matchRes size:" << matchRes.size() << ", res:" << matchRes[0].str());
         // 解析毫秒值
         int ms = 0;
         if (matchRes.size() == 8)
@@ -259,13 +259,13 @@ namespace cutl
         std::vector<int> large_month = {1, 3, 5, 7, 8, 10, 12};
         if (std::find(large_month.begin(), large_month.end(), time.tm_mon) != large_month.end() && (time.tm_mday < 1 || time.tm_mday > 31))
         {
-            CUTL_ERROR("the day should be between 1 and 31 for " + std::to_string(time.tm_mon) + " month");
+            CUTL_ERROR("the day should be between 1 and 31 for " << time.tm_mon << " month");
             return false;
         }
         std::vector<int> small_month = {4, 6, 9, 11};
         if (std::find(small_month.begin(), small_month.end(), time.tm_mon) != small_month.end() && (time.tm_mday < 1 || time.tm_mday > 30))
         {
-            CUTL_ERROR("the day should be between 1 and 30 for " + std::to_string(time.tm_mon) + " month");
+            CUTL_ERROR("the day should be between 1 and 30 for " << time.tm_mon << " month");
             return false;
         }
         if (time.tm_mon == 2)
@@ -274,12 +274,12 @@ namespace cutl
             { return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0); };
             if (is_leap_year(time.tm_year) && (time.tm_mday < 1 || time.tm_mday > 29))
             {
-                CUTL_ERROR("the day should be between 1 and 29 for " + std::to_string(time.tm_year) + "-" + fmt_uint(time.tm_mon, 2));
+                CUTL_ERROR("the day should be between 1 and 29 for " << time.tm_year << "-" << fmt_uint(time.tm_mon, 2));
                 return false;
             }
             if (!is_leap_year(time.tm_year) && (time.tm_mday < 1 || time.tm_mday > 28))
             {
-                CUTL_ERROR("the day should be between 1 and 28 for " + std::to_string(time.tm_year) + "-" + fmt_uint(time.tm_mon, 2));
+                CUTL_ERROR("the day should be between 1 and 28 for " << time.tm_year << "-" << fmt_uint(time.tm_mon, 2));
                 return false;
             }
         }

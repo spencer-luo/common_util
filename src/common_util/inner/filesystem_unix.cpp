@@ -46,7 +46,7 @@ namespace cutl
         auto pAbsolutePath = realpath(releative_path.c_str(), absPath);
         if (pAbsolutePath == nullptr)
         {
-            CUTL_WARN("realpath failure for " + releative_path + ", pAbsolutePath is nullptr, absPath:" + absPath);
+            CUTL_WARN("realpath failure for " << releative_path << ", pAbsolutePath is nullptr, absPath:" << absPath);
             return std::string(absPath);
         }
 
@@ -85,7 +85,7 @@ namespace cutl
         ssize_t len = ::readlink(filepath.c_str(), buffer, MAX_PATH_LEN);
         if (len < 0)
         {
-            CUTL_ERROR("readlink error. filepath:" + filepath + ", error:" + strerror(errno));
+            CUTL_ERROR("readlink error. filepath:" << filepath << ", error:" << strerror(errno));
             return "";
         }
         return std::string(buffer, len);
@@ -96,7 +96,7 @@ namespace cutl
         int ret = ::symlink(referenece.c_str(), filepath.c_str());
         if (ret != 0)
         {
-            CUTL_ERROR("symlink error. filepath:" + filepath + ", referenece:" + referenece + ", error:" + strerror(errno));
+            CUTL_ERROR("symlink error. filepath:" << filepath << ", referenece:" << referenece << ", error:" << strerror(errno));
             return false;
         }
         return true;
@@ -107,7 +107,7 @@ namespace cutl
         int ret = ::unlink(filepath.c_str());
         if (ret != 0)
         {
-            CUTL_ERROR("unlink error. filepath:" + filepath + ", error:" + strerror(errno));
+            CUTL_ERROR("unlink error. filepath:" << filepath << ", error:" << strerror(errno));
             return false;
         }
         return true;
@@ -118,7 +118,7 @@ namespace cutl
     {
         if (mkdir(dir_path.c_str(), S_IRWXU | S_IRWXG | S_IRWXO | S_IWOTH) != 0)
         {
-            CUTL_ERROR("mkdir error. dir_path:" + dir_path + ", error:" + strerror(errno));
+            CUTL_ERROR("mkdir error. dir_path:" << dir_path << ", error:" << strerror(errno));
             return false;
         }
         return true;
@@ -128,7 +128,7 @@ namespace cutl
     {
         if (rmdir(dir_path.c_str()) != 0)
         {
-            CUTL_ERROR("rmdir error. dir_path:" + dir_path + ", error:" + strerror(errno));
+            CUTL_ERROR("rmdir error. dir_path:" << dir_path << ", error:" << strerror(errno));
             return false;
         }
         return true;
@@ -139,7 +139,7 @@ namespace cutl
         DIR *dir = opendir(dir_path.c_str()); // 打开这个目录
         if (dir == NULL)
         {
-            CUTL_ERROR("opendir error. dir_path:" + dir_path + ", error:" + strerror(errno));
+            CUTL_ERROR("opendir error. dir_path:" << dir_path << ", error:" << strerror(errno));
             return false;
         }
         struct dirent *file_info = NULL;
@@ -157,7 +157,7 @@ namespace cutl
             int ret = lstat(filepath.c_str(), &file_stat);
             if (0 != ret)
             {
-                CUTL_ERROR("stat error. filepath:" + filepath + ", error:" + strerror(errno));
+                CUTL_ERROR("stat error. filepath:" << filepath << ", error:" << strerror(errno));
                 closedir(dir);
                 return false;
             }
@@ -174,7 +174,7 @@ namespace cutl
                 int ret = remove(filepath.c_str());
                 if (ret != 0)
                 {
-                    CUTL_ERROR("remove " + filepath + " error, ret:" + std::to_string(ret));
+                    CUTL_ERROR("remove " << filepath << " error, ret:" << ret);
                     closedir(dir);
                     return false;
                 }
@@ -186,7 +186,7 @@ namespace cutl
         int ret = rmdir(dir_path.c_str());
         if (ret != 0)
         {
-            CUTL_ERROR("rmdir error. dir_path:" + dir_path + ", error:" + strerror(errno));
+            CUTL_ERROR("rmdir error. dir_path:" << dir_path << ", error:" << strerror(errno));
             return false;
         }
 
@@ -208,7 +208,7 @@ namespace cutl
 
         if (ret != 0)
         {
-            CUTL_ERROR("stat " + filepath + " error, ret:" + std::to_string(ret));
+            CUTL_ERROR("stat " << filepath << " error, ret:" << ret);
             return 0;
         }
 
@@ -258,7 +258,7 @@ namespace cutl
         DIR *dir = opendir(dirpath.c_str()); // 打开这个目录
         if (dir == NULL)
         {
-            CUTL_ERROR("opendir error. dirpath:" + dirpath + ", error:" + strerror(errno));
+            CUTL_ERROR("opendir error. dirpath:" << dirpath << ", error:" << strerror(errno));
             return totalSize;
         }
         struct dirent *file_info = NULL;
@@ -276,7 +276,7 @@ namespace cutl
             int ret = lstat(filepath.c_str(), &file_stat);
             if (0 != ret)
             {
-                CUTL_ERROR("stat error. filepath:" + filepath + ", error:" + strerror(errno));
+                CUTL_ERROR("stat error. filepath:" << filepath << ", error:" << strerror(errno));
                 closedir(dir);
                 return totalSize;
             }
@@ -303,7 +303,7 @@ namespace cutl
         int ret = lstat(filepath.c_str(), &file_stat);
         if (0 != ret)
         {
-            CUTL_ERROR("stat error. filepath:" + filepath + ", error:" + strerror(errno));
+            CUTL_ERROR("stat error. filepath:" << filepath << ", error:" << strerror(errno));
             return filetype::ft_unknown;
         }
 
@@ -316,7 +316,7 @@ namespace cutl
         DIR *dir = opendir(dirpath.c_str()); // 打开这个目录
         if (dir == NULL)
         {
-            CUTL_ERROR("opendir error. dirpath:" + dirpath + ", error:" + strerror(errno));
+            CUTL_ERROR("opendir error. dirpath:" << dirpath << ", error:" << strerror(errno));
             return file_list;
         }
         struct dirent *file_info = NULL;
@@ -334,7 +334,7 @@ namespace cutl
             int ret = lstat(filepath.c_str(), &file_stat);
             if (0 != ret)
             {
-                CUTL_ERROR("stat error. filepath:" + filepath + ", error:" + strerror(errno));
+                CUTL_ERROR("stat error. filepath:" << filepath << ", error:" << strerror(errno));
                 closedir(dir);
                 return file_list;
             }
@@ -367,7 +367,7 @@ namespace cutl
         int ret = lstat(srcpath.c_str(), &attr_of_src);
         if (ret != 0)
         {
-            CUTL_ERROR("lstat error. srcpath:" + srcpath + ", error:" + strerror(errno));
+            CUTL_ERROR("lstat error. srcpath:" << srcpath << ", error:" << strerror(errno));
             return false;
         }
 
@@ -375,14 +375,14 @@ namespace cutl
         ret = chmod(dstpath.c_str(), attr_of_src.st_mode);
         if (ret != 0)
         {
-            CUTL_ERROR("chmod error. dstpath:" + dstpath + ", error:" + strerror(errno));
+            CUTL_ERROR("chmod error. dstpath:" << dstpath << ", error:" << strerror(errno));
             return false;
         }
         // 修改文件用户组
         ret = chown(dstpath.c_str(), attr_of_src.st_uid, attr_of_src.st_gid);
         if (ret != 0)
         {
-            CUTL_ERROR("chown error. dstpath:" + dstpath + ", error:" + strerror(errno));
+            CUTL_ERROR("chown error. dstpath:" << dstpath << ", error:" << strerror(errno));
             return false;
         }
 
@@ -398,7 +398,7 @@ namespace cutl
             // ret = lutimes(dstpath.c_str(), time_buf);
             // if (ret != 0)
             // {
-            //     CUTL_ERROR("lutimes error. dstpath:" + dstpath + ", error:" + strerror(errno));
+            //     CUTL_ERROR("lutimes error. dstpath:" << dstpath << ", error:" << strerror(errno));
             //     return false;
             // }
         }
@@ -410,7 +410,7 @@ namespace cutl
             ret = utime(dstpath.c_str(), &tbuf);
             if (ret != 0)
             {
-                CUTL_ERROR("utime error. dstpath:" + dstpath + ", error:" + strerror(errno));
+                CUTL_ERROR("utime error. dstpath:" << dstpath << ", error:" << strerror(errno));
                 return false;
             }
         }
@@ -423,13 +423,13 @@ namespace cutl
         int32_t fd = fileno(handle);
         if (fd < 0)
         {
-            CUTL_ERROR(std::string("get file fd is error: ") + strerror(errno));
+            CUTL_ERROR("get file fd is error: " << strerror(errno));
             return false;
         }
         int ret = fsync(fd);
         if (ret != 0)
         {
-            CUTL_ERROR(std::string("fsync error: ") + strerror(errno));
+            CUTL_ERROR("fsync error: " << strerror(errno));
             return false;
         }
         return true;
@@ -444,20 +444,20 @@ namespace cutl
         int fd = open(dirpath.c_str(), O_RDONLY);
         if (fd < 0)
         {
-            CUTL_ERROR("open directory failure for " + dirpath + ", error:" + strerror(errno));
+            CUTL_ERROR("open directory failure for " << dirpath << ", error:" << strerror(errno));
             return false;
         }
 
         bool success = true;
         if (fsync(fd) != 0)
         {
-            CUTL_ERROR("fsync directory failure for " + dirpath + ", error:" + strerror(errno));
+            CUTL_ERROR("fsync directory failure for " << dirpath << ", error:" << strerror(errno));
             success = false;
         }
 
         if (close(fd) != 0)
         {
-            CUTL_ERROR("close directory failure for " + dirpath + ", error:" + strerror(errno));
+            CUTL_ERROR("close directory failure for " << dirpath << ", error:" << strerror(errno));
             success = false;
         }
 
@@ -471,8 +471,8 @@ namespace cutl
         int ret = stat(filepath.c_str(), &st);
         if (ret != 0)
         {
-            CUTL_ERROR("Get last modified time failed for " + filepath +
-                       " ret:" + std::to_string(ret));
+            CUTL_ERROR("Get last modified time failed for " << filepath <<
+                       " ret:" << ret);
             return timestamp(timeunit::s);
         }
 
@@ -489,7 +489,7 @@ namespace cutl
     {
         if (!overwrite && file_lexists(to))
         {
-            CUTL_ERROR("target already exists: " + to);
+            CUTL_ERROR("target already exists: " << to);
             return false;
         }
 
@@ -499,11 +499,11 @@ namespace cutl
         }
         if (errno == EXDEV)
         {
-            CUTL_ERROR("rename across filesystems is not supported: " + from + " -> " + to);
+            CUTL_ERROR("rename across filesystems is not supported: " << from << " -> " << to);
         }
         else
         {
-            CUTL_ERROR("rename " + from + " -> " + to + " error: " + strerror(errno));
+            CUTL_ERROR("rename " << from << " -> " << to << " error: " << strerror(errno));
         }
         return false;
     }

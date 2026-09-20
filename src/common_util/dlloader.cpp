@@ -10,7 +10,7 @@ dlloader::dlloader(const std::string& lib_path)
     library_handle_ = load_library(lib_path);
     if (!library_handle_)
     {
-        CUTL_ERROR("Load library(" + lib_path + ") failed: " + get_last_error());
+        CUTL_ERROR("Load library(" << lib_path << ") failed: " << get_last_error());
     }
 }
 
@@ -37,7 +37,7 @@ dl_handle_t dlloader::get_symbol(const std::string& symbol_name)
       static_cast<dl_handle_t>(get_symbol_address(library_handle_, symbol_name));
     if (!handle)
     {
-        CUTL_ERROR("get_symbol_address error for " + symbol_name + ", errMsg:" + get_last_error());
+        CUTL_ERROR("get_symbol_address error for " << symbol_name << ", errMsg:" << get_last_error());
         return nullptr;
     }
     return handle;

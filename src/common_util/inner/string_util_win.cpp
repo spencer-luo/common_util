@@ -22,7 +22,7 @@ std::string wstring2string(const std::wstring& ws)
     errno_t ret = wcstombs_s(&convertedChars, chDest, nDestSize, ws.c_str(), _TRUNCATE);
     if (ret != 0)
     {
-        CUTL_ERROR("wcstombs_s error, ret:" + ret);
+        CUTL_ERROR("wcstombs_s error, ret:" << ret);
     }
 
     std::string strResult = chDest;
@@ -39,7 +39,7 @@ std::wstring string2wstring(const std::string& s)
     errno_t ret = mbstowcs_s(&convertedChars, wchDest, nDestSize, s.c_str(), _TRUNCATE);
     if (ret != 0)
     {
-        CUTL_ERROR("mbstowcs_s error, ret:" + ret);
+        CUTL_ERROR("mbstowcs_s error, ret:" << ret);
     }
 
     std::wstring wstrResult = wchDest;

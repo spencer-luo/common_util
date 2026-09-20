@@ -25,7 +25,7 @@ struct TimerTask
     void cancel()
     {
         left_times_.store(0);
-        CUTL_WARN("TimerTask[" + name_ + "] is canceled.");
+        CUTL_WARN("TimerTask[" << name_ << "] is canceled.");
     }
 
     void update_left_times()
@@ -48,9 +48,9 @@ struct TimerTask
                   std::chrono::duration_cast<std::chrono::nanoseconds>(next_run_time_ - now)
                     .count();
                 int period_ns = period_.count();
-                CUTL_WARN("TimerTask[" + name_ +
-                          "] The current time exceeds the expected time by at least one period_[" +
-                          std::to_string(period_ns) + "ns]. Delta: " + std::to_string(delta) +
+                CUTL_WARN("TimerTask[" << name_ <<
+                          "] The current time exceeds the expected time by at least one period_[" <<
+                          period_ns << "ns]. Delta: " << delta <<
                           "ns");
 
                 next_run_time_ = now;
@@ -141,8 +141,8 @@ bool eventloop::post_event(const EventloopTask& task)
         if (task_queue_.size() >= task_max_size_)
         {
             CUTL_ERROR(
-              "Task queue is full, discard task. size:" + std::to_string(task_queue_.size()) +
-              ", max_size:" + std::to_string(task_max_size_));
+              "Task queue is full, discard task. size:" << task_queue_.size() <<
+              ", max_size:" << task_max_size_);
             return false;
         }
         empty = task_queue_.empty();
@@ -214,9 +214,9 @@ timer_task_handler eventloop::post_timer_event(const std::string& name,
         std::lock_guard<std::mutex> lock(timer_task_mutex_);
         if (timer_task_queue_.size() >= timer_task_max_size_)
         {
-            CUTL_ERROR("Timer task queue is full, discard task. size:" +
-                       std::to_string(timer_task_queue_.size()) +
-                       ", max_size:" + std::to_string(timer_task_max_size_));
+            CUTL_ERROR("Timer task queue is full, discard task. size:" <<
+                       timer_task_queue_.size() <<
+                       ", max_size:" << timer_task_max_size_);
             return timer_task_handler(nullptr);
         }
     }
@@ -229,11 +229,11 @@ void eventloop::loop_once(EventloopDuration timeout)
 {
     // 处理定时任务
     size_t timer_task_done = handle_timer_task();
-    // CUTL_DEBUG(std::to_string(timer_task_done) + " timer task(s) done.");
+    // CUTL_DEBUG(timer_task_done << " timer task(s) done.");
 
     // 处理普通任务
     size_t task_done = handle_task();
-    // CUTL_DEBUG(std::to_string(task_done) + " task(s) done.");
+    // CUTL_DEBUG(task_done << " task(s) done.");
 
     // 从定时任务队列中获取离当前时间最近的定时任务的到期间隔
     EventloopDuration next_timer_task_duration = get_next_run_time();
@@ -276,8 +276,7 @@ size_t eventloop::handle_timer_task()
             continue;
         }
 
-        // CUTL_INFO("[" + task->name_ + "]left_times:" +
-        // std::to_string(task->left_times_.load()));
+        // CUTL_INFO("[" << task->name_ << "]left_times:" << task->left_times_.load());
         task->func_();
         task->update_left_times();
         ++done;
@@ -322,8 +321,8 @@ eventloop::TimerTaskVec eventloop::get_expired_timer_tasks(EventloopTimePoint no
 
         // auto task_run_time = fmt_timepoint(timerTask->next_run_time_);
         // auto not_time = fmt_timepoint(now);
-        // CUTL_INFO("[" + timerTask->name_ + " : " + std::to_string(count) +
-        //           "] run_time: " + task_run_time + ", now_time:" + not_time);
+        // CUTL_INFO("[" << timerTask->name_ << " : " << count
+        //           << "] run_time: " << task_run_time << ", now_time:" << not_time);
 
         // 最小堆的堆顶元素(任务)的执行时间大于当前时间，说明堆内所有任务均未就绪(未到执行时间)
         if (timerTask->next_run_time_ > now)

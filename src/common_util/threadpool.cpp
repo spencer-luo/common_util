@@ -33,7 +33,7 @@ void threadpool::start(uint32_t thread_num)
 {
     if (is_running_.load())
     {
-        CUTL_WARN("Threadpool " + name_ + " is already running");
+        CUTL_WARN("Threadpool " << name_ << " is already running");
         return;
     }
 
@@ -41,13 +41,13 @@ void threadpool::start(uint32_t thread_num)
     {
         // 获取当前系统支持的并发线程数的估计值
         thread_num = std::thread::hardware_concurrency();
-        CUTL_INFO("Threadpool " + name_ +
-                  " set thread num to hardware_concurrency:" + std::to_string(thread_num));
+        CUTL_INFO("Threadpool " << name_ <<
+                  " set thread num to hardware_concurrency:" << thread_num);
     }
     else
     {
         thread_num = cutl::clamp(thread_num, MIN_THREAD_NUM, MAX_THREAD_NUM);
-        CUTL_INFO("Threadpool " + name_ + " set thread num to " + std::to_string(thread_num));
+        CUTL_INFO("Threadpool " << name_ << " set thread num to " << thread_num);
     }
 
     is_running_.store(true);
@@ -64,7 +64,7 @@ void threadpool::start(uint32_t thread_num)
         cutl::set_current_thread_name(name_ + "_" + std::to_string(i));
         threads_.emplace_back(std::move(thread));
     }
-    CUTL_INFO("Threadpool " + name_ + " started");
+    CUTL_INFO("Threadpool " << name_ << " started");
 }
 
 // clear_in_destroctor为true时，延迟到threadpool的析构函数中清理线程和任务队列
@@ -73,7 +73,7 @@ void threadpool::stop(bool clear_in_destroctor)
 {
     if (!is_running_.load())
     {
-        CUTL_WARN("Threadpool " + name_ + " is already stopped");
+        CUTL_WARN("Threadpool " << name_ << " is already stopped");
         return;
     }
 
@@ -83,14 +83,14 @@ void threadpool::stop(bool clear_in_destroctor)
     {
         clear();
     }
-    CUTL_INFO("Threadpool " + name_ + " stopped");
+    CUTL_INFO("Threadpool " << name_ << " stopped");
 }
 
 bool threadpool::add_task(const Task& task)
 {
     if (!is_running_.load())
     {
-        CUTL_WARN("Threadpool " + name_ + " is already stopped");
+        CUTL_WARN("Threadpool " << name_ << " is already stopped");
         return false;
     }
 
@@ -110,7 +110,7 @@ bool threadpool::add_task(const Task& task, const Duration& timeout)
 {
     if (!is_running_.load())
     {
-        CUTL_WARN("Threadpool " + name_ + " is already stopped");
+        CUTL_WARN("Threadpool " << name_ << " is already stopped");
         return false;
     }
 
@@ -122,7 +122,7 @@ bool threadpool::add_task(const Task& task, const Duration& timeout)
           abs_timeout,
           [this]() { return task_queue_.size() < max_task_size_ || !is_running_.load(); }))
     {
-        CUTL_WARN("Threadpool " + name_ + " post_task_for timeout");
+        CUTL_WARN("Threadpool " << name_ << " post_task_for timeout");
         return false;
     }
     task_queue_.emplace_back(std::move(task));
@@ -141,7 +141,7 @@ void threadpool::call_one_task()
     {
         lock.unlock();
         cv_producer_.notify_one();
-        // CUTL_WARN("Threadpool " + name_ + " task_queue_ is empty");
+        // CUTL_WARN("Threadpool " << name_ << " task_queue_ is empty");
         return;
     }
 

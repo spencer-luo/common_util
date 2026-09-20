@@ -31,13 +31,13 @@ void timer::start()
         thread_.join();
     }
 
-    CUTL_INFO("timer [" + name_ + "] starting...");
+    CUTL_INFO("timer [" << name_ << "] starting...");
 
     // 启动线程
     running_.store(true);
     thread_ = std::thread(&timer::run, this);
 
-    CUTL_INFO("Timer [" + name_ + "] started.");
+    CUTL_INFO("Timer [" << name_ << "] started.");
 }
 
 void timer::stop(bool wait_for_stop)
@@ -47,7 +47,7 @@ void timer::stop(bool wait_for_stop)
         return;
     }
 
-    CUTL_INFO("Timer [" + name_ + "] stoping...");
+    CUTL_INFO("Timer [" << name_ << "] stoping...");
 
     // running_标致设置为false, 并通知线程退出
     running_.store(false);
@@ -60,7 +60,7 @@ void timer::stop(bool wait_for_stop)
         thread_.join();
     }
 
-    CUTL_INFO("Timer [" + name_ + "] stoped.");
+    CUTL_INFO("Timer [" << name_ << "] stoped.");
 }
 
 void timer::run()
@@ -84,8 +84,8 @@ void timer::run()
             auto delta =
               std::chrono::duration_cast<std::chrono::nanoseconds>(expected_end_time - now)
                 .count();
-            CUTL_WARN("Timer [" + name_ + "] The current time exceeds the expected time. period:" +
-                      std::to_string(interval_.count()) + "us, delta:" + std::to_string(delta) +
+            CUTL_WARN("Timer [" << name_ << "] The current time exceeds the expected time. period:" <<
+                      interval_.count() << "us, delta:" << delta <<
                       "us");
             current_period_start_ = now;
             continue;

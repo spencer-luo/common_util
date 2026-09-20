@@ -25,12 +25,9 @@ TEST(ConfigTest, LibraryVersionLooksLikeSemver)
     EXPECT_TRUE(std::regex_match(version, pattern)) << "version=" << version;
 }
 
-TEST(ConfigTest, LibraryInitWithCustomLogger)
+TEST(ConfigTest, LibraryInitCanBeCalledRepeatedly)
 {
-    int call_count = 0;
-    cutl::library_init([&call_count](cutl::loglevel, const std::string&) { ++call_count; });
-    // library_init 内部会调用 CUTL_INFO 一次，因此回调至少被触发一次
-    EXPECT_GE(call_count, 1);
-    // 重新设置成空回调，避免影响后续用例
-    cutl::library_init([](cutl::loglevel, const std::string&) {});
+    // 输出函数只发布一次（test_main 已完成首次初始化），后续调用只更新级别、不替换回调。
+    EXPECT_NO_THROW(cutl::library_init([](cutl::loglevel, const std::string&) {}));
+    EXPECT_NO_THROW(cutl::library_init(nullptr, cutl::loglevel::info_level));
 }

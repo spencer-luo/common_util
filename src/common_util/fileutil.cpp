@@ -61,7 +61,7 @@ namespace cutl
             int ret = fclose(file_);
             if (ret != 0)
             {
-                CUTL_ERROR("fail to close file, ret" + std::to_string(ret));
+                CUTL_ERROR("fail to close file, ret" << ret);
             }
             file_ = nullptr;
         }
@@ -78,11 +78,11 @@ namespace cutl
     {
         if (createfile(flag_file_))
         {
-            CUTL_INFO("Flag file " + flag_file_.str() + " created");
+            CUTL_INFO("Flag file " << flag_file_.str() << " created");
         }
         else
         {
-            CUTL_ERROR("Flag file " + flag_file_.str() + " creation failed");
+            CUTL_ERROR("Flag file " << flag_file_.str() << " creation failed");
         }
     }
 
@@ -100,18 +100,18 @@ namespace cutl
     {
         if (!exists())
         {
-            CUTL_WARN("Flag file " + flag_file_.str() + " does not exist, no need to remove");
+            CUTL_WARN("Flag file " << flag_file_.str() << " does not exist, no need to remove");
             return true;
         }
 
         auto result = removefile(flag_file_);
         if (result)
         {
-            CUTL_INFO("Flag file " + flag_file_.str() + " removed");
+            CUTL_INFO("Flag file " << flag_file_.str() << " removed");
         }
         else
         {
-            CUTL_ERROR("Flag file " + flag_file_.str() + " removal failed");
+            CUTL_ERROR("Flag file " << flag_file_.str() << " removal failed");
         }
 
         return result;
@@ -138,7 +138,7 @@ namespace cutl
         auto dir = parent_dir_of(path);
         if (!dir_sync(dir))
         {
-            CUTL_ERROR("dir_sync failed for " + dir);
+            CUTL_ERROR("dir_sync failed for " << dir);
             return false;
         }
         return true;
@@ -149,32 +149,32 @@ namespace cutl
         auto dirPath = path.dirname();
         if (dirPath.empty())
         {
-            CUTL_ERROR("invalid path: " + path.str());
+            CUTL_ERROR("invalid path: " << path.str());
             return false;
         }
         if (!cutl::path(dirPath).exists())
         {
-            CUTL_ERROR("directory does not exist: " + dirPath);
+            CUTL_ERROR("directory does not exist: " << dirPath);
             return false;
         }
 
         file_guard fg(fopen(path.str().c_str(), "w"));
         if (fg.getfd() == nullptr)
         {
-            CUTL_ERROR("fail to open file:" + path.str());
+            CUTL_ERROR("fail to open file:" << path.str());
             return false;
         }
 
         int ret = fflush(fg.getfd());
         if (0 != ret)
         {
-            CUTL_ERROR("fail to flush file:" + path.str());
+            CUTL_ERROR("fail to flush file:" << path.str());
             return false;
         }
 
         if (!file_sync(fg.getfd()))
         {
-            CUTL_ERROR("file_sync failed for " + path.str());
+            CUTL_ERROR("file_sync failed for " << path.str());
             return false;
         }
 
@@ -201,7 +201,7 @@ namespace cutl
             int ret = snprintf(buffer, buf_size, "%s", path.str().c_str());
             if (ret < 0 || ret >= buf_size)
             {
-                CUTL_ERROR("invalid path: " + path.str());
+                CUTL_ERROR("invalid path: " << path.str());
                 return false;
             }
             int len = strlen(buffer);
@@ -223,7 +223,7 @@ namespace cutl
                 {
                     if (!create_dir(temp_path.str()))
                     {
-                        CUTL_ERROR("createdir error. dir:" + temp_path.str());
+                        CUTL_ERROR("createdir error. dir:" << temp_path.str());
                         return false;
                     }
                 }
@@ -236,12 +236,12 @@ namespace cutl
             auto dirPath = path.dirname();
             if (dirPath.empty())
             {
-                CUTL_ERROR("invalid path: " + path.str());
+                CUTL_ERROR("invalid path: " << path.str());
                 return false;
             }
             if (!cutl::path(dirPath).exists())
             {
-                CUTL_ERROR("directory does not exist: " + dirPath);
+                CUTL_ERROR("directory does not exist: " << dirPath);
                 return false;
             }
 
@@ -254,7 +254,7 @@ namespace cutl
         int ret = remove(path.str().c_str());
         if (ret != 0)
         {
-            CUTL_ERROR("remove " + path.str() + " error, ret:" + std::to_string(ret));
+            CUTL_ERROR("remove " << path.str() << " error, ret:" << ret);
             return false;
         }
         return true;
@@ -264,7 +264,7 @@ namespace cutl
     {
         if (!path.exists())
         {
-            CUTL_ERROR("directory does not exist: " + path.str());
+            CUTL_ERROR("directory does not exist: " << path.str());
             return false;
         }
 
@@ -288,14 +288,14 @@ namespace cutl
         // 不跟随符号链接：悬空链接的目录项本身也可以被重命名
         if (!file_lexists(oldfile.str()))
         {
-            CUTL_ERROR(oldfile.str() + " does not exist.");
+            CUTL_ERROR(oldfile.str() << " does not exist.");
             return false;
         }
 
         const auto dest_parent = parent_dir_of(newfile);
         if (!cutl::path(dest_parent).exists())
         {
-            CUTL_ERROR("directory does not exist: " + dest_parent);
+            CUTL_ERROR("directory does not exist: " << dest_parent);
             return false;
         }
 
@@ -303,10 +303,10 @@ namespace cutl
         {
             if (newfile.isdir())
             {
-                CUTL_ERROR("cannot overwrite directory: " + newfile.str());
+                CUTL_ERROR("cannot overwrite directory: " << newfile.str());
                 return false;
             }
-            CUTL_WARN("overwrite existing target: " + newfile.str());
+            CUTL_WARN("overwrite existing target: " << newfile.str());
         }
 
         if (!file_rename(oldfile.str(), newfile.str(), overwrite_target))
@@ -318,12 +318,12 @@ namespace cutl
         const auto src_parent = parent_dir_of(oldfile);
         if (!dir_sync(src_parent))
         {
-            CUTL_ERROR("dir_sync failed for " + src_parent);
+            CUTL_ERROR("dir_sync failed for " << src_parent);
             return false;
         }
         if (src_parent != dest_parent && !dir_sync(dest_parent))
         {
-            CUTL_ERROR("dir_sync failed for " + dest_parent);
+            CUTL_ERROR("dir_sync failed for " << dest_parent);
             return false;
         }
 
@@ -340,7 +340,7 @@ namespace cutl
         file_guard fg(fopen(path.str().c_str(), "r"));
         if (fg.getfd() == nullptr)
         {
-            CUTL_ERROR("open file failed for " + path.str());
+            CUTL_ERROR("open file failed for " << path.str());
             return "";
         }
 
@@ -350,25 +350,25 @@ namespace cutl
         // fseek(fg.getfd(), 0, SEEK_END);
         // size_t data_len = static_cast<size_t>(ftell(fg.getfd()));
         // rewind(fg.getfd());
-        CUTL_DEBUG("file size: " + std::to_string(data_len) + ", file: " + path.str());
+        CUTL_DEBUG("file size: " << data_len << ", file: " << path.str());
 
         // get read size
         if (data_len > max_read_size)
         {
             data_len = max_read_size;
-            CUTL_WARN("file size is large than " + std::to_string(max_read_size) + ", file:" + path.str());
+            CUTL_WARN("file size is large than " << max_read_size << ", file:" << path.str());
         }
 
         char *buffer = new char[data_len + 1];
         if (buffer == nullptr)
         {
-            CUTL_ERROR("buffer alloc failed, data_len:" + std::to_string(data_len));
+            CUTL_ERROR("buffer alloc failed, data_len:" << data_len);
             return "";
         }
         size_t read_len = static_cast<size_t>(fread(buffer, 1, data_len, fg.getfd()));
         if (read_len < data_len)
         {
-            CUTL_ERROR("read file failed, only read " + std::to_string(read_len) + " bytes for " + path.str());
+            CUTL_ERROR("read file failed, only read " << read_len << " bytes for " << path.str());
         }
 
         buffer[read_len] = '\0';
@@ -389,27 +389,27 @@ namespace cutl
         file_guard fg(fopen(path.str().c_str(), "w"));
         if (fg.getfd() == nullptr)
         {
-            CUTL_ERROR("open file failed for " + path.str() + ", error: " + strerror(errno));
+            CUTL_ERROR("open file failed for " << path.str() << ", error: " << strerror(errno));
             return false;
         }
 
         size_t written_size = fwrite(content.c_str(), 1, content.length(), fg.getfd());
         if (written_size != content.length())
         {
-            CUTL_ERROR("written size is not equal to content size for " + path.str());
+            CUTL_ERROR("written size is not equal to content size for " << path.str());
             return false;
         }
 
         int ret = fflush(fg.getfd());
         if (0 != ret)
         {
-            CUTL_ERROR("fail to flush file:" + path.str());
+            CUTL_ERROR("fail to flush file:" << path.str());
             return false;
         }
 
         if (!file_sync(fg.getfd()))
         {
-            CUTL_ERROR("file_sync failed for " + path.str());
+            CUTL_ERROR("file_sync failed for " << path.str());
             return false;
         }
 
@@ -425,7 +425,7 @@ namespace cutl
     {
         if (!filepath.exists())
         {
-            CUTL_ERROR("filepath does not exist: " + filepath.str());
+            CUTL_ERROR("filepath does not exist: " << filepath.str());
             return 0;
         }
 
@@ -482,7 +482,7 @@ namespace cutl
 
     bool copyfile(const filepath &srcpath, const filepath &dstpath, bool attributes)
     {
-        // CUTL_INFO("file type: " + std::to_string(srcpath.type()) + ", " + filetype_flag(srcpath.type()) + ", " + srcpath.str() + ", dstpath:" + dstpath.str());
+        // CUTL_INFO("file type: " << srcpath.type() << ", " << filetype_flag(srcpath.type()) << ", " << srcpath.str() << ", dstpath:" << dstpath.str());
 
         // copy file content
         if (srcpath.isfile())
@@ -495,13 +495,13 @@ namespace cutl
             file_guard frd(fopen(srcpath.str().c_str(), "rb"));
             if (frd.getfd() == nullptr)
             {
-                CUTL_ERROR("open file failed, " + srcpath.str());
+                CUTL_ERROR("open file failed, " << srcpath.str());
                 return false;
             }
             file_guard fwt(fopen(dstpath.str().c_str(), "wb"));
             if (fwt.getfd() == nullptr)
             {
-                CUTL_ERROR("open file failed, " + dstpath.str());
+                CUTL_ERROR("open file failed, " << dstpath.str());
                 return false;
             }
 
@@ -514,7 +514,7 @@ namespace cutl
                 write_len = fwrite(buffer, 1, read_len, fwt.getfd());
                 if (write_len != read_len)
                 {
-                    CUTL_ERROR("write file failed, only write " + std::to_string(write_len) + ", read_len:" + std::to_string(read_len));
+                    CUTL_ERROR("write file failed, only write " << write_len << ", read_len:" << read_len);
                     return false;
                 }
             }
@@ -522,12 +522,12 @@ namespace cutl
             int ret = fflush(fwt.getfd());
             if (0 != ret)
             {
-                CUTL_ERROR("fail to flush file:" + dstpath.str());
+                CUTL_ERROR("fail to flush file:" << dstpath.str());
                 return false;
             }
             if (!file_sync(fwt.getfd()))
             {
-                CUTL_ERROR("file_sync failed for " + dstpath.str());
+                CUTL_ERROR("file_sync failed for " << dstpath.str());
                 return false;
             }
         }
@@ -541,18 +541,18 @@ namespace cutl
             auto link_path = file_readlink(srcpath.str());
             if (link_path.empty())
             {
-                CUTL_ERROR("readlink failed for " + srcpath.str());
+                CUTL_ERROR("readlink failed for " << srcpath.str());
                 return false;
             }
             if (!file_createlink(link_path, dstpath.str()))
             {
-                CUTL_ERROR("createlink failed for " + dstpath.str());
+                CUTL_ERROR("createlink failed for " << dstpath.str());
                 return false;
             }
         }
         else
         {
-            CUTL_ERROR("not a file or symlink, cannot copy: [" + filetype_flag(srcpath.type()) + "]" + srcpath.str());
+            CUTL_ERROR("not a file or symlink, cannot copy: [" << filetype_flag(srcpath.type()) << "]" << srcpath.str());
             return false;
         }
 
@@ -577,13 +577,13 @@ namespace cutl
     {
         if (!srcdir.isdir())
         {
-            CUTL_ERROR("srcdir is not a directory: " + srcdir.str());
+            CUTL_ERROR("srcdir is not a directory: " << srcdir.str());
             return false;
         }
 
         if (!dstdir.exists() && !createdir(dstdir, true))
         {
-            CUTL_ERROR("createdir failed for " + dstdir.str());
+            CUTL_ERROR("createdir failed for " << dstdir.str());
             return false;
         }
 
@@ -616,7 +616,7 @@ namespace cutl
             }
             else
             {
-                CUTL_WARN("the file cannot be copy: [" + filetype_flag(srcpath.type()) + "]" + srcpath.str());
+                CUTL_WARN("the file cannot be copy: [" << filetype_flag(srcpath.type()) << "]" << srcpath.str());
                 continue;
             }
         }
@@ -646,7 +646,7 @@ namespace cutl
     {
         if (!dirpath.isdir())
         {
-            CUTL_ERROR(dirpath.str() + " is not a directory.");
+            CUTL_ERROR(dirpath.str() << " is not a directory.");
             return false;
         }
 
@@ -658,13 +658,13 @@ namespace cutl
         file_guard fg(fopen(path.str().c_str(), "r"));
         if (fg.getfd() == nullptr)
         {
-            CUTL_ERROR("fail to open file:" + path.str());
+            CUTL_ERROR("fail to open file:" << path.str());
             return false;
         }
 
         if (!file_sync(fg.getfd()))
         {
-            CUTL_ERROR("file_sync failed for " + path.str());
+            CUTL_ERROR("file_sync failed for " << path.str());
             return false;
         }
 

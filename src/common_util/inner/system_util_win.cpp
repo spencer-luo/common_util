@@ -19,7 +19,7 @@ namespace cutl
         int ret = system(cmd.c_str());
         if (ret != 0)
         {
-            CUTL_ERROR(std::string("system failure, error") + strerror(errno));
+            CUTL_ERROR("system failure, error" << strerror(errno));
             return false;
         }
 

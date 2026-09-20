@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @copyright Copyright (c) 2024, Spencer.Luo. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,8 +39,12 @@ namespace cutl
     /**
      * @brief Initialize the library.
      *
+     * The log function is published only once. Later calls update the log level
+     * but do not replace the already installed log function.
+     *
      * @param log_func The function pointer for LogFuncType, register a log function for the library.
+     * @param level The minimum log level to output. Messages below this level are discarded.
      */
-    void library_init(LogFuncType log_func);
+    void library_init(LogFuncType log_func, loglevel level = loglevel::info_level);
 
 } // namespace cutl

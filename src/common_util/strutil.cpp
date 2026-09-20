@@ -163,7 +163,7 @@ namespace cutl
         if (pattern.empty())
         {
             // 空分隔符无法切分，原样返回，避免调用方拿到一堆空串
-            CUTL_ERROR("the separator is empty, cannot split the string: " + str);
+            CUTL_ERROR("the separator is empty, cannot split the string: " << str);
             res.emplace_back(str);
             return res;
         }

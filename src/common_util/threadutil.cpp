@@ -25,7 +25,7 @@ void set_current_thread_name(const std::string& name)
     HRESULT hr = SetThreadDescription(GetCurrentThread(), wname.c_str());
     if (FAILED(hr))
     {
-        CUTL_ERROR("Failed to set thread name on Windows. name" + name);
+        CUTL_ERROR("Failed to set thread name on Windows. name" << name);
     }
 #elif defined(__APPLE__)
     pthread_setname_np(name.c_str());
@@ -33,14 +33,14 @@ void set_current_thread_name(const std::string& name)
     // Linux 平台使用 pthread_setname_np 设置线程名称
     if (name.length() > 15)
     {
-        CUTL_WARN("The number of characters in the thread name exceeds 15 characters. name: " +
+        CUTL_WARN("The number of characters in the thread name exceeds 15 characters. name: " <<
                   name);
     }
     int result = pthread_setname_np(pthread_self(), name.c_str());
     if (result != 0)
     {
-        CUTL_ERROR("Failed to set thread name on Linux. name: " + name +
-                   ", result:" + std::to_string(result));
+        CUTL_ERROR("Failed to set thread name on Linux. name: " << name <<
+                   ", result:" << result);
     }
 #endif
 }
@@ -54,7 +54,7 @@ std::string get_current_thread_name()
     if (!SUCCEEDED(hr))
     {
         auto dwErr = GetLastError();
-        CUTL_ERROR("get thread name failed. errMsg:" + std::to_string(dwErr));
+        CUTL_ERROR("get thread name failed. errMsg:" << dwErr);
         return {};
     }
     std::wstring wname(desc);
@@ -66,7 +66,7 @@ std::string get_current_thread_name()
     int ret = pthread_getname_np(pthread_self(), thread_name, sizeof(thread_name));
     if (ret != 0)
     {
-        CUTL_ERROR("get thread name failed. ret:" + std::to_string(ret));
+        CUTL_ERROR("get thread name failed. ret:" << ret);
         return {};
     }
 

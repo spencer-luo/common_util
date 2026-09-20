@@ -61,7 +61,7 @@ namespace cutl
         {
             std::string cmd = "uname -m";
             callcmd(cmd, arch);
-            CUTL_DEBUG("cmd: " + cmd + ", result: " + arch);
+            CUTL_DEBUG("cmd: " << cmd << ", result: " << arch);
         }
         return arch;
 #endif
@@ -176,7 +176,7 @@ namespace cutl
         FILE *fp = pipline_open(cmd);
         if (fp == NULL)
         {
-            CUTL_ERROR("pipline_open error for cmd: " + cmd);
+            CUTL_ERROR("pipline_open error for cmd: " << cmd);
             return false;
         }
 
@@ -185,23 +185,23 @@ namespace cutl
         char *res = fgets(buffer, sizeof(buffer), fp);
         if (res == NULL)
         {
-            CUTL_ERROR("read result error for cmd: " + cmd);
+            CUTL_ERROR("read result error for cmd: " << cmd);
             if (pipline_close(fp) != 0)
             {
-                CUTL_ERROR("pipline_close error for cmd: " + cmd);
+                CUTL_ERROR("pipline_close error for cmd: " << cmd);
             }
             return false;
         }
 
         result = strip(std::string(buffer));
-        CUTL_DEBUG("cmd: " + cmd + ", result: " + result);
+        CUTL_DEBUG("cmd: " << cmd << ", result: " << result);
 
         // pclose() 返回子进程退出状态。部分命令（如 ota_engine -v）会正常输出到 stdout
         // 但以非零退出， 此时已成功拿到输出，仅记录警告，不视为失败。
         int close_ret = pipline_close(fp);
         if (close_ret != 0)
         {
-            CUTL_WARN("pipline_close returned " + std::to_string(close_ret) + " for cmd: " + cmd +
+            CUTL_WARN("pipline_close returned " << close_ret << " for cmd: " << cmd <<
                       " (child exit status), result already read.");
         }
 
@@ -213,7 +213,7 @@ namespace cutl
         const char *text = std::getenv(name.c_str());
         if (text == nullptr)
         {
-            CUTL_ERROR("variable [" + name + "] not set, fallback to " + default_value);
+            CUTL_ERROR("variable [" << name << "] not set, fallback to " << default_value);
             return default_value;
         }
 

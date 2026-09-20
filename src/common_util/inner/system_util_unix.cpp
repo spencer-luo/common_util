@@ -69,8 +69,8 @@ bool call_system(const std::string& cmd)
     if (-1 == status)
     {
         CUTL_ERROR(
-          "Child process could not be created, or its status could not be retrieved. err msg:" +
-          std::string(std::strerror(errno)));
+          "Child process could not be created, or its status could not be retrieved. err msg:" <<
+          std::strerror(errno));
         return false;
     }
 
@@ -86,8 +86,8 @@ bool call_system(const std::string& cmd)
         }
         else
         {
-            CUTL_WARN("The child process exited normally, exit status:" +
-                      std::to_string(exit_code) + ", exit msg: " + parse_exitcode(exit_code));
+            CUTL_WARN("The child process exited normally, exit status:" <<
+                      exit_code << ", exit msg: " << parse_exitcode(exit_code));
             return false;
         }
     }
@@ -98,12 +98,12 @@ bool call_system(const std::string& cmd)
     {
         // (status) & 0x7f
         int signal_code = WTERMSIG(status);
-        CUTL_ERROR("Child process terminated by signal:" + std::to_string(signal_code) +
-                   ", signal msg: " + parse_signal(signal_code));
+        CUTL_ERROR("Child process terminated by signal:" << signal_code <<
+                   ", signal msg: " << parse_signal(signal_code));
         return false;
     }
 
-    CUTL_ERROR("unknow error, status: " + std::to_string(status));
+    CUTL_ERROR("unknow error, status: " << status);
     return false;
 }
 
@@ -113,14 +113,14 @@ int call_system_v2(const std::string& cmd)
     pid_t status;
     status = std::system(cmd.c_str());
 
-    CUTL_DEBUG("status: " + std::to_string(status));
+    CUTL_DEBUG("status: " << status);
 
     // The child process was not created.
     if (-1 == status)
     {
         CUTL_ERROR(
-          "Child process could not be created, or its status could not be retrieved. err msg:" +
-          std::string(std::strerror(errno)));
+          "Child process could not be created, or its status could not be retrieved. err msg:" <<
+          std::strerror(errno));
         return status;
     }
 
@@ -132,8 +132,8 @@ int call_system_v2(const std::string& cmd)
         int exit_code = WEXITSTATUS(status);
         if (exit_code != 0)
         {
-            CUTL_WARN("The child process exited normally, exit status:" +
-                      std::to_string(exit_code) + ", exit msg: " + parse_exitcode(exit_code));
+            CUTL_WARN("The child process exited normally, exit status:" <<
+                      exit_code << ", exit msg: " << parse_exitcode(exit_code));
         }
         return exit_code;
     }
@@ -144,13 +144,13 @@ int call_system_v2(const std::string& cmd)
     {
         // (status) & 0x7f
         int signal_code = WTERMSIG(status);
-        CUTL_ERROR("Child process terminated by signal:" + std::to_string(signal_code) +
-                   ", signal msg: " + parse_signal(signal_code));
+        CUTL_ERROR("Child process terminated by signal:" << signal_code <<
+                   ", signal msg: " << parse_signal(signal_code));
         return signal_code;
     }
 
     // Other unexpected exit status (rare)
-    CUTL_ERROR("Unknow error, status: " + std::to_string(status));
+    CUTL_ERROR("Unknow error, status: " << status);
     return status;
 }
 

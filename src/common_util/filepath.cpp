@@ -130,7 +130,7 @@ namespace cutl
         // 避免拼出形如 "/home/x//stark/..." 的非法路径。
         if (is_absolute_path(filename))
         {
-            CUTL_WARN(filename + " is already absolute path");
+            CUTL_WARN(filename << " is already absolute path");
             return filepath(filename);
         }
         std::string path = filepath_ + separator() + filename;

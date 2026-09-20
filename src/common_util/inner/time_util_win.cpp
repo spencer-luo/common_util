@@ -19,7 +19,7 @@ namespace cutl
         int ret = localtime_s(&datetime, &second);
         if (ret != 0)
         {
-            CUTL_ERROR(std::string("localtime_s failure, error") + strerror(errno));
+            CUTL_ERROR("localtime_s failure, error" << strerror(errno));
             return datetime;
         }
 
@@ -38,7 +38,7 @@ namespace cutl
         int ret = gmtime_s(&datetime, &second);
         if (ret != 0)
         {
-            CUTL_ERROR(std::string("gmtime_s failure, error") + strerror(errno));
+            CUTL_ERROR("gmtime_s failure, error" << strerror(errno));
             return datetime;
         }
 
