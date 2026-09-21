@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
     // TestFilePath();
     // TestFileUtil();
     // TestDlLoader();
-    TestPrint();
+    // TestPrint();
     // TestTimer();
     // TestLRUCache();
     // TestThreadUtil();
@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
     // TestThreadPool();
     // TestAlgorithmUtil();
     // BitmapTest();
-    // TestHash();
+    TestHash();
     // TestBloomFilter();
     // TestHyperLogLog();
     // TestStateMachine();

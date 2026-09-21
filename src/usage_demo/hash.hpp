@@ -32,6 +32,10 @@ void TestFNV1Hash()
     std::cout << str1 << " --> " << cutl::hash_fnv1_32(str1) << std::endl;
     std::cout << str2 << " --> " << cutl::hash_fnv1_32(str2) << std::endl;
 
+    std::cout << "fnv1_64:" << std::endl;
+    std::cout << str1 << " --> " << cutl::hash_fnv1_64(str1) << std::endl;
+    std::cout << str2 << " --> " << cutl::hash_fnv1_64(str2) << std::endl;
+
     std::cout << "fnv1a_32:" << std::endl;
     std::cout << str1 << " --> " << cutl::hash_fnv1a_32(str1) << std::endl;
     std::cout << str2 << " --> " << cutl::hash_fnv1a_32(str2) << std::endl;
@@ -53,8 +57,8 @@ void TestJenkinsHash()
     std::cout << str2 << " --> " << cutl::hash_one_at_a_time(str2) << std::endl;
 
     std::cout << "lookup3:" << std::endl;
-    std::cout << str1 << " --> " << cutl::hash_lookup3(str1.c_str(), str1.length()) << std::endl;
-    std::cout << str2 << " --> " << cutl::hash_lookup3(str2.c_str(), str2.length()) << std::endl;
+    std::cout << str1 << " --> " << cutl::hash_lookup3(str1) << std::endl;
+    std::cout << str2 << " --> " << cutl::hash_lookup3(str2) << std::endl;
 }
 
 void TestMurmurHash()
@@ -65,16 +69,20 @@ void TestMurmurHash()
     std::string str2("我爱中国！");
 
     std::cout << "murmur3_32:" << std::endl;
-    std::cout << str1 << " --> " << cutl::hash_murmur3_32(str1.c_str(), str1.length())
-              << std::endl;
-    std::cout << str2 << " --> " << cutl::hash_murmur3_32(str2.c_str(), str2.length())
-              << std::endl;
+    std::cout << str1 << " --> " << cutl::hash_murmur3_32(str1) << std::endl;
+    std::cout << str2 << " --> " << cutl::hash_murmur3_32(str2) << std::endl;
 
     std::cout << "murmur3_64:" << std::endl;
-    std::cout << str1 << " --> " << cutl::hash_murmur3_64(str1.c_str(), str1.length())
-              << std::endl;
-    std::cout << str2 << " --> " << cutl::hash_murmur3_64(str2.c_str(), str2.length())
-              << std::endl;
+    std::cout << str1 << " --> " << cutl::hash_murmur3_64(str1) << std::endl;
+    std::cout << str2 << " --> " << cutl::hash_murmur3_64(str2) << std::endl;
+
+    std::cout << "murmur2_32:" << std::endl;
+    std::cout << str1 << " --> " << cutl::hash_murmur2_32(str1) << std::endl;
+    std::cout << str2 << " --> " << cutl::hash_murmur2_32(str2) << std::endl;
+
+    std::cout << "murmur2_64:" << std::endl;
+    std::cout << str1 << " --> " << cutl::hash_murmur2_64(str1) << std::endl;
+    std::cout << str2 << " --> " << cutl::hash_murmur2_64(str2) << std::endl;
 }
 
 void TestIntHash()
@@ -95,6 +103,30 @@ void TestIntHash()
     std::cout << "division_hash:" << std::endl;
     std::cout << a << " --> " << cutl::hash_division(a, 20) << std::endl;
     std::cout << b << " --> " << cutl::hash_division(b, 20) << std::endl;
+}
+
+void TestChecksumHash()
+{
+    PrintSubTitle("checksum hash");
+
+    std::string str1("Hello World!");
+    std::string str2("123456789");
+
+    std::cout << "crc16:" << std::endl;
+    std::cout << str1 << " --> " << cutl::hash_crc16(str1) << std::endl;
+    std::cout << str2 << " --> " << cutl::hash_crc16(str2) << std::endl;
+
+    std::cout << "crc32:" << std::endl;
+    std::cout << str1 << " --> " << cutl::hash_crc32(str1) << std::endl;
+    std::cout << str2 << " --> " << cutl::hash_crc32(str2) << std::endl;
+
+    std::cout << "crc32c:" << std::endl;
+    std::cout << str1 << " --> " << cutl::hash_crc32c(str1) << std::endl;
+    std::cout << str2 << " --> " << cutl::hash_crc32c(str2) << std::endl;
+
+    std::cout << "adler32:" << std::endl;
+    std::cout << str1 << " --> " << cutl::hash_adler32(str1) << std::endl;
+    std::cout << str2 << " --> " << cutl::hash_adler32(str2) << std::endl;
 }
 
 void TestStdHash()
@@ -120,5 +152,6 @@ void TestHash()
     TestJenkinsHash();
     TestMurmurHash();
     TestIntHash();
+    TestChecksumHash();
     TestStdHash();
 }
