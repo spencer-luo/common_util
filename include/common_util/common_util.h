@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (c) 2024, Spencer.Luo. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,14 +28,16 @@
 #include "dlloader.h"
 #include "eventloop.h"
 #include "filepath.h"
-// #include "filetype.h"
+#include "filetype.h"
 #include "fileutil.h"
 #include "hash.h"
 #include "hyperloglog.h"
-// #include "logtype.h"
+#include "logtype.h"
 #include "lrucache.h"
+#include "observer.h"
 #include "print.h"
 #include "singleton.h"
+#include "statemachine.h"
 #include "strfmt.h"
 #include "strutil.h"
 #include "sysutil.h"
@@ -44,5 +46,5 @@
 #include "timecount.h"
 #include "timer.h"
 #include "timeutil.h"
-// #include "version.h"
+#include "version.h"
 #include "verutil.h"

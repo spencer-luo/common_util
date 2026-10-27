@@ -1,4 +1,4 @@
-@mainpage
+﻿@mainpage
 
 [![zread](https://img.shields.io/badge/Ask_Zread-_.svg?style=flat&color=00b0aa&labelColor=000000&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTYxNTYgMS42MDAxSDIuMjQxNTZDMS44ODgxIDEuNjAwMSAxLjYwMTU2IDEuODg2NjQgMS42MDE1NiAyLjI0MDFWNC45NjAxQzEuNjAxNTYgNS4zMTM1NiAxLjg4ODEgNS42MDAxIDIuMjQxNTYgNS42MDAxSDQuOTYxNTZDNS4zMTUwMiA1LjYwMDEgNS42MDE1NiA1LjMxMzU2IDUuNjAxNTYgNC45NjAxVjIuMjQwMUM1LjYwMTU2IDEuODg2NjQgNS4zMTUwMiAxLjYwMDEgNC45NjE1NiAxLjYwMDFaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00Ljk2MTU2IDEwLjM5OTlIMi4yNDE1NkMxLjg4ODEgMTAuMzk5OSAxLjYwMTU2IDEwLjY4NjQgMS42MDE1NiAxMS4wMzk5VjEzLjc1OTlDMS42MDE1NiAxNC4xMTM0IDEuODg4MSAxNC4zOTk5IDIuMjQxNTYgMTQuMzk5OUg0Ljk2MTU2QzUuMzE1MDIgMTQuMzk5OSA1LjYwMTU2IDE0LjExMzQgNS42MDE1NiAxMy43NTk5VjExLjAzOTlDNS42MDE1NiAxMC42ODY0IDUuMzE1MDIgMTAuMzk5OSA0Ljk2MTU2IDEwLjM5OTlaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik0xMy43NTg0IDEuNjAwMUgxMS4wMzg0QzEwLjY4NSAxLjYwMDEgMTAuMzk4NCAxLjg4NjY0IDEwLjM5ODQgMi4yNDAxVjQuOTYwMUMxMC4zOTg0IDUuMzEzNTYgMTAuNjg1IDUuNjAwMSAxMS4wMzg0IDUuNjAwMUgxMy43NTg0QzE0LjExMTkgNS42MDAxIDE0LjM5ODQgNS4zMTM1NiAxNC4zOTg0IDQuOTYwMVYyLjI0MDFDMTQuMzk4NCAxLjg4NjY0IDE0LjExMTkgMS42MDAxIDEzLjc1ODQgMS42MDAxWiIgZmlsbD0iI2ZmZiIvPgo8cGF0aCBkPSJNNCAxMkwxMiA0TDQgMTJaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00IDEyTDEyIDQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K&logoColor=ffffff)](https://zread.ai/spencer-luo/common_util)
 
@@ -69,18 +69,19 @@ current time(local time): 2025-05-02 18:29:10.785
 | System Utilities | `dlloader.h` | Dynamic loader for dynamic libraries (shared libraries). |
 | Common Algorithms | `algoutil.h` | Supplementary to `<algorithm>`, providing some commonly used algorithm functions, such as those not available in C++11 but added in later versions. |
 | Common Algorithms | `lrucache.h` | High - performance LRU algorithm template class with an average time complexity of `O(1)` for both `get` and `put`. |
-| Common Algorithms | `hash.h` | Provides common hash function algorithms |
+| Common Algorithms | `hash.h` | Non-cryptographic hashes (polynomial rolling, DJB2, FNV-1/FNV-1a 32/64, Jenkins one-at-a-time and lookup3, MurmurHash2/3 32/64), integer hashes (Thomas Wang, Knuth multiplication, division), and checksums (CRC-16, CRC-32, CRC-32C, Adler-32). Byte APIs take `const uint8_t*` and a length. No cryptographic hashes (MD5/SHA). The speed and usage comparison is in the `hash.h` file comment. |
 | Common Algorithms | `bitmap.h` | An efficient Bitmap data structure class, and provides multiple variant subtypes: `dynamic_bitmap`, `roaring_bitmap`, etc. |
 | Common Algorithms | `bloomfilter.h` | Bloom filter algorithm |
 | Common Algorithms | `hyperloglog.h` | HyperLogLog algorithm |
 | Logging and Printing | `print.h` | Helper functions for console printing, including printing arrays, vectors, maps of basic types, and printing strings with colors. |
 | Type Wrappers | `color.h` | Encapsulation class for ARGB color values. |
 | Auxiliary Programming | `singleton.h` | Template class and macro definitions for the singleton pattern. |
+| Auxiliary Programming | `observer.h` | Observer pattern (`observer` / `observable`). C++17 passes the payload as `std::any`; earlier standards use `const void*`. |
 | Auxiliary Programming | `statemachine.h` |  State machine, which can pre-define the state transition roadmap and perform checks during state transitions. |
 | Others | `logtype.h` | Type definitions related to log records. |
 | Others | `config.h` | Provides library initialization functions, and functions to obtain the library's version and name. |
 | Others | `version.h` | Definition of the version number of the `common_util` library. |
-| Others | `common_util.h` | The import header file for `common_util`, including all other header files. |
+| Others | `common_util.h` | The import header file for `common_util`. Includes all necessary public header files. |
 
 ## 1.5. Testing Platforms
 
@@ -100,34 +101,63 @@ This library has been tested and verified on the following platforms:
 There are usage examples of each module in src/usage_demo.
 
 ```bash
-common.hpp      # Common header file for the Demo
-config.hpp      # Initialization configuration
-datetime.hpp    # Usage of the datetime class
-dlloader.hpp    # Usage of the dynamic library loader
-eventloop.hpp   # Usage of the eventloop class
-filepath.hpp    # Usage of the filepath class
-fileutil.hpp    # Operations related to the file system
-lrucache.hpp    # Usage of the LRU cache algorithm class
-main.cpp        # Main function of the Demo
-print.hpp       # Operations related to printing
-singleton.hpp   # Usage of macro definitions related to the singleton pattern
-strfmt.hpp      # Usage of String formatting functions
-strutil.hpp     # Operations related to strings
-sysutil.hpp     # Operations related to system calls
-threadpool.hpp  # Usage of the threadpool class
-threadutil.hpp  # Operations related to threads
-timecount.hpp   # time counter of the function
-timer.hpp       # Usage of the timer class
-timeutil.hpp    # Operations related to time
-verutil.hpp     # Operations related to version numbers
+algoutil.hpp     # Usage of algorithm helpers
+bitmap.hpp       # Usage of bitmap / dynamic_bitmap / roaring_bitmap
+bloomfilter.hpp  # Usage of the Bloom filter
+common.hpp       # Common header file for the Demo
+config.hpp       # Initialization configuration
+datetime.hpp     # Usage of the datetime class
+dlloader.hpp     # Usage of the dynamic library loader
+eventloop.hpp    # Usage of the eventloop class
+filepath.hpp     # Usage of the filepath class
+fileutil.hpp     # Operations related to the file system
+hash.hpp         # Usage of non-cryptographic hashes, integer hashes, and checksums
+hyperloglog.hpp  # Usage of HyperLogLog
+lrucache.hpp     # Usage of the LRU cache algorithm class
+main.cpp         # Main function of the Demo
+observer.hpp     # Usage of the observer pattern
+print.hpp        # Operations related to printing
+singleton.hpp    # Usage of macro definitions related to the singleton pattern
+statemachine.hpp # Usage of the state machine
+strfmt.hpp       # Usage of String formatting functions
+strutil.hpp      # Operations related to strings
+sysutil.hpp      # Operations related to system calls
+threadpool.hpp   # Usage of the threadpool class
+threadutil.hpp   # Operations related to threads
+timecount.hpp    # time counter of the function
+timer.hpp        # Usage of the timer class
+timeutil.hpp     # Operations related to time
+verutil.hpp      # Operations related to version numbers
 ```
 
-For more usage documentation, refer to:
+Build, test, and release from the repository root:
 
 ```bash
-docs/quick_start/Chinese/01.preparation.md     # environment preparation
-docs/quick_start/Chinese/02.build_library.md   # Building and running
-docs/quick_start/Chinese/03.getting_start.md   # Quick guide
+# Linux / macOS
+./script/build.sh build release          # C++11 library and usage demo; copy artifacts to publish/
+./script/build.sh build debug
+./script/build.sh run
+./script/build.sh test                   # GoogleTest unit tests under unit_test/
+UT_CXX11=ON ./script/build.sh test       # same C++11 standard as the release build
+./script/build.sh test 'HashTest.*'      # optional test-name filter
+./script/build.sh clean
+
+# Windows
+script\build.bat build release
+script\build.bat test
+
+# Release on a clean master branch: run C++11 tests, require CMakeLists.txt
+# VERSION to be greater than the latest v* tag, create vX.Y.Z, then push
+# master and the tag to origin (Gitee) and github.
+./script/release.sh
+```
+
+See [unit_test/README.md](./unit_test/README.md) for the test layout. For more usage documentation, refer to:
+
+```bash
+docs/quick_start/english/01.preparation.md     # environment preparation
+docs/quick_start/english/02.build_library.md   # Building and running
+docs/quick_start/english/03.getting_start.md   # Quick guide
 ```
 
 ## 1.7. Related Documents
@@ -217,18 +247,19 @@ current time(local time): 2025-05-02 18:29:10.785
 | 系统工具 | `dlloader.h`    | 动态库(共享库)的动态加载器。                                                                           |
 | 常用算法 | `algoutil.h`    | `<algorithm>`的补充，提供一些常用的算法函数，如：C++11没有，但是后面版本已加入的算法函数。             |
 | 常用算法 | `lrucache.h` | 高性能LRU算法模板类，`get`和`put`的平均时间复杂度都是`O(1)`。 |
-| 常用算法 | `hash.h` | 提供常用的哈希函数算法 |
+| 常用算法 | `hash.h` | 非加密哈希（多项式滚动、DJB2、FNV-1/FNV-1a 32/64、Jenkins one-at-a-time 与 lookup3、MurmurHash2/3 32/64）、整数哈希（Thomas Wang、Knuth 乘法、除法）和校验和（CRC-16、CRC-32、CRC-32C、Adler-32）。字节接口为 `const uint8_t*` 加长度。不含密码学哈希（MD5/SHA）。速度与使用场景对照表在 `hash.h` 文件头注释中。 |
 | 常用算法 | `bitmap.h` | 高效的位图(Bitmap)数据结构类，并提供多个变种的子类型：dynamic_bitmap、roaring_bitmap等。 |
 | 常用算法 | `bloomfilter.h` | 布隆过滤器算法 |
 | 常用算法 | `hyperloglog.h` | HyperLogLog算法 |
 | 日志与打印 | `print.h`       | 控制台打印的辅助函数，包括：打印基础类型的数组、vector、map等，带颜色的字符串打印。                    |
 | 类型包装器 | `color.h`       | ARGB颜色值的封装类。                                                                                   |
 | 辅助编程 | `singleton.h`   | 单例模式的模板类和宏定义。                                                                             |
+| 辅助编程 | `observer.h`    | 观察者模式（`observer` / `observable`）。C++17 用 `std::any` 传递数据，更早标准用 `const void*`。       |
 | 辅助编程 | `statemachine.h` | 状态机，可预定义状态转换路径，并在在状态转换时进行检查。 |
 | 其他 | `logtype.h`     | Log记录相关的类型定义。                                                                                |
 | 其他 | `config.h`      | 提供库的初始化函数，提供库的版本和名称获取函数。                                                       |
 | 其他 | `version.h`     | common_util库的版本号定义。                                                                            |
-| 其他 | `common_util.h` | common_util的导入头文件，包含所有其他头文件。                                                          |
+| 其他 | `common_util.h` | common_util的导入头文件，包含所有必要的公开头文件。 |
 
 ## 2.5. 已验证的平台
 
@@ -248,29 +279,57 @@ current time(local time): 2025-05-02 18:29:10.785
 src/usage_demo 有各个模块的使用示例。
 
 ```bash
-common.hpp      # Demo的公共头文件
-config.hpp      # 初始化配置
-datetime.hpp    # 日期时间类的用法
-dlloader.hpp    # 显示加载动态库的用法
-eventloop.hpp   # 事件循环的用法
-filepath.hpp    # 文件路径类的用法
-fileutil.hpp    # 文件系统相关的操作
-lrucache.hpp    # LRU缓存算法类的用法
-main.cpp        # Demo的主函数
-print.hpp       # 打印相关的操作
-singleton.hpp   # 单例模式相关的宏定义的用法
-strfmt.hpp      # 字符串格式化
-strutil.hpp     # 字符串相关的操作
-sysutil.hpp     # 系统调用相关的操作
-threadpool.hpp  # 线程池的用法
-threadutil.hpp  # 线程相关的操作
-timecount.hpp   # 函数计时器类
-timer.hpp       # 定时器的用法
-timeutil.hpp    # 时间相关的操作
-verutil.hpp     # 版本号相关的操作
+algoutil.hpp     # 通用算法函数的用法
+bitmap.hpp       # 位图 / dynamic_bitmap / roaring_bitmap 的用法
+bloomfilter.hpp  # 布隆过滤器的用法
+common.hpp       # Demo的公共头文件
+config.hpp       # 初始化配置
+datetime.hpp     # 日期时间类的用法
+dlloader.hpp     # 显示加载动态库的用法
+eventloop.hpp    # 事件循环的用法
+filepath.hpp     # 文件路径类的用法
+fileutil.hpp     # 文件系统相关的操作
+hash.hpp         # 非加密哈希、整数哈希和校验和的用法
+hyperloglog.hpp  # HyperLogLog 的用法
+lrucache.hpp     # LRU缓存算法类的用法
+main.cpp         # Demo的主函数
+observer.hpp     # 观察者模式的用法
+print.hpp        # 打印相关的操作
+singleton.hpp    # 单例模式相关的宏定义的用法
+statemachine.hpp # 状态机的用法
+strfmt.hpp       # 字符串格式化
+strutil.hpp      # 字符串相关的操作
+sysutil.hpp      # 系统调用相关的操作
+threadpool.hpp   # 线程池的用法
+threadutil.hpp   # 线程相关的操作
+timecount.hpp    # 函数计时器类
+timer.hpp        # 定时器的用法
+timeutil.hpp     # 时间相关的操作
+verutil.hpp      # 版本号相关的操作
 ```
 
-更多的使用说明文档，参考：
+在仓库根目录构建、测试和发版：
+
+```bash
+# Linux / macOS
+./script/build.sh build release          # 以 C++11 编译库和 usage demo，并把产物拷到 publish/
+./script/build.sh build debug
+./script/build.sh run
+./script/build.sh test                   # 运行 unit_test/ 下的 GoogleTest 单元测试
+UT_CXX11=ON ./script/build.sh test       # 与发布库相同的 C++11 标准
+./script/build.sh test 'HashTest.*'      # 可选的测试名过滤
+./script/build.sh clean
+
+# Windows
+script\build.bat build release
+script\build.bat test
+
+# 在干净的 master 上发版：跑 C++11 测试，要求 CMakeLists.txt 的 VERSION
+# 大于最新 v* tag，打 vX.Y.Z，再把 master 和 tag 推到 origin（Gitee）和 github。
+./script/release.sh
+```
+
+测试目录说明见 [unit_test/README.md](./unit_test/README.md)。更多的使用说明文档，参考：
 
 ```bash
 docs/quick_start/中文/01.preparation.md     # 软件环境准备

@@ -181,12 +181,14 @@ namespace cutl
     uint64_t last_modified_time(const filepath& path);
 
     /**
-     * @brief Read the text content of a file.
+     * @brief Read the text content of a file. Applicable to plain text files; it will be truncated
+     * when encountering '\0'.
      *
      * @param path the filepath of the file to be read
      * @param max_read_size the maximum size to be read, default is 4096 bytes.
      *
-     * If the file size is larger than max_read_size, only the first max_read_size bytes will be read. otherwise, the whole file will be read.
+     * If the file size is larger than max_read_size, only the first max_read_size bytes will be
+     * read. otherwise, the whole file will be read.
      *
      * @return text content of the file
      */
