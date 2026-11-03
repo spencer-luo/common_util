@@ -28,4 +28,4 @@
  * @brief Library version.
  *
  */
-#define CUTL_VERSION "1.8.8"
+#define CUTL_VERSION "1.8.9"

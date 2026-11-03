@@ -166,3 +166,88 @@ TEST(EventLoopTest, TimerTaskHandlerMoveSemantics)
     a.cancel();
     loop2.stop();
 }
+
+TEST(EventLoopTest, MultiThreadTasksRunOnThePool)
+{
+    cutl::multithread_eventloop loop(32, 8, 2);
+    std::atomic<int> ran{ 0 };
+    std::atomic<int> on_loop{ 0 };
+    std::atomic<int> inflight{ 0 };
+    std::atomic<int> peak{ 0 };
+
+    for (int i = 0; i < 2; ++i)
+    {
+        loop.post_event(
+          [&loop, &ran, &on_loop, &inflight, &peak]()
+          {
+              if (loop.is_loop_thread())
+              {
+                  on_loop.fetch_add(1);
+              }
+              const int now = inflight.fetch_add(1) + 1;
+              int seen = peak.load();
+              while (now > seen && !peak.compare_exchange_weak(seen, now))
+              {
+              }
+              std::this_thread::sleep_for(std::chrono::milliseconds(80));
+              inflight.fetch_sub(1);
+              ran.fetch_add(1);
+          });
+    }
+
+    std::thread runner([&loop]() { loop.start(); });
+    auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(2);
+    while (ran.load() < 2 && std::chrono::steady_clock::now() < deadline)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+    loop.stop();
+    runner.join();
+
+    EXPECT_EQ(ran.load(), 2);
+    EXPECT_EQ(on_loop.load(), 0);
+    EXPECT_GE(peak.load(), 2);
+}
+
+TEST(EventLoopTest, MultiThreadTimerAndCancel)
+{
+    cutl::multithread_eventloop loop(32, 8, 2);
+    std::atomic<int> ticks{ 0 };
+    auto handle = loop.post_timer_event(
+      "tick", [&ticks]() { ticks.fetch_add(1); }, std::chrono::milliseconds(30), -1);
+
+    std::thread runner([&loop]() { loop.start(); });
+    auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(2);
+    while (ticks.load() < 2 && std::chrono::steady_clock::now() < deadline)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+    EXPECT_TRUE(handle.isvalid());
+    handle.cancel();
+    const int snapshot = ticks.load();
+    std::this_thread::sleep_for(std::chrono::milliseconds(120));
+    loop.stop();
+    runner.join();
+
+    EXPECT_GE(ticks.load(), 2);
+    EXPECT_LE(ticks.load() - snapshot, 1);
+}
+
+TEST(EventLoopTest, MultiThreadDefaultWorkerCountAndPostAfterStart)
+{
+    cutl::multithread_eventloop loop;
+    std::atomic<int> ran{ 0 };
+    std::thread runner([&loop]() { loop.start(); });
+    wait_for_running(loop);
+
+    EXPECT_TRUE(loop.post_event([&ran]() { ran.fetch_add(1); }));
+    auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(2);
+    while (ran.load() < 1 && std::chrono::steady_clock::now() < deadline)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+    loop.stop();
+    runner.join();
+    EXPECT_FALSE(loop.is_running());
+    EXPECT_EQ(ran.load(), 1);
+}

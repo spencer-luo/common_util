@@ -55,11 +55,11 @@ int main(int argc, char* argv[])
     // TestTimer();
     // TestLRUCache();
     // TestThreadUtil();
-    // TestEventLoop();
-    // TestThreadPool();
+    TestEventLoop();
+    TestThreadPool();
     // TestAlgorithmUtil();
     // BitmapTest();
-    TestHash();
+    // TestHash();
     // TestBloomFilter();
     // TestHyperLogLog();
     // TestStateMachine();
