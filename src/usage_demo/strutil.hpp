@@ -57,14 +57,72 @@ void TestJoinSplit()
     std::cout << "join fruits with comma: " << cutl::join(fruits_vec, "; ") << std::endl;
 }
 
+namespace
+{
+
+int g_desens_demo_failures = 0;
+
+void DesensCheck(const std::string& input,
+                 uint8_t keep_left,
+                 uint8_t keep_right,
+                 const std::string& expected,
+                 const char* what)
+{
+    const std::string actual = cutl::desensitizing(input, keep_left, keep_right);
+    std::cout << "  " << what << ": \"" << input << "\" -> \"" << actual << "\"" << std::endl;
+    if (actual == expected)
+    {
+        return;
+    }
+    ++g_desens_demo_failures;
+    std::cout << "  FAIL " << what << ", expected \"" << expected << "\"" << std::endl;
+}
+
+} // namespace
+
 void TestDesensitizing()
 {
     PrintSubTitle("TestDesensitizing");
+    g_desens_demo_failures = 0;
 
-    std::string password = "2515774";
-    std::cout << "password: " << cutl::desensitizing(password) << std::endl;
-    std::string phone = "18500425678";
-    std::cout << "phone: " << cutl::desensitizing(phone) << std::endl;
+    // 0 表示该侧自动保留 len/4。长度小于 4 时整串变成 '*'。
+    DesensCheck("", 0, 0, "", "empty");
+    DesensCheck("abc", 0, 0, "***", "shorter than 4");
+    DesensCheck("2515774", 0, 0, "2*****4", "password, auto keep 1/1");
+    DesensCheck("12345678", 0, 0, "12****78", "auto keep 2/2");
+    // 中间恰好隐藏 6 个字符时按实际个数填 '*'，再多一个就写成 "**..**"。
+    DesensCheck("1234567890", 0, 0, "12******90", "hidden == 6");
+    DesensCheck("18500425678", 0, 0, "18**..**78", "phone, hidden > 6");
+
+    DesensCheck("18500425678", 3, 4, "185****5678", "keep 3/4");
+    DesensCheck("18500425678", 3, 2, "185******78", "keep 3/2, hidden == 6");
+    DesensCheck("18500425678", 2, 2, "18**..**78", "keep 2/2, hidden > 6");
+    DesensCheck("abcd", 2, 2, "****", "keep covers the whole string");
+    // 只把传入 0 的那一侧按 len/4 计算。
+    DesensCheck("12345678", 1, 0, "1*****78", "left 1, right auto");
+    DesensCheck("12345678", 0, 1, "12*****8", "left auto, right 1");
+
+    const std::string phone = "18500425678";
+    cutl::desensitizing(phone, 3, 4);
+    if (phone == "18500425678")
+    {
+        std::cout << "  ok  input is left unchanged" << std::endl;
+    }
+    else
+    {
+        ++g_desens_demo_failures;
+        std::cout << "  FAIL input was modified" << std::endl;
+    }
+
+    if (g_desens_demo_failures == 0)
+    {
+        std::cout << "desensitizing demo: all checks passed" << std::endl;
+    }
+    else
+    {
+        std::cout << "desensitizing demo: " << g_desens_demo_failures << " checks failed"
+                  << std::endl;
+    }
 }
 
 void TestStrConvert()
@@ -91,6 +149,6 @@ void TestStrUtil()
     // TestStrip();
     // TestStartswithEndswith();
     // TestJoinSplit();
-    // TestDesensitizing();
-    TestStrConvert();
+    TestDesensitizing();
+    // TestStrConvert();
 }

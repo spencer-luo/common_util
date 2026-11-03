@@ -20,6 +20,7 @@
 
 #include <string>
 #include <vector>
+#include <cstdint>
 
 namespace cutl
 {
@@ -113,10 +114,17 @@ namespace cutl
     /**
      * @brief Desensitizing a string by replacing some characters with '*'.
      *
+     * A keep count of 0 means automatic: one quarter of the length on that side.
+     * If the string is no longer than the kept prefix plus suffix, every character
+     * becomes '*'. Otherwise the middle is replaced by '*'. When more than 6
+     * characters are hidden, the middle is the fixed text "**..**".
+     *
      * @param str the string to be desensitized.
+     * @param keep_left characters kept on the left; 0 selects len/4.
+     * @param keep_right characters kept on the right; 0 selects len/4.
      * @return std::string the desensitized string.
      */
-    std::string desensitizing(const std::string &str);
+    std::string desensitizing(const std::string &str, uint8_t keep_left = 0, uint8_t keep_right = 0);
 
     /**
      * @brief Convert a wide string to a string.

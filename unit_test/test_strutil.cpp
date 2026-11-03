@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file test_strutil.cpp
  * @brief Unit tests for cutl::strutil (case conversion, strip, split/join, desensitizing, etc.)
  */
@@ -164,20 +164,141 @@ TEST(StrUtilTest, SplitJoinRoundTrip)
     }
 }
 
-TEST(StrUtilTest, Desensitizing)
+// keep 为 0 时该侧取 len/4。长度不足 4 时两侧都是 0，结果与原串等长的 '*'。
+TEST(StrUtilTest, DesensitizingAutoKeep)
 {
     EXPECT_EQ(cutl::desensitizing(""), "");
     EXPECT_EQ(cutl::desensitizing("a"), "*");
-    EXPECT_EQ(cutl::desensitizing("ab"), "a*");
-    // 长度 <= 6 时保留前 2 位，其余替换为 '*'
-    EXPECT_EQ(cutl::desensitizing("123456").substr(0, 2), "12");
-    EXPECT_EQ(cutl::desensitizing("123456").size(), 6u);
+    EXPECT_EQ(cutl::desensitizing("ab"), "**");
+    EXPECT_EQ(cutl::desensitizing("abc"), "***");
+    EXPECT_EQ(cutl::desensitizing("abcd"), "a**d");
+    EXPECT_EQ(cutl::desensitizing("abcde"), "a***e");
+    EXPECT_EQ(cutl::desensitizing("123456"), "1****6");
+    EXPECT_EQ(cutl::desensitizing("2515774"), "2*****4");
+    EXPECT_EQ(cutl::desensitizing("12345678"), "12****78");
+    EXPECT_EQ(cutl::desensitizing("123456789"), "12*****89");
+}
 
-    // 11 位手机号：长度 < 16，前 3 位 + '*' + 后 3 位
-    auto phone = cutl::desensitizing("18500425678");
-    EXPECT_EQ(phone.substr(0, 3), "185");
-    EXPECT_EQ(phone.substr(phone.size() - 3), "678");
-    EXPECT_NE(phone.find('*'), std::string::npos);
+// 隐藏个数等于 6 时仍按实际个数填 '*'；大于 6 时中间固定为 "**..**"。
+TEST(StrUtilTest, DesensitizingHiddenBoundary)
+{
+    EXPECT_EQ(cutl::desensitizing("1234567890"), "12******90");
+    EXPECT_EQ(cutl::desensitizing("12345678901"), "12**..**01");
+    EXPECT_EQ(cutl::desensitizing("123456789012"), "123******012");
+    EXPECT_EQ(cutl::desensitizing("1234567890123"), "123**..**123");
+    EXPECT_EQ(cutl::desensitizing("18500425678"), "18**..**78");
+
+    EXPECT_EQ(cutl::desensitizing("1234567890", 3, 1), "123******0");
+    EXPECT_EQ(cutl::desensitizing("12345678901", 2, 2), "12**..**01");
+    EXPECT_EQ(cutl::desensitizing("12345678901", 1, 1), "1**..**1");
+}
+
+TEST(StrUtilTest, DesensitizingExplicitKeep)
+{
+    EXPECT_EQ(cutl::desensitizing("18500425678", 3, 4), "185****5678");
+    EXPECT_EQ(cutl::desensitizing("18500425678", 3, 2), "185******78");
+    EXPECT_EQ(cutl::desensitizing("18500425678", 2, 2), "18**..**78");
+    EXPECT_EQ(cutl::desensitizing("abcde", 2, 2), "ab*de");
+    EXPECT_EQ(cutl::desensitizing("abcdefghij", 4, 0), "abcd****ij");
+}
+
+// 为 0 的一侧单独按 len/4 计算，另一侧使用传入值。
+TEST(StrUtilTest, DesensitizingOneSideAuto)
+{
+    EXPECT_EQ(cutl::desensitizing("12345678", 1, 0), "1*****78");
+    EXPECT_EQ(cutl::desensitizing("12345678", 0, 1), "12*****8");
+    EXPECT_EQ(cutl::desensitizing("abc", 1, 0), "a**");
+    EXPECT_EQ(cutl::desensitizing("abc", 0, 1), "**c");
+    EXPECT_EQ(cutl::desensitizing("hello", 3, 0), "hel*o");
+    // 显式传入的 0 与缺省参数相同，不能表示“这一侧一个都不留”。
+    EXPECT_EQ(cutl::desensitizing("12345678", 0, 2), "12****78");
+}
+
+// 两侧保留长度之和大于等于原串时，整串替换成等长的 '*'。空串仍是空串。
+TEST(StrUtilTest, DesensitizingKeepCoversString)
+{
+    EXPECT_EQ(cutl::desensitizing("", 3, 4), "");
+    EXPECT_EQ(cutl::desensitizing("abcd", 2, 2), "****");
+    EXPECT_EQ(cutl::desensitizing("abcd", 3, 3), "****");
+    EXPECT_EQ(cutl::desensitizing("abcd", 4, 0), "****");
+    EXPECT_EQ(cutl::desensitizing("abcd", 0, 4), "****");
+    EXPECT_EQ(cutl::desensitizing("hello", 5, 1), "*****");
+    EXPECT_EQ(cutl::desensitizing("hello", 10, 0), "*****");
+    EXPECT_EQ(cutl::desensitizing("ab", 1, 2), "**");
+    EXPECT_EQ(cutl::desensitizing("a", 255, 255), "*");
+}
+
+// keep 用 uint8_t 传入，相加和与长度比较时不能按 8 位回绕。
+TEST(StrUtilTest, DesensitizingLargeKeep)
+{
+    const std::string covered(400, 'a');
+    EXPECT_EQ(cutl::desensitizing(covered, 255, 255), std::string(400, '*'));
+
+    const std::string long_text(300, 'b');
+    std::string abbreviated(255, 'b');
+    abbreviated += "**..**";
+    abbreviated += 'b';
+    EXPECT_EQ(cutl::desensitizing(long_text, 255, 1), abbreviated);
+
+    const std::string longer(600, 'c');
+    std::string both(255, 'c');
+    both += "**..**";
+    both.append(255, 'c');
+    EXPECT_EQ(cutl::desensitizing(longer, 255, 255), both);
+}
+
+// 按字节处理：内嵌 '\0' 和多字节字符都计入长度，不按码点切分。
+TEST(StrUtilTest, DesensitizingBytes)
+{
+    const std::string with_nul("a\0bcdefghi", 10);
+    std::string expected("a\0", 2);
+    expected += "******";
+    expected += "hi";
+    EXPECT_EQ(cutl::desensitizing(with_nul), expected);
+
+    const std::string one = "\xe4\xb8\xad";
+    EXPECT_EQ(one.size(), 3u);
+    EXPECT_EQ(cutl::desensitizing(one), "***");
+
+    const std::string text = "\xe4\xbd\xa0\xe5\xa5\xbd\xe4\xb8\x96\xe7\x95\x8c";
+    EXPECT_EQ(text.size(), 12u);
+    EXPECT_EQ(cutl::desensitizing(text), std::string("\xe4\xbd\xa0") + "******" + "\xe7\x95\x8c");
+}
+
+TEST(StrUtilTest, DesensitizingLeavesInputUnchanged)
+{
+    std::string phone = "18500425678";
+    EXPECT_EQ(cutl::desensitizing(phone, 3, 4), "185****5678");
+    EXPECT_EQ(phone, "18500425678");
+}
+
+TEST(StrUtilTest, DesensitizingAutoLengthSweep)
+{
+    for (size_t len = 0; len <= 64; ++len)
+    {
+        const std::string input(len, 'x');
+        const std::string out = cutl::desensitizing(input);
+        const size_t left = len / 4;
+        const size_t right = len / 4;
+        if (len == 0 || left + right >= len)
+        {
+            EXPECT_EQ(out, std::string(len, '*')) << "len=" << len;
+            continue;
+        }
+        EXPECT_EQ(out.substr(0, left), std::string(left, 'x')) << "len=" << len;
+        EXPECT_EQ(out.substr(out.size() - right), std::string(right, 'x')) << "len=" << len;
+        const size_t hidden = len - left - right;
+        if (hidden > 6)
+        {
+            EXPECT_EQ(out.size(), left + 6 + right) << "len=" << len;
+            EXPECT_EQ(out.substr(left, 6), "**..**") << "len=" << len;
+        }
+        else
+        {
+            EXPECT_EQ(out.size(), len) << "len=" << len;
+            EXPECT_EQ(out.substr(left, hidden), std::string(hidden, '*')) << "len=" << len;
+        }
+    }
 }
 
 TEST(StrUtilTest, WideStringRoundTrip)

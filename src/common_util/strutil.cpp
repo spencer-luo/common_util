@@ -202,41 +202,39 @@ namespace cutl
         return text;
     }
 
-    // 字符串脱敏处理
-    std::string desensitizing(const std::string &str)
+    std::string desensitizing(const std::string &str, uint8_t keep_left, uint8_t keep_right)
     {
+        const size_t len = str.size();
+        if (len == 0)
+        {
+            return {};
+        }
+
+        // 0 means automatic: keep one quarter of the string on that side.
+        const size_t left = keep_left == 0 ? len / 4 : keep_left;
+        const size_t right = keep_right == 0 ? len / 4 : keep_right;
+        if (left + right >= len)
+        {
+            return std::string(len, '*');
+        }
+
+        const size_t hidden = len - left - right;
+        const bool abbreviate = hidden > 6;
+        const size_t mask_len = abbreviate ? 6 : hidden;
         std::string result;
-        // 只打印前1/4和后1/4的内容，中间用*表示
-        if (str.empty())
+        result.reserve(left + mask_len + right);
+        result.append(str, 0, left);
+        if (abbreviate)
         {
-            result = "";
-        }
-        else if (str.length() == 1)
-        {
-            result = "*";
-        }
-        else if (str.length() == 2)
-        {
-            result = str.substr(0, 1) + std::string(str.length() - 1, '*');
-        }
-        else if (str.length() <= 6)
-        {
-            result = str.substr(0, 2) + std::string(str.length() - 2, '*');
-        }
-        else if (str.length() < 10)
-        {
-            result = str.substr(0, 2) + std::string(str.length() - 4, '*') + str.substr(str.length() - 2, 2);
-        }
-        else if (str.length() < 16)
-        {
-            // 长度控制在最长12位，中间×不超过6
-            auto startCount = (str.length() - 6) > 6 ? 6 : (str.length() - 6);
-            result = str.substr(0, 3) + std::string(startCount, '*') + str.substr(str.length() - 3, 3);
+            result.append("**..**", 6);
         }
         else
         {
-            // 长度控制在最长12位
-            result = str.substr(0, 4) + std::string(4, '*') + str.substr(str.length() - 4, 4);
+            result.append(hidden, '*');
+        }
+        if (right > 0)
+        {
+            result.append(str, len - right, right);
         }
         return result;
     }

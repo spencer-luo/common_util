@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
     // TestTimecount();
     // TestDatetime();
     // TestVerUtil();
-    // TestStrUtil();
+    TestStrUtil();
     // TestFilePath();
     // TestFileUtil();
     // TestDlLoader();
@@ -55,8 +55,8 @@ int main(int argc, char* argv[])
     // TestTimer();
     // TestLRUCache();
     // TestThreadUtil();
-    TestEventLoop();
-    TestThreadPool();
+    // TestEventLoop();
+    // TestThreadPool();
     // TestAlgorithmUtil();
     // BitmapTest();
     // TestHash();
