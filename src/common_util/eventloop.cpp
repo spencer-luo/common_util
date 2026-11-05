@@ -2,6 +2,8 @@
 #include "inner/logger.h"
 #include "threadutil.h"
 
+#include <exception>
+
 namespace cutl
 {
 
@@ -30,9 +32,10 @@ struct TimerTask
 
     void update_left_times()
     {
-        if (left_times_.load() > 0)
+        // cancel() 可能同时把次数写成 0。必须一次交换完成，避免读到旧值后写成 -1。
+        int64_t times = left_times_.load();
+        while (times > 0 && !left_times_.compare_exchange_weak(times, times - 1))
         {
-            left_times_.store(left_times_.load() - 1);
         }
     }
 
@@ -128,10 +131,18 @@ eventloop::eventloop(uint32_t task_max_size, uint32_t timer_task_max_size)
   , timer_task_mutex_()
   , timer_task_queue_(&TimerTaskCompare)
   , timer_task_max_size_(timer_task_max_size)
+  , timer_task_inflight_(0)
+  , wakeup_pending_(false)
+  , in_loop_(false)
 {
 }
 
-eventloop::~eventloop() {}
+eventloop::~eventloop()
+{
+    stop();
+    wait_loop_finished();
+    clear_pending_tasks();
+}
 
 bool eventloop::post_event(const EventloopTask& task)
 {
@@ -177,6 +188,10 @@ bool eventloop::is_loop_thread() const
 
 void eventloop::wakeup()
 {
+    {
+        std::lock_guard<std::mutex> lock(cv_mutex_);
+        wakeup_pending_ = true;
+    }
     cv_wakeup_.notify_one();
 }
 
@@ -189,13 +204,44 @@ void eventloop::wait_for_timeout_or_wakeup(std::chrono::microseconds timeout)
 
     std::unique_lock<std::mutex> lock(cv_mutex_);
     EventloopTimePoint abs_timeout = std::chrono::steady_clock::now() + timeout;
-    if (cv_wakeup_.wait_until(lock, abs_timeout) == std::cv_status::timeout)
+    // 谓词和 wakeup_pending_ 共用 cv_mutex_，notify 发生在进入等待之前也不会丢。
+    const bool signaled =
+      cv_wakeup_.wait_until(lock, abs_timeout, [this]() { return wakeup_pending_; });
+    wakeup_pending_ = false;
+    if (signaled)
     {
-        CUTL_DEBUG("Timeout occurred!");
+        CUTL_DEBUG("Condition met!");
     }
     else
     {
-        CUTL_DEBUG("Condition met!");
+        CUTL_DEBUG("Timeout occurred!");
+    }
+}
+
+void eventloop::wait_loop_finished()
+{
+    if (is_loop_thread())
+    {
+        return;
+    }
+
+    std::unique_lock<std::mutex> lock(cv_mutex_);
+    cv_wakeup_.wait(lock, [this]() { return !in_loop_; });
+}
+
+void eventloop::clear_pending_tasks()
+{
+    std::list<EventloopTask> tasks;
+    {
+        std::lock_guard<std::mutex> guard(task_mutex_);
+        tasks.swap(task_queue_);
+    }
+
+    decltype(timer_task_queue_) timers(&TimerTaskCompare);
+    {
+        std::lock_guard<std::mutex> lock(timer_task_mutex_);
+        timer_task_queue_.swap(timers);
+        timer_task_inflight_ = 0;
     }
 }
 
@@ -210,18 +256,11 @@ timer_task_handler eventloop::post_timer_event(const std::string& name,
                                                const EventloopDuration& period,
                                                int64_t repeat)
 {
-    {
-        std::lock_guard<std::mutex> lock(timer_task_mutex_);
-        if (timer_task_queue_.size() >= timer_task_max_size_)
-        {
-            CUTL_ERROR("Timer task queue is full, discard task. size:" <<
-                       timer_task_queue_.size() <<
-                       ", max_size:" << timer_task_max_size_);
-            return timer_task_handler(nullptr);
-        }
-    }
     auto handler = post_to_priorityqueue(name, func, period, repeat);
-    wakeup();
+    if (handler.isvalid())
+    {
+        wakeup();
+    }
     return handler;
 }
 
@@ -245,6 +284,33 @@ void eventloop::loop_once(EventloopDuration timeout)
     wait_for_timeout_or_wakeup(std::chrono::duration_cast<std::chrono::microseconds>(timeout));
 }
 
+namespace
+{
+
+void invoke_event_task(const EventloopTask& task)
+{
+    if (!task)
+    {
+        CUTL_WARN("eventloop task is nullptr");
+        return;
+    }
+
+    try
+    {
+        task();
+    }
+    catch (const std::exception& e)
+    {
+        CUTL_ERROR("eventloop task threw: " << e.what());
+    }
+    catch (...)
+    {
+        CUTL_ERROR("eventloop task threw an unknown exception");
+    }
+}
+
+} // namespace
+
 size_t eventloop::handle_task()
 {
     std::list<EventloopTask> tasks;
@@ -256,7 +322,7 @@ size_t eventloop::handle_task()
 
     for (const auto& task : tasks)
     {
-        task();
+        invoke_event_task(task);
     }
     return tasks.size();
 }
@@ -277,38 +343,53 @@ size_t eventloop::handle_timer_task()
         }
 
         // CUTL_INFO("[" << task->name_ << "]left_times:" << task->left_times_.load());
-        task->func_();
+        invoke_event_task(task->func_);
         task->update_left_times();
         ++done;
     }
 
     // 再获取一次 now，因为上面可能比较耗时
     now = std::chrono::steady_clock::now();
-
-    // 任务执行完后再将有效的定时任务重新放入优先队列
-    std::lock_guard<std::mutex> guard(timer_task_mutex_);
-    for (auto& task : ready_tasks)
-    {
-        if (!task->is_valid())
-        {
-            continue;
-        }
-        task->update_next_run_time(now);
-        timer_task_queue_.emplace(task);
-    }
-
+    restore_timer_tasks(ready_tasks, now);
     return done;
 }
 
 void eventloop::start_loop()
 {
-    is_running_.store(true);
     loop_thread_id_ = std::this_thread::get_id();
-
-    while (is_running_.load())
     {
-        loop_once(std::chrono::milliseconds(500));
+        std::lock_guard<std::mutex> lock(cv_mutex_);
+        in_loop_ = true;
+        is_running_.store(true);
     }
+
+    try
+    {
+        while (is_running_.load())
+        {
+            loop_once(std::chrono::milliseconds(500));
+        }
+    }
+    catch (const std::exception& e)
+    {
+        CUTL_ERROR("eventloop loop threw: " << e.what());
+        is_running_.store(false);
+    }
+    catch (...)
+    {
+        CUTL_ERROR("eventloop loop threw an unknown exception");
+        is_running_.store(false);
+    }
+    end_loop();
+}
+
+void eventloop::end_loop()
+{
+    {
+        std::lock_guard<std::mutex> lock(cv_mutex_);
+        in_loop_ = false;
+    }
+    cv_wakeup_.notify_all();
 }
 
 eventloop::TimerTaskVec eventloop::get_expired_timer_tasks(EventloopTimePoint now)
@@ -332,19 +413,51 @@ eventloop::TimerTaskVec eventloop::get_expired_timer_tasks(EventloopTimePoint no
         timer_task_queue_.pop();
         ready_tasks.emplace_back(std::move(timerTask));
     }
+    timer_task_inflight_ += ready_tasks.size();
     return ready_tasks;
+}
+
+void eventloop::restore_timer_tasks(TimerTaskVec& ready_tasks, EventloopTimePoint now)
+{
+    std::lock_guard<std::mutex> guard(timer_task_mutex_);
+    if (timer_task_inflight_ >= ready_tasks.size())
+    {
+        timer_task_inflight_ -= ready_tasks.size();
+    }
+    else
+    {
+        timer_task_inflight_ = 0;
+    }
+
+    for (auto& task : ready_tasks)
+    {
+        if (!task->is_valid())
+        {
+            continue;
+        }
+        task->update_next_run_time(now);
+        timer_task_queue_.emplace(std::move(task));
+    }
 }
 
 timer_task_handler eventloop::post_to_priorityqueue(const std::string& name,
                                                     const EventloopTask& func,
                                                     const EventloopDuration& period,
-                                                    int repeat)
+                                                    int64_t repeat)
 {
-
     auto now = std::chrono::steady_clock::now();
     auto task = std::make_shared<TimerTask>(name, now + period, period, func, repeat);
 
     std::lock_guard<std::mutex> lock(timer_task_mutex_);
+    if (timer_task_queue_.size() + timer_task_inflight_ >= timer_task_max_size_)
+    {
+        CUTL_ERROR("Timer task queue is full, discard task. size:" << timer_task_queue_.size()
+                                                                    << ", inflight:"
+                                                                    << timer_task_inflight_
+                                                                    << ", max_size:"
+                                                                    << timer_task_max_size_);
+        return timer_task_handler(nullptr);
+    }
     timer_task_queue_.emplace(task);
     return cutl::timer_task_handler(task);
 }
@@ -392,10 +505,23 @@ void singlethread_eventloop::start()
       });
 }
 
+singlethread_eventloop::~singlethread_eventloop()
+{
+    stop();
+    clear_pending_tasks();
+}
+
 void singlethread_eventloop::stop()
 {
     // 执行父类的stop函数
     eventloop::stop();
+
+    // 任务回调里调用 stop() 时，当前线程就是循环线程，join 自己会死锁。
+    if (loop_thread_.get_id() == std::this_thread::get_id())
+    {
+        CUTL_ERROR("singlethread_eventloop stop() on the loop thread skips join");
+        return;
+    }
 
     // 等待线程退出
     if (loop_thread_.joinable())
@@ -412,7 +538,13 @@ multithread_eventloop::multithread_eventloop(uint32_t task_max_size,
   , thread_num_(thread_num)
 {
 }
-multithread_eventloop::~multithread_eventloop() {}
+multithread_eventloop::~multithread_eventloop()
+{
+    eventloop::stop();
+    wait_loop_finished();
+    thread_pool_.shutdown(false);
+    clear_pending_tasks();
+}
 
 void multithread_eventloop::start()
 {
@@ -471,19 +603,7 @@ size_t multithread_eventloop::handle_timer_task()
 
     // 再获取一次 now，因为上面可能比较耗时
     now = std::chrono::steady_clock::now();
-
-    // 任务执行完后再将有效的定时任务重新放入优先队列
-    std::lock_guard<std::mutex> guard(timer_task_mutex_);
-    for (auto& task : ready_tasks)
-    {
-        if (!task->is_valid())
-        {
-            continue;
-        }
-        task->update_next_run_time(now);
-        timer_task_queue_.emplace(task);
-    }
-
+    restore_timer_tasks(ready_tasks, now);
     return done;
 }
 

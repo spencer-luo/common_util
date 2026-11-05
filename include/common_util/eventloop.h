@@ -119,8 +119,10 @@ public:
      */
     eventloop(uint32_t task_max_size = 20, uint32_t timer_task_max_size = 10);
     /**
-     * @brief Destroy the eventloop object
+     * @brief Destroy the eventloop object.
      *
+     * Stops the loop if it is still running, waits until that loop returns, then
+     * drops tasks left in the queues.
      */
     virtual ~eventloop();
 
@@ -188,6 +190,8 @@ private:
     void wait_for_timeout_or_wakeup(std::chrono::microseconds timeout);
     // 执行单次循序的任务
     void loop_once(EventloopDuration default_timeout);
+    // 标记循环已经退出，并唤醒正在等它退出的线程
+    void end_loop();
 
 protected:
     // 处理任务
@@ -200,12 +204,18 @@ protected:
     timer_task_handler post_to_priorityqueue(const std::string& name,
                                              const EventloopTask& func,
                                              const EventloopDuration& period,
-                                             int repeat);
+                                             int64_t repeat);
     // 从定时任务队列中获取离当前时间最近的定时任务的到期间隔
     EventloopDuration get_next_run_time();
 
-    // 获取所有到期的定时任务
+    // 获取所有到期的定时任务。取出的任务仍占着队列名额，直到 restore_timer_tasks。
     TimerTaskVec get_expired_timer_tasks(EventloopTimePoint now);
+    // 归还仍需重复的定时任务，并释放本次取出占用的名额
+    void restore_timer_tasks(TimerTaskVec& ready_tasks, EventloopTimePoint now);
+    // 等待 start_loop 返回。循环线程自己调用时直接返回，避免死等。
+    void wait_loop_finished();
+    // 循环线程已经退出后，丢弃还没执行的任务。任务析构在锁外进行。
+    void clear_pending_tasks();
 
 protected:
     // 事件循环是否运行中
@@ -220,9 +230,13 @@ protected:
     std::mutex timer_task_mutex_;
     std::priority_queue<TimerTaskPtr, TimerTaskVec, decltype(&TimerTaskCompare)> timer_task_queue_;
     uint32_t timer_task_max_size_;
-    // 唤醒Loop线程的条件变量
+    // 已取出、尚未放回的定时任务数。和队列长度一起计入上限。
+    size_t timer_task_inflight_;
+    // 唤醒Loop线程的条件变量。wakeup_pending_ 和 in_loop_ 都由 cv_mutex_ 保护。
     std::mutex cv_mutex_;
     std::condition_variable cv_wakeup_;
+    bool wakeup_pending_;
+    bool in_loop_;
 };
 
 /**
@@ -236,7 +250,12 @@ public:
                            uint32_t task_max_size = 20,
                            uint32_t timer_task_max_size = 10);
 
-    ~singlethread_eventloop() = default;
+    /**
+     * @brief Destroy the singlethread eventloop object.
+     *
+     * Joins the loop thread, then drops tasks left in the queues.
+     */
+    ~singlethread_eventloop();
 
 public:
     /**

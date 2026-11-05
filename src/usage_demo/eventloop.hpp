@@ -1,124 +1,160 @@
-﻿#include "common.hpp"
+﻿#pragma once
+
+#include "common.hpp"
 #include "common_util/datetime.h"
 #include "common_util/eventloop.h"
 #include "common_util/threadutil.h"
 
 #include <atomic>
+#include <chrono>
 #include <functional>
+#include <iostream>
+#include <string>
 #include <thread>
 
+namespace
+{
+
+int g_eventloop_demo_failures = 0;
+
+void EvtCheck(bool ok, const char* what)
+{
+    if (ok)
+    {
+        std::cout << "  ok  " << what << std::endl;
+        return;
+    }
+    ++g_eventloop_demo_failures;
+    std::cout << "  FAIL " << what << std::endl;
+}
+
+bool EvtWait(const std::function<bool()>& pred, std::chrono::milliseconds budget)
+{
+    const auto deadline = std::chrono::steady_clock::now() + budget;
+    while (!pred())
+    {
+        if (std::chrono::steady_clock::now() >= deadline)
+        {
+            return false;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+    return true;
+}
+
+} // namespace
+
+// eventloop::start() blocks the caller until stop().
 void test_eventloop()
 {
     PrintSubTitle("test_eventloop");
 
-    cutl::eventloop eventLoop;
-    // timer task
-    int repet_count = 0;
-    eventLoop.post_timer_event(
-      "timer_1s",
-      [&repet_count]()
+    cutl::eventloop event_loop;
+    std::atomic<int> tasks{ 0 };
+    std::atomic<int> timers{ 0 };
+    std::atomic<int> on_loop{ 0 };
+
+    event_loop.post_event(
+      [&event_loop, &tasks, &on_loop]()
       {
-          repet_count++;
-          std::cout << cutl::datetime::now().format() << " execute per 1s " << repet_count
-                    << " times." << std::endl;
+          if (event_loop.is_loop_thread())
+          {
+              on_loop.fetch_add(1);
+          }
+          std::cout << cutl::datetime::now().format() << " execute Task 01" << std::endl;
+          tasks.fetch_add(1);
+      });
+    event_loop.post_event(
+      [&tasks]()
+      {
+          std::cout << cutl::datetime::now().format() << " execute Task 02" << std::endl;
+          tasks.fetch_add(1);
+      });
+    event_loop.post_timer_event(
+      "timer_40ms",
+      [&timers]()
+      {
+          const int n = timers.fetch_add(1) + 1;
+          std::cout << cutl::datetime::now().format() << " timer " << n << std::endl;
       },
-      std::chrono::seconds(1),
-      3);
-    // normal task
-    eventLoop.post_event(
-      []() { std::cout << cutl::datetime::now().format() << " execute Task 01" << std::endl; });
-    eventLoop.post_event(
-      []() { std::cout << cutl::datetime::now().format() << " execute Task 02" << std::endl; });
+      std::chrono::milliseconds(40),
+      2);
 
-    // 主线程处理事件循环
-    eventLoop.start();
-
-    std::cout << "main thread exit" << std::endl;
+    std::thread runner([&event_loop]() { event_loop.start(); });
+    EvtCheck(EvtWait([&tasks]() { return tasks.load() == 2; }, std::chrono::seconds(2)),
+             "two tasks finished on the loop thread");
+    EvtCheck(on_loop.load() == 1, "task saw the eventloop thread");
+    EvtCheck(EvtWait([&timers]() { return timers.load() == 2; }, std::chrono::seconds(2)),
+             "timer ran exactly twice");
+    event_loop.stop();
+    runner.join();
+    EvtCheck(!event_loop.is_running(), "stop unblocked start()");
 }
 
+// singlethread_eventloop::start() returns after spawning the loop thread.
 void test_singlethread_eventloop()
 {
     PrintSubTitle("test_singlethread_eventloop");
 
-    // , 2, 1
-    cutl::singlethread_eventloop eventLoop("single_thrd_ev");
+    {
+        cutl::singlethread_eventloop full("ev_full", 2, 1);
+        EvtCheck(full.post_event([]() {}), "first task accepted");
+        EvtCheck(full.post_event([]() {}), "second task accepted");
+        EvtCheck(!full.post_event([]() {}), "third task rejected because the queue is full");
+        auto kept = full.post_timer_event("keep", []() {}, std::chrono::hours(1), 1);
+        auto dropped = full.post_timer_event("drop", []() {}, std::chrono::hours(1), 1);
+        EvtCheck(kept.isvalid(), "timer accepted");
+        EvtCheck(!dropped.isvalid(), "timer rejected because the timer queue is full");
+    }
 
-    // timer task 01
-    int repet_count = 0;
-    eventLoop.post_timer_event(
-      "timer_1s",
-      [&repet_count]()
+    cutl::singlethread_eventloop event_loop("single_thrd_ev");
+    std::atomic<int> tasks{ 0 };
+    std::atomic<int> timers{ 0 };
+    std::atomic<int> on_loop{ 0 };
+
+    auto timer = event_loop.post_timer_event(
+      "timer_40ms",
+      [&timers]()
       {
-          repet_count++;
-          std::cout << cutl::datetime::now().format() << " execute per 1s " << repet_count
-                    << " times." << std::endl;
+          const int n = timers.fetch_add(1) + 1;
+          std::cout << cutl::datetime::now().format() << " execute per 40ms " << n << std::endl;
       },
-      std::chrono::seconds(1),
-      3);
-    // timer task 02
-    auto timer_2s = eventLoop.post_timer_event(
-      "timer_1.5s",
-      []() { std::cout << cutl::datetime::now().format() << " execute per 1.5s" << std::endl; },
-      std::chrono::milliseconds(1500));
-    // normal task 01
-    eventLoop.post_event(
-      []()
-      { std::cout << cutl::datetime::now().format() << " execute normal task 01" << std::endl; });
+      std::chrono::milliseconds(40));
+    EvtCheck(timer.isvalid(), "repeating timer accepted");
+    event_loop.post_event(cutl::EventloopTask());
+    event_loop.post_event(
+      [&event_loop, &tasks, &on_loop]()
+      {
+          if (event_loop.is_loop_thread())
+          {
+              on_loop.fetch_add(1);
+          }
+          std::cout << cutl::datetime::now().format() << " execute normal task" << std::endl;
+          tasks.fetch_add(1);
+      });
 
-    eventLoop.start();
-    std::cout << "main thread id:" << std::this_thread::get_id()
-              << ", main thread is eventloop thread:" << eventLoop.is_loop_thread() << std::endl;
-
-    // normal task 02
-    std::this_thread::sleep_for(std::chrono::milliseconds(1200));
-    eventLoop.post_event(
-      []()
-      { std::cout << cutl::datetime::now().format() << " execute normal task 02" << std::endl; });
-    // std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    eventLoop.post_event(
-      []()
-      { std::cout << cutl::datetime::now().format() << " execute normal task 03" << std::endl; });
-    eventLoop.post_event(
-      []()
-      { std::cout << cutl::datetime::now().format() << " execute normal task 04" << std::endl; });
-
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-    timer_2s.cancel();
-
-    eventLoop.stop();
-    std::cout << "main thread exit" << std::endl;
+    event_loop.start();
+    EvtCheck(EvtWait([&event_loop]() { return event_loop.is_running(); }, std::chrono::seconds(2)),
+             "start() returned and the loop thread is running");
+    EvtCheck(!event_loop.is_loop_thread(), "caller is not the loop thread");
+    EvtCheck(EvtWait([&tasks]() { return tasks.load() == 1; }, std::chrono::seconds(2)),
+             "null task was skipped and the next task ran");
+    EvtCheck(on_loop.load() == 1, "task ran on the loop thread");
+    EvtCheck(EvtWait([&timers]() { return timers.load() >= 2; }, std::chrono::seconds(2)),
+             "repeating timer fired");
+    timer.cancel();
+    const int snapshot = timers.load();
+    std::this_thread::sleep_for(std::chrono::milliseconds(120));
+    event_loop.stop();
+    EvtCheck(!event_loop.is_running(), "stop joined the loop thread");
+    EvtCheck(timers.load() - snapshot <= 1, "cancel stopped further timer ticks");
 }
 
+// Tasks and timer callbacks run on the thread pool, not the loop thread.
 void test_multithread_eventloop()
 {
     PrintSubTitle("test_multithread_eventloop");
 
-    int failures = 0;
-    auto check = [&failures](bool ok, const char* what)
-    {
-        if (ok)
-        {
-            std::cout << "  ok  " << what << std::endl;
-            return;
-        }
-        ++failures;
-        std::cout << "  FAIL " << what << std::endl;
-    };
-    auto wait_until = [](const std::function<bool()>& pred, std::chrono::milliseconds budget)
-    {
-        const auto deadline = std::chrono::steady_clock::now() + budget;
-        while (!pred())
-        {
-            if (std::chrono::steady_clock::now() >= deadline)
-            {
-                return false;
-            }
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
-        return true;
-    };
-
-    // start() blocks, so the loop runs on its own thread. Tasks run on the pool.
     cutl::multithread_eventloop event_loop(32, 8, 2);
     std::atomic<int> tasks{ 0 };
     std::atomic<int> timers{ 0 };
@@ -161,32 +197,34 @@ void test_multithread_eventloop()
       3);
 
     std::thread runner([&event_loop]() { event_loop.start(); });
-    check(wait_until([&tasks]() { return tasks.load() == 2; }, std::chrono::seconds(2)),
-          "two tasks finished");
-    check(off_loop.load() == 2, "tasks ran on the thread pool, not the loop thread");
-    check(peak.load() >= 2, "two pool threads ran tasks at the same time");
-    check(wait_until([&timers]() { return timers.load() >= 2; }, std::chrono::seconds(2)),
-          "timer callbacks ran on the pool");
+    EvtCheck(EvtWait([&tasks]() { return tasks.load() == 2; }, std::chrono::seconds(2)),
+             "two tasks finished");
+    EvtCheck(off_loop.load() == 2, "tasks ran on the thread pool, not the loop thread");
+    EvtCheck(peak.load() >= 2, "two pool threads ran tasks at the same time");
+    EvtCheck(EvtWait([&timers]() { return timers.load() >= 2; }, std::chrono::seconds(2)),
+             "timer callbacks ran on the pool");
 
     event_loop.stop();
     runner.join();
-    check(!event_loop.is_running(), "stop joined the loop thread");
-
-    if (failures == 0)
-    {
-        std::cout << "multithread eventloop demo: all checks passed" << std::endl;
-    }
-    else
-    {
-        std::cout << "multithread eventloop demo: " << failures << " checks failed" << std::endl;
-    }
+    EvtCheck(!event_loop.is_running(), "stop joined the loop thread");
 }
 
 void TestEventLoop()
 {
     PrintTitle("Test EventLoop");
+    g_eventloop_demo_failures = 0;
 
-    // test_eventloop();
+    test_eventloop();
     test_singlethread_eventloop();
     test_multithread_eventloop();
+
+    if (g_eventloop_demo_failures == 0)
+    {
+        std::cout << "event loop demo: all checks passed" << std::endl;
+    }
+    else
+    {
+        std::cout << "event loop demo: " << g_eventloop_demo_failures << " checks failed"
+                  << std::endl;
+    }
 }
