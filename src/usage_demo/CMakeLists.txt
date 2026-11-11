@@ -21,6 +21,12 @@ add_executable(${PROJECT_NAME} main.cpp)
 # 添加链接库
 target_link_libraries(${PROJECT_NAME} common_util)
 
+# callcmd 演示程序：./callcmd -s|-e|-a
+add_executable(callcmd ${CMAKE_SOURCE_DIR}/callcmd_test/callcmd.cpp)
+add_dependencies(${PROJECT_NAME} callcmd)
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    "CALLCMD_TEST_BIN=\"$<TARGET_FILE:callcmd>\"")
+
 # 获取构建目标的CPU架构
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
     if (CMAKE_BUILD_TYPE STREQUAL "Release")

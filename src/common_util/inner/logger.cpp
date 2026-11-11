@@ -151,7 +151,7 @@ void logger::default_write(loglevel level, const std::string& msg)
     const std::string time_text = local_time_text();
     std::lock_guard<std::mutex> lock(default_write_mutex_);
     out << "[" << time_text << "][" << level_flag(level) << "][" << std::this_thread::get_id()
-        << "] " << msg << std::endl;
+        << "]" << msg << std::endl;
 }
 
 } // namespace cutl
