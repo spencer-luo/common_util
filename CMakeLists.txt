@@ -7,7 +7,7 @@
 cmake_minimum_required(VERSION 3.28.3)
 # project name
 
-project(common_util VERSION 1.8.12 LANGUAGES CXX)
+project(common_util VERSION 1.8.13 LANGUAGES CXX)
 
 # 构建时间
 # build time
@@ -120,8 +120,14 @@ else()
     message("skip copying build artifacts (RELEASE_BINARY_LIBRARY=OFF)")
 endif()
 
-# 默认不编译usage_demo，cmake命令行参数传递BUILD_DEMO=on时才会编译
-option(BUILD_DEMO "Need to build usage_demo" OFF)
+# 默认不编译 usage_demo。本仓库 script/build.sh 会传 -DBUILD_DEMO=ON。
+# 被 FetchContent / add_subdirectory 引入时，上层工程的同名 -DBUILD_DEMO=ON
+# 不能打开这里的 Demo，使用方不需要编它。
+if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    option(BUILD_DEMO "Need to build usage_demo" OFF)
+else()
+    set(BUILD_DEMO OFF)
+endif()
 
 if (BUILD_DEMO)
     # add sub moudle for usage_demo
