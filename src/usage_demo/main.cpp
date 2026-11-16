@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 {
     LibraryInit();
     // TestSingleton();
-    TestSysutil();
+    // TestSysutil();
     // TestStrfmt();
     // TestTimeutil();
     // TestTimecount();
@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
     // TestFileUtil();
     // TestDlLoader();
     // TestPrint();
-    // TestTimer();
+    TestTimer();
     // TestLRUCache();
     // TestThreadUtil();
     // TestEventLoop();
